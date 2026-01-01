@@ -21,11 +21,8 @@ class GeminiClient:
         self.max_retries = max_retries
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel(model_id)
-        # Create a JSON-mode model for structured output
-        self.json_model = genai.GenerativeModel(
-            model_id,
-            generation_config={"response_mime_type": "application/json"}
-        )
+        # JSON model will be created per-call with specific schema
+        self._base_model_id = model_id
 
     def _call_with_retry(self, func, *args, **kwargs) -> LLMResponse:
         """Call a function with exponential backoff retry on timeout."""
@@ -72,14 +69,35 @@ class GeminiClient:
         prompt = f"{system}\n\nUser: {user}"
         return self._call_with_retry(self.model.generate_content, prompt)
 
-    def generate_json(self, system: str, user: str) -> LLMResponse:
+    def generate_json(self, system: str, user: str, response_schema: type | dict | None = None) -> LLMResponse:
         """Generate structured JSON output using Gemini's JSON mode.
         
-        Uses response_mime_type='application/json' to force valid JSON output.
-        The prompt should specify the expected JSON schema.
+        Uses response_mime_type='application/json' and optionally a response_schema
+        to force valid, schema-conformant JSON output.
+        
+        Args:
+            system: System prompt
+            user: User prompt  
+            response_schema: Optional Pydantic class or dict schema for validation.
+                           If a Pydantic class is provided, its JSON schema will be extracted.
+                           Gemini will enforce the output matches this schema.
         
         Returns:
             LLMResponse: Response with valid JSON string and token usage
         """
+        generation_config: dict = {"response_mime_type": "application/json"}
+        
+        if response_schema is not None:
+            # Check if it's a Pydantic model class
+            if hasattr(response_schema, "model_json_schema"):
+                # Convert Pydantic model to JSON schema dict
+                generation_config["response_schema"] = response_schema.model_json_schema()
+            else:
+                generation_config["response_schema"] = response_schema
+        
+        json_model = genai.GenerativeModel(
+            self._base_model_id,
+            generation_config=generation_config
+        )
         prompt = f"{system}\n\nUser: {user}"
-        return self._call_with_retry(self.json_model.generate_content, prompt)
+        return self._call_with_retry(json_model.generate_content, prompt)

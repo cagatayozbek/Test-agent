@@ -55,6 +55,7 @@ def main() -> None:
         hypothesis_text=run_result.analysis_text,
         evaluation_text=run_result.critic_text,
         parsed_hypothesis=run_result.parsed_hypothesis,
+        parsed_evaluation=run_result.parsed_evaluation,
     ).build(timestamp=timestamp)
     write_summary(paths.summary, summary)
     emit_log_entry(paths.raw_logs, build_log_entry(agent="runner", role="system", content="summary_written"))

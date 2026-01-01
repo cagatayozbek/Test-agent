@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 from emitter import emit_log_entry
 from instrumented_tools import InstrumentedTools
 from runner import build_log_entry
-from schemas import EvaluationResult, Summary, SemanticHypothesis, TokenUsage
+from schemas import CriticResponse, EvaluationResult, Summary, SemanticHypothesis, TokenUsage
 from graph_loader import AgentGraph
 from llm_client import GeminiClient, LLMResponse
 
@@ -82,10 +82,11 @@ class RunResult:
     executor_tool_name: str
     executor_result: str
     parsed_hypothesis: SemanticHypothesis | None = None  # Structured hypothesis if parsing succeeded
+    parsed_evaluation: EvaluationResult | None = None  # Structured evaluation if parsing succeeded
 
 
 def parse_hypothesis_from_json(json_text: str) -> SemanticHypothesis | None:
-    """Parse SemanticHypothesis from JSON output.
+    """Parse SemanticHypothesis from JSON output using Pydantic validation.
     
     Args:
         json_text: JSON string from analysis agent (may include code fences)
@@ -97,23 +98,31 @@ def parse_hypothesis_from_json(json_text: str) -> SemanticHypothesis | None:
     sanitized = re.sub(r"```(?:json)?", "", json_text).strip()
     
     try:
-        data = json.loads(sanitized)
-        
-        # Validate and normalize confidence_level
-        confidence = data.get("confidence_level", "LOW").upper()
-        if confidence not in ("LOW", "MEDIUM", "HIGH"):
-            confidence = "LOW"
-        
-        return SemanticHypothesis(
-            hypothesis=data.get("hypothesis", ""),
-            confidence_level=confidence,
-            assumptions=data.get("assumptions", []),
-            evidence=data.get("evidence", []),
-            what_might_be_missing=data.get("what_might_be_missing", ""),
-            next_question=data.get("next_question", ""),
-        )
-    except (json.JSONDecodeError, KeyError, TypeError) as e:
+        # Use Pydantic model for validation
+        return SemanticHypothesis.model_validate_json(sanitized)
+    except Exception as e:
         print(f"⚠️ Failed to parse hypothesis JSON: {e}")
+        return None
+
+
+def parse_evaluation_from_json(json_text: str) -> EvaluationResult | None:
+    """Parse EvaluationResult from critic agent JSON output using CriticResponse schema.
+    
+    Args:
+        json_text: JSON string from critic agent (may include code fences)
+        
+    Returns:
+        EvaluationResult if parsing succeeds, None otherwise
+    """
+    # Strip code fences and whitespace
+    sanitized = re.sub(r"```(?:json)?", "", json_text).strip()
+    
+    try:
+        # Use Pydantic model for validation
+        critic_response = CriticResponse.model_validate_json(sanitized)
+        return critic_response.to_evaluation_result()
+    except Exception as e:
+        print(f"⚠️ Failed to parse evaluation JSON: {e}")
         return None
 
 
@@ -200,6 +209,7 @@ class CustomSession:
         critic_text = ""
         executor_reply = ""
         parsed_hypothesis: SemanticHypothesis | None = None
+        parsed_evaluation: EvaluationResult | None = None
         all_tool_results: list[str] = []
         
         # Initialize conversation history for context passing
@@ -228,12 +238,23 @@ class CustomSession:
             if previous_context:
                 print(f"📋 Context from {len(history.messages)} previous agent(s)")
             
-            # Use JSON mode for analysis agent, regular mode for others
+            # Use JSON mode for analysis and critic agents, regular mode for others
             start_time = time.perf_counter()
             if agent_name == "analysis":
-                print("📊 Using JSON mode for structured output...")
+                print("📊 Using JSON mode with SemanticHypothesis schema...")
                 try:
-                    llm_response = self.llm.generate_json(system=prompt, user=user_message)
+                    llm_response = self.llm.generate_json(
+                        system=prompt, user=user_message, response_schema=SemanticHypothesis
+                    )
+                except Exception as e:
+                    print(f"⚠️ JSON mode failed, falling back to regular: {e}")
+                    llm_response = self.llm.generate(system=prompt, user=user_message)
+            elif agent_name == "critic":
+                print("📊 Using JSON mode with CriticResponse schema...")
+                try:
+                    llm_response = self.llm.generate_json(
+                        system=prompt, user=user_message, response_schema=CriticResponse
+                    )
                 except Exception as e:
                     print(f"⚠️ JSON mode failed, falling back to regular: {e}")
                     llm_response = self.llm.generate(system=prompt, user=user_message)
@@ -270,6 +291,12 @@ class CustomSession:
                     print(f"   Confidence: {parsed_hypothesis.confidence_level}")
             if agent_name == "critic":
                 critic_text = reply
+                # Try to parse structured evaluation from JSON
+                parsed_evaluation = parse_evaluation_from_json(reply)
+                if parsed_evaluation:
+                    print(f"✅ Parsed evaluation: behavior={parsed_evaluation.behavior}")
+                    if parsed_evaluation.failure_type:
+                        print(f"   Failure type: {parsed_evaluation.failure_type}")
             if agent_name == "executor":
                 executor_reply = reply
 
@@ -312,6 +339,7 @@ class CustomSession:
             executor_tool_name=last_tool_name,
             executor_result=last_tool_result,
             parsed_hypothesis=parsed_hypothesis,
+            parsed_evaluation=parsed_evaluation,
         )
 
     def _get_next_executor_action(self, history: ConversationHistory, base_user_message: str) -> str:
@@ -402,12 +430,14 @@ class SummaryBuilder:
         hypothesis_text: str,
         evaluation_text: str,
         parsed_hypothesis: SemanticHypothesis | None = None,
+        parsed_evaluation: EvaluationResult | None = None,
     ) -> None:
         self.model_id = model_id
         self.tool_call_count = tool_call_count
         self.hypothesis_text = hypothesis_text
         self.evaluation_text = evaluation_text
         self.parsed_hypothesis = parsed_hypothesis
+        self.parsed_evaluation = parsed_evaluation
 
     def build(self, timestamp: str) -> Summary:
         # Use parsed hypothesis if available, otherwise create fallback
@@ -423,11 +453,15 @@ class SummaryBuilder:
                 next_question="",
             )
         
-        evaluation = EvaluationResult(
-            behavior="reasonable",
-            failure_type="",
-            commentary=self.evaluation_text,
-        )
+        # Use parsed evaluation if available, otherwise create fallback
+        if self.parsed_evaluation:
+            evaluation = self.parsed_evaluation
+        else:
+            evaluation = EvaluationResult(
+                behavior="reasonable",
+                failure_type="",
+                commentary=self.evaluation_text,
+            )
         return Summary(
             hypothesis=hypothesis,
             evaluation=evaluation,

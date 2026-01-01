@@ -18,6 +18,35 @@ class EvaluationResult(BaseModel):
     commentary: str
 
 
+class CriticResponse(BaseModel):
+    """Extended evaluation response from Critic agent with detailed analysis."""
+    behavior: Literal["reasonable", "confused", "overconfident"]
+    failure_type: str
+    commentary: str
+    challenges: list[str]
+    alternatives: list[str]
+    missing_evidence: list[str]
+    verdict: Literal["ACCEPT", "REVISE", "REJECT"]
+    
+    def to_evaluation_result(self) -> "EvaluationResult":
+        """Convert to simplified EvaluationResult for summary."""
+        # Build comprehensive commentary from all fields
+        commentary_parts = [self.commentary]
+        if self.challenges:
+            commentary_parts.append(f"\nChallenges: {', '.join(self.challenges)}")
+        if self.alternatives:
+            commentary_parts.append(f"\nAlternatives: {', '.join(self.alternatives)}")
+        if self.missing_evidence:
+            commentary_parts.append(f"\nMissing Evidence: {', '.join(self.missing_evidence)}")
+        commentary_parts.append(f"\nVerdict: {self.verdict}")
+        
+        return EvaluationResult(
+            behavior=self.behavior,
+            failure_type=self.failure_type,
+            commentary="".join(commentary_parts),
+        )
+
+
 class TokenUsage(BaseModel):
     prompt_tokens: int
     completion_tokens: int

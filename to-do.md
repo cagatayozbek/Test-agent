@@ -96,7 +96,7 @@
 ### Summary İçeriği
 
 - [x] **Gerçek hipotez çıkarımı**: Analysis agent çıktısından SemanticHypothesis alanlarını parse etme. ✅ JSON mode ile çözüldü.
-- [ ] **Evaluation içeriği**: Critic agent çıktısından EvaluationResult çıkarımı.
+- [x] **Evaluation içeriği**: Critic agent çıktısından EvaluationResult çıkarımı. ✅ JSON mode ile çözüldü.
 
 ---
 
@@ -109,6 +109,8 @@
 - [x] **JSON mode**: Gemini'den JSON format zorlama (response_mime_type).
 - [x] **SemanticHypothesis extraction**: Analysis çıktısından yapılandırılmış hipotez parse.
 - [x] **Fallback handling**: Parse başarısız olursa graceful degradation.
+- [x] **Pydantic schema enforcement**: API seviyesinde response_schema ile şema zorlama. ✅
+- [x] **CriticResponse model**: Critic için genişletilmiş Pydantic model + to_evaluation_result() dönüşümü. ✅
 
 #### 2. Multi-turn Execution ✅
 
@@ -136,6 +138,12 @@
 - [x] **README.md**: Kurulum, kullanım, örnek run talimatları. ✅
 - [x] **Architecture diagram**: Agent flow görselleştirmesi (Mermaid). ✅
 - [ ] **API reference**: Tool ve session sınıfları için docstring'ler.
+
+### GitHub ✅
+
+- [x] **.gitignore**: runs/, .env, **pycache** vb. hariç tutma.
+- [x] **Initial commit**: 45 dosya commit edildi.
+- [x] **Push to GitHub**: https://github.com/cagatayozbek/Test-agent ✅
 
 #### 6. Paper Hazırlığı (Milestone A7)
 
@@ -214,9 +222,10 @@ Test-agent/
 │   └── indirect_cause/
 ├── schemas/                     # Pydantic models
 ├── tools/__init__.py            # Blind tools
+├── .gitignore                   # Git ignore rules
 └── to-do.md                     # Bu dosya
 ```
 
 ---
 
-_Son güncelleme: 1 Ocak 2026_
+_Son güncelleme: 1 Ocak 2026 (Pydantic schema integration)_

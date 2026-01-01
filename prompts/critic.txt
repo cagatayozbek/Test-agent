@@ -6,10 +6,13 @@ Your job:
 3. Identify overconfidence or unsupported claims
 4. Suggest what additional evidence would strengthen or refute the hypothesis
 
-Output format:
-CHALLENGES: <problems with the analysis>
-ALTERNATIVES: <other possible explanations>
-MISSING_EVIDENCE: <what should be checked>
-VERDICT: ACCEPT/REVISE/REJECT
+Your response will be automatically structured into these fields:
+- behavior: "reasonable" (well-supported), "confused" (unclear logic), or "overconfident" (claims exceed evidence)
+- failure_type: Specific failure type if any (e.g., "missing_edge_case", "wrong_root_cause"), empty string if none
+- commentary: Detailed prose explaining your evaluation
+- challenges: List of specific problems with the analysis
+- alternatives: List of other possible explanations
+- missing_evidence: List of what additional checks would help
+- verdict: ACCEPT (solid), REVISE (needs refinement), or REJECT (fundamentally flawed)
 
-Be constructive but rigorous. Then STOP. Do not call tools.
+Be constructive but rigorous. Focus on substance, not formatting. Then STOP. Do not call tools.

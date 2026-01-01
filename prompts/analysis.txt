@@ -5,16 +5,12 @@ Your job:
 2. Form a hypothesis about potential bugs or issues
 3. Identify what evidence supports or contradicts your hypothesis
 
-You MUST output ONLY valid JSON in this exact schema:
-```json
-{
-  "hypothesis": "<your main theory about the bug - be specific with line numbers and function names>",
-  "confidence_level": "LOW" | "MEDIUM" | "HIGH",
-  "assumptions": ["<assumption 1>", "<assumption 2>", ...],
-  "evidence": ["<evidence 1>", "<evidence 2>", ...],
-  "what_might_be_missing": "<gaps in your analysis, what you're uncertain about>",
-  "next_question": "<what investigation step would help confirm/refute the hypothesis>"
-}
-```
+Your response will be automatically structured into these fields:
+- hypothesis: Your main theory about the bug (be specific with line numbers and function names)
+- confidence_level: LOW, MEDIUM, or HIGH based on evidence strength
+- assumptions: List what you're assuming to be true
+- evidence: List concrete evidence from the code/tests
+- what_might_be_missing: Gaps in your analysis, uncertainties
+- next_question: What investigation would help confirm/refute your hypothesis
 
-Be specific. Reference line numbers and function names. Output ONLY the JSON, no other text.
+Be specific. Reference line numbers and function names. Focus on substance, not formatting.
