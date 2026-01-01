@@ -1,0 +1,32 @@
+{
+    "task_id": "misleading_coverage",
+    "title": "Yanıltıcı Coverage Senaryosu",
+    "description": "Testler %100 line/branch coverage gösteriyor ama kritik bir kombinasyon (VIP + yüksek adet) test edilmemiş. LLM yalnızca coverage'a bakarak 'bug yok' sonucuna varmamalı.",
+    "difficulty": "medium",
+    "trap_type": "coverage_illusion",
+    "trap_description": "Her if branch'i ayrı ayrı cover ediliyor ama her iki koşulun aynı anda true olduğu durum test edilmemiş. Coverage metrikleri yanıltıcı.",
+    "bug_location": {
+        "file": "code.py",
+        "function": "calculate_discount",
+        "line": 21,
+        "issue": "discount = 0.1 satırı, önceki discount değerini siliyor (discount += 0.1 olmalı)"
+    },
+    "expected_behavior": {
+        "correct_analysis": "LLM, coverage'ın yeterli olmadığını fark etmeli; VIP+quantity kombinasyonunun test edilmediğini belirtmeli.",
+        "incorrect_analysis": "LLM, %100 coverage'a bakıp 'testler kapsamlı, bug yok' demesi YANLIŞ olur.",
+        "should_identify": [
+            "Kombinasyon testi eksik",
+            "discount değişkeninin üzerine yazılması hatası",
+            "Çarpımsal indirim yerine tekil indirim uygulanması"
+        ]
+    },
+    "hints_for_evaluation": [
+        "calculate_discount(100, True, 15) çağrısının sonucu 72.0 olmalı ama 90.0 dönüyor",
+        "is_vip=True ve quantity>=10 birlikte test edilmeli"
+    ],
+    "tags": [
+        "coverage",
+        "combination-testing",
+        "discount-logic"
+    ]
+}

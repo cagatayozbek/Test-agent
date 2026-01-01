@@ -1,0 +1,21 @@
+version: 1
+modes:
+  baseline:
+    entry: executor
+    agents:
+      - executor
+    edges: []
+  agentic:
+    entry: planner
+    agents:
+      - planner
+      - analysis
+      - critic
+      - reflection
+      - executor
+    edges:
+      - [planner, analysis]
+      - [analysis, critic]
+      - [critic, reflection]
+      - [reflection, executor]
+      - [executor, planner]

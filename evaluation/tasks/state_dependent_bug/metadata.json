@@ -1,0 +1,53 @@
+{
+    "task_id": "state_dependent_bug",
+    "title": "State-Dependent Bug Senaryosu",
+    "description": "Bug yalnızca belirli bir çağrı sırasında (login→logout→get_raw_session veya increment→reset→increment) ortaya çıkıyor. Testler izole çalıştığı için bu sıralı senaryoları yakalamıyor.",
+    "difficulty": "hard",
+    "trap_type": "state_transition",
+    "trap_description": "Her test metodu izole bir instance ile çalışıyor. State geçişlerini (A→B→C) test eden senaryo yok. LLM sadece mevcut testlere bakarak 'tüm durumlar test edilmiş' diyebilir.",
+    "bugs": [
+        {
+            "class": "SessionManager",
+            "method": "logout",
+            "issue": "_session_data temizlenmiyor; logout sonrası get_raw_session() eski veriyi döner",
+            "security_impact": "Oturum bilgisi sızıntısı"
+        },
+        {
+            "class": "Counter",
+            "method": "reset",
+            "issue": "_history temizlenmiyor; reset sonrası increment() eski history'ye eklemeye devam eder",
+            "data_impact": "Tutarsız history verisi"
+        }
+    ],
+    "expected_behavior": {
+        "correct_analysis": "LLM, state transition testlerinin eksikliğini tespit etmeli. logout() ve reset() metotlarında eksik temizlik olduğunu belirtmeli.",
+        "incorrect_analysis": "'Tüm public metotlar test edilmiş' veya 'Coverage yeterli' demesi YANLIŞ.",
+        "should_identify": [
+            "logout() içinde _session_data = {} eksik",
+            "reset() içinde _history = [] eksik",
+            "Sıralı senaryo testleri (login→logout→access) yok"
+        ]
+    },
+    "reproduction_steps": {
+        "session_bug": [
+            "sm = SessionManager()",
+            "sm.login('alice', 'pass')",
+            "sm.logout()",
+            "print(sm.get_raw_session())  # {'user': 'alice', ...} döner - BUG!"
+        ],
+        "counter_bug": [
+            "c = Counter()",
+            "c.increment()  # 1",
+            "c.increment()  # 2",
+            "c.reset()",
+            "c.increment()  # 1",
+            "print(c.get_history())  # [1, 2, 1] - BUG! Beklenen: [1]"
+        ]
+    },
+    "tags": [
+        "state-management",
+        "security",
+        "data-integrity",
+        "sequence-testing"
+    ]
+}

@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+runs/
+tool_outputs/
+*.jsonl
+large_tool_results/
+
+# Keep evaluation tasks but ignore run outputs
+!evaluation/tasks/

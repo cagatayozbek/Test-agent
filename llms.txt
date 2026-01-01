@@ -1,0 +1,13 @@
+- [Backends](https://docs.langchain.com/oss/python/deepagents/backends.md): Choose and configure filesystem backends for deep agents. You can specify routes to different backends, implement virtual filesystems, and enforce policies.
+- [Deep Agents CLI](https://docs.langchain.com/oss/python/deepagents/cli.md): Interactive command-line interface for building with Deep Agents
+- [Customize Deep Agents](https://docs.langchain.com/oss/python/deepagents/customization.md): Learn how to customize deep agents with system prompts, tools, subagents, and more
+- [Agent harness capabilities](https://docs.langchain.com/oss/python/deepagents/harness.md)
+- [Human-in-the-loop](https://docs.langchain.com/oss/python/deepagents/human-in-the-loop.md): Learn how to configure human approval for sensitive tool operations
+- [Long-term memory](https://docs.langchain.com/oss/python/deepagents/long-term-memory.md): Learn how to extend deep agents with persistent memory across threads
+- [Deep Agents Middleware](https://docs.langchain.com/oss/python/deepagents/middleware.md): Understand the middleware that powers deep agents
+- [Deep Agents overview](https://docs.langchain.com/oss/python/deepagents/overview.md): Build agents that can plan, use subagents, and leverage file systems for complex tasks
+- [Quickstart](https://docs.langchain.com/oss/python/deepagents/quickstart.md): Build your first deep agent in minutes
+- [Subagents](https://docs.langchain.com/oss/python/deepagents/subagents.md): Learn how to use subagents to delegate work and keep context clean
+- [Deep Agents](https://docs.langchain.com/oss/python/reference/deepagents-python.md)
+
+

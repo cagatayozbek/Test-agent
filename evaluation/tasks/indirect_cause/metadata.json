@@ -1,0 +1,50 @@
+{
+    "task_id": "indirect_cause",
+    "title": "Dolaylı Sebep Senaryosu",
+    "description": "Hata üst seviye servis katmanında görünüyor ama asıl sebep Config sınıfındaki kötü default değer (timeout_ms=0). LLM yalnızca hatanın göründüğü yere bakmamalı, kök sebebi aramalı.",
+    "difficulty": "hard",
+    "trap_type": "indirect_causation",
+    "trap_description": "Testler her zaman explicit config override ile çalışıyor. Default config ile servis kullanımı hiç test edilmemiş. LLM hatanın DataService veya APIClient'ta olduğunu düşünebilir ama asıl sorun Config.timeout_ms default değerinde.",
+    "bug_chain": [
+        {
+            "level": 1,
+            "component": "Config",
+            "issue": "timeout_ms default değeri 0 - bu sonsuz bekleme anlamına geliyor",
+            "visibility": "Gizli - testlerde hep override ediliyor"
+        },
+        {
+            "level": 2,
+            "component": "APIClient.connect()",
+            "issue": "timeout_ms=0 durumunda timeout kontrolü atlanıyor",
+            "visibility": "Kısmen görünür - ama testlerde bu path'e girilmiyor"
+        },
+        {
+            "level": 3,
+            "component": "DataService.get_user_profile()",
+            "issue": "Production'da timeout olmadan bekleyebilir",
+            "visibility": "Görünür - hata burada patlıyor gibi görünüyor"
+        }
+    ],
+    "expected_behavior": {
+        "correct_analysis": "LLM, default config değerlerinin test edilmediğini fark etmeli. Config.timeout_ms=0'ın kötü bir default olduğunu belirtmeli.",
+        "incorrect_analysis": "'DataService düzgün çalışıyor, testler geçiyor' veya 'APIClient'ta sorun yok' demesi YANLIŞ.",
+        "should_identify": [
+            "Config.timeout_ms = 0 kötü default",
+            "Tüm testler explicit config override kullanıyor",
+            "Default config path'i hiç test edilmemiş",
+            "Timeout 0 = sonsuz bekleme riski"
+        ]
+    },
+    "root_cause_analysis": {
+        "symptom": "Production'da servis yanıt vermiyor",
+        "apparent_cause": "DataService.get_user_profile() takılıyor",
+        "actual_cause": "Config.timeout_ms default değeri 0",
+        "fix": "Config sınıfında timeout_ms = 30000 (veya makul bir değer) olmalı"
+    },
+    "tags": [
+        "root-cause-analysis",
+        "configuration",
+        "default-values",
+        "timeout"
+    ]
+}
