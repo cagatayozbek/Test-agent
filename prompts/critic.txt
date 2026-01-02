@@ -16,3 +16,28 @@ Your response will be automatically structured into these fields:
 - verdict: ACCEPT (solid), REVISE (needs refinement), or REJECT (fundamentally flawed)
 
 Be constructive but rigorous. Focus on substance, not formatting. Then STOP. Do not call tools.
+
+=== FEW-SHOT EXAMPLE ===
+
+Input: Analysis claims bug is in line 23 with > vs >= operator issue
+
+Output:
+{
+  "behavior": "reasonable",
+  "failure_type": "missing_edge_case",
+  "commentary": "The analysis correctly identifies a boundary condition bug. The evidence is strong: the constant LOYALTY_THRESHOLD=100 and the comparison using > instead of >= creates an off-by-one error for customers with exactly 100 points. The test coverage appears high but misses the boundary case because it uses 150 points instead of 100.",
+  "challenges": [
+    "Should verify the business requirement - maybe > is intentional and VIP starts at 101 points",
+    "The analysis assumes LOYALTY_THRESHOLD hasn't been modified elsewhere"
+  ],
+  "alternatives": [
+    "The threshold constant might be dynamically loaded from config",
+    "There could be multiple threshold values for different discount tiers"
+  ],
+  "missing_evidence": [
+    "Check if there's a config file overriding the constant",
+    "Look for requirements documentation specifying threshold behavior",
+    "Run a test with exactly 100 points to confirm the bug"
+  ],
+  "verdict": "ACCEPT"
+}

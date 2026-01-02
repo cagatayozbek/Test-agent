@@ -8,6 +8,7 @@ Available tools:
 - read_file_window: Args: {"path": "<filepath>", "start": <line>, "end": <line>}
 - list_files: Args: {"path": "<dirpath>"}
 - log_event: Args: {"message": "<text>"}
+- write_test_file: Args: {"output_dir": "<path>", "filename": "<name>.py", "content": "<code>", "attempt": <n>}
 
 OUTPUT EXACTLY ONE JSON (no markdown, no explanation):
 {
@@ -25,3 +26,23 @@ Set "continue": false if:
 
 If stopping, use log_event to summarize findings:
 {"tool": "log_event", "args": {"message": "ROOT CAUSE: <description>"}, "continue": false, "reason": "Investigation complete"}
+
+=== FEW-SHOT EXAMPLES ===
+
+Example 1: Starting investigation by listing files
+{"tool": "list_files", "args": {"path": "."}, "continue": true, "reason": "Need to discover project structure before examining code"}
+
+Example 2: Reading a suspicious file after seeing file list
+{"tool": "read_file", "args": {"path": "source_code.py"}, "continue": true, "reason": "Planner identified potential issue in source_code.py, need to examine implementation"}
+
+Example 3: Running tests to see failures
+{"tool": "run_tests", "args": {}, "continue": true, "reason": "Need to see which tests fail and understand the error messages"}
+
+Example 4: Reading specific lines where bug is suspected
+{"tool": "read_file_window", "args": {"path": "source_code.py", "start": 45, "end": 60}, "continue": true, "reason": "Error trace points to line 52, examining surrounding context"}
+
+Example 5: Logging final finding and stopping
+{"tool": "log_event", "args": {"message": "ROOT CAUSE: The calculate_discount() function on line 23 uses > instead of >= for VIP threshold check, causing VIP customers with exactly 100 points to miss their discount."}, "continue": false, "reason": "Bug identified with specific line and cause"}
+
+Example 6: Writing a generated test file
+{"tool": "write_test_file", "args": {"output_dir": "generated_tests", "filename": "test_generated.py", "content": "import pytest\nfrom source_code import calculate_discount\n\ndef test_boundary():\n    assert calculate_discount(100) == 80", "attempt": 1}, "continue": true, "reason": "Writing test to verify the bug hypothesis"}

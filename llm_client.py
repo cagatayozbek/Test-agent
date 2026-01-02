@@ -1,3 +1,20 @@
+"""Gemini LLM client wrapper with retry logic and JSON mode support.
+
+This module provides a wrapper around Google's Generative AI SDK,
+adding features like exponential backoff retry, token usage tracking,
+and structured JSON output mode.
+
+Classes:
+    LLMResponse: Container for LLM response text and token usage metrics
+    GeminiClient: Main client class for interacting with Gemini models
+
+Example:
+    >>> from llm_client import GeminiClient
+    >>> client = GeminiClient(model_id="gemini-2.0-flash", api_key="your-key")
+    >>> response = client.generate(system="You are helpful.", user="Hello")
+    >>> print(response.text)
+"""
+
 from dataclasses import dataclass
 from typing import Any
 import time
@@ -8,7 +25,19 @@ from google.api_core import exceptions as google_exceptions
 
 @dataclass
 class LLMResponse:
-    """Response from LLM containing text and token usage."""
+    """Container for LLM response with text and token usage metrics.
+    
+    Attributes:
+        text: Generated text content from the model
+        prompt_tokens: Number of tokens in the input prompt
+        completion_tokens: Number of tokens in the generated response
+        total_tokens: Sum of prompt and completion tokens
+    
+    Example:
+        >>> response = client.generate(system="...", user="...")
+        >>> print(f"Response: {response.text}")
+        >>> print(f"Used {response.total_tokens} tokens")
+    """
     text: str
     prompt_tokens: int
     completion_tokens: int
@@ -16,7 +45,41 @@ class LLMResponse:
 
 
 class GeminiClient:
+    """Client wrapper for Google Gemini models with retry and JSON support.
+    
+    Provides a simplified interface for calling Gemini models with:
+    - Automatic retry with exponential backoff on timeouts/rate limits
+    - Token usage tracking from response metadata
+    - JSON mode for structured output with optional schema validation
+    
+    Attributes:
+        model_id: Identifier of the Gemini model being used
+        max_retries: Maximum retry attempts for failed calls
+        model: Configured GenerativeModel instance
+    
+    Example:
+        >>> client = GeminiClient("gemini-2.0-flash", api_key="...")
+        >>> 
+        >>> # Simple generation
+        >>> response = client.generate(system="Be brief.", user="What is 2+2?")
+        >>> 
+        >>> # JSON mode with schema
+        >>> from schemas import SemanticHypothesis
+        >>> response = client.generate_json(
+        ...     system="Analyze the code.",
+        ...     user="...",
+        ...     response_schema=SemanticHypothesis
+        ... )
+    """
+    
     def __init__(self, model_id: str, api_key: str, max_retries: int = 3):
+        """Initialize the Gemini client.
+        
+        Args:
+            model_id: Gemini model identifier (e.g., "gemini-2.0-flash")
+            api_key: Google API key for authentication
+            max_retries: Maximum retry attempts on timeout/rate limit (default: 3)
+        """
         self.model_id = model_id
         self.max_retries = max_retries
         genai.configure(api_key=api_key)
@@ -25,7 +88,23 @@ class GeminiClient:
         self._base_model_id = model_id
 
     def _call_with_retry(self, func, *args, **kwargs) -> LLMResponse:
-        """Call a function with exponential backoff retry on timeout."""
+        """Execute a function with exponential backoff retry on failures.
+        
+        Handles DeadlineExceeded (timeout) and ResourceExhausted (rate limit)
+        errors with increasing wait times between retries.
+        
+        Args:
+            func: Callable to execute (typically generate_content)
+            *args: Positional arguments for func
+            **kwargs: Keyword arguments for func
+        
+        Returns:
+            LLMResponse: Parsed response with text and token metrics
+        
+        Raises:
+            DeadlineExceeded: If all retries fail on timeout
+            ResourceExhausted: If all retries fail on rate limit
+        """
         for attempt in range(self.max_retries):
             try:
                 response = func(*args, **kwargs)

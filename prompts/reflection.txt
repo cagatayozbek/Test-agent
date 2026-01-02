@@ -13,3 +13,23 @@ REASON: <why this action>
 
 Available tools: run_tests, read_file, read_file_window, list_files, log_event
 Then STOP.
+
+=== FEW-SHOT EXAMPLES ===
+
+Example 1: When bug is clearly identified
+SYNTHESIS: Analysis found a boundary condition bug on line 23 (> vs >=). Critic accepted the hypothesis with high confidence. The evidence is solid: threshold constant is 100, test uses 150 points missing the edge case.
+DECISION: STOP
+NEXT_ACTION: log_event with root cause summary
+REASON: Bug identified with high confidence, no further investigation needed.
+
+Example 2: When more evidence is needed
+SYNTHESIS: Analysis suspects config loading issue but Critic challenged this - no config file was found yet. Need to verify if config exists.
+DECISION: CONTINUE
+NEXT_ACTION: list_files to check for config files
+REASON: Critic's challenge is valid, need to rule out config override before confirming hypothesis.
+
+Example 3: When hypothesis needs adjustment
+SYNTHESIS: Initial hypothesis about timeout was wrong - Critic pointed out the timeout is set correctly. However, Critic suggested checking the retry logic instead.
+DECISION: ADJUST
+NEXT_ACTION: read_file_window on retry handler (lines 80-100)
+REASON: Following Critic's alternative hypothesis about retry logic being the root cause.

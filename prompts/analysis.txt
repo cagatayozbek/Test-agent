@@ -14,3 +14,25 @@ Your response will be automatically structured into these fields:
 - next_question: What investigation would help confirm/refute your hypothesis
 
 Be specific. Reference line numbers and function names. Focus on substance, not formatting.
+
+=== FEW-SHOT EXAMPLE ===
+
+Input: Code with discount calculation, tests show 100% coverage but VIP edge case fails
+
+Output:
+{
+  "hypothesis": "The calculate_discount() function on line 23 uses strict inequality (>) instead of (>=) when checking VIP status threshold. This causes customers with exactly 100 loyalty points to miss their VIP discount, even though the test for VIP customers passes because it uses 150 points.",
+  "confidence_level": "HIGH",
+  "assumptions": [
+    "VIP threshold is defined as 100 points (from LOYALTY_THRESHOLD constant on line 5)",
+    "The test_vip_discount test uses 150 points, not the boundary value 100"
+  ],
+  "evidence": [
+    "Line 23: 'if customer.points > LOYALTY_THRESHOLD' uses > instead of >=",
+    "Line 5: LOYALTY_THRESHOLD = 100",
+    "test_vip_discount uses customer with 150 points, not testing boundary",
+    "No test exists for customer with exactly 100 points"
+  ],
+  "what_might_be_missing": "Need to verify if the business requirement specifies >= or > for VIP threshold",
+  "next_question": "Is there documentation or a requirements file specifying the exact VIP threshold behavior?"
+}

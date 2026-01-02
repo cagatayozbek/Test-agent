@@ -1,21 +1,23 @@
 version: 1
 modes:
   baseline:
-    entry: executor
+    entry: testwriter
     agents:
-      - executor
+      - testwriter
     edges: []
   agentic:
     entry: planner
     agents:
       - planner
       - analysis
+      - testwriter
       - critic
       - reflection
       - executor
     edges:
       - [planner, analysis]
-      - [analysis, critic]
+      - [analysis, testwriter]
+      - [testwriter, critic]
       - [critic, reflection]
       - [reflection, executor]
       - [executor, planner]

@@ -1,0 +1,22 @@
+{
+    "task_id": "boundary_threshold",
+    "title": "VIP Threshold Boundary Bug",
+    "description": "Off-by-one error in VIP discount threshold check",
+    "difficulty": "easy",
+    "bug_type": "boundary_condition",
+    "bug_description": "The calculate_discount() function uses strict inequality (>) instead of (>=) when checking if a customer qualifies for VIP status. This causes customers with exactly 100 loyalty points to miss their 20% VIP discount, receiving only the 5% regular discount instead.",
+    "bug_location": {
+        "file": "source.py",
+        "function": "calculate_discount",
+        "line": 35,
+        "issue": "Uses 'points > LOYALTY_THRESHOLD' instead of 'points >= LOYALTY_THRESHOLD'"
+    },
+    "expected_failure_signal": "AssertionError on boundary value (100 points)",
+    "test_hint": "Test with customer having exactly LOYALTY_THRESHOLD (100) points. The buggy code will give 5% discount instead of 20%.",
+    "tags": [
+        "boundary",
+        "off-by-one",
+        "comparison-operator",
+        "easy"
+    ]
+}

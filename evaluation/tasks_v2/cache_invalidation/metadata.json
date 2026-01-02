@@ -1,0 +1,22 @@
+{
+    "task_id": "cache_invalidation",
+    "title": "Session Cache Invalidation Bug",
+    "description": "Cache not cleared on logout, causing stale data leak",
+    "difficulty": "medium",
+    "bug_type": "state_management",
+    "bug_description": "The logout() method in UserSession class fails to clear the internal _cache dictionary. This causes get_user_data() to return stale cached user data even after the user has logged out, which is both a functional bug and a potential security issue.",
+    "bug_location": {
+        "file": "source.py",
+        "function": "logout",
+        "line": 32,
+        "issue": "Missing self._cache.clear() call"
+    },
+    "expected_failure_signal": "AssertionError: user data should be None after logout",
+    "test_hint": "Test the sequence: login -> get_user_data (should have data) -> logout -> get_user_data (should be None, but buggy code returns stale data)",
+    "tags": [
+        "state",
+        "cache",
+        "security",
+        "medium"
+    ]
+}

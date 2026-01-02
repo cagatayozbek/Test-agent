@@ -1,4 +1,13 @@
-from .models import CriticResponse, EvaluationResult, LogEntry, SemanticHypothesis, Summary, TokenUsage
+from .models import (
+    CriticResponse,
+    EvaluationResult,
+    LogEntry,
+    SemanticHypothesis,
+    Summary,
+    TestGenerationResult,
+    TestGenerationSummary,
+    TokenUsage,
+)
 
 __all__ = [
     "SemanticHypothesis",
@@ -6,5 +15,7 @@ __all__ = [
     "CriticResponse",
     "LogEntry",
     "Summary",
+    "TestGenerationResult",
+    "TestGenerationSummary",
     "TokenUsage",
 ]

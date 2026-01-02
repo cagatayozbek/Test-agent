@@ -2,6 +2,7 @@
 """
 evaluation/run_all.py
 Tüm adversarial task'ları baseline ve agentic modda çalıştırır.
+Supports both bug detection (v1) and test generation (v2) modes.
 """
 
 import argparse
@@ -13,6 +14,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+# Add parent dir to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 
 def discover_tasks(tasks_dir: Path) -> list[str]:
     """evaluation/tasks/ altındaki tüm task klasörlerini bul."""
@@ -21,6 +25,16 @@ def discover_tasks(tasks_dir: Path) -> list[str]:
     return [
         d.name for d in tasks_dir.iterdir()
         if d.is_dir() and (d / "metadata.json").exists()
+    ]
+
+
+def discover_tasks_v2(tasks_dir: Path) -> list[str]:
+    """evaluation/tasks_v2/ altındaki tüm test generation task'larını bul."""
+    if not tasks_dir.exists():
+        return []
+    return [
+        d.name for d in tasks_dir.iterdir()
+        if d.is_dir() and (d / "buggy").exists() and (d / "fixed").exists()
     ]
 
 
@@ -176,6 +190,240 @@ def run_all_tasks(
     return report
 
 
+def run_test_generation_tasks(
+    tasks_dir: Path,
+    base_dir: Path,
+    modes: list[str],
+    task_filter: Optional[str] = None,
+    verbose: bool = False,
+    max_retries: int = 3,
+) -> dict:
+    """
+    Run test generation evaluation on tasks_v2/ tasks with retry support.
+    
+    For each task:
+    1. Run agent pipeline to generate a test
+    2. Validate test against buggy/fixed code
+    3. If not bug-revealing, retry with feedback (up to max_retries)
+    4. Calculate BRTR (Bug-Revealing Test Rate)
+    
+    Requires GOOGLE_API_KEY environment variable for LLM evaluation.
+    
+    Args:
+        tasks_dir: Path to tasks_v2/ directory
+        base_dir: Project root directory
+        modes: List of modes to run ("baseline", "agentic")
+        task_filter: Optional substring filter for task IDs
+        verbose: Enable verbose output
+        max_retries: Maximum retry attempts per task (default: 3)
+    
+    Returns:
+        {
+            "timestamp": str,
+            "evaluation_type": "test_generation",
+            "results": [...],
+            "brtr_summary": {"baseline": float, "agentic": float}
+        }
+    """
+    tasks = discover_tasks_v2(tasks_dir)
+    
+    if task_filter:
+        tasks = [t for t in tasks if task_filter in t]
+    
+    if not tasks:
+        print("No test generation tasks found in tasks_v2/")
+        return {"timestamp": datetime.now().isoformat(), "results": [], "brtr_summary": {}}
+    
+    print(f"🧪 Test Generation Mode (with retry)")
+    print(f"Discovered {len(tasks)} task(s): {tasks}")
+    print(f"Modes: {modes}")
+    print(f"Max retries: {max_retries}")
+    print("-" * 50)
+    
+    # Initialize LLM for evaluation
+    api_key = os.environ.get("GOOGLE_API_KEY", "")
+    if not api_key:
+        print("❌ GOOGLE_API_KEY is required for test evaluation")
+        print("   Set it in your environment or .env file")
+        sys.exit(1)
+    
+    from llm_client import GeminiClient
+    from evaluation.test_evaluator import TestEvaluator
+    from task_loader import load_task_context_v2
+    from config import load_config
+    from graph_loader import load_agent_graph
+    from prompt_loader import load_prompts
+    from run_paths import build_run_paths
+    from instrumented_tools import InstrumentedTools, ToolCounter
+    from custom_session import TestGenerationSession, SummaryBuilder
+    from runner import write_summary, iso8601_utc_timestamp
+    
+    # Load configuration
+    config = load_config(base_dir / "config.yaml")
+    graph = load_agent_graph(base_dir / "agents" / "agent_graph.yaml")
+    prompts = load_prompts(base_dir / "prompts")
+    
+    # Use config retry settings if available
+    if config.test_generation:
+        max_retries = config.test_generation.max_retry_attempts
+        test_timeout = config.test_generation.test_timeout_seconds
+    else:
+        test_timeout = 60
+    
+    print(f"✓ Config loaded: max_retries={max_retries}, timeout={test_timeout}s")
+    
+    all_results = []
+    
+    for task_id in tasks:
+        # Load V2 task context
+        task_context = load_task_context_v2(base_dir, task_id)
+        if not task_context:
+            print(f"⚠️ Could not load task context for {task_id}")
+            continue
+        
+        bug_description = task_context.get_bug_description()
+        
+        for mode in modes:
+            run_id = generate_run_id(mode)
+            print(f"\n{'='*60}")
+            print(f"[{task_id}] mode={mode} run_id={run_id}")
+            print(f"Bug: {bug_description[:80]}...")
+            print(f"{'='*60}")
+            
+            # Setup paths and tools
+            paths = build_run_paths(base_dir, task=task_id, run_id=run_id)
+            paths.root.mkdir(parents=True, exist_ok=True)
+            paths.tool_outputs.mkdir(parents=True, exist_ok=True)
+            
+            counter = ToolCounter()
+            tools = InstrumentedTools(counter)
+            
+            # Create LLM clients
+            llm = GeminiClient(model_id=config.model_id, api_key=api_key)
+            eval_llm = GeminiClient(model_id="gemini-2.0-flash", api_key=api_key)
+            test_evaluator = TestEvaluator(eval_llm)
+            
+            result = {
+                "task_id": task_id,
+                "mode": mode,
+                "run_id": run_id,
+                "success": False,
+                "error": None,
+            }
+            
+            try:
+                # Run test generation session with retry
+                session = TestGenerationSession(
+                    graph=graph,
+                    mode=mode,
+                    prompts=prompts,
+                    tools=tools,
+                    log_path=paths.raw_logs,
+                    llm=llm,
+                    task_context=task_context,
+                    test_evaluator=test_evaluator,
+                    max_retries=max_retries,
+                    test_timeout=test_timeout,
+                )
+                
+                session_result = session.run()
+                
+                # Build result
+                result["success"] = session_result.success
+                result["attempts"] = session_result.attempts
+                result["test_validation"] = {
+                    "is_bug_revealing": session_result.success,
+                    "test_file": str(session_result.final_test_file) if session_result.final_test_file else None,
+                    "attempts_detail": [
+                        {
+                            "attempt": r.attempt,
+                            "buggy_failed": r.buggy_failed,
+                            "fixed_passed": r.fixed_passed,
+                            "is_bug_revealing": r.is_bug_revealing,
+                            "failure_category": r.evaluation.failure_category if r.evaluation else "no_test",
+                        }
+                        for r in session_result.results
+                    ],
+                }
+                
+                # Write summary
+                timestamp = iso8601_utc_timestamp()
+                if session_result.results:
+                    last_result = session_result.results[-1]
+                    summary = SummaryBuilder(
+                        model_id=config.model_id,
+                        tool_call_count=counter.count,
+                        hypothesis_text=f"Test generation {'succeeded' if session_result.success else 'failed'} after {session_result.attempts} attempts",
+                        evaluation_text=last_result.evaluation.commentary if last_result.evaluation else "",
+                    ).build(timestamp=timestamp)
+                    write_summary(paths.summary, summary)
+                
+                # Show result
+                emoji = "🎯" if session_result.success else "❌"
+                print(f"\n{emoji} Final: bug_revealing={session_result.success} "
+                      f"(attempts: {session_result.attempts})")
+                
+            except Exception as e:
+                result["error"] = str(e)
+                print(f"❌ Error: {e}")
+            
+            all_results.append(result)
+    
+    # Calculate BRTR summary
+    brtr_summary = {}
+    for mode in modes:
+        mode_results = [r for r in all_results if r["mode"] == mode]
+        if mode_results:
+            bug_revealing = sum(
+                1 for r in mode_results 
+                if r.get("test_validation", {}).get("is_bug_revealing", False)
+            )
+            brtr_summary[mode] = bug_revealing / len(mode_results)
+        else:
+            brtr_summary[mode] = 0.0
+    
+    # Calculate attempts stats
+    attempts_stats = {}
+    for mode in modes:
+        mode_results = [r for r in all_results if r["mode"] == mode]
+        successful = [r for r in mode_results if r.get("test_validation", {}).get("is_bug_revealing", False)]
+        if successful:
+            avg_attempts = sum(r.get("attempts", 1) for r in successful) / len(successful)
+            attempts_stats[mode] = {
+                "avg_attempts_to_success": round(avg_attempts, 2),
+                "success_count": len(successful),
+            }
+    
+    report = {
+        "timestamp": datetime.now().isoformat(),
+        "evaluation_type": "test_generation",
+        "max_retries": max_retries,
+        "results": all_results,
+        "summary": {
+            "total": len(all_results),
+            "passed": sum(1 for r in all_results if r["success"]),
+            "bug_revealing": sum(
+                1 for r in all_results 
+                if r.get("test_validation", {}).get("is_bug_revealing", False)
+            ),
+        },
+        "brtr_summary": brtr_summary,
+        "attempts_stats": attempts_stats,
+    }
+    
+    print("\n" + "-" * 50)
+    print(f"Total: {report['summary']['total']} | "
+          f"Passed: {report['summary']['passed']} | "
+          f"Bug-Revealing: {report['summary']['bug_revealing']}")
+    print("\n📊 BRTR Summary:")
+    for mode, brtr in brtr_summary.items():
+        attempts_info = attempts_stats.get(mode, {})
+        avg = attempts_info.get("avg_attempts_to_success", "N/A")
+        print(f"  {mode}: {brtr:.1%} (avg attempts: {avg})")
+    
+    return report
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run adversarial evaluation tasks")
     parser.add_argument(
@@ -206,20 +454,44 @@ def main() -> None:
         action="store_true",
         help="Run LLM-based evaluation after each task"
     )
+    parser.add_argument(
+        "--test-gen",
+        action="store_true",
+        help="Run in test generation mode (uses tasks_v2/)"
+    )
+    parser.add_argument(
+        "--max-retries",
+        type=int,
+        default=3,
+        help="Max retry attempts for test generation (default: 3)"
+    )
     args = parser.parse_args()
     
     base_dir = Path(__file__).parent.parent
-    tasks_dir = Path(__file__).parent / "tasks"
     
     modes = ["baseline", "agentic"] if args.mode == "both" else [args.mode]
     
-    report = run_all_tasks(
-        tasks_dir=tasks_dir,
-        base_dir=base_dir,
-        modes=modes,
-        task_filter=args.task,
-        verbose=args.verbose,
-    )
+    if args.test_gen:
+        # Test generation mode - use tasks_v2/
+        tasks_dir = Path(__file__).parent / "tasks_v2"
+        report = run_test_generation_tasks(
+            tasks_dir=tasks_dir,
+            base_dir=base_dir,
+            modes=modes,
+            task_filter=args.task,
+            verbose=args.verbose,
+            max_retries=args.max_retries,
+        )
+    else:
+        # Bug detection mode - use tasks/
+        tasks_dir = Path(__file__).parent / "tasks"
+        report = run_all_tasks(
+            tasks_dir=tasks_dir,
+            base_dir=base_dir,
+            modes=modes,
+            task_filter=args.task,
+            verbose=args.verbose,
+        )
     
     # Run evaluations if requested
     if args.evaluate:

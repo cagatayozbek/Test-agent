@@ -4,6 +4,7 @@ from pathlib import Path
 PROMPT_FILES = [
     "planner",
     "analysis",
+    "testwriter",
     "critic",
     "reflection",
     "executor",

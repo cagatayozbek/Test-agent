@@ -120,12 +120,12 @@
 
 ### Düşük Öncelik
 
-#### 3. Prompt Tuning (Kısmen Tamamlandı)
+#### 3. Prompt Tuning ✅
 
 - [x] **Tool signature injection**: Her prompt'a available tools listesi ve signature eklendi.
 - [x] **Example output**: Beklenen output formatı prompt'lara eklendi.
 - [x] **Stop instruction**: "Then STOP" direktifleri güçlendirildi.
-- [ ] **Few-shot examples**: Gerçek örnek tool çağrıları ekleme.
+- [x] **Few-shot examples**: Gerçek örnek tool çağrıları eklendi (executor, planner, analysis, critic, reflection).
 
 #### 4. Observability & Debug
 
@@ -133,11 +133,19 @@
 - [x] **Duration tracking**: Her agent call süresini LogEntry'ye ekle (duration_seconds). ✅
 - [x] **Token counting**: API kullanım takibi. ✅
 
-#### 5. Dokümantasyon
+#### 5. Dokümantasyon ✅
 
 - [x] **README.md**: Kurulum, kullanım, örnek run talimatları. ✅
 - [x] **Architecture diagram**: Agent flow görselleştirmesi (Mermaid). ✅
-- [ ] **API reference**: Tool ve session sınıfları için docstring'ler.
+- [x] **API reference**: Tool ve session sınıfları için kapsamlı docstring'ler eklendi.
+  - tools/**init**.py: run_tests, read_file, read_file_window, list_files, log_event
+  - instrumented_tools.py: ToolCounter, InstrumentedTools
+  - custom_session.py: CustomSession, ConversationHistory, AgentMessage, RunResult, SummaryBuilder
+  - llm_client.py: GeminiClient, LLMResponse
+  - task_loader.py: TaskContext, load_task_context
+  - emitter.py: emit_log_entry
+  - runner.py: iso8601_utc_timestamp, build_log_entry, write_summary
+  - schemas/models.py: SemanticHypothesis, EvaluationResult, CriticResponse, TokenUsage, LogEntry, Summary
 
 ### GitHub ✅
 
@@ -145,11 +153,86 @@
 - [x] **Initial commit**: 45 dosya commit edildi.
 - [x] **Push to GitHub**: https://github.com/cagatayozbek/Test-agent ✅
 
-#### 6. Paper Hazırlığı (Milestone A7)
+---
+
+### 🧪 Test Generation Pipeline (Milestone A8)
+
+#### 8.1 Agent Mimarisi Genişletmesi
+
+- [x] **TestWriter agent eklenmesi**: agents/agent_graph.yaml'a testwriter eklendi ✅
+- [x] **Agentic mode akışı**: planner → analysis → testwriter → critic → reflection → executor ✅
+- [x] **Baseline mode**: Tek testwriter agent (sadece test generation) ✅
+- [x] **prompts/testwriter.txt**: pytest odaklı prompt, net çıktı formatı ✅
+
+#### 8.2 Test Dosyası Üretimi & Yönetimi
+
+- [x] **Generated test path standardizasyonu**: `runs/<task>/<run_id>/generated_tests/` ✅
+- [x] **write_test_file tool**: tools/**init**.py + instrumented_tools.py ✅
+- [x] **Executor desteği**: custom_session.py tool_map + prompts güncellemesi ✅
+- [x] **Test isolation**: attempt parametresi ile ayrı dosya adlandırma ✅
+
+#### 8.3 Bug-Revealing Test Doğrulama Döngüsü
+
+- [x] **TaskContextV2**: task_loader.py'de buggy/fixed desteği ✅
+- [x] **run_test_on_both_versions()**: Test dosyasını iki ortamda çalıştırma ✅
+- [x] **is_bug_revealing logic**: `buggy_failed AND fixed_passed` ✅
+- [x] **Config retry ayarları**: `max_retry_attempts`, `test_timeout_seconds` ✅
+- [x] **Retry mekanizması**: Başarısızsa Reflection → TestWriter → yeniden üretim ✅
+
+#### 8.4 Yeni Metrikler & Summary Genişletmesi
+
+- [x] **TestGenerationResult model**: attempt, test_file, buggy_failed, fixed_passed, is_bug_revealing ✅
+- [x] **TestGenerationSummary model**: tests_generated, attempts_until_success, overfitting_detected, test_results ✅
+- [x] **BRTR hesaplama**: calculate_brtr() metodu ✅
+- [x] **schemas/**init**.py**: Export güncellemesi ✅
+
+#### 8.5 Task Yapısı Güncellemesi
+
+- [x] **evaluation/tasks_v2/ klasörü**: Yeni format task'lar için ayrı dizin ✅
+- [x] **boundary_threshold task**: VIP eşik boundary bug örneği ✅
+- [x] **cache_invalidation task**: State management bug örneği ✅
+- [x] **metadata.json formatı**: bug_description, expected_failure_signal, test_hint ✅
+
+#### 8.6 Evaluation & Karşılaştırma
+
+- [x] **run_all.py güncelleme**: `--test-gen` flag, `discover_tasks_v2()`, `run_test_generation_tasks()` ✅
+- [x] **BRTR hesaplama**: Task bazlı ve mode bazlı BRTR özeti ✅
+- [x] **Validation döngüsü**: `run_test_on_both_versions()` entegrasyonu ✅
+
+#### 8.7 Failure Analysis
+
+- [x] **FailureCategory enum**: success, no_fail, overfit, flaky, wrong_assert, wrong_input, wrong_state ✅
+- [x] **classify_failure()**: Validation sonucundan kategori çıkarımı ✅
+- [x] **analyze_test_code()**: Statik analiz (syntax, import, weak assert) ✅
+- [x] **FailureAnalyzer class**: Record toplama, özet çıkarma, JSON export ✅
+
+#### 8.8 Bug Fixes (1 Ocak 2026) ✅
+
+- [x] **Task directory path bug**: `tasks` → `tasks_v2` dizin düzeltmesi ✅
+- [x] **prompt_loader.py**: "testwriter" eksik prompt dosyası sorunu ✅
+- [x] **task_loader.py**: Docstring syntax hataları (unterminated string) ✅
+- [x] **Baseline mode tool execution**: testwriter output capture eksikliği ✅
+- [x] **Executor-pytest path bug**: Test dosyası lokasyonu düzeltmesi ✅
+  - `_write_test_file_in_run_dir()`: Test dosyasını `buggy/` dizinine de yaz
+  - `_run_tests_in_task_dir()`: Pytest'i `buggy/` dizininde çalıştır
+  - TestWriter tool execution: Otomatik write_test_file çalıştırma
+
+---
+
+### 📄 Paper Hazırlığı (Milestone A9)
+
+#### 9.1 Mevcut Analiz
 
 - [ ] **Threats to validity**: Model bağımlılığı, prompt sensitivity, LLM-as-judge riski.
 - [ ] **Negatif sonuç anlatısı**: "LLM nerede başarısız oldu" analizi.
 - [ ] **DeepAgents failure note**: Paper'da routing substrate evaluation açıklaması.
+
+#### 9.2 Test Generation Ekseni
+
+- [ ] **Problem Definition**: "LLM-based test generation under misleading signals"
+- [ ] **Experimental Setup**: Bug-revealing test tanımı, retry allowed test generation
+- [ ] **Threats genişletme**: Prompt leakage, overfitting testler, pytest nondeterminism
+- [ ] **Key Finding**: Agentic yapıların test generation başarısına etkisi
 
 ---
 
@@ -158,11 +241,63 @@
 1. ~~**tool_call_count = 0**: Executor tool çağrısı soft error verdiğinde sayaç artmıyor.~~ ✅ Düzeltildi
 2. ~~**Agent izolasyonu**: Her agent bağımsız çalışıyor; önceki agent context'i görmüyor.~~ ✅ ConversationHistory ile düzeltildi
 3. ~~**Planner boş args**: Planner "list_files" dese de executor farklı tool çağırabiliyor.~~ ✅ Context passing ile çözüldü
-4. **DeepAgents**: Non-terminating loop - kullanılamaz durumda (docs/deepagents_failure.md).
+4. ~~**DeepAgents**: Non-terminating loop - kullanılamaz durumda.~~ (docs/deepagents_failure.md)
+5. ~~**Executor-pytest path bug**: Test dosyaları bulunamıyordu.~~ ✅ 1 Ocak 2026 düzeltildi
 
 ---
 
-## 📊 Test Sonuçları (1 Ocak 2026 - Context Passing Sonrası)
+## 🎯 Yapılacaklar (Kalan İşler)
+
+### Yüksek Öncelik
+
+#### 1. Daha Fazla Test Task'ı
+
+- [ ] **Yeni task'lar ekle**: En az 3-5 farklı bug türü
+  - [ ] Off-by-one hatası (farklı varyasyon)
+  - [ ] Null/None handling bug
+  - [ ] Race condition benzeri durum
+  - [ ] Exception handling eksikliği
+  - [ ] Type coercion bug
+- [ ] **Zorluk çeşitliliği**: Kolay, orta, zor task'lar
+
+#### 2. Retry Mekanizması Test
+
+- [ ] **Retry senaryoları**: BRTR < 100% olan task'lar ile test
+- [ ] **Retry context kullanımı**: Önceki hata bilgisinin yeni denemeye etkisi
+- [ ] **Max retry analizi**: Kaç deneme yeterli?
+
+### Orta Öncelik
+
+#### 3. İstatistiksel Analiz
+
+- [ ] **Çoklu run**: Her task için 5-10 run (variance analizi)
+- [ ] **Token kullanımı karşılaştırması**: Baseline vs Agentic
+- [ ] **Süre analizi**: Agent başına ortalama süre
+
+#### 4. Overfitting Tespiti
+
+- [ ] **Overfitting test senaryoları**: Sadece buggy'de fail eden testler oluştur
+- [ ] **Overfitting rate hesaplama**: fixed_failed durumlarını say
+
+### Düşük Öncelik (Paper Hazırlığı)
+
+#### 5. Paper Yazımı
+
+- [ ] **Threats to validity**: Model bağımlılığı, prompt sensitivity, LLM-as-judge riski
+- [ ] **Negatif sonuç analizi**: "LLM nerede başarısız oldu"
+- [ ] **Problem Definition**: "LLM-based test generation under misleading signals"
+- [ ] **Key Finding**: Agentic vs baseline karşılaştırması
+
+#### 6. Failure Analysis Genişletme
+
+- [ ] **Başarısız test örnekleri saklama**: Etiketli arşiv
+- [ ] **Pattern analizi**: Hangi bug türlerinde LLM zorlanıyor?
+
+---
+
+## 📊 Test Sonuçları
+
+### Bug Detection (1 Ocak 2026 - Context Passing Sonrası)
 
 | Task                | Baseline   | Agentic     |
 | ------------------- | ---------- | ----------- |
@@ -172,6 +307,16 @@
 | **Ortalama**        | **1.0/10** | **10.0/10** |
 
 **Ana Bulgu:** Context passing sonrası agentic mod %100 bug tespit oranı, baseline %0.
+
+### Test Generation - BRTR (1 Ocak 2026) ✅
+
+| Task               | Baseline BRTR | Agentic BRTR | Avg Attempts |
+| ------------------ | ------------- | ------------ | ------------ |
+| cache_invalidation | 100%          | 100%         | 1.0          |
+| boundary_threshold | 100%          | 100%         | 1.0          |
+| **Ortalama**       | **100%**      | **100%**     | **1.0**      |
+
+**Ana Bulgu:** Her iki modda da %100 BRTR, ilk denemede başarı.
 
 ### Önceki Sonuçlar (31 Aralık 2025)
 
@@ -201,16 +346,23 @@ Test-agent/
 │   ├── evaluator.py             # LLM-based evaluator
 │   ├── run_all.py               # Test runner
 │   ├── full_report.json         # Son test sonuçları
-│   └── tasks/                   # Adversarial task'lar
-│       ├── misleading_coverage/
-│       ├── state_dependent_bug/
-│       └── indirect_cause/
+│   ├── tasks/                   # Adversarial task'lar (v1)
+│   │   ├── misleading_coverage/
+│   │   ├── state_dependent_bug/
+│   │   └── indirect_cause/
+│   └── tasks_v2/                # 🆕 Test generation task'ları
+│       └── <task>/
+│           ├── buggy/source.py
+│           ├── fixed/source.py
+│           └── metadata.json
+├── generated_tests/             # 🆕 Üretilen testler
+│   └── test_generated_<n>.py
 ├── graph_loader.py              # Graph parser
 ├── instrumented_tools.py        # Tool wrapper
 ├── llm_client.py                # Gemini client
 ├── main.py                      # CLI entry
 ├── prompt_loader.py             # Prompt loader
-├── prompts/*.txt                # Agent prompts
+├── prompts/*.txt                # Agent prompts (+ testwriter.txt)
 ├── rapor.md                     # ✅ Evaluation raporu
 ├── requirements.txt             # Dependencies
 ├── run_paths.py                 # Path builder
@@ -228,4 +380,4 @@ Test-agent/
 
 ---
 
-_Son güncelleme: 1 Ocak 2026 (Pydantic schema integration)_
+_Son güncelleme: 1 Ocak 2026 (Bug fixes + BRTR sonuçları eklendi)_

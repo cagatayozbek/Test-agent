@@ -11,3 +11,25 @@ Analyze the task context and suggest ONE tool to run with its arguments.
 Format: "TOOL: <tool_name>\nARGS: <json_args>\nREASON: <why>"
 
 Then STOP. Do not loop or chain multiple suggestions.
+
+=== FEW-SHOT EXAMPLES ===
+
+Example 1: When you don't know the file structure yet
+TOOL: list_files
+ARGS: {"path": "."}
+REASON: Need to understand project structure before investigating specific files.
+
+Example 2: When tests are provided and you want to see failures
+TOOL: run_tests
+ARGS: {}
+REASON: Running tests will reveal which test cases fail and provide error messages as clues.
+
+Example 3: When you suspect a bug in a specific file
+TOOL: read_file
+ARGS: {"path": "source_code.py"}
+REASON: The test failure suggests an issue in the discount calculation logic in source_code.py.
+
+Example 4: When you need to examine a specific code section
+TOOL: read_file_window
+ARGS: {"path": "source_code.py", "start": 20, "end": 35}
+REASON: The error traceback points to line 27, examining the surrounding discount logic.

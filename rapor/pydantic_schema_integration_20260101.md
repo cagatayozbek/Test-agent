@@ -27,7 +27,7 @@ class CriticResponse(BaseModel):
     alternatives: list[str]
     missing_evidence: list[str]
     verdict: Literal["ACCEPT", "REVISE", "REJECT"]
-    
+
     def to_evaluation_result(self) -> "EvaluationResult":
         """Convert to simplified EvaluationResult for summary."""
         # Build comprehensive commentary from all fields
@@ -41,7 +41,7 @@ class CriticResponse(BaseModel):
 ```python
 def generate_json(self, system: str, user: str, response_schema: type | dict | None = None) -> LLMResponse:
     generation_config: dict = {"response_mime_type": "application/json"}
-    
+
     if response_schema is not None:
         # Check if it's a Pydantic model class
         if hasattr(response_schema, "model_json_schema"):
@@ -49,7 +49,7 @@ def generate_json(self, system: str, user: str, response_schema: type | dict | N
             generation_config["response_schema"] = response_schema.model_json_schema()
         else:
             generation_config["response_schema"] = response_schema
-    
+
     json_model = genai.GenerativeModel(
         self._base_model_id,
         generation_config=generation_config
@@ -76,7 +76,7 @@ elif agent_name == "critic":
 
 Pydantic'in `model_validate_json()` metodu kullanılarak validation tek satıra indirildi:
 
-```python
+````python
 def parse_hypothesis_from_json(json_text: str) -> SemanticHypothesis | None:
     sanitized = re.sub(r"```(?:json)?", "", json_text).strip()
     try:
@@ -93,31 +93,36 @@ def parse_evaluation_from_json(json_text: str) -> EvaluationResult | None:
     except Exception as e:
         print(f"⚠️ Failed to parse evaluation JSON: {e}")
         return None
-```
+````
 
 ### 5. Prompt'lar Basitleştirildi
 
 JSON schema artık API seviyesinde enforce edildiğinden, prompt'lardaki detaylı format açıklamaları kaldırıldı:
 
 **Öncesi (analysis.txt):**
-```
+
+````
 You MUST output ONLY valid JSON in this exact schema:
 ```json
 {
   "hypothesis": "...",
   ...
 }
-```
+````
+
 ```
 
 **Sonrası:**
 ```
+
 Your response will be automatically structured into these fields:
+
 - hypothesis: Your main theory about the bug...
 - confidence_level: LOW, MEDIUM, or HIGH...
-...
-Focus on substance, not formatting.
-```
+  ...
+  Focus on substance, not formatting.
+
+````
 
 ### 6. main.py - parsed_evaluation Geçirme
 
@@ -132,7 +137,7 @@ summary = SummaryBuilder(
     parsed_hypothesis=run_result.parsed_hypothesis,
     parsed_evaluation=run_result.parsed_evaluation,  # YENİ
 ).build(timestamp=timestamp)
-```
+````
 
 ---
 
@@ -143,6 +148,7 @@ python3 main.py --task misleading_coverage --run-id schema_test2 --mode agentic
 ```
 
 **Çıktı:**
+
 ```
 📊 Using JSON mode with SemanticHypothesis schema...
 ✅ Parsed hypothesis: The `calculate_discount` function...
@@ -153,6 +159,7 @@ python3 main.py --task misleading_coverage --run-id schema_test2 --mode agentic
 ```
 
 **summary.json içeriği:**
+
 - `hypothesis`: Tüm alanlar dolu (hypothesis, confidence_level, assumptions, evidence, what_might_be_missing, next_question)
 - `evaluation`: behavior, failure_type, commentary (challenges, alternatives, missing_evidence, verdict dahil)
 
@@ -160,13 +167,13 @@ python3 main.py --task misleading_coverage --run-id schema_test2 --mode agentic
 
 ## 📊 Avantajlar
 
-| Özellik | Önceki Durum | Şimdi |
-|---------|--------------|-------|
-| JSON Validation | Prompt-based (unreliable) | API-level enforcement |
-| Schema Değişikliği | Prompt güncelleme gerekli | Pydantic model güncelle |
-| Parse Karmaşıklığı | Manuel field extraction | `model_validate_json()` |
-| Fallback | Manuel default'lar | Pydantic default + graceful degradation |
-| Type Safety | Yok | Pydantic Literal types |
+| Özellik            | Önceki Durum              | Şimdi                                   |
+| ------------------ | ------------------------- | --------------------------------------- |
+| JSON Validation    | Prompt-based (unreliable) | API-level enforcement                   |
+| Schema Değişikliği | Prompt güncelleme gerekli | Pydantic model güncelle                 |
+| Parse Karmaşıklığı | Manuel field extraction   | `model_validate_json()`                 |
+| Fallback           | Manuel default'lar        | Pydantic default + graceful degradation |
+| Type Safety        | Yok                       | Pydantic Literal types                  |
 
 ---
 
