@@ -1,0 +1,12 @@
+{
+    "task_id": "bugsinpy_tqdm_enumerate_start_1",
+    "source_project": "tqdm",
+    "bugsinpy_bug_id": 1,
+    "python_version": "3.6.9",
+    "pytest_cmd": "python3 -m pytest tqdm/tests/tests_contrib.py::test_enumerate",
+    "difficulty": "easy",
+    "bug_type": "boundary_condition",
+    "bug_description": "tenumerate forwarded start to tqdm_class instead of enumerate, so starting index was ignored.",
+    "expected_failure_signal": "Enumeration starts at 0 instead of provided start value.",
+    "test_hint": "Call tenumerate with start != 0 and assert indices begin at the provided start."
+}

@@ -1,0 +1,12 @@
+{
+    "task_id": "bugsinpy_thefuck_fix_file_28",
+    "source_project": "thefuck",
+    "bugsinpy_bug_id": 28,
+    "python_version": "3.7.0",
+    "pytest_cmd": "pytest tests/rules/test_fix_file.py::test_get_new_command_with_settings",
+    "difficulty": "medium",
+    "bug_type": "command_construction",
+    "bug_description": "fix_file rule failed to escape parentheses and ignored column-aware settings, so editor commands were built without column precision.",
+    "expected_failure_signal": "Editor command lacks column when stderr includes column info.",
+    "test_hint": "Simulate stderr with '(line X)' and with ':line:col' to ensure column-aware command is used in fixed version."
+}

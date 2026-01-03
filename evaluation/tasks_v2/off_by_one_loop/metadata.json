@@ -1,0 +1,6 @@
+{
+    "task_name": "off_by_one_loop",
+    "bug_description": "The loop range is calculated incorrectly (len(items) - 1), causing the last item to be skipped during processing.",
+    "expected_failure_signal": "The length of the result list is 1 less than the input list length.",
+    "test_hint": "Create a list with multiple items and assert that the output list has the same length as the input list."
+}

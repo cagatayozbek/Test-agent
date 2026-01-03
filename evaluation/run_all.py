@@ -504,12 +504,14 @@ def main() -> None:
         sys.path.insert(0, str(Path(__file__).parent.parent))
         from evaluator import Evaluator, load_run_data, load_task_metadata
         from llm_client import GeminiClient
+        from config import load_config
         
         api_key = os.environ.get("GOOGLE_API_KEY", "")
         if not api_key:
             print("⚠️  GOOGLE_API_KEY not set, skipping evaluation")
         else:
-            llm = GeminiClient(model_id="gemini-2.5-pro", api_key=api_key)
+            config = load_config(base_dir / "config.yaml")
+            llm = GeminiClient(model_id=config.model_id, api_key=api_key)
             evaluator = Evaluator(llm)
             
             evaluations = []

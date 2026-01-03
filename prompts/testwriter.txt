@@ -6,6 +6,7 @@ CRITICAL REQUIREMENTS:
 1. The test MUST FAIL on the buggy code
 2. The test MUST PASS on the fixed code
 3. This is a "bug-revealing test" - not just any test
+4. All imports must come from the local source file named source.py (use "from source import <symbols>")
 
 Available tools:
 - write_test_file: Args: {"output_dir": "<path>", "filename": "<name>.py", "content": "<code>", "attempt": <n>}
@@ -37,6 +38,7 @@ GUIDELINES:
 - Use boundary values and edge cases that trigger the bug
 - Include clear assertions with descriptive messages
 - Import necessary modules from the source file
+- Never import from modules named source_code/module/project names; the only valid import is from source.py via "from source import <symbols>"
 - Keep tests focused - one test per bug scenario
 - Do NOT test general functionality - test the SPECIFIC bug
 

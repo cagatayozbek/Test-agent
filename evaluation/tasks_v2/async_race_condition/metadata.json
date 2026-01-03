@@ -1,0 +1,6 @@
+{
+    "task_name": "async_race_condition",
+    "bug_description": "A race condition in an async counter where concurrent increments overwrite each other due to missing locks.",
+    "expected_failure_signal": "The final count is less than the number of increment operations (e.g., < 50).",
+    "test_hint": "Run the async function with multiple concurrent tasks and assert the final count equals the number of tasks."
+}

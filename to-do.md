@@ -82,6 +82,17 @@
 
 - [x] **rapor.md**: Detaylı Türkçe markdown rapor (baseline vs agentic karşılaştırması).
 - [x] **evaluation/full_report.json**: Ham JSON sonuçları.
+- [x] **rapor/bugsinpy_pysnooper_unicode1_analiz.md**: BugsinPy PySnooper Unicode bug derinlemesine analizi (2 Ocak 2026).
+
+### BugsinPy Derinlemesine Analizler ✅
+
+- [x] **bugsinpy_pysnooper_unicode_1 analizi**: Baseline başarılı (2 attempt), Agentic başarısız (3 attempt) paradoksu
+  - [x] Platform encoding farkı analizi (macOS UTF-8 vs BugsinPy ASCII/Latin-1)
+  - [x] Test stratejisi karşılaştırması (mock kullanımı, izolasyon)
+  - [x] Over-engineering problemi (63 log vs 9 log, 8.8x token, 8x süre)
+  - [x] Critic'in olumsuz etkisi ("REVISE" ile artan komplekslik)
+  - [x] Test environment ≠ bug environment sorunu
+  - [x] Öğrenilen dersler ve action item'lar
 
 ---
 
@@ -233,6 +244,10 @@
 - [ ] **Experimental Setup**: Bug-revealing test tanımı, retry allowed test generation
 - [ ] **Threats genişletme**: Prompt leakage, overfitting testler, pytest nondeterminism
 - [ ] **Key Finding**: Agentic yapıların test generation başarısına etkisi
+- [x] **BugsinPy case study**: bugsinpy_pysnooper_unicode_1 encoding bug analizi ✅
+  - Platform encoding farkı ve test environment setup önemli
+  - Over-engineering ve critic feedback'in zararlı etkileri
+  - Basitlik vs komplekslik trade-off'u
 
 ---
 
@@ -243,6 +258,14 @@
 3. ~~**Planner boş args**: Planner "list_files" dese de executor farklı tool çağırabiliyor.~~ ✅ Context passing ile çözüldü
 4. ~~**DeepAgents**: Non-terminating loop - kullanılamaz durumda.~~ (docs/deepagents_failure.md)
 5. ~~**Executor-pytest path bug**: Test dosyaları bulunamıyordu.~~ ✅ 1 Ocak 2026 düzeltildi
+6. **Platform-dependent encoding bugs**: 
+   - macOS Python 3.13 varsayılan UTF-8 encoding ile bazı encoding bug'ları tespit edilemiyor
+   - Mock veya `PYTHONIOENCODING` ile zorlanmalı
+   - Test environment ≠ bug environment sorunu
+7. **Agentic over-engineering riski**:
+   - Multi-agent workflow bazı durumlarda gereksiz komplekslik yaratıyor
+   - Critic "REVISE" feedbacki bazen zararlı olabiliyor
+   - Basit baseline yaklaşımı daha başarılı olabiliyor (örn: bugsinpy_pysnooper_unicode_1)
 
 ---
 
@@ -250,15 +273,16 @@
 
 ### Yüksek Öncelik
 
-#### 1. Daha Fazla Test Task'ı
+#### 1. Comprehensive Benchmark ✅
 
-- [ ] **Yeni task'lar ekle**: En az 3-5 farklı bug türü
-  - [ ] Off-by-one hatası (farklı varyasyon)
-  - [ ] Null/None handling bug
-  - [ ] Race condition benzeri durum
-  - [ ] Exception handling eksikliği
-  - [ ] Type coercion bug
-- [ ] **Zorluk çeşitliliği**: Kolay, orta, zor task'lar
+- [x] **12 task × 3 model × 2 mode = 72 run** tamamlandı (2 Ocak 2026)
+  - [x] gemini-2.0-flash: 50% agentic, 66.7% baseline
+  - [x] gemini-2.5-flash: 83.3% her iki mode
+  - [x] gemini-2.5-pro: 91.7% agentic, 83.3% baseline
+- [x] **benchmark_report.md** oluşturuldu ✅
+  - Token, süre, attempt, maliyet analizi
+  - Task bazlı başarı matrisi
+  - Başarısız run detayları
 
 #### 2. Retry Mekanizması Test
 
@@ -270,9 +294,15 @@
 
 #### 3. İstatistiksel Analiz
 
-- [ ] **Çoklu run**: Her task için 5-10 run (variance analizi)
-- [ ] **Token kullanımı karşılaştırması**: Baseline vs Agentic
-- [ ] **Süre analizi**: Agent başına ortalama süre
+- [x] **Token kullanımı karşılaştırması**: Baseline vs Agentic ✅
+  - Agentic: ~6.5-10x daha fazla token
+  - 2.5-flash agentic: ortalama 50K token/task
+  - Baseline: ortalama 5-8K token/task
+- [x] **Süre analizi**: Agent başına ortalama süre ✅
+  - Agentic: 28s-163s (model'e göre)
+  - Baseline: 5s-31s (model'e göre)
+  - 2.5-pro en yavaş ama en başarılı
+- [ ] **Çoklu run**: Her task için 5-10 run (variance analizi) - model nondeterminizm ölçümü için
 
 #### 4. Overfitting Tespiti
 
@@ -287,11 +317,21 @@
 - [ ] **Negatif sonuç analizi**: "LLM nerede başarısız oldu"
 - [ ] **Problem Definition**: "LLM-based test generation under misleading signals"
 - [ ] **Key Finding**: Agentic vs baseline karşılaştırması
+- [x] **BugsinPy case study ekleme**: bugsinpy_pysnooper_unicode_1 analizi paper'a dahil edilebilir ✅
 
 #### 6. Failure Analysis Genişletme
 
 - [ ] **Başarısız test örnekleri saklama**: Etiketli arşiv
 - [ ] **Pattern analizi**: Hangi bug türlerinde LLM zorlanıyor?
+- [x] **Platform encoding analizi**: Test environment ve bug environment farklarının etkisi ✅
+
+#### 7. Agentic Mode İyileştirmeleri (bugsinpy_pysnooper_unicode_1'den Öğrenilenler)
+
+- [ ] **Platform-agnostic test patterns**: Encoding bug'ları için özel template'ler
+- [ ] **Test environment setup awareness**: `PYTHONIOENCODING` gibi env var'ları otomatik ayarla
+- [ ] **Critic feedback calibration**: "Simplicity over complexity" bias eklenmeli
+- [ ] **Mock template library**: Baseline'ın kullandığı mock pattern'lerini agentic'e ekle
+- [ ] **Complexity metrics**: Test karmaşıklığını ölç, eşik değerlerin üzerinde uyar
 
 ---
 
@@ -308,15 +348,29 @@
 
 **Ana Bulgu:** Context passing sonrası agentic mod %100 bug tespit oranı, baseline %0.
 
-### Test Generation - BRTR (1 Ocak 2026) ✅
+### Test Generation - BRTR (2 Ocak 2026) ✅
 
-| Task               | Baseline BRTR | Agentic BRTR | Avg Attempts |
-| ------------------ | ------------- | ------------ | ------------ |
-| cache_invalidation | 100%          | 100%         | 1.0          |
-| boundary_threshold | 100%          | 100%         | 1.0          |
-| **Ortalama**       | **100%**      | **100%**     | **1.0**      |
+**3 Model × 2 Mode × 12 Task = 72 Toplam Run**
 
-**Ana Bulgu:** Her iki modda da %100 BRTR, ilk denemede başarı.
+| Model            | Mode     | Success Rate | Avg Attempts | Avg Tokens | Avg Duration | Total Cost |
+|------------------|----------|--------------|--------------|------------|--------------|------------|
+| gemini-2.5-pro   | agentic  | **91.7%** ✅ | 1.4          | 51.9K      | 162.9s       | $1.82      |
+| gemini-2.5-flash | agentic  | 83.3%        | 1.5          | 50.1K      | 86.6s        | $0.18      |
+| gemini-2.5-pro   | baseline | 83.3%        | 1.3          | 6.1K       | 31.3s        | $0.21      |
+| gemini-2.5-flash | baseline | 83.3%        | 1.4          | 7.7K       | 23.9s        | $0.03      |
+| gemini-2.0-flash | baseline | 66.7%        | 1.8          | 4.4K       | 5.4s         | $0.02      |
+| gemini-2.0-flash | agentic  | 50.0%        | 2.2          | 40.4K      | 28.7s        | $0.18      |
+
+**Ana Bulgu:** 
+- 🏆 **2.5-pro agentic en başarılı** (11/12 task) ama 10x pahalı
+- 💰 **2.5-flash best value** (10/12 task, 8x ucuz)
+- ⚡ **Baseline daha hızlı** (3-8x), agentic daha güçlü analiz
+- 🐛 **Evrensel başarısızlık**: swallowed_exception (tüm modeller 0%)
+
+**İlginç Anomali:**
+- bugsinpy_pysnooper_unicode_1: Baseline başarılı ✅, Agentic (2.5-flash) başarısız ❌
+  - Platform encoding farkı, over-engineering sorunu
+  - [Detaylı analiz](rapor/bugsinpy_pysnooper_unicode1_analiz.md)
 
 ### Önceki Sonuçlar (31 Aralık 2025)
 

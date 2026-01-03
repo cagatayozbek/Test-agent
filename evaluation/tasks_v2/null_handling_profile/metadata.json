@@ -1,0 +1,6 @@
+{
+    "task_name": "null_handling_profile",
+    "bug_description": "The code attempts to access a key on a None object when the nested 'profile' dictionary is missing or None.",
+    "expected_failure_signal": "TypeError: 'NoneType' object is not subscriptable",
+    "test_hint": "Call the function with user_data where 'profile' is explicitly None."
+}

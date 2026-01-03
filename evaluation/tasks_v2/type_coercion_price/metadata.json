@@ -1,0 +1,6 @@
+{
+    "task_name": "type_coercion_price",
+    "bug_description": "Comparing a string price with an integer threshold raises a TypeError in Python 3.",
+    "expected_failure_signal": "TypeError: '>' not supported between instances of 'str' and 'int'",
+    "test_hint": "Pass a list of items where some prices are strings (e.g., '200') and assert the function filters them correctly without crashing."
+}

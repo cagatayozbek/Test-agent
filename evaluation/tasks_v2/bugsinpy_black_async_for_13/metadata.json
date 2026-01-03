@@ -1,0 +1,12 @@
+{
+    "task_id": "bugsinpy_black_async_for_13",
+    "source_project": "black",
+    "bugsinpy_bug_id": 13,
+    "python_version": "3.8.3",
+    "pytest_cmd": "python -m unittest -q tests.test_black.BlackTestCase.test_python37",
+    "difficulty": "medium",
+    "bug_type": "tokenization",
+    "bug_description": "Tokenizer dropped the async keyword when followed by 'for', misclassifying async comprehensions.",
+    "expected_failure_signal": "Async token is missing for 'async for' constructs.",
+    "test_hint": "Feed token streams containing both 'async def' and 'async for'; ensure only the def case sets async_def but both emit ASYNC tokens."
+}

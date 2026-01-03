@@ -1,0 +1,12 @@
+{
+    "task_id": "bugsinpy_pysnooper_unicode_1",
+    "source_project": "PySnooper",
+    "bugsinpy_bug_id": 1,
+    "python_version": "3.8.1",
+    "pytest_cmd": "pytest -q -s tests/test_chinese.py::test_chinese",
+    "difficulty": "easy",
+    "bug_type": "encoding",
+    "bug_description": "Tracer defaulted to ASCII and wrote files without specifying UTF-8, corrupting non-ASCII output.",
+    "expected_failure_signal": "Unicode characters are mangled when writing trace output.",
+    "test_hint": "Feed bytes containing a coding header or UTF-8 characters; expect UTF-8 round-trip without replacement."
+}
