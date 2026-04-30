@@ -24,11 +24,6 @@ env/
 .DS_Store
 Thumbs.db
 
-# Project specific
-runs/
-tool_outputs/
+# Project
+results/
 *.jsonl
-large_tool_results/
-
-# Keep evaluation tasks but ignore run outputs
-!evaluation/tasks/

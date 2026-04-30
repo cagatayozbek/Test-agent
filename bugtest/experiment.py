@@ -1,0 +1,271 @@
+"""Experiment runner: batch execution with statistical output."""
+
+import json
+import math
+import shutil
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Optional
+
+from bugtest.config import Config, load_config
+from bugtest.llm import create_client
+from bugtest.models import (
+    ExperimentSummary,
+    ModeStats,
+    RunRecord,
+    Task,
+    TaskMetadata,
+    TaskStats,
+)
+from bugtest.pipeline import run_pipeline
+from bugtest.validator import Validator
+
+
+# --- Task loading ---
+
+
+def load_tasks(
+    tasks_dir: Path, include: list[str], exclude: list[str]
+) -> list[Task]:
+    """Discover and load all tasks from tasks_v2/ directory."""
+    tasks = []
+    for task_path in sorted(tasks_dir.iterdir()):
+        if not task_path.is_dir():
+            continue
+        task_id = task_path.name
+        if include and task_id not in include:
+            continue
+        if task_id in exclude:
+            continue
+
+        buggy_dir = task_path / "buggy"
+        fixed_dir = task_path / "fixed"
+        if not (buggy_dir / "source.py").exists():
+            continue
+        if not (fixed_dir / "source.py").exists():
+            continue
+
+        metadata_path = task_path / "metadata.json"
+        if metadata_path.exists():
+            raw = json.loads(metadata_path.read_text(encoding="utf-8"))
+            meta = TaskMetadata.model_validate(raw)
+        else:
+            meta = TaskMetadata()
+
+        if not meta.get_id():
+            meta.task_id = task_id
+
+        tasks.append(
+            Task(
+                task_id=task_id,
+                buggy_code=(buggy_dir / "source.py").read_text(encoding="utf-8"),
+                fixed_code=(fixed_dir / "source.py").read_text(encoding="utf-8"),
+                buggy_dir=buggy_dir,
+                fixed_dir=fixed_dir,
+                metadata=meta,
+            )
+        )
+    return tasks
+
+
+# --- Statistics ---
+
+
+def _wilson_ci(successes: int, total: int, z: float = 1.96) -> tuple[float, float]:
+    """Wilson score interval for binomial proportion (95% CI)."""
+    if total == 0:
+        return 0.0, 0.0
+    p_hat = successes / total
+    denom = 1 + z**2 / total
+    center = (p_hat + z**2 / (2 * total)) / denom
+    margin = (
+        z * math.sqrt((p_hat * (1 - p_hat) + z**2 / (4 * total)) / total) / denom
+    )
+    return max(0.0, center - margin), min(1.0, center + margin)
+
+
+def _compute_mode_stats(mode: str, runs: list[RunRecord]) -> ModeStats:
+    total = len(runs)
+    successes = sum(1 for r in runs if r.success)
+    brtr = successes / total if total > 0 else 0.0
+    ci_low, ci_high = _wilson_ci(successes, total)
+
+    successful = [r for r in runs if r.success and r.attempts_to_success is not None]
+    avg_att = (
+        sum(r.attempts_to_success for r in successful) / len(successful)
+        if successful
+        else None
+    )
+
+    return ModeStats(
+        mode=mode,
+        total_runs=total,
+        successful_runs=successes,
+        brtr=round(brtr, 4),
+        brtr_ci_lower=round(ci_low, 4),
+        brtr_ci_upper=round(ci_high, 4),
+        avg_attempts_to_success=round(avg_att, 2) if avg_att else None,
+        avg_prompt_tokens=round(
+            sum(r.prompt_tokens_total for r in runs) / max(total, 1), 1
+        ),
+        avg_completion_tokens=round(
+            sum(r.completion_tokens_total for r in runs) / max(total, 1), 1
+        ),
+        avg_duration_seconds=round(
+            sum(r.duration_seconds for r in runs) / max(total, 1), 2
+        ),
+    )
+
+
+def _compute_task_stats(task_id: str, runs: list[RunRecord]) -> TaskStats:
+    baseline = [r for r in runs if r.mode == "baseline"]
+    agentic = [r for r in runs if r.mode == "agentic"]
+
+    def brtr(rs: list[RunRecord]) -> float:
+        return sum(1 for r in rs if r.success) / len(rs) if rs else 0.0
+
+    def avg_att(rs: list[RunRecord]) -> Optional[float]:
+        s = [r for r in rs if r.success and r.attempts_to_success is not None]
+        return sum(r.attempts_to_success for r in s) / len(s) if s else None
+
+    return TaskStats(
+        task_id=task_id,
+        baseline_brtr=round(brtr(baseline), 4),
+        agentic_brtr=round(brtr(agentic), 4),
+        baseline_avg_attempts=avg_att(baseline),
+        agentic_avg_attempts=avg_att(agentic),
+    )
+
+
+# --- Main experiment ---
+
+
+def _now_iso() -> str:
+    return (
+        datetime.now(timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z")
+    )
+
+
+def run_experiment(config_path: Path) -> ExperimentSummary:
+    """Run complete experiment: all tasks x both modes x N runs."""
+    config = load_config(config_path)
+    api_key = config.get_api_key()
+    llm = create_client(model_id=config.model.model_id, api_key=api_key)
+    validator = Validator(timeout_seconds=config.retry.test_timeout_seconds)
+
+    tasks_dir = Path(config.tasks.dir)
+    tasks = load_tasks(tasks_dir, config.tasks.include, config.tasks.exclude)
+    print(f"Loaded {len(tasks)} tasks from {tasks_dir}")
+
+    # Setup results directory
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    experiment_id = f"{config.experiment.name}_{ts}"
+    results_dir = Path(config.results.dir) / experiment_id
+    runs_dir = results_dir / "runs"
+
+    all_runs: list[RunRecord] = []
+
+    for task in tasks:
+        task_out = runs_dir / task.task_id
+        task_out.mkdir(parents=True, exist_ok=True)
+        print(f"\n--- Task: {task.task_id} ---")
+
+        for run_num in range(1, config.experiment.runs_per_task + 1):
+            # Interleaved: baseline then agentic for each run number
+            for mode in ["baseline", "agentic"]:
+                label = f"[{mode}] run {run_num}/{config.experiment.runs_per_task}"
+                print(f"  {label}...", end=" ", flush=True)
+
+                try:
+                    record = run_pipeline(
+                        task=task,
+                        mode=mode,
+                        run_number=run_num,
+                        llm=llm,
+                        validator=validator,
+                        max_attempts=config.retry.max_attempts,
+                    )
+                except Exception as e:
+                    print(f"ERROR: {e} — skipping")
+                    continue
+
+                filename = f"{mode}_run_{run_num:02d}.json"
+                (task_out / filename).write_text(
+                    record.model_dump_json(indent=2), encoding="utf-8"
+                )
+                all_runs.append(record)
+
+                status = "OK" if record.success else "FAIL"
+                print(f"{status} (attempts: {record.total_attempts}, "
+                      f"{record.duration_seconds:.1f}s)")
+
+    # Compute statistics
+    baseline_runs = [r for r in all_runs if r.mode == "baseline"]
+    agentic_runs = [r for r in all_runs if r.mode == "agentic"]
+
+    mode_stats = [
+        _compute_mode_stats("baseline", baseline_runs),
+        _compute_mode_stats("agentic", agentic_runs),
+    ]
+
+    task_ids = sorted(set(r.task_id for r in all_runs))
+    task_stats = [
+        _compute_task_stats(tid, [r for r in all_runs if r.task_id == tid])
+        for tid in task_ids
+    ]
+
+    summary = ExperimentSummary(
+        experiment_name=config.experiment.name,
+        model_id=config.model.model_id,
+        timestamp=_now_iso(),
+        total_tasks=len(tasks),
+        runs_per_task=config.experiment.runs_per_task,
+        max_attempts=config.retry.max_attempts,
+        mode_stats=mode_stats,
+        task_stats=task_stats,
+        raw_brtr_baseline=[ts.baseline_brtr for ts in task_stats],
+        raw_brtr_agentic=[ts.agentic_brtr for ts in task_stats],
+    )
+
+    # Save summary + config snapshot
+    results_dir.mkdir(parents=True, exist_ok=True)
+    (results_dir / "summary.json").write_text(
+        summary.model_dump_json(indent=2), encoding="utf-8"
+    )
+    shutil.copy(config_path, results_dir / "config.yaml")
+
+    _print_results(summary)
+    return summary
+
+
+def _print_results(summary: ExperimentSummary) -> None:
+    """Print human-readable results table."""
+    print(f"\n{'=' * 65}")
+    print(f"EXPERIMENT: {summary.experiment_name}")
+    print(f"Model: {summary.model_id}")
+    print(f"Tasks: {summary.total_tasks}, Runs/task: {summary.runs_per_task}, "
+          f"Max attempts: {summary.max_attempts}")
+    print(f"{'=' * 65}")
+
+    for ms in summary.mode_stats:
+        print(f"\n  {ms.mode.upper()}:")
+        print(f"    BRTR: {ms.brtr:.1%}  "
+              f"(95% CI: [{ms.brtr_ci_lower:.1%}, {ms.brtr_ci_upper:.1%}])")
+        print(f"    Successful: {ms.successful_runs}/{ms.total_runs}")
+        if ms.avg_attempts_to_success is not None:
+            print(f"    Avg attempts to success: {ms.avg_attempts_to_success:.1f}")
+        print(f"    Avg tokens: {ms.avg_prompt_tokens:.0f} prompt, "
+              f"{ms.avg_completion_tokens:.0f} completion")
+        print(f"    Avg duration: {ms.avg_duration_seconds:.1f}s")
+
+    print(f"\n  {'Task':<35} {'Baseline':>10} {'Agentic':>10} {'Delta':>10}")
+    print(f"  {'-' * 65}")
+    for ts in summary.task_stats:
+        delta = ts.agentic_brtr - ts.baseline_brtr
+        sign = "+" if delta >= 0 else ""
+        print(f"  {ts.task_id:<35} {ts.baseline_brtr:>9.0%} "
+              f"{ts.agentic_brtr:>9.0%} {sign}{delta:>9.0%}")
+    print()

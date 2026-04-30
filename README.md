@@ -1,269 +1,147 @@
-# Test-Agent: Multi-Agent Bug Detection Framework
+# BugTest: Does Code Analysis Improve LLM Test Generation?
 
-LLM tabanlı çok-ajanlı bir hata tespit sistemi. Baseline (tek LLM) ve Agentic (çok-ajanlı pipeline) modlarını karşılaştırarak LLM'lerin yazılım hatalarını bulma yeteneklerini değerlendirir.
+An experimental framework for measuring whether a structured code analysis step
+improves an LLM's ability to generate bug-revealing tests.
 
-## 🎯 Proje Amacı
+## Research Question
 
-Bu framework, adversarial test senaryolarında LLM'lerin hata tespit performansını ölçer:
+> Does adding a structured code analysis step before test generation improve
+> the LLM's Bug-Revealing Test Rate (BRTR)?
 
-- **Baseline**: Tek bir LLM executor ile doğrudan tool çağrısı
-- **Agentic**: 5 ajanlı pipeline (Planner → Analysis → Critic → Reflection → Executor)
-
-## 📊 Test Sonuçları
-
-| Task                | Baseline | Agentic  |
-| ------------------- | -------- | -------- |
-| misleading_coverage | 1/10 ❌  | 10/10 ✅ |
-| state_dependent_bug | 1/10 ❌  | 10/10 ✅ |
-| indirect_cause      | 1/10 ❌  | 10/10 ✅ |
-| **Ortalama**        | **10%**  | **100%** |
-
-## 🏗️ Mimari
+## Experimental Design
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌─────────┐     ┌────────────┐     ┌──────────┐
-│   Planner   │ ──▶ │   Analysis   │ ──▶ │  Critic │ ──▶ │ Reflection │ ──▶ │ Executor │
-└─────────────┘     └──────────────┘     └─────────┘     └────────────┘     └──────────┘
-       │                   │                  │                 │                 │
-       └───────────────────┴──────────────────┴─────────────────┴─────────────────┘
-                                    Context Passing
+Baseline:  Task --> TestWriter --> Validate (retry x3)
+Agentic:   Task --> Analyzer --> TestWriter --> Validate (retry x3)
 ```
 
-### Mermaid Diagram
+**Fair comparison**: Both modes use the **same** TestWriter prompt, **same**
+retry budget, and **same** deterministic validator. The only variable is whether
+the TestWriter receives a structured code analysis as additional context.
 
-```mermaid
-flowchart TB
-    subgraph Input["📥 Input"]
-        TC[Task Context<br/>source_code.py<br/>test_code.py<br/>metadata.json]
-    end
+### How Validation Works
 
-    subgraph Agentic["🤖 Agentic Pipeline"]
-        direction TB
-        P[🎯 Planner<br/><i>Tool seçimi</i>]
-        A[🔍 Analysis<br/><i>Hipotez oluştur</i>]
-        CR[⚖️ Critic<br/><i>Sorgula & değerlendir</i>]
-        R[💭 Reflection<br/><i>Sentez & karar</i>]
-        E[⚡ Executor<br/><i>Tool çalıştır</i>]
+A test is **bug-revealing** if and only if:
+- It **FAILS** on the buggy code (exposes the bug)
+- It **PASSES** on the fixed code (confirms the fix)
 
-        P --> A
-        A --> CR
-        CR --> R
-        R --> E
-        E -.->|continue=true| P
-    end
+Validation is purely deterministic (pytest + return code). No LLM judgment.
 
-    subgraph Tools["🔧 Tools"]
-        T1[run_tests]
-        T2[read_file]
-        T3[list_files]
-        T4[log_event]
-    end
-
-    subgraph Output["📤 Output"]
-        LOG[raw_logs.jsonl<br/><i>duration, tokens</i>]
-        SUM[summary.json<br/><i>hypothesis, evaluation</i>]
-    end
-
-    TC --> P
-    E --> T1 & T2 & T3 & T4
-    T1 & T2 & T3 & T4 --> LOG
-    E --> SUM
-
-    style P fill:#e1f5fe
-    style A fill:#fff3e0
-    style CR fill:#fce4ec
-    style R fill:#f3e5f5
-    style E fill:#e8f5e9
-```
-
-### Baseline vs Agentic
-
-```mermaid
-flowchart LR
-    subgraph Baseline["Baseline Mode"]
-        B_TC[Task] --> B_E[Executor] --> B_OUT[Output]
-    end
-
-    subgraph Agentic["Agentic Mode"]
-        A_TC[Task] --> A_P[Planner] --> A_A[Analysis] --> A_C[Critic] --> A_R[Reflection] --> A_E[Executor] --> A_OUT[Output]
-        A_E -.->|loop| A_P
-    end
-
-    style B_E fill:#ffcdd2
-    style A_P fill:#e1f5fe
-    style A_A fill:#fff3e0
-    style A_C fill:#fce4ec
-    style A_R fill:#f3e5f5
-    style A_E fill:#e8f5e9
-```
-
-### Agent Rolleri
-
-| Agent          | Görev                                                  |
-| -------------- | ------------------------------------------------------ |
-| **Planner**    | Sonraki adımı planla, hangi tool çağrılacağını belirle |
-| **Analysis**   | Hipotez oluştur, kanıtları değerlendir (JSON mode)     |
-| **Critic**     | Hipotezi sorgula, alternatifler sun                    |
-| **Reflection** | Tartışmayı sentezle, devam/dur kararı ver              |
-| **Executor**   | Tool'u çalıştır, sonuçları raporla                     |
-
-## 📁 Dosya Yapısı
+## Architecture
 
 ```
-Test-agent/
-├── main.py                  # CLI entry point
-├── config.yaml              # Model konfigürasyonu
-├── custom_session.py        # Ana orchestrator
-├── llm_client.py            # Gemini API client
-├── agents/
-│   └── agent_graph.yaml     # Agent wiring tanımları
-├── prompts/
-│   ├── planner.txt
-│   ├── analysis.txt
-│   ├── critic.txt
-│   ├── reflection.txt
-│   └── executor.txt
-├── evaluation/
-│   ├── run_all.py           # Toplu test runner
-│   ├── evaluator.py         # LLM-based değerlendirme
-│   └── tasks/               # Adversarial test senaryoları
-│       ├── misleading_coverage/
-│       ├── state_dependent_bug/
-│       └── indirect_cause/
-├── schemas/                 # Pydantic modelleri
-├── tools/                   # Blind tool implementasyonları
-└── runs/                    # Test çıktıları
+bugtest/
+  config.py          # Experiment configuration
+  llm.py             # Gemini client (google.genai SDK, system_instruction)
+  models.py          # All Pydantic data models
+  agents/
+    protocol.py      # Agent base class
+    analyzer.py      # Code analysis agent (produces CodeAnalysis)
+    test_writer.py   # Test generation agent (produces pytest code)
+  validator.py       # Pytest-based validation (deterministic, no LLM)
+  pipeline.py        # Pipeline orchestrator with retry logic
+  experiment.py      # Batch runner with statistical output
+  __main__.py        # CLI entry point
+
+evaluation/
+  tasks_v2/          # 12 evaluation tasks
+    <task_id>/
+      buggy/source.py
+      fixed/source.py
+      metadata.json
 ```
 
-## 🚀 Kurulum
+### Agents
 
-### 1. Bağımlılıkları yükle
+| Agent | Role | Output |
+|---|---|---|
+| **Analyzer** | Reads buggy code, identifies the bug | Structured `CodeAnalysis` JSON |
+| **TestWriter** | Writes pytest test targeting the bug | Python test code |
+
+### Key Design Decisions
+
+1. **Gemini SDK**: Uses `system_instruction` properly (not string concatenation)
+2. **Fair baseline**: Same retry budget, same prompt, same validator
+3. **Deterministic validation**: pytest return codes, no LLM-as-judge
+4. **Interleaved execution**: baseline/agentic runs alternate to control for temporal bias
+5. **Statistical rigor**: Wilson score 95% confidence intervals for BRTR
+
+## Setup
 
 ```bash
-pip install -r requirements.txt
+pip install google-genai pydantic pyyaml
 ```
 
-### 2. API anahtarını ayarla
+Set your API key:
+```bash
+export GOOGLE_API_KEY=your_key_here
+```
 
-`.env` dosyası oluştur:
+## Usage
+
+### Quick Test (1 run per task)
+
+Edit `bugtest_config.yaml`:
+```yaml
+experiment:
+  runs_per_task: 1
+tasks:
+  include: ["boundary_threshold"]
+```
 
 ```bash
-GOOGLE_API_KEY=your_api_key_here
+python -m bugtest bugtest_config.yaml
 ```
 
-### 3. Environment'ı yükle
+### Full Experiment
 
 ```bash
-source .env
-# veya
-set -a && source .env && set +a
+python -m bugtest bugtest_config.yaml
 ```
 
-## 💻 Kullanım
+Results are saved to `results/<experiment_id>/`:
+- `summary.json` — Aggregated statistics with BRTR and confidence intervals
+- `runs/<task_id>/` — Individual run records with test code and validation output
+- `config.yaml` — Snapshot of experiment configuration
 
-### Tek Task Çalıştırma
+## Evaluation Tasks
 
-```bash
-# Agentic mode
-python3 main.py --task misleading_coverage --run-id test1 --mode agentic
+12 tasks spanning different bug categories:
 
-# Baseline mode
-python3 main.py --task misleading_coverage --run-id test1 --mode baseline
-```
+| Category | Tasks |
+|---|---|
+| Boundary/Logic | boundary_threshold, off_by_one_loop |
+| Concurrency | async_race_condition |
+| State Management | cache_invalidation |
+| Error Handling | swallowed_exception |
+| Type Safety | type_coercion_price, null_handling_profile |
+| Real-world (BugsInPy) | black, pysnooper, thefuck (x2), tqdm |
 
-### Tüm Task'ları Çalıştırma
+## Metrics
 
-```bash
-# Tüm task'ları her iki modda çalıştır
-python3 evaluation/run_all.py --mode both
+- **BRTR** (Bug-Revealing Test Rate): Proportion of runs producing a bug-revealing test
+- **Attempts-to-success**: Average retries needed (lower = better)
+- **Token cost**: Prompt + completion tokens per run per mode
+- **Wilson score 95% CI**: Proper confidence intervals for small sample sizes
 
-# Sadece agentic
-python3 evaluation/run_all.py --mode agentic
+## Configuration
 
-# LLM değerlendirmesi ile
-python3 evaluation/run_all.py --mode both --evaluate
-```
-
-### Çıktılar
-
-Her run şu dosyaları üretir:
-
-- `runs/<task>/<run_id>/raw_logs.jsonl` - Detaylı JSONL logları
-- `runs/<task>/<run_id>/summary.json` - Özet ve hipotez
-
-## 🧪 Adversarial Test Senaryoları
-
-### 1. Misleading Coverage
-
-%100 test coverage ama VIP+quantity kombinasyonu test edilmemiş. Overwrite bug gizli kalıyor.
-
-### 2. State Dependent Bug
-
-`logout()` sonrası state sıfırlanmıyor. Stale data hatası.
-
-### 3. Indirect Cause
-
-`Config.timeout_ms=0` kök sebep, hata üst katmanda görünüyor.
-
-## 📈 Log Formatı
-
-Her log entry şu alanları içerir:
-
-```json
-{
-  "timestamp": "2026-01-01T13:47:26Z",
-  "agent": "planner",
-  "role": "assistant",
-  "content": "TOOL: run_tests...",
-  "duration_seconds": 9.497,
-  "token_usage": {
-    "prompt_tokens": 969,
-    "completion_tokens": 75,
-    "total_tokens": 1963
-  }
-}
-```
-
-## 🔧 Konfigürasyon
-
-### config.yaml
+See `bugtest_config.yaml` for all options:
 
 ```yaml
-model_id: gemini-2.5-pro
-max_turns: 64
-timeout_seconds: 900
+experiment:
+  name: "analysis_vs_direct"
+  runs_per_task: 10
+
+model:
+  model_id: "gemini-2.5-flash"
+  temperature: 1.0
+
+retry:
+  max_attempts: 3
+  test_timeout_seconds: 30
 ```
 
-### agent_graph.yaml
-
-```yaml
-modes:
-  baseline:
-    agents: [executor]
-  agentic:
-    agents: [planner, analysis, critic, reflection, executor]
-```
-
-## 🛠️ Available Tools
-
-| Tool               | Açıklama          | Args                                                   |
-| ------------------ | ----------------- | ------------------------------------------------------ |
-| `run_tests`        | pytest çalıştır   | `{}`                                                   |
-| `read_file`        | Dosya oku         | `{"path": "<filepath>"}`                               |
-| `read_file_window` | Satır aralığı oku | `{"path": "<filepath>", "start": <int>, "end": <int>}` |
-| `list_files`       | Dizin listele     | `{"path": "<dirpath>"}`                                |
-| `log_event`        | Gözlem logla      | `{"message": "<text>"}`                                |
-
-## 📝 Notlar
-
-- **DeepAgents**: Non-terminating loop sorunu nedeniyle kullanılmıyor. Detaylar: `docs/deepagents_failure.md`
-- **JSON Mode**: Analysis agent yapılandırılmış output için Gemini JSON mode kullanıyor
-- **Context Passing**: Agent'lar arası bilgi aktarımı `ConversationHistory` class ile sağlanıyor
-
-## 📄 Lisans
+## License
 
 MIT
-
----
-
-_Son güncelleme: 1 Ocak 2026_
