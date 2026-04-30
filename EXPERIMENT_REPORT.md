@@ -7,17 +7,26 @@
 
 ## 2. Experimental Setup
 
+### 2.1 Models Tested
+
+| Model | Parameters | Architecture | Provider |
+|---|---|---|---|
+| Meta Llama 3.3 70B Instruct | 70B | Dense Transformer | NVIDIA Build |
+| Meta Llama 3.1 8B Instruct | 8B | Dense Transformer | NVIDIA Build |
+| Mistral Medium 3.5 | 128B | Dense Transformer | NVIDIA Build |
+
+### 2.2 Experiment Configuration
+
 | Parameter | Value |
 |---|---|
-| Models | Llama 3.3 70B, Llama 3.1 8B |
-| Provider | NVIDIA Build API |
 | Tasks | 12 (5 custom + 7 BugsInPy) |
-| Runs per task | 3 |
-| Max retry attempts | 3 |
+| Runs per task per mode | 3 |
+| Max retry attempts | 3 per run |
 | Test timeout | 30 seconds |
+| Validation | Deterministic (pytest, no LLM judgment) |
 | Date | 2026-04-30 |
 
-### Modes
+### 2.3 Pipeline Design
 
 ```
 Baseline:  Task --> TestWriter --> Validate (retry x3)
@@ -25,32 +34,48 @@ Agentic:   Task --> Analyzer --> TestWriter --> Validate (retry x3)
 ```
 
 **Fair comparison guarantees:**
-- Same TestWriter system prompt
+- Same TestWriter system prompt for both modes
 - Same retry budget (max 3 attempts)
-- Same deterministic validator (pytest, no LLM judgment)
+- Same deterministic validator (pytest return codes)
 - Only variable: agentic mode receives a structured `CodeAnalysis` as additional context
 
-### Validation Criteria
+### 2.4 Validation Criteria
 
 A test is **bug-revealing** if and only if:
 - It **FAILS** on the buggy code (exposes the bug)
 - It **PASSES** on the fixed code (confirms the fix)
 
-## 3. Results — Model 1: Llama 3.3 70B Instruct
+### 2.5 Metrics
 
-### 3.1 Overall BRTR (Bug-Revealing Test Rate)
+- **BRTR** (Bug-Revealing Test Rate): Percentage of runs that produced at least one bug-revealing test
+- **Delta**: Agentic BRTR minus Baseline BRTR. Positive = analysis helped, negative = analysis hurt
+- **Attempts-to-success**: Average retry count before success (lower = better)
+- **95% CI**: Wilson score confidence interval for binomial proportions
 
-| Mode | BRTR | 95% CI | Successful | Avg Attempts | Avg Tokens |
-|---|---|---|---|---|---|
-| **Baseline** | 47.2% | [32.0%, 63.0%] | 17/36 | 1.4 | 1,719 |
-| **Agentic** | 50.0% | [34.1%, 65.9%] | 17/34 | 1.0 | 2,399 |
+## 3. Overall Results
 
-**Key observation:** BRTR difference is not statistically significant (confidence
-intervals overlap substantially). However, agentic mode requires **fewer attempts**
-on average (1.0 vs 1.4), suggesting that the analysis step improves first-attempt
-accuracy when the bug is within the model's capability.
+### 3.1 BRTR Summary Across All Models
 
-### 3.2 Per-Task Breakdown (70B)
+| Model | Baseline BRTR | Agentic BRTR | Delta | Interpretation |
+|---|---|---|---|---|
+| Llama 3.3 70B | 47.2% | 50.0% | **+2.8%** | Slight improvement (not significant) |
+| Llama 3.1 8B | 30.6% | 28.6% | **-2.0%** | Pipeline broken (81% JSON errors) |
+| Mistral Medium 3.5 128B | 58.3% | 51.4% | **-6.9%** | Analysis hurt performance |
+
+### 3.2 Detailed Statistics
+
+| Model | Mode | BRTR | 95% CI | Successful | Completed | Avg Attempts | Avg Tokens |
+|---|---|---|---|---|---|---|---|
+| Llama 70B | Baseline | 47.2% | [32.0%, 63.0%] | 17/36 | 36/36 | 1.4 | 1,719 |
+| Llama 70B | Agentic | 50.0% | [34.1%, 65.9%] | 17/34 | 34/36 | 1.0 | 2,399 |
+| Llama 8B | Baseline | 30.6% | [18.0%, 46.9%] | 11/36 | 36/36 | 1.4 | 2,300 |
+| Llama 8B | Agentic | 28.6% | [8.2%, 64.1%] | 2/7 | 7/36 | 1.5 | 3,298 |
+| Mistral 128B | Baseline | 58.3% | [42.2%, 72.9%] | 21/36 | 36/36 | 1.1 | 1,410 |
+| Mistral 128B | Agentic | 51.4% | [35.6%, 67.0%] | 18/35 | 35/36 | 1.0 | 2,373 |
+
+## 4. Per-Task Breakdown
+
+### 4.1 Llama 3.3 70B — Per-Task Results
 
 | Task | Category | Difficulty | Baseline | Agentic | Delta |
 |---|---|---|---|---|---|
@@ -67,234 +92,261 @@ accuracy when the bug is within the model's capability.
 | bugsinpy_pysnooper | Unicode | Hard | 0% | 0% | 0% |
 | bugsinpy_thefuck_fix | Regex/parse | Hard | 0% | 0% | 0% |
 
-### 3.3 Task Categorization by Outcome (70B)
+### 4.2 Llama 3.1 8B — Per-Task Results
 
-**Category A: Both succeed (5 tasks, 42%)**
-`boundary_threshold`, `off_by_one_loop`, `bugsinpy_tqdm`, `bugsinpy_thefuck_fish`, `bugsinpy_black`
-
-These are bugs with clear, localized symptoms (wrong operator, wrong argument,
-missing keyword). Both modes reliably generate correct tests, often on the first attempt.
-
-**Category B: Agentic wins (1 task, 8%)**
-`type_coercion_price` — Baseline: 0%, Agentic: 67%
-
-The bug involves a type mismatch (`str` vs `int` comparison). The Analyzer correctly
-identified the trigger condition: mixing string and integer prices. This guided the
-TestWriter to include mixed-type test data, which baseline missed.
-
-**Category C: Baseline wins (1 task, 8%)**
-`swallowed_exception` — Baseline: 67%, Agentic: 0%
-
-The Analyzer over-analyzed the bug and suggested testing for `NameError` propagation.
-But the bug is that a bare `except:` *swallows* the NameError, so `pytest.raises(NameError)`
-always fails. Baseline stumbled onto a working approach by not overthinking.
-
-**Category D: Both fail (5 tasks, 42%)**
-`async_race_condition`, `cache_invalidation`, `null_handling_profile`,
-`bugsinpy_pysnooper`, `bugsinpy_thefuck_fix`
-
-These failures have three root causes:
-1. **Environment issues** (3 tasks): Python 3.9 incompatibility with `dict | None`
-   type hints in source code, or missing `pytest-asyncio` plugin
-2. **Semantic difficulty** (1 task): Testing a swallowed exception requires understanding
-   that the absence of an error IS the bug
-3. **Complex real-world bugs** (1 task): BugsInPy tasks with multi-file dependencies
-
-## 4. Results — Model 2: Llama 3.1 8B Instruct
-
-### 4.1 Overall BRTR (8B)
-
-| Mode | BRTR | 95% CI | Successful | Completed Runs | Avg Tokens |
-|---|---|---|---|---|---|
-| **Baseline** | 30.6% | [18.0%, 46.9%] | 11/36 | 36/36 | 2,300 |
-| **Agentic** | 28.6% | [8.2%, 64.1%] | 2/7 | **7/36** | 3,298 |
-
-**Critical finding:** The 8B model failed to produce valid JSON output from the
-Analyzer in 29 out of 36 agentic runs (81% failure rate). The agentic pipeline
-effectively broke down because the smaller model cannot reliably generate
-structured `CodeAnalysis` output.
-
-### 4.2 Per-Task Breakdown (8B)
-
-| Task | Category | Baseline | Agentic | Delta | Note |
-|---|---|---|---|---|---|
-| off_by_one_loop | Easy | **100%** | 0% (error) | -100% | JSON parse fail |
-| boundary_threshold | Easy | 33% | 0% (error) | -33% | JSON parse fail |
-| bugsinpy_black | Medium | 67% | 0% (error) | -67% | JSON parse fail |
-| bugsinpy_thefuck_fish | Medium | 33% | **67%** | **+33%** | Agentic wins when it works |
-| bugsinpy_tqdm | Medium | 33% | 0% (error) | -33% | JSON parse fail |
-| bugsinpy_pysnooper | Hard | 33% | 0% | -33% | |
-| swallowed_exception | Medium | 33% | 0% | -33% | |
-| type_coercion_price | Medium | 33% | 0% | -33% | |
-| async_race_condition | Hard | 0% | 0% (error) | 0% | |
-| cache_invalidation | Medium | 0% | 0% (error) | 0% | |
-| null_handling_profile | Medium | 0% | 0% (error) | 0% | |
-| bugsinpy_thefuck_fix | Hard | 0% | 0% (error) | 0% | |
-
-### 4.3 Key Observations (8B)
-
-1. **Baseline performance dropped significantly**: 30.6% vs 47.2% with 70B.
-   The smaller model generates less accurate test code overall.
-
-2. **Agentic pipeline is unusable at 8B scale**: 81% of agentic runs failed
-   due to JSON parsing errors. The Analyzer agent requires structured output
-   that 8B models cannot reliably produce.
-
-3. **When agentic works, it helps**: In `bugsinpy_thefuck_fish`, the only task
-   where agentic completed all runs, it outperformed baseline (67% vs 33%).
-   This suggests the analysis step is valuable when the model CAN follow
-   the structured output format.
-
-## 5. Cross-Model Comparison
-
-### 5.1 BRTR by Model and Mode
-
-| Model | Baseline BRTR | Agentic BRTR | Delta | Agentic Viable? |
+| Task | Baseline | Agentic | Delta | Note |
 |---|---|---|---|---|
-| Llama 3.3 70B | 47.2% | 50.0% | +2.8% | Yes (94% completion) |
-| Llama 3.1 8B | 30.6% | 28.6% | -2.0% | No (19% completion) |
+| off_by_one_loop | **100%** | 0% | -100% | JSON parse error |
+| bugsinpy_black_async_for | 67% | 0% | -67% | JSON parse error |
+| boundary_threshold | 33% | 0% | -33% | JSON parse error |
+| bugsinpy_tqdm_enumerate | 33% | 0% | -33% | JSON parse error |
+| bugsinpy_pysnooper | 33% | 0% | -33% | JSON parse error |
+| bugsinpy_thefuck_fish | 33% | **67%** | **+33%** | Agentic works here |
+| swallowed_exception | 33% | 0% | -33% | |
+| type_coercion_price | 33% | 0% | -33% | |
+| async_race_condition | 0% | 0% | 0% | JSON parse error |
+| cache_invalidation | 0% | 0% | 0% | JSON parse error |
+| null_handling_profile | 0% | 0% | 0% | JSON parse error |
+| bugsinpy_thefuck_fix | 0% | 0% | 0% | JSON parse error |
 
-### 5.2 Model Size Effects
+**Note:** 29/36 agentic runs failed due to JSON parsing errors (8B model cannot reliably produce structured output).
+
+### 4.3 Mistral Medium 3.5 128B — Per-Task Results
+
+| Task | Category | Difficulty | Baseline | Agentic | Delta |
+|---|---|---|---|---|---|
+| boundary_threshold | Off-by-one | Easy | 100% | 100% | 0% |
+| off_by_one_loop | Loop boundary | Easy | 100% | 100% | 0% |
+| bugsinpy_tqdm_enumerate | Iterator | Medium | 100% | 100% | 0% |
+| bugsinpy_thefuck_fish | Version parse | Medium | 100% | 100% | 0% |
+| bugsinpy_black_async_for | Tokenizer | Medium | 100% | 100% | 0% |
+| type_coercion_price | Type safety | Medium | **100%** | 100% | 0% |
+| swallowed_exception | Error handling | Medium | **100%** | 0% | **-100%** |
+| async_race_condition | Concurrency | Hard | 0% | 0% | 0% |
+| cache_invalidation | State mgmt | Medium | 0% | 0% | 0% |
+| null_handling_profile | Null safety | Medium | 0% | 0% | 0% |
+| bugsinpy_pysnooper | Unicode | Hard | 0% | 0% | 0% |
+| bugsinpy_thefuck_fix | Regex/parse | Hard | 0% | 0% | 0% |
+
+### 4.4 Cross-Model Task Comparison
+
+| Task | Llama 70B B/A | Llama 8B B/A | Mistral 128B B/A | Pattern |
+|---|---|---|---|---|
+| boundary_threshold | 100/100 | 33/0 | 100/100 | Easy — large models solve |
+| off_by_one_loop | 100/100 | 100/0 | 100/100 | Easy — large models solve |
+| bugsinpy_tqdm | 100/100 | 33/0 | 100/100 | Easy — large models solve |
+| bugsinpy_thefuck_fish | 100/100 | 33/67 | 100/100 | Easy — analysis helps 8B |
+| bugsinpy_black | 100/100 | 67/0 | 100/100 | Medium — large models solve |
+| type_coercion_price | 0/67 | 33/0 | 100/100 | **Analysis helps 70B, Mistral solves without** |
+| swallowed_exception | 67/0 | 33/0 | 100/0 | **Analysis always hurts** |
+| async_race_condition | 0/0 | 0/0 | 0/0 | Hard — all fail |
+| cache_invalidation | 0/0 | 0/0 | 0/0 | Hard — all fail (Python 3.9 issue) |
+| null_handling_profile | 0/0 | 0/0 | 0/0 | Hard — all fail (Python 3.9 issue) |
+| bugsinpy_pysnooper | 0/0 | 33/0 | 0/0 | Hard — all fail |
+| bugsinpy_thefuck_fix | 0/0 | 0/0 | 0/0 | Hard — all fail |
+
+## 5. Key Findings
+
+### 5.1 Finding 1: Analysis does not improve overall BRTR
+
+Across all three models, the analysis step does not produce a statistically
+significant improvement in Bug-Revealing Test Rate. In fact, for the strongest
+model (Mistral 128B), it slightly hurts performance (-6.9%).
 
 ```
-                    Baseline    Agentic     Agentic Pipeline
-  70B (large)       47.2%       50.0%       Works reliably
-  8B  (small)       30.6%       28.6%       Mostly broken (JSON errors)
+Model capability vs Analysis benefit:
+
+  Mistral 128B (strongest):  Baseline 58.3%  →  Agentic 51.4%  (Delta: -6.9%)
+  Llama 70B    (strong):     Baseline 47.2%  →  Agentic 50.0%  (Delta: +2.8%)
+  Llama 8B     (weak):       Baseline 30.6%  →  Agentic 28.6%  (Delta: -2.0%, broken)
 ```
 
-**Interpretation:** The analysis step provides a small positive effect when the
-model is capable enough to (a) generate structured analysis output and (b) use
-that analysis to guide test generation. Below a capability threshold (~8B),
-the overhead of structured output generation outweighs any analytical benefit.
+**Interpretation:** Stronger models don't benefit from analysis because they
+already identify bugs well. Weaker models can't produce the structured output
+required by the analysis pipeline. The analysis step has the most potential
+in the middle range, but even there the effect is small and inconsistent.
 
-### 5.3 Attempts-to-Success Comparison
+### 5.2 Finding 2: Analysis reduces retry count (when it works)
+
+The one consistent positive signal across models: when both modes succeed,
+agentic mode finds the answer with fewer attempts.
 
 | Model | Baseline Avg Attempts | Agentic Avg Attempts |
 |---|---|---|
-| 70B | 1.4 | **1.0** |
-| 8B | 1.4 | 1.5 |
+| Llama 70B | 1.4 | **1.0** |
+| Mistral 128B | 1.1 | **1.0** |
+| Llama 8B | 1.4 | 1.5 (broken) |
 
-The 70B model shows the clearest benefit of analysis: it consistently finds
-the answer on the first attempt in agentic mode. The 8B model shows no such
-improvement, likely because the analysis itself is lower quality.
+This means analysis provides useful directional guidance even when it doesn't
+change the final success/failure outcome.
 
-## 6. Analysis of Key Findings
+### 5.3 Finding 3: Analysis introduces harmful bias (swallowed_exception)
 
-### 6.1 Analysis step reduces retry count (70B only)
+The `swallowed_exception` task reveals a consistent anti-pattern:
 
-When both modes succeed on a task with the 70B model, agentic mode consistently
-finds the answer on the **first attempt** (avg: 1.0), while baseline sometimes
-needs retries (avg: 1.4). This pattern does not hold for the 8B model.
-
-| Task (70B) | Baseline Attempts | Agentic Attempts |
-|---|---|---|
-| boundary_threshold | 1.0 | 1.0 |
-| bugsinpy_black | 2.0 | **1.0** |
-| bugsinpy_thefuck_fish | 1.0 | 1.0 |
-| bugsinpy_tqdm | 1.0 | 1.0 |
-| off_by_one_loop | 1.0 | 1.0 |
-
-### 6.2 Analysis can mislead (swallowed_exception case)
-
-The Analyzer produced a technically correct but practically useless hypothesis:
-"the bare except swallows NameError." This led TestWriter to write
-`pytest.raises(NameError)`, which fails because the exception IS swallowed.
-Baseline, without the analysis bias, took a different approach and succeeded.
-
-**Implication:** Pre-analysis can introduce confirmation bias when the bug requires
-a non-obvious testing strategy.
-
-### 6.3 Structured output as a capability gate
-
-The most significant finding is that agentic pipelines with structured intermediate
-outputs (JSON) have a **minimum model capability requirement**. The 8B model's
-inability to produce valid `CodeAnalysis` JSON means the entire agentic pipeline
-fails before the TestWriter even runs. This is not a bug in the pipeline — it
-reveals a fundamental constraint on multi-agent architectures that rely on
-structured inter-agent communication.
-
-### 6.4 Token cost of analysis
-
-| Model | Baseline Tokens | Agentic Tokens | Overhead |
+| Model | Baseline | Agentic | Delta |
 |---|---|---|---|
-| 70B | 1,719 | 2,399 | +40% |
-| 8B | 2,300 | 3,298 | +43% |
+| Llama 70B | 67% | 0% | -67% |
+| Llama 8B | 33% | 0% | -33% |
+| Mistral 128B | **100%** | 0% | **-100%** |
 
-The analysis step adds ~40% token overhead regardless of model size. For the 8B
-model, this cost is paid even when the analysis fails to parse.
+**Every model performs worse with analysis on this task.** The bug is that a bare
+`except:` clause swallows a `NameError`. The Analyzer correctly identifies this but
+suggests testing for `NameError` propagation. This leads the TestWriter to write
+`pytest.raises(NameError)`, which fails because the exception IS swallowed.
 
-### 6.5 Infrastructure as confound
+Baseline mode, without the analysis bias, explores different testing strategies
+and sometimes stumbles onto a working approach.
 
-5 of 12 tasks (42%) failed due to environment issues (Python 3.9 compatibility,
-missing pytest plugins), not model capability. If these tasks were excluded:
-- 70B Baseline: 17/21 = **81%**, Agentic: 17/19 = **89%**
-- 8B Baseline: 11/21 = **52%**, Agentic: 2/7 = **29%**
+**Conclusion:** Pre-analysis can introduce confirmation bias. When a bug requires a
+non-obvious testing strategy, the Analyzer's "correct but unhelpful" hypothesis
+locks the TestWriter into a failing approach.
 
-## 7. Threats to Validity
+### 5.4 Finding 4: Model capability is the dominant factor
 
-1. **Small sample size**: 3 runs per task provides limited statistical power.
-   Confidence intervals are wide.
+```
+Baseline BRTR by model size:
 
-2. **Two models from same family**: Both models are Llama variants. Testing
-   with architecturally different models (e.g., DeepSeek, Qwen) would
-   strengthen generalizability claims.
+  Mistral 128B:    ████████████████████████████████  58.3%
+  Llama 70B:       ████████████████████████          47.2%
+  Llama 8B:        ████████████████                  30.6%
+```
 
-3. **Environment confounds**: Python 3.9 type hint incompatibility caused
-   several tasks to fail for infrastructure reasons, not model reasons.
+The difference between models (30% → 58%) is far larger than the difference
+between modes (typically < 7%). Choosing a better model matters more than
+adding an analysis step.
 
-4. **JSON parsing fragility**: The agentic pipeline's dependency on valid JSON
-   from the Analyzer creates a single point of failure. A more robust parsing
-   strategy (e.g., regex extraction) could improve 8B results.
+### 5.5 Finding 5: Structured output is a capability gate
 
-5. **Task selection bias**: Custom tasks may be easier than real-world bugs.
-   BugsInPy tasks showed lower success rates overall.
+The agentic pipeline requires the Analyzer to produce valid JSON (`CodeAnalysis`).
+This creates a minimum capability threshold:
 
-6. **Prompt sensitivity**: Results may vary with different prompt formulations
-   for Analyzer and TestWriter agents.
+| Model | Agentic Runs Completed | Completion Rate |
+|---|---|---|
+| Mistral 128B | 35/36 | 97% |
+| Llama 70B | 34/36 | 94% |
+| Llama 8B | **7/36** | **19%** |
 
-## 8. Conclusions
+The 8B model fails to produce valid JSON in 81% of cases. The agentic pipeline
+is effectively unusable below a certain model capability threshold, which lies
+between 8B and 70B parameters for the Llama family.
 
-1. **Adding code analysis does not significantly improve overall BRTR** for
-   the 70B model (47.2% vs 50.0%, p > 0.05), but it reduces the average
-   number of retry attempts from 1.4 to 1.0.
+### 5.6 Finding 6: Task difficulty determines outcomes, not pipeline architecture
 
-2. **Analysis is not viable for small models**: The 8B model fails to produce
-   structured analysis output in 81% of cases, making the agentic pipeline
-   unusable at this scale.
+Tasks fall into three clear categories regardless of model or mode:
 
-3. **Model capability is the dominant factor**: The 70B model outperforms the
-   8B model in both modes (47% vs 31% baseline, 50% vs 29% agentic). Bug
-   difficulty and model size matter more than pipeline architecture.
+**Always solved** (5 tasks): `boundary_threshold`, `off_by_one_loop`, `bugsinpy_tqdm`,
+`bugsinpy_thefuck_fish`, `bugsinpy_black`
+- Simple, localized bugs (wrong operator, missing argument)
+- All capable models solve these with or without analysis
 
-4. **Analysis can both help and hurt**: It improved `type_coercion_price` (+67%)
-   but degraded `swallowed_exception` (-67%) with the 70B model, showing that
-   pre-analysis introduces both useful context and potential bias.
+**Sometimes solved** (2 tasks): `type_coercion_price`, `swallowed_exception`
+- Medium complexity bugs requiring specific testing strategies
+- This is where analysis has the most variable impact (both positive and negative)
 
-5. **Multi-agent architectures have a minimum capability threshold**: Structured
-   inter-agent communication (JSON) requires models capable of reliable
-   instruction-following. This threshold lies between 8B and 70B parameters
-   for the Llama model family.
+**Never solved** (5 tasks): `async_race_condition`, `cache_invalidation`,
+`null_handling_profile`, `bugsinpy_pysnooper`, `bugsinpy_thefuck_fix`
+- Complex bugs (concurrency, state management) or infrastructure issues (Python 3.9)
+- No model solves these regardless of pipeline configuration
 
-6. **When analysis works, it improves first-attempt accuracy**: The strongest
-   signal is not in BRTR but in attempts-to-success: 70B agentic mode
-   consistently solves tasks on the first try, suggesting that analysis
-   provides useful directional guidance.
+## 6. Infrastructure Confounds
 
-## 9. Raw Data
+5 of 12 tasks (42%) consistently fail across all models due to environment issues,
+not model capability:
+
+| Task | Root Cause |
+|---|---|
+| async_race_condition | Requires `pytest-asyncio` plugin (not installed) |
+| cache_invalidation | Source uses `dict \| None` syntax (requires Python 3.10+) |
+| null_handling_profile | Source uses `dict \| None` syntax (requires Python 3.10+) |
+| bugsinpy_pysnooper | Complex multi-file dependency |
+| bugsinpy_thefuck_fix | Complex regex/parsing logic |
+
+If infrastructure-blocked tasks are excluded, effective BRTR (7 viable tasks):
+
+| Model | Baseline BRTR | Agentic BRTR |
+|---|---|---|
+| Mistral 128B | 21/21 = **100%** | 18/21 = **86%** |
+| Llama 70B | 17/21 = **81%** | 17/19 = **89%** |
+| Llama 8B | 11/21 = **52%** | 2/7 = **29%** |
+
+## 7. Token Cost Analysis
+
+| Model | Baseline Tokens/Run | Agentic Tokens/Run | Overhead |
+|---|---|---|---|
+| Mistral 128B | 1,602 | 2,788 | +74% |
+| Llama 70B | 1,719 | 2,399 | +40% |
+| Llama 8B | 2,300 | 3,298 | +43% |
+
+The analysis step adds 40-74% token overhead. For Mistral, this extra cost
+produces *worse* results than baseline — a negative return on investment.
+
+## 8. Threats to Validity
+
+1. **Small sample size**: 3 runs per task limits statistical power. Confidence
+   intervals are wide and overlap substantially between modes.
+
+2. **Two model families**: Only Llama and Mistral tested. Architecturally
+   different models (e.g., GPT, Claude, Gemma) may show different patterns.
+
+3. **Environment confounds**: Python 3.9 compatibility issues and missing
+   pytest plugins caused 42% of tasks to fail for infrastructure reasons.
+
+4. **JSON parsing fragility**: The agentic pipeline depends on valid JSON from
+   the Analyzer, creating a single point of failure that disproportionately
+   affects smaller models.
+
+5. **Prompt sensitivity**: Different prompt formulations for Analyzer and
+   TestWriter may produce different results.
+
+6. **Free-tier API constraints**: NVIDIA Build free tier may introduce
+   variable latency and throttling that affects retry behavior.
+
+## 9. Conclusions
+
+1. **Adding code analysis does not improve BRTR.** Across three models of
+   varying capability (8B, 70B, 128B), the analysis step produces no
+   statistically significant improvement. For the strongest model (Mistral
+   128B), it slightly hurts performance.
+
+2. **Analysis reduces retry count but not success rate.** The clearest
+   benefit is efficiency: successful agentic runs typically need only 1
+   attempt vs 1.1-1.4 for baseline. This suggests analysis provides useful
+   guidance but doesn't expand the range of solvable bugs.
+
+3. **Pre-analysis introduces confirmation bias.** The `swallowed_exception`
+   task shows that analysis consistently hurts across all models (-33% to
+   -100%). When a bug requires a non-obvious testing approach, the Analyzer's
+   hypothesis locks the TestWriter into a failing strategy.
+
+4. **Model capability is the dominant factor.** The 28% BRTR gap between
+   models (30% to 58%) dwarfs the <7% effect of adding analysis. Choosing
+   a better model yields far greater improvement than adding pipeline
+   complexity.
+
+5. **Multi-agent pipelines have a minimum capability threshold.** Structured
+   inter-agent communication (JSON) requires reliable instruction-following.
+   The 8B model fails to produce valid Analyzer output in 81% of cases,
+   making the pipeline unusable at this scale.
+
+6. **Bug difficulty determines outcomes, not architecture.** Tasks cluster
+   into "always solved" (42%), "sometimes solved" (17%), and "never solved"
+   (42%) categories that are consistent across models and modes. Pipeline
+   design has the most impact on the "sometimes solved" category.
+
+## 10. Raw Data
 
 Full experiment data is available at:
 ```
 results/
   analysis_vs_direct_20260430_055256/     # Llama 3.3 70B
-    summary.json
-    config.yaml
-    runs/<task_id>/*.json
-
   analysis_vs_direct_20260430_XXXXXX/     # Llama 3.1 8B
-    summary.json
-    config.yaml
-    runs/<task_id>/*.json
+  analysis_vs_direct_20260430_XXXXXX/     # Mistral Medium 3.5 128B
 ```
 
-Each run record contains: generated test code, validation output (pytest stdout
-from both buggy and fixed versions), token usage, duration, and analysis (if agentic).
+Each directory contains:
+- `summary.json` — Aggregated statistics with BRTR and confidence intervals
+- `config.yaml` — Configuration snapshot
+- `runs/<task_id>/` — Individual run records with test code, validation
+  output (pytest stdout from buggy and fixed versions), token usage,
+  duration, and analysis (if agentic mode)

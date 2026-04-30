@@ -3,7 +3,7 @@ experiment:
   runs_per_task: 3
 
 model:
-  model_id: "meta/llama-3.1-8b-instruct"
+  model_id: "mistralai/mistral-medium-3.5-128b"
   api_key_env: "NVIDIA_API_KEY"
   temperature: 0.7
   max_output_tokens: 4096
