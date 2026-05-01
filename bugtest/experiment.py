@@ -174,8 +174,7 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
         print(f"\n--- Task: {task.task_id} ---")
 
         for run_num in range(1, config.experiment.runs_per_task + 1):
-            # Interleaved: baseline then agentic for each run number
-            for mode in ["baseline", "agentic"]:
+            for mode in ["baseline", "agentic", "adaptive"]:
                 label = f"[{mode}] run {run_num}/{config.experiment.runs_per_task}"
                 print(f"  {label}...", end=" ", flush=True)
 
@@ -205,10 +204,12 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
     # Compute statistics
     baseline_runs = [r for r in all_runs if r.mode == "baseline"]
     agentic_runs = [r for r in all_runs if r.mode == "agentic"]
+    adaptive_runs = [r for r in all_runs if r.mode == "adaptive"]
 
     mode_stats = [
         _compute_mode_stats("baseline", baseline_runs),
         _compute_mode_stats("agentic", agentic_runs),
+        _compute_mode_stats("adaptive", adaptive_runs),
     ]
 
     task_ids = sorted(set(r.task_id for r in all_runs))

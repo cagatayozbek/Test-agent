@@ -89,20 +89,23 @@ def run_pipeline(
     validator: Validator,
     max_attempts: int = 3,
 ) -> RunRecord:
-    """Run one complete pipeline: analysis (if agentic) + test_writer with retries.
+    """Run one complete pipeline with three possible modes.
 
-    The ONLY difference between modes: agentic calls Analyzer first and
-    prepends its CodeAnalysis output to the TestWriter's user message.
-    Everything else is identical.
+    Modes:
+        baseline:  TestWriter only, retry on failure
+        agentic:   Analyzer first, then TestWriter, retry on failure
+        adaptive:  Attempt 1 without analysis (baseline-style),
+                   if it fails, add analysis for remaining attempts
     """
     start_time = time.perf_counter()
     prompt_tokens = 0
     completion_tokens = 0
     analysis: Optional[CodeAnalysis] = None
     attempts: list[AttemptRecord] = []
-    user_message = _build_user_message(task)
+    base_user_message = _build_user_message(task)
+    user_message = base_user_message
 
-    # --- AGENTIC: run Analyzer first (one call, NOT retried) ---
+    # --- AGENTIC: run Analyzer upfront ---
     if mode == "agentic":
         analyzer = Analyzer(llm)
         analysis, resp = analyzer.run(user_message)
@@ -114,6 +117,18 @@ def run_pipeline(
     writer = TestWriter(llm)
 
     for attempt_num in range(1, max_attempts + 1):
+
+        # --- ADAPTIVE: inject analysis after first failure ---
+        if mode == "adaptive" and attempt_num == 2 and analysis is None:
+            try:
+                analyzer = Analyzer(llm)
+                analysis, resp = analyzer.run(base_user_message)
+                prompt_tokens += resp.prompt_tokens
+                completion_tokens += resp.completion_tokens
+                user_message = _prepend_analysis(base_user_message, analysis)
+            except Exception:
+                pass  # analysis failed, continue without it
+
         if attempt_num == 1:
             test_code, resp = writer.run(user_message)
         else:
