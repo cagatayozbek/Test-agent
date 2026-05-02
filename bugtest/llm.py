@@ -137,17 +137,45 @@ class GeminiClient:
         raise RuntimeError("Retry loop exited unexpectedly")
 
 
+class ClaudeCodeClient:
+    """Client that calls Claude Code CLI (claude -p) for Max subscription users."""
+
+    def __init__(self, model_id: str = "sonnet", **kwargs):
+        self._model = model_id  # sonnet, opus, haiku
+
+    def generate(self, *, system: str, user: str, **kwargs) -> LLMResponse:
+        import subprocess
+        prompt = f"{system}\n\n{user}"
+        result = subprocess.run(
+            ["claude", "-p", "--model", self._model],
+            input=prompt,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        text = result.stdout.strip()
+        return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
+
+    def generate_json(self, *, system: str, user: str, **kwargs) -> LLMResponse:
+        json_system = system + "\n\nIMPORTANT: Respond with valid JSON only. No markdown fences, no explanation."
+        return self.generate(system=json_system, user=user)
+
+
 def create_client(model_id: str, api_key: str, provider: str = "auto"):
     """Factory: create the right client based on provider or api_key format."""
     if provider == "auto":
-        if api_key.startswith("nvapi-"):
+        if api_key == "claude-code":
+            provider = "claude"
+        elif api_key.startswith("nvapi-"):
             provider = "nvidia"
         elif api_key.startswith("AIzaSy") or api_key.startswith("AQ."):
             provider = "gemini"
         else:
-            provider = "nvidia"  # default to OpenAI-compatible
+            provider = "nvidia"
 
-    if provider == "nvidia":
+    if provider == "claude":
+        return ClaudeCodeClient(model_id=model_id)
+    elif provider == "nvidia":
         return NvidiaClient(model_id=model_id, api_key=api_key)
     else:
         return GeminiClient(model_id=model_id, api_key=api_key)

@@ -2,9 +2,9 @@ experiment:
   name: analysis_vs_direct
   runs_per_task: 3
 model:
-  api_key_env: NVIDIA_API_KEY
+  api_key_env: CLAUDE_CODE_KEY
   max_output_tokens: 4096
-  model_id: stepfun-ai/step-3.5-flash
+  model_id: sonnet
   temperature: 0.7
 results:
   dir: results
