@@ -1,6 +1,10 @@
 experiment:
   name: analysis_vs_direct
   runs_per_task: 3
+  modes:
+    - baseline
+    - agentic
+    - adaptive
 model:
   api_key_env: CLAUDE_CODE_KEY
   max_output_tokens: 4096
