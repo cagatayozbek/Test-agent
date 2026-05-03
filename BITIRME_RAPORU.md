@@ -81,7 +81,7 @@ Bu ikili kriter, testin hem hassasiyetini hem de özgüllüğünü garanti eder.
 
 ### 2.4 Test Edilen Modeller
 
-Altı farklı LLM, üç farklı model ailesi ve geniş bir parametre aralığında test edilmiştir:
+Yedi farklı LLM, üç farklı model ailesi ve geniş bir parametre aralığında test edilmiştir:
 
 | # | Model | Parametre | Mimari | Aile |
 |---|---|---|---|---|
@@ -91,8 +91,9 @@ Altı farklı LLM, üç farklı model ailesi ve geniş bir parametre aralığın
 | 4 | OpenAI GPT-OSS | 120B | Dense | OpenAI |
 | 5 | Mistral Medium 3.5 | 128B | Dense | Mistral |
 | 6 | Anthropic Claude Sonnet 4.5 | ~175B* | Dense | Anthropic |
+| 7 | Anthropic Claude Opus 4.6 | ~175B* | Dense | Anthropic |
 
-*Claude Sonnet parametre sayısı kamuya açıklanmamıştır; sektör tahminidir.
+*Claude modelleri parametre sayısı kamuya açıklanmamıştır; sektör tahminidir.
 
 ### 2.5 Değerlendirme Görevleri
 
@@ -120,47 +121,66 @@ içerir.
 
 ## 3. Sonuçlar
 
-### 3.1 Genel BRTR Karşılaştırması
+### 3.1 Genel BRTR Karşılaştırması: Baseline vs Adaptive (Ana Karşılaştırma)
 
-| Model | Boyut | Baseline | Agentic | Adaptive | En İyi Mod |
+| Model | Boyut | Baseline | Adaptive | Delta | En İyi Mod |
 |---|---|---|---|---|---|
-| Claude Sonnet | ~175B | **97.2%** | JSON hata* | **97.2%** | Baseline = Adaptive |
-| GPT-OSS | 120B | **86.1%** | 80.0% | **86.1%** | Baseline = Adaptive |
-| Mistral 3.5 | 128B | **58.3%** | 51.4% | **58.3%** | Baseline = Adaptive |
-| Llama 3.3 | 70B | 47.2% | **50.0%** | 41.7% | Agentic |
-| Llama 4 Maverick | 17B | 38.9% | 44.4% | **50.0%** | **Adaptive** |
-| Llama 3.1 | 8B | **30.6%** | 28.6%** | N/A | Baseline |
+| Claude Sonnet | ~175B | **97.2%** | **97.2%** | 0.0% | Baseline = Adaptive |
+| Claude Opus | ~175B | 91.7% | **94.3%** | +2.6% | Adaptive |
+| GPT-OSS | 120B | **86.1%** | **86.1%** | 0.0% | Baseline = Adaptive |
+| Mistral 3.5 | 128B | **58.3%** | **58.3%** | 0.0% | Baseline = Adaptive |
+| Llama 3.3 | 70B | **47.2%** | 41.7% | -5.5% | Baseline |
+| Llama 4 Maverick | 17B | 38.9% | **50.0%** | **+11.1%** | **Adaptive** |
+| Llama 3.1 | 8B | **30.6%** | N/A | N/A | Baseline |
 
-*Claude CLI düz metin döndürdüğü için Analyzer JSON ayrıştırma hatası verdi.
-**8B modelde agentic run'ların %81'i JSON hatası ile başarısız oldu.
+### 3.2 Agentic Mod Sonuçları (Geçerli Olduğu Yerde)
 
-### 3.2 Delta Analizi (Baseline'a Göre Fark)
+Agentic mod, Analyzer'ın geçerli JSON üretmesini gerektirir. Bu bağımlılık,
+arayüz ve model kapasitesine göre değişen tek bir hata noktası oluşturur:
+
+| Model | Agentic BRTR | Tamamlanan Run | Oran | Sorun |
+|---|---|---|---|---|
+| GPT-OSS 120B | 80.0% | 35/36 | %97 | — |
+| Mistral 128B | 51.4% | 35/36 | %97 | — |
+| Llama 70B | 50.0% | 34/36 | %94 | — |
+| Llama 4 17B | 44.4% | 36/36 | %100 | — |
+| Claude Opus | 100%* | 4/36 | **%11** | CLI markdown çıktısı |
+| Claude Sonnet | N/A | 0/36 | **%0** | CLI markdown çıktısı |
+| Llama 8B | 28.6%* | 7/36 | **%19** | Model kapasitesi |
+
+*Yanıltıcı: yalnızca tamamlanan run'lar sayılmıştır. Claude ve Llama 8B agentic
+sonuçları, >%80 run başarısızlığı nedeniyle modeller-arası karşılaştırmadan
+çıkarılmıştır. Claude'un başarısızlığı bir arayüz sorunudur (CLI markdown
+döndürür), model kapasitesi sınırlaması değildir.
+
+### 3.3 Delta Analizi (Baseline'a Göre Fark)
 
 | Model | Agentic Delta | Adaptive Delta | Yorum |
 |---|---|---|---|
-| Claude Sonnet | N/A (JSON hata) | **0.0%** | Zaten çok güçlü, analiz gereksiz |
+| Claude Sonnet | N/A (CLI sorunu) | **0.0%** | Zaten çok güçlü, analiz gereksiz |
+| Claude Opus | N/A (CLI sorunu) | **+2.6%** | Adaptive hafif fayda |
 | GPT-OSS 120B | **-6.1%** | **0.0%** | Analiz zarar veriyor; adaptive telafi ediyor |
 | Mistral 128B | **-6.9%** | **0.0%** | Analiz zarar veriyor; adaptive telafi ediyor |
 | Llama 70B | **+2.8%** | -5.5% | Agentic hafif fayda sağlıyor |
 | Llama 4 17B | **+5.5%** | **+11.1%** | Adaptive en güçlü faydayı sağlıyor |
-| Llama 8B | -2.0% | N/A | Pipeline kullanılamaz durumda |
+| Llama 8B | N/A (kırık) | N/A | Pipeline kullanılamaz durumda |
 
 ### 3.3 Görev Bazlı Karşılaştırma
 
-| Görev | Claude | GPT-OSS | Mistral | Llama 70B | Llama 4 | Llama 8B |
-|---|---|---|---|---|---|---|
-| boundary_threshold | **100** | **100** | **100** | **100** | **100** | 33 |
-| off_by_one_loop | **100** | **100** | **100** | **100** | **100** | **100** |
-| bugsinpy_tqdm | **100** | **100** | **100** | **100** | **100** | 33 |
-| bugsinpy_thefuck_fish | **100** | **100** | **100** | **100** | **100** | 33 |
-| bugsinpy_black | **100** | **100** | **100** | **100** | **100** | 67 |
-| type_coercion_price | **100** | **100** | **100** | 67 | 33 | 33 |
-| swallowed_exception | **100** | **100** | **100** | 67 | 33 | 33 |
-| bugsinpy_pysnooper | **100** | **100** | 0 | 0 | 0 | 33 |
-| cache_invalidation | **100** | **100** | 0 | 0 | 0 | 0 |
-| null_handling_profile | **100** | 67 | 0 | 0 | 0 | 0 |
-| async_race_condition | **100** | 33 | 0 | 0 | 0 | 0 |
-| bugsinpy_thefuck_fix | 67 | 33 | 0 | 0 | 0 | 0 |
+| Görev | Sonnet | Opus | GPT-OSS | Mistral | Llama 70B | Llama 4 | Llama 8B |
+|---|---|---|---|---|---|---|---|
+| boundary_threshold | **100** | **100** | **100** | **100** | **100** | **100** | 33 |
+| off_by_one_loop | **100** | **100** | **100** | **100** | **100** | **100** | **100** |
+| bugsinpy_tqdm | **100** | **100** | **100** | **100** | **100** | **100** | 33 |
+| bugsinpy_thefuck_fish | **100** | **100** | **100** | **100** | **100** | **100** | 33 |
+| bugsinpy_black | **100** | **100** | **100** | **100** | **100** | **100** | 67 |
+| type_coercion_price | **100** | **100** | **100** | **100** | 67 | 33 | 33 |
+| swallowed_exception | **100** | **100** | **100** | **100** | 67 | 33 | 33 |
+| bugsinpy_pysnooper | **100** | **100** | **100** | 0 | 0 | 0 | 33 |
+| cache_invalidation | **100** | 33 | **100** | 0 | 0 | 0 | 0 |
+| null_handling_profile | **100** | **100** | 67 | 0 | 0 | 0 | 0 |
+| async_race_condition | **100** | **100** | 33 | 0 | 0 | 0 | 0 |
+| bugsinpy_thefuck_fix | 67 | 67 | 33 | 0 | 0 | 0 | 0 |
 
 *Baseline BRTR değerleri gösterilmiştir. Kalın = %100 başarı.*
 
@@ -182,7 +202,9 @@ katmandır.
 **Katman 3 — Zor (4 görev):** `cache_invalidation`, `null_handling_profile`,
 `async_race_condition`, `bugsinpy_thefuck_fix`
 
-Yalnızca Claude Sonnet ve GPT-OSS bu görevleri çözebilmektedir. Eşzamanlılık,
+Yalnızca Claude modelleri (Sonnet, Opus) ve GPT-OSS bu görevleri çözebilmektedir.
+Opus, async_race_condition (%100 vs %33) ve null_handling_profile (%100 vs %67)
+görevlerinde GPT-OSS'den daha iyi performans göstermiştir. Eşzamanlılık,
 durum yönetimi ve karmaşık gerçek dünya hatalarını içerir.
 
 ## 4. Analiz ve Bulgular
@@ -193,6 +215,7 @@ durum yönetimi ve karmaşık gerçek dünya hatalarını içerir.
 Baseline BRTR (model boyutuna göre):
 
   Claude Sonnet ~175B:  ████████████████████████████████████████████████  97.2%
+  Claude Opus ~175B:    █████████████████████████████████████████████     91.7%
   GPT-OSS 120B:        ████████████████████████████████████████████      86.1%
   Mistral 128B:        █████████████████████████████                     58.3%
   Llama 70B:           ███████████████████████                           47.2%
@@ -211,7 +234,7 @@ Bu bulgu, mentörümüzün "LLM'in elinde veri olmalı, test dilini bilmeli"
 
 | Model Gücü | Agentic Etkisi | Adaptive Etkisi | Yorum |
 |---|---|---|---|
-| Çok güçlü (Claude, GPT-OSS) | Zarar / Nötr | Nötr | Analiz gereksiz |
+| Çok güçlü (Sonnet, Opus, GPT-OSS) | Zarar / JSON hata | Nötr / Hafif fayda | Analiz gereksiz |
 | Güçlü (Mistral 128B) | Zarar (-6.9%) | Nötr | Analiz gereksiz |
 | Orta (Llama 70B) | Hafif fayda (+2.8%) | Hafif zarar | Karışık |
 | Orta-alt (Llama 4 17B) | Fayda (+5.5%) | **En iyi (+11.1%)** | Analiz faydalı |
@@ -401,8 +424,8 @@ durumu tek bir pipeline'da optimize eder.
 1. **Küçük örneklem**: Görev başına 3 tekrar, istatistiksel gücü sınırlamaktadır.
    Güven aralıkları geniştir ve modlar arasında örtüşmektedir.
 
-2. **Model ailesi çeşitliliği**: 6 modelden 3'ü Llama ailesidir. Daha farklı
-   mimarilerin test edilmesi genellenebilirliği güçlendirecektir.
+2. **Model ailesi çeşitliliği**: 7 modelden 3'ü Llama, 2'si Claude ailesidir.
+   Daha farklı mimarilerin test edilmesi genellenebilirliği güçlendirecektir.
 
 3. **Altyapı karıştırıcıları**: Python 3.9 tip işareti uyumsuzluğu ve eksik
    pytest-asyncio eklentisi bazı görevlerde altyapı kaynaklı başarısızlıklara
@@ -419,7 +442,7 @@ durumu tek bir pipeline'da optimize eder.
 
 ### 9.1 Ana Sonuçlar
 
-1. **Model kapasitesi baskın faktördür.** Modeller arası %67'lik BRTR farkı
+1. **Model kapasitesi baskın faktördür.** 7 model üzerinde %67'lik BRTR farkı
    (%30→%97), pipeline mimarisinin %12'den az olan etkisini gölgede bırakmaktadır.
 
 2. **Analiz faydası ters-U eğrisi izler.** Güçlü modellere zarar verir, orta
@@ -434,9 +457,9 @@ durumu tek bir pipeline'da optimize eder.
 5. **Çok ajanlı pipeline'lar minimum kapasite eşiği gerektirir.** 8B model,
    yapılandırılmış çıktı üretmekte %81 oranında başarısız olmaktadır.
 
-6. **LLM hata yapabilir, insan denetimi şarttır.** En güçlü model bile
-   (Claude Sonnet, %97.2) %100 başarı sağlayamamaktadır. Üretilen testler
-   mutlaka insan tarafından gözden geçirilmelidir.
+6. **LLM hata yapabilir, insan denetimi şarttır.** En güçlü modeller bile
+   (Claude Sonnet %97.2, Opus %91.7) %100 başarı sağlayamamaktadır. Üretilen
+   testler mutlaka insan tarafından gözden geçirilmelidir.
 
 ### 9.2 Gelecek Çalışmalar
 
@@ -475,3 +498,4 @@ modda) bilgilerini içermektedir.
 | Llama 4 Maverick | NVIDIA Build | 2026-04-30 |
 | GPT-OSS 120B | NVIDIA Build | 2026-04-30 |
 | Claude Sonnet 4.5 | Claude Code CLI | 2026-05-01/02 |
+| Claude Opus 4.6 | Claude Code CLI | 2026-05-02/03 |
