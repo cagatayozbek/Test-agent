@@ -174,7 +174,7 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
         print(f"\n--- Task: {task.task_id} ---")
 
         for run_num in range(1, config.experiment.runs_per_task + 1):
-            for mode in ["baseline", "agentic", "adaptive"]:
+            for mode in config.experiment.modes:
                 label = f"[{mode}] run {run_num}/{config.experiment.runs_per_task}"
                 print(f"  {label}...", end=" ", flush=True)
 

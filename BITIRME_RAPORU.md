@@ -35,6 +35,7 @@ etkinliğini ölçmektedir.
 1. Kod analizi adımı eklemek test kalitesini artırır mı?
 2. Bu etki model büyüklüğüne göre değişir mi?
 3. Analizi her zaman mı yoksa sadece ihtiyaç duyulduğunda mı yapmak daha iyidir?
+4. Modele ek bağlam (test ipucu) vermek performansı artırır mı?
 
 ## 2. Yöntem
 
@@ -121,17 +122,19 @@ içerir.
 
 ## 3. Sonuçlar
 
-### 3.1 Genel BRTR Karşılaştırması: Baseline vs Adaptive (Ana Karşılaştırma)
+### 3.1 Genel BRTR Karşılaştırması: Tüm Koşullar
 
-| Model | Boyut | Baseline | Adaptive | Delta | En İyi Mod |
+| Model | Boyut | Baseline | Adaptive | Adaptive+Hint | Hint Farkı |
 |---|---|---|---|---|---|
-| Claude Sonnet | ~175B | **97.2%** | **97.2%** | 0.0% | Baseline = Adaptive |
-| Claude Opus | ~175B | 91.7% | **94.3%** | +2.6% | Adaptive |
-| GPT-OSS | 120B | **86.1%** | **86.1%** | 0.0% | Baseline = Adaptive |
-| Mistral 3.5 | 128B | **58.3%** | **58.3%** | 0.0% | Baseline = Adaptive |
-| Llama 3.3 | 70B | **47.2%** | 41.7% | -5.5% | Baseline |
-| Llama 4 Maverick | 17B | 38.9% | **50.0%** | **+11.1%** | **Adaptive** |
-| Llama 3.1 | 8B | **30.6%** | N/A | N/A | Baseline |
+| Claude Opus | ~175B | 91.7% | 94.4% | **94.3%** | ~0% |
+| Claude Sonnet | ~175B | **97.2%** | 91.7% | **91.7%** | 0% |
+| GPT-OSS | 120B | **86.1%** | 86.1% | **88.9%** | +2.8% |
+| Mistral 3.5 | 128B | **58.3%** | 58.3% | 52.8% | -5.5% |
+| Llama 3.3 | 70B | 47.2% | 41.7% | **52.8%** | **+11.1%** |
+| Llama 4 Maverick | 17B | 38.9% | 50.0% | **58.3%** | **+8.3%** |
+| Llama 3.1 | 8B | **30.6%** | N/A | **33.3%** | N/A |
+
+*Hint = test_hint bağlamı (nasıl test edileceğine dair kısa ipucu)*
 
 ### 3.2 Agentic Mod Sonuçları (Geçerli Olduğu Yerde)
 
@@ -297,7 +300,35 @@ odaklanmak büyük resmi kaçırmaya yol açabilir.
 pipeline'lar, yapılandırılmış agent-arası iletişim gerektirdiğinde, modelin
 minimum bir yetenek eşiğini aşması zorunludur.
 
-### 4.6 Bulgu 6: Görev Zorluğu Sonuçları Belirler
+### 4.6 Bulgu 6: Test İpucu (Hint) Orta Modellerde Faydalıdır
+
+Modele ek bağlam olarak test_hint (nasıl test edileceğine dair kısa ipucu)
+verildiğinde, analiz faydası ile aynı ters-U eğrisi gözlemlenmiştir:
+
+| Model Gücü | Hint Etkisi | Yorum |
+|---|---|---|
+| Çok güçlü (Opus, Sonnet) | ~0% | Zaten biliyorlar |
+| Güçlü (GPT-OSS 120B) | +2.8% | Hafif fayda |
+| Orta (Llama 70B) | **+11.1%** | En çok fayda |
+| Orta-alt (Maverick 17B) | **+8.3%** | Önemli fayda |
+| Zayıf (Llama 8B) | +2.7% | Sınırlı fayda |
+
+Özellikle dikkat çekici görev bazlı değişimler:
+
+| Görev | GPT-OSS (hint'siz→hint'li) | Llama 70B | Maverick 17B |
+|---|---|---|---|
+| async_race_condition | 33%→**100%** | 0%→0% | 0%→0% |
+| swallowed_exception | 100%→100% | 0%→**67%** | 0%→**100%** |
+| bugsinpy_thefuck_fix | 33%→**67%** | 0%→0% | 0%→0% |
+
+**Yorum:** Test ipucu, modelin dikkatini doğru noktaya yönlendirmektedir.
+Ancak bu yönlendirme yalnızca model zaten "neredeyse çözebilecek" kapasitedeyse
+işe yaramaktadır. Çözemeyeceği bir göreve ipucu vermek fayda sağlamamaktadır.
+
+Bu bulgu, mentörümüzün "bağlam sağlanmalı" önerisini doğrulamaktadır — ancak
+bağlamın etkisi model kapasitesine bağlıdır.
+
+### 4.7 Bulgu 7: Görev Zorluğu Sonuçları Belirler
 
 Görevler, model veya pipeline modundan bağımsız olarak üç katmana ayrılır:
 
@@ -374,14 +405,29 @@ pratik öneriler:
 
 | Model | Baseline Token/Run | Agentic Token/Run | Adaptive Token/Run | Agentic Ek Maliyet |
 |---|---|---|---|---|
+| Claude Opus* | ~2,050 | ~3,000 | ~2,400 | ~+%46 |
+| Claude Sonnet* | ~2,050 | ~3,000 | ~2,400 | ~+%46 |
 | GPT-OSS 120B | 2,617 | 4,152 | 3,227 | +%59 |
 | Mistral 128B | 1,602 | 2,788 | 2,136 | +%74 |
 | Llama 70B | 1,719 | 2,399 | 2,136 | +%40 |
 | Llama 4 17B | 2,001 | 2,710 | 2,317 | +%35 |
 | Llama 8B | 2,300 | 3,298 | N/A | +%43 |
 
+*Claude CLI token sayısı raporlamamaktadır; değerler diğer modellerin
+ortalamasından tahmin edilmiştir (aynı prompt kullanıldığı için).
+
+### 6.1 API Maliyet Tahmini (USD)
+
+| Model | Fiyat (input/output per M) | Baseline/Run | Adaptive/Run | 36 Run Toplam |
+|---|---|---|---|---|
+| Claude Opus | $15 / $75 | ~$0.04 | ~$0.05 | ~$1.80 |
+| Claude Sonnet | $3 / $15 | ~$0.008 | ~$0.01 | ~$0.36 |
+| NVIDIA Modelleri | Ücretsiz (free tier) | $0 | $0 | $0 |
+
 Agentic mod, %35-74 oranında ek token maliyeti getirmektedir. Adaptive mod,
 analiz maliyetini yalnızca gerektiğinde ödeyerek bu maliyeti optimize eder.
+NVIDIA Build ücretsiz katmanı sayesinde açık kaynak modellerde maliyet
+sıfırdır ancak rate limiting nedeniyle gecikme artmaktadır.
 
 ## 7. Mimari Tasarım Kararları
 
@@ -421,21 +467,32 @@ durumu tek bir pipeline'da optimize eder.
 
 ## 8. Geçerlilik Tehditleri
 
-1. **Küçük örneklem**: Görev başına 3 tekrar, istatistiksel gücü sınırlamaktadır.
-   Güven aralıkları geniştir ve modlar arasında örtüşmektedir.
+1. **Non-deterministik çıktılar**: LLM'ler aynı girdi için farklı çıktılar
+   üretmektedir. Aynı model ve aynı görev ile yapılan tekrar deneylerde BRTR
+   değerleri %5-6 oranında dalgalanma göstermiştir (örneğin Claude Sonnet
+   adaptive: bir deneyde %97.2, tekrar çalıştırıldığında %91.7). Bu durum,
+   temperature > 0 ayarı ve modelin stokastik doğasından kaynaklanmaktadır.
+   Sonuçlar kesin değerler değil, bir aralık olarak yorumlanmalıdır.
 
-2. **Model ailesi çeşitliliği**: 7 modelden 3'ü Llama, 2'si Claude ailesidir.
+2. **Küçük örneklem**: Görev başına 3 tekrar, istatistiksel gücü sınırlamaktadır.
+   Güven aralıkları geniştir ve modlar arasında örtüşmektedir. Örneğin Opus
+   adaptive %94.4 [%81.9, %98.5] ile Sonnet adaptive %91.7 [%78.2, %97.1]
+   arasında istatistiksel olarak anlamlı bir fark bulunamamaktadır. Non-
+   determinizm ile birleştiğinde, küçük farklar (<5%) anlamlı kabul
+   edilmemelidir.
+
+3. **Model ailesi çeşitliliği**: 7 modelden 3'ü Llama, 2'si Claude ailesidir.
    Daha farklı mimarilerin test edilmesi genellenebilirliği güçlendirecektir.
 
-3. **Altyapı karıştırıcıları**: Python 3.9 tip işareti uyumsuzluğu ve eksik
+4. **Altyapı karıştırıcıları**: Python 3.9 tip işareti uyumsuzluğu ve eksik
    pytest-asyncio eklentisi bazı görevlerde altyapı kaynaklı başarısızlıklara
    neden olmuştur.
 
-4. **JSON ayrıştırma kırılganlığı**: Agentic pipeline, Analyzer'dan geçerli
-   JSON çıktısı gerektirmekte ve bu durum küçük modeller için tek bir hata
-   noktası oluşturmaktadır.
+5. **JSON ayrıştırma kırılganlığı**: Agentic pipeline, Analyzer'dan geçerli
+   JSON çıktısı gerektirmekte ve bu durum küçük modeller ve CLI tabanlı
+   arayüzler için tek bir hata noktası oluşturmaktadır.
 
-5. **Prompt hassasiyeti**: Farklı prompt formülasyonları farklı sonuçlar
+6. **Prompt hassasiyeti**: Farklı prompt formülasyonları farklı sonuçlar
    üretebilir. Prompt ablation çalışması yapılmamıştır.
 
 ## 9. Sonuç ve Öneriler
@@ -457,7 +514,12 @@ durumu tek bir pipeline'da optimize eder.
 5. **Çok ajanlı pipeline'lar minimum kapasite eşiği gerektirir.** 8B model,
    yapılandırılmış çıktı üretmekte %81 oranında başarısız olmaktadır.
 
-6. **LLM hata yapabilir, insan denetimi şarttır.** En güçlü modeller bile
+6. **Test ipucu (hint) orta modellerde etkilidir.** Modele nasıl test
+   edileceğine dair kısa bir ipucu vermek, orta güçteki modellerde %8-11
+   iyileşme sağlarken güçlü modellerde fark yaratmamaktadır. Bağlamın etkisi
+   de analiz faydası gibi ters-U eğrisi izlemektedir.
+
+7. **LLM hata yapabilir, insan denetimi şarttır.** En güçlü modeller bile
    (Claude Sonnet %97.2, Opus %91.7) %100 başarı sağlayamamaktadır. Üretilen
    testler mutlaka insan tarafından gözden geçirilmelidir.
 
@@ -467,7 +529,12 @@ durumu tek bir pipeline'da optimize eder.
 - Çoklu hipotez stratejisi ile onay yanlılığını azaltma
 - Farklı model aileleri (Gemma, Qwen) ile genellenebilirlik testi
 - Python 3.10+ ortamında altyapı sorunlarını giderme
-- Daha büyük ve karmaşık gerçek dünya projelerinde test etme
+- **SWE-bench entegrasyonu**: Bu çalışmadaki tek dosya görevleri, gerçek dünya
+  karmaşıklığını tam yansıtmamaktadır. SWE-bench gibi repo seviyesi
+  benchmark'larla entegrasyon, bulguların genellenebilirliğini artıracaktır.
+- Temperature ablation (0.0 vs 0.7 vs 1.0) ile non-determinizm etkisini ölçme
+- Hata analizi: başarısız run'ların kategorize edilmesi (yanlış assertion,
+  import hatası, yanlış test stratejisi vb.)
 
 ## 10. Ham Veri
 

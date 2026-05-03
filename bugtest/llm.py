@@ -157,8 +157,42 @@ class ClaudeCodeClient:
         return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
 
     def generate_json(self, *, system: str, user: str, **kwargs) -> LLMResponse:
+        import subprocess, json as _json, re
         json_system = system + "\n\nIMPORTANT: Respond with valid JSON only. No markdown fences, no explanation."
-        return self.generate(system=json_system, user=user)
+        prompt = f"{json_system}\n\n{user}"
+        result = subprocess.run(
+            ["claude", "-p", "--model", self._model, "--output-format", "json"],
+            input=prompt,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        raw = result.stdout.strip()
+        # --output-format json wraps response in {"result":"..."}
+        try:
+            wrapper = _json.loads(raw)
+            text = wrapper.get("result", raw) if isinstance(wrapper, dict) else raw
+        except _json.JSONDecodeError:
+            text = raw
+        # Extract JSON object from markdown or mixed text
+        text = text.strip()
+        # Try as-is first
+        try:
+            _json.loads(text)
+            return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
+        except _json.JSONDecodeError:
+            pass
+        # Try extracting from markdown fences
+        m = re.search(r"```(?:json)?\s*\n(.*?)```", text, re.DOTALL)
+        if m:
+            text = m.group(1).strip()
+        else:
+            # Try finding first { ... last }
+            start = text.find("{")
+            end = text.rfind("}")
+            if start != -1 and end != -1:
+                text = text[start:end + 1]
+        return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
 
 
 def create_client(model_id: str, api_key: str, provider: str = "auto"):

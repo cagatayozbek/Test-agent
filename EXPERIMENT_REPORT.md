@@ -263,33 +263,59 @@ capability AND compatible output interfaces.
 
 | Model | Baseline Tokens | Agentic Tokens | Adaptive Tokens | Agentic Overhead |
 |---|---|---|---|---|
+| Claude Opus* | ~2,050 | ~3,000 | ~2,400 | ~+46% |
+| Claude Sonnet* | ~2,050 | ~3,000 | ~2,400 | ~+46% |
 | GPT-OSS 120B | 2,617 | 4,152 | 3,227 | +59% |
 | Mistral 128B | 1,602 | 2,788 | 2,136 | +74% |
 | Llama 70B | 1,719 | 2,399 | 2,136 | +40% |
 | Llama 4 17B | 2,001 | 2,710 | 2,317 | +35% |
 | Llama 8B | 2,300 | 3,298 | N/A | +43% |
 
+*Claude CLI does not report token usage; values estimated from other models'
+averages (same prompts used across all models).
+
+### 6.1 API Cost Estimate (USD)
+
+| Model | Price (input/output per M) | Baseline/Run | Adaptive/Run | 36 Runs Total |
+|---|---|---|---|---|
+| Claude Opus | $15 / $75 | ~$0.04 | ~$0.05 | ~$1.80 |
+| Claude Sonnet | $3 / $15 | ~$0.008 | ~$0.01 | ~$0.36 |
+| NVIDIA Models | Free (free tier) | $0 | $0 | $0 |
+
 Agentic mode adds 35-74% token overhead. Adaptive mode reduces this by only
-paying the analysis cost when needed.
+paying the analysis cost when needed. NVIDIA Build free tier eliminates cost
+for open-source models but introduces rate-limiting latency.
 
 ## 7. Threats to Validity
 
-1. **Small sample size**: 3 runs per task per mode limits statistical power.
-   Confidence intervals are wide and overlap between modes.
+1. **Non-deterministic outputs**: LLMs produce different outputs for identical
+   inputs. Repeat experiments with the same model and tasks showed BRTR
+   fluctuations of 5-6% (e.g., Claude Sonnet adaptive: 97.2% in one run,
+   91.7% when re-run). This stems from temperature > 0 and the stochastic
+   nature of autoregressive generation. Results should be interpreted as
+   ranges, not exact values. Differences below 5% should not be considered
+   meaningful.
 
-2. **Model family bias**: 3 of 5 models are Llama variants. Adding
-   architecturally different models would strengthen generalizability.
+2. **Small sample size**: 3 runs per task per mode limits statistical power.
+   Confidence intervals are wide and overlap between modes. For example,
+   Opus adaptive 94.4% [81.9%, 98.5%] and Sonnet adaptive 91.7% [78.2%,
+   97.1%] are not statistically distinguishable. Combined with non-
+   determinism, small differences are indistinguishable from noise.
 
-3. **Environment confounds**: Python 3.9 type hint incompatibility and
+3. **Model family bias**: 3 of 7 models are Llama variants, 2 are Claude.
+   Adding architecturally different models would strengthen generalizability.
+
+4. **Environment confounds**: Python 3.9 type hint incompatibility and
    missing pytest-asyncio caused infrastructure failures on some tasks.
 
-4. **JSON parsing fragility**: Agentic pipeline depends on valid JSON from
-   the Analyzer, creating a single point of failure for smaller models.
+5. **JSON parsing fragility**: Agentic pipeline depends on valid JSON from
+   the Analyzer, creating a single point of failure for smaller models and
+   CLI-based interfaces.
 
-5. **Free-tier API constraints**: NVIDIA Build free tier introduces variable
+6. **Free-tier API constraints**: NVIDIA Build free tier introduces variable
    latency and throttling that may affect retry behavior.
 
-6. **Prompt sensitivity**: Different prompt formulations may produce
+7. **Prompt sensitivity**: Different prompt formulations may produce
    different results. No prompt ablation was performed.
 
 ## 8. Conclusions

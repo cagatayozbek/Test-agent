@@ -34,15 +34,22 @@ def _now_iso() -> str:
 
 def _build_user_message(task: Task) -> str:
     """Build user message from task (shared between both modes)."""
-    return (
-        f"Task: {task.task_id}\n"
-        f"Bug Description: {task.metadata.bug_description}\n\n"
-        f"--- source.py ---\n"
-        f"{task.buggy_code}\n"
-        f"--- end source.py ---\n\n"
-        f"Write a pytest test that FAILS on this buggy code "
-        f"but PASSES on the fixed version."
-    )
+    parts = [
+        f"Task: {task.task_id}",
+        f"Bug Description: {task.metadata.bug_description}",
+    ]
+    if task.metadata.test_hint:
+        parts.append(f"Test Hint: {task.metadata.test_hint}")
+    parts += [
+        "",
+        "--- source.py ---",
+        task.buggy_code,
+        "--- end source.py ---",
+        "",
+        "Write a pytest test that FAILS on this buggy code "
+        "but PASSES on the fixed version.",
+    ]
+    return "\n".join(parts)
 
 
 def _prepend_analysis(user_message: str, analysis: CodeAnalysis) -> str:
