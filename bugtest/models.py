@@ -32,7 +32,7 @@ class Task(BaseModel):
 
     task_id: str
     buggy_code: str
-    fixed_code: str
+    fixed_code: str = ""
     buggy_dir: Path
     fixed_dir: Path
     metadata: TaskMetadata
@@ -83,7 +83,7 @@ class RunRecord(BaseModel):
     """Complete record of one pipeline run (all retries for one task+mode)."""
 
     task_id: str
-    mode: Literal["baseline", "agentic", "adaptive"]
+    mode: Literal["baseline", "agentic", "adaptive", "deep"]
     run_number: int
     success: bool
     attempts: list[AttemptRecord]
@@ -102,7 +102,7 @@ class RunRecord(BaseModel):
 class ModeStats(BaseModel):
     """Aggregated statistics for one mode across all tasks."""
 
-    mode: Literal["baseline", "agentic", "adaptive"]
+    mode: Literal["baseline", "agentic", "adaptive", "deep"]
     total_runs: int
     successful_runs: int
     brtr: float
@@ -112,6 +112,12 @@ class ModeStats(BaseModel):
     avg_prompt_tokens: float = 0.0
     avg_completion_tokens: float = 0.0
     avg_duration_seconds: float = 0.0
+    total_prompt_tokens: int = 0
+    total_completion_tokens: int = 0
+    total_duration_seconds: float = 0.0
+    total_cost_usd: float = 0.0
+    avg_cost_per_run_usd: float = 0.0
+    avg_cost_per_success_usd: Optional[float] = None
 
 
 class TaskStats(BaseModel):

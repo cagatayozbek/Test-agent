@@ -8,6 +8,11 @@ from pathlib import Path
 from bugtest.models import ValidationResult
 
 
+# Keep all temp workspaces inside the project tree (no /tmp, no /var/folders)
+_LOCAL_TMP = Path(__file__).resolve().parent.parent / ".tmp"
+_LOCAL_TMP.mkdir(exist_ok=True)
+
+
 class Validator:
     """Runs a test file against buggy and fixed code to determine
     whether the test is bug-revealing.
@@ -39,7 +44,7 @@ class Validator:
 
     def _run_pytest(self, test_code: str, source_dir: Path) -> tuple[bool, str]:
         """Copy test + source to temp dir, run pytest, return (passed, output)."""
-        with tempfile.TemporaryDirectory() as tmpdir:
+        with tempfile.TemporaryDirectory(dir=str(_LOCAL_TMP)) as tmpdir:
             tmp = Path(tmpdir)
 
             for py_file in source_dir.glob("*.py"):
