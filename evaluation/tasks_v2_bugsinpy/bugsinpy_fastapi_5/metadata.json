@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_fastapi_5",
+  "bug_description": "Bug in def create_cloned_field(field: ModelField) -> ModelField:",
+  "test_hint": "Bug touches file fastapi/utils.py (project fastapi, bug #5).",
+  "source_project": "fastapi",
+  "source_bug_number": "5",
+  "buggy_commit": "7cea84b74ca3106a7f861b774e9d215e5228728f",
+  "fixed_commit": "75a07f24bf01a31225ee687f3e2b3fc1981b67ab",
+  "patched_file": "fastapi/utils.py"
+}

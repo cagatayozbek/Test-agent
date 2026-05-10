@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_2",
+  "bug_description": "Bug in class BeamDataflowJobTask(MixinNaiveBulkComplete, luigi.Task):",
+  "test_hint": "Bug touches file luigi/contrib/beam_dataflow.py (project luigi, bug #2).",
+  "source_project": "luigi",
+  "source_bug_number": "2",
+  "buggy_commit": "baa54c9f4f809692d62d4c3e4497161717c76550",
+  "fixed_commit": "24e85945ae39e5975491527e00c3f0f64b42ea6e",
+  "patched_file": "luigi/contrib/beam_dataflow.py"
+}

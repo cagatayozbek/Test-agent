@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_23",
+  "bug_description": "Bug in class core(task.Config):",
+  "test_hint": "Bug touches file luigi/interface.py (project luigi, bug #23).",
+  "source_project": "luigi",
+  "source_bug_number": "23",
+  "buggy_commit": "c707253572deb795a900c3e07d21eee591a55fca",
+  "fixed_commit": "dc41727f4de88f86f4e77aa45be51eff4ee6b3be",
+  "patched_file": "luigi/interface.py"
+}

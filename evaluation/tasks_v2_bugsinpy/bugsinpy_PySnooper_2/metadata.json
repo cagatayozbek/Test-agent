@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_PySnooper_2",
+  "bug_description": "Bug in import traceback",
+  "test_hint": "Bug touches file pysnooper/tracer.py (project PySnooper, bug #2).",
+  "source_project": "PySnooper",
+  "source_bug_number": "2",
+  "buggy_commit": "e21a31162f4c54be693d8ca8260e42393b39abd3",
+  "fixed_commit": "814abc34a098c1b98cb327105ac396f985d2413e",
+  "patched_file": "pysnooper/tracer.py"
+}

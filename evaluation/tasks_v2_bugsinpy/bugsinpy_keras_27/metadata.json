@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_27",
+  "bug_description": "Bug in class Bidirectional(Wrapper):",
+  "test_hint": "Bug touches file keras/layers/wrappers.py (project keras, bug #27).",
+  "source_project": "keras",
+  "source_bug_number": "27",
+  "buggy_commit": "49f5b931410bc2e56378f20a15e8ac919e0efb88",
+  "fixed_commit": "b076e227da6beaf87d6c84eff1a92285e4662acf",
+  "patched_file": "keras/layers/wrappers.py"
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_PySnooper_1",
+  "bug_description": "Bug in import inspect",
+  "test_hint": "Bug touches file pysnooper/pycompat.py (project PySnooper, bug #1).",
+  "source_project": "PySnooper",
+  "source_bug_number": "1",
+  "buggy_commit": "e21a31162f4c54be693d8ca8260e42393b39abd3",
+  "fixed_commit": "56f22f8ffe1c6b2be4d2cf3ad1987fdb66113da2",
+  "patched_file": "pysnooper/pycompat.py"
+}

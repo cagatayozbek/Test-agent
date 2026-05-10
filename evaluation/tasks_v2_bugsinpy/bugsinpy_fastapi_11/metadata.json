@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_fastapi_11",
+  "bug_description": "Bug in def get_flat_dependant(dependant: Dependant) -> Dependant:",
+  "test_hint": "Bug touches file fastapi/dependencies/utils.py (project fastapi, bug #11).",
+  "source_project": "fastapi",
+  "source_bug_number": "11",
+  "buggy_commit": "bf229ad5d830eb5320f966d51a55e590e8d57008",
+  "fixed_commit": "06eb4219345a77d23484528c9d164eb8d2097fec",
+  "patched_file": "fastapi/dependencies/utils.py"
+}

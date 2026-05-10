@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_matplotlib_20",
+  "bug_description": "Bug in def _make_ghost_gridspec_slots(fig, gs):",
+  "test_hint": "Bug touches file lib/matplotlib/_constrained_layout.py (project matplotlib, bug #20).",
+  "source_project": "matplotlib",
+  "source_bug_number": "20",
+  "buggy_commit": "805f451b7122d1ef595c7a01592bb2f500aed41f",
+  "fixed_commit": "5375487ab28c877c8008c5a178e0b81a6e267957",
+  "patched_file": "lib/matplotlib/_constrained_layout.py"
+}

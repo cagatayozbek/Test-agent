@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_28",
+  "bug_description": "Bug in class TimeseriesGenerator(Sequence):",
+  "test_hint": "Bug touches file keras/preprocessing/sequence.py (project keras, bug #28).",
+  "source_project": "keras",
+  "source_bug_number": "28",
+  "buggy_commit": "6171b3656ebd9b6038f709ba83f7475de284ba4e",
+  "fixed_commit": "5422fdd38baad36730cb6aeb946e17eeae6a551c",
+  "patched_file": "keras/preprocessing/sequence.py"
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_10",
+  "bug_description": "Bug in def standardize_weights(y,",
+  "test_hint": "Bug touches file keras/engine/training_utils.py (project keras, bug #10).",
+  "source_project": "keras",
+  "source_bug_number": "10",
+  "buggy_commit": "8f41e41eda6e8ea96403cae5798a5a89c8bb5605",
+  "fixed_commit": "c1c4afe60b1355a6c0e83577791a0423f37a3324",
+  "patched_file": "keras/engine/training_utils.py"
+}

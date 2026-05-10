@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_14",
+  "bug_description": "Bug in from ansible.module_utils.urls import open_url",
+  "test_hint": "Bug touches file lib/ansible/galaxy/api.py (project ansible, bug #14).",
+  "source_project": "ansible",
+  "source_bug_number": "14",
+  "buggy_commit": "a1ab093ddbd32f1002cbf6d6f184c7d0041d890d",
+  "fixed_commit": "7acae62fa849481b2a5e2e2d56961c5e1dcea96c",
+  "patched_file": "lib/ansible/galaxy/api.py"
+}

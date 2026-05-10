@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_8",
+  "bug_description": "Bug in import re",
+  "test_hint": "Bug touches file lib/ansible/plugins/shell/powershell.py (project ansible, bug #8).",
+  "source_project": "ansible",
+  "source_bug_number": "8",
+  "buggy_commit": "81378b3e744cd0d13b33d18a4f8a38aeb8a6e97a",
+  "fixed_commit": "fc7980af9a42676913b4054163570ee438b82e9c",
+  "patched_file": "lib/ansible/plugins/shell/powershell.py"
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_21",
+  "bug_description": "Bug in class EarlyStopping(Callback):",
+  "test_hint": "Bug touches file keras/callbacks.py (project keras, bug #21).",
+  "source_project": "keras",
+  "source_bug_number": "21",
+  "buggy_commit": "c7b7328cc99fd5d7c298e57c6020043451d89a61",
+  "fixed_commit": "1fc585adb57f20a2acf69f0cd08b731259b8d2f8",
+  "patched_file": "keras/callbacks.py"
+}

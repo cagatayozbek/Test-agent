@@ -2,16 +2,17 @@
 
 import os
 from pathlib import Path
+from typing import Optional
 
 import yaml
 from pydantic import BaseModel, Field
 
 
 class ModelConfig(BaseModel):
-    model_id: str = "gemini-2.5-flash"
-    api_key_env: str = "GOOGLE_API_KEY"
-    temperature: float = 1.0
-    max_output_tokens: int = 8192
+    model_id: str = "sonnet"
+    api_key_env: str = "CLAUDE_CODE_KEY"
+    temperature: float = 0.7
+    max_output_tokens: int = 4096
 
 
 class RetryConfig(BaseModel):
@@ -20,7 +21,7 @@ class RetryConfig(BaseModel):
 
 
 class TasksConfig(BaseModel):
-    dir: str = "evaluation/tasks_v2"
+    dir: str = "evaluation/tasks_v2_bugsinpy"
     include: list[str] = Field(default_factory=list)
     exclude: list[str] = Field(default_factory=list)
 
@@ -30,9 +31,10 @@ class ResultsConfig(BaseModel):
 
 
 class ExperimentMeta(BaseModel):
-    name: str = "analysis_vs_direct"
-    runs_per_task: int = 10
-    modes: list[str] = ["baseline", "agentic", "adaptive"]
+    name: str = "bugsinpy_pilot"
+    runs_per_task: int = 3
+    modes: list[str] = ["baseline", "adaptive", "deep"]
+    experiment_id: Optional[str] = None
 
 
 class Config(BaseModel):

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_pandas_22",
+  "bug_description": "Bug in def get_weighted_roll_func(cfunc: Callable) -> Callable:",
+  "test_hint": "Bug touches file pandas/core/window/common.py (project pandas, bug #22).",
+  "source_project": "pandas",
+  "source_bug_number": "22",
+  "buggy_commit": "38b669a",
+  "fixed_commit": "299e27da8a75d02d84870c1ca5971f4dd0f046e6",
+  "patched_file": "pandas/core/window/common.py"
+}

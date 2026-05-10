@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_cookiecutter_2",
+  "bug_description": "Bug in def find_hook(hook_name, hooks_dir='hooks'):",
+  "test_hint": "Bug touches file cookiecutter/hooks.py (project cookiecutter, bug #2).",
+  "source_project": "cookiecutter",
+  "source_bug_number": "2",
+  "buggy_commit": "d7e7b28811e474e14d1bed747115e47dcdd15ba3",
+  "fixed_commit": "90434ff4ea4477941444f1e83313beb414838535",
+  "patched_file": "cookiecutter/hooks.py"
+}

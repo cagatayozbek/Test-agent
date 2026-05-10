@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_pandas_30",
+  "bug_description": "Bug in class Parser:",
+  "test_hint": "Bug touches file pandas/io/json/_json.py (project pandas, bug #30).",
+  "source_project": "pandas",
+  "source_bug_number": "30",
+  "buggy_commit": "60d6f28",
+  "fixed_commit": "d857cd12b3ae11be788ba96015383a5b7464ecc9",
+  "patched_file": "pandas/io/json/_json.py"
+}

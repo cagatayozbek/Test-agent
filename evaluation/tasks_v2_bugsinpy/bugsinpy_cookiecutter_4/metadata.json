@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_cookiecutter_4",
+  "bug_description": "Bug in class InvalidModeException(CookiecutterException):",
+  "test_hint": "Bug touches file cookiecutter/exceptions.py (project cookiecutter, bug #4).",
+  "source_project": "cookiecutter",
+  "source_bug_number": "4",
+  "buggy_commit": "9568ab6ecd2d6836646006c59473c4a4ac0dee04",
+  "fixed_commit": "457a1a4e862aab4102b644ff1d2b2e2b5a766b3c",
+  "patched_file": "cookiecutter/exceptions.py"
+}

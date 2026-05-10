@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_12",
+  "bug_description": "Buggy line: ",
+  "test_hint": "Bug touches file luigi/contrib/hdfs/clients.py (project luigi, bug #12).",
+  "source_project": "luigi",
+  "source_bug_number": "12",
+  "buggy_commit": "c3119757c9ad4141fb446554109fa09cbd31173c",
+  "fixed_commit": "b3e9ad57f8502a390686957b69070105fddcfd49",
+  "patched_file": "luigi/contrib/hdfs/clients.py"
+}

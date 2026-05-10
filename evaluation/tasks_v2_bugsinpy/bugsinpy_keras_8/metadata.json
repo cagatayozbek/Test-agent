@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_8",
+  "bug_description": "Bug in class Network(Layer):",
+  "test_hint": "Bug touches file keras/engine/network.py (project keras, bug #8).",
+  "source_project": "keras",
+  "source_bug_number": "8",
+  "buggy_commit": "87540a2a2f42e00c4a2ca7ca35d19f96e62e6cb0",
+  "fixed_commit": "d78c982b326adeed6ac25200dc6892ff8f518ca6",
+  "patched_file": "keras/engine/network.py"
+}

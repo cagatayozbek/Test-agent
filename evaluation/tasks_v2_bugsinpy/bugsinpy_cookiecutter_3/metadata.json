@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_cookiecutter_3",
+  "bug_description": "Bug in def read_user_choice(var_name, options):",
+  "test_hint": "Bug touches file cookiecutter/prompt.py (project cookiecutter, bug #3).",
+  "source_project": "cookiecutter",
+  "source_bug_number": "3",
+  "buggy_commit": "5c282f020a8db7e5e7c4e7b51b010556ca31fb7f",
+  "fixed_commit": "7129d474206761a6156925db78eee4b62a0e3944",
+  "patched_file": "cookiecutter/prompt.py"
+}

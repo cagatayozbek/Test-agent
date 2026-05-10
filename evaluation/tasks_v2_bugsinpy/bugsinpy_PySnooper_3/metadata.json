@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_PySnooper_3",
+  "bug_description": "Bug in def get_write_function(output):",
+  "test_hint": "Bug touches file pysnooper/pysnooper.py (project PySnooper, bug #3).",
+  "source_project": "PySnooper",
+  "source_bug_number": "3",
+  "buggy_commit": "6e3d797be3fa0a746fb5b1b7c7fea78eb926c208",
+  "fixed_commit": "15555ed760000b049aff8fecc79d29339c1224c3",
+  "patched_file": "pysnooper/pysnooper.py"
+}

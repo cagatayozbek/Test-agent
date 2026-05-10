@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_matplotlib_3",
+  "bug_description": "Bug in class MarkerStyle:",
+  "test_hint": "Bug touches file lib/matplotlib/markers.py (project matplotlib, bug #3).",
+  "source_project": "matplotlib",
+  "source_bug_number": "3",
+  "buggy_commit": "5e046f72ae82788788c7e9b9354b87b131891cd8",
+  "fixed_commit": "2a3707d9c3472b1a010492322b6946388d4989ae",
+  "patched_file": "lib/matplotlib/markers.py"
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_17",
+  "bug_description": "Bug in def categorical_accuracy(y_true, y_pred):",
+  "test_hint": "Bug touches file keras/metrics.py (project keras, bug #17).",
+  "source_project": "keras",
+  "source_bug_number": "17",
+  "buggy_commit": "c913b6da92f6ab9a3f4c897caa4085e782a14680",
+  "fixed_commit": "5a6af4bc6d44e9adbc2a21804bfcd18c4ce849ef",
+  "patched_file": "keras/metrics.py"
+}

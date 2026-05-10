@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_32",
+  "bug_description": "Bug in class ReduceLROnPlateau(Callback):",
+  "test_hint": "Bug touches file keras/callbacks.py (project keras, bug #32).",
+  "source_project": "keras",
+  "source_bug_number": "32",
+  "buggy_commit": "a3d160b9467c99cbb27f9aa0382c759f45c8ee66",
+  "fixed_commit": "709f791af201caaab4aa180bda259989087cfe47",
+  "patched_file": "keras/callbacks.py"
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_24",
+  "bug_description": "Bug in class TensorBoard(Callback):",
+  "test_hint": "Bug touches file keras/callbacks.py (project keras, bug #24).",
+  "source_project": "keras",
+  "source_bug_number": "24",
+  "buggy_commit": "d7884570b10951d156aa086ee29a4df9eab79cf3",
+  "fixed_commit": "bcf0031b54d555179be81c088cc3df0a723d7907",
+  "patched_file": "keras/callbacks.py"
+}

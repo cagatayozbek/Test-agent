@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_5",
+  "bug_description": "Bug in def get_file(fname,",
+  "test_hint": "Bug touches file keras/utils/data_utils.py (project keras, bug #5).",
+  "source_project": "keras",
+  "source_bug_number": "5",
+  "buggy_commit": "b847b4601d608050bab6eccd049fce28b7bf1b1f",
+  "fixed_commit": "e11c48d9ce3ee47bb8a966549b14cbd5b10ee70d",
+  "patched_file": "keras/utils/data_utils.py"
+}

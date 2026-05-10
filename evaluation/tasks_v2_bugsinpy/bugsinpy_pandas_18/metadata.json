@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_pandas_18",
+  "bug_description": "Bug in def validate_baseindexer_support(func_name: Optional[str]) -> None:",
+  "test_hint": "Bug touches file pandas/core/window/common.py (project pandas, bug #18).",
+  "source_project": "pandas",
+  "source_bug_number": "18",
+  "buggy_commit": "e008a0a",
+  "fixed_commit": "cb71376385c33270fa1922aec9eb6c49de4336f4",
+  "patched_file": "pandas/core/window/common.py"
+}

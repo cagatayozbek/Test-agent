@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_6",
+  "bug_description": "Bug in def weighted_masked_objective(fn):",
+  "test_hint": "Bug touches file keras/engine/training_utils.py (project keras, bug #6).",
+  "source_project": "keras",
+  "source_bug_number": "6",
+  "buggy_commit": "88af7d0c97497b5c3a198ee9416b2accfbc72c36",
+  "fixed_commit": "4b54657ab4806b0aaef8f8eeb973edb83c3d3483",
+  "patched_file": "keras/engine/training_utils.py"
+}

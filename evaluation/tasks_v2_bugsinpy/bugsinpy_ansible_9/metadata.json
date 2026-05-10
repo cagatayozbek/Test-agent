@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_9",
+  "bug_description": "Bug in class Rhsm(RegistrationBase):",
+  "test_hint": "Bug touches file lib/ansible/modules/packaging/os/redhat_subscription.py (project ansible, bug #9).",
+  "source_project": "ansible",
+  "source_bug_number": "9",
+  "buggy_commit": "9276dd2007a73172ed99ab5a56cded4298d3cd2b",
+  "fixed_commit": "6f1bb37feb81acd99157f5ba0933fecd747015a2",
+  "patched_file": "lib/ansible/modules/packaging/os/redhat_subscription.py"
+}

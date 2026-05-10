@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_9",
+  "bug_description": "Bug in def count_leading_spaces(s):",
+  "test_hint": "Bug touches file docs/autogen.py (project keras, bug #9).",
+  "source_project": "keras",
+  "source_bug_number": "9",
+  "buggy_commit": "0cd3b07eb5de1aaaad84d1ff7f7c2ed7dab4b23c",
+  "fixed_commit": "0505393746d56ddacc34bb1c016dba79429c9ac9",
+  "patched_file": "docs/autogen.py"
+}

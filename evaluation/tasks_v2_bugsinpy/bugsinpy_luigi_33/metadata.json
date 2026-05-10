@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_33",
+  "bug_description": "Bug in class Task(object):",
+  "test_hint": "Bug touches file luigi/task.py (project luigi, bug #33).",
+  "source_project": "luigi",
+  "source_bug_number": "33",
+  "buggy_commit": "a7c0662eab78fd226fd7ef6b4461d7199336cbb1",
+  "fixed_commit": "fccb631a14e1d52138d39f06004be14ca8f3337d",
+  "patched_file": "luigi/task.py"
+}

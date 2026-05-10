@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_black_22",
+  "bug_description": "Bug in Depth = int",
+  "test_hint": "Bug touches file black.py (project black, bug #22).",
+  "source_project": "black",
+  "source_bug_number": "22",
+  "buggy_commit": "728c56c986bc5aea4d9897d3fce3159f89991b8e",
+  "fixed_commit": "c55d08d0b96c8de8bd867ca315e380d9e9d2d7ec",
+  "patched_file": "black.py"
+}

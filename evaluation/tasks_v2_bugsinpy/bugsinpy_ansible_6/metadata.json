@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_6",
+  "bug_description": "Bug in class CollectionRequirement:",
+  "test_hint": "Bug touches file lib/ansible/galaxy/collection.py (project ansible, bug #6).",
+  "source_project": "ansible",
+  "source_bug_number": "6",
+  "buggy_commit": "90898132e456ee1993db99a1531379f1b98ee915",
+  "fixed_commit": "4881af2e7e0506ada0225fd764e874e20569d5b2",
+  "patched_file": "lib/ansible/galaxy/collection.py"
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_11",
+  "bug_description": "Bug in commands:",
+  "test_hint": "Bug touches file lib/ansible/modules/network/ios/ios_banner.py (project ansible, bug #11).",
+  "source_project": "ansible",
+  "source_bug_number": "11",
+  "buggy_commit": "da07b98b7a433493728ddb7ac7efbd20b8988776",
+  "fixed_commit": "52f3ce8a808f943561803bd664e695fed1841fe8",
+  "patched_file": "lib/ansible/modules/network/ios/ios_banner.py"
+}

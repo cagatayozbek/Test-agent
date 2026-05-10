@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_23",
+  "bug_description": "Bug in class Sequential(Model):",
+  "test_hint": "Bug touches file keras/engine/sequential.py (project keras, bug #23).",
+  "source_project": "keras",
+  "source_bug_number": "23",
+  "buggy_commit": "3dcd9c767ce6875fc8b69c74971ac8a552e23131",
+  "fixed_commit": "69c30a150f0b2caee7961ca1c0080960ef5ad6f6",
+  "patched_file": "keras/engine/sequential.py"
+}

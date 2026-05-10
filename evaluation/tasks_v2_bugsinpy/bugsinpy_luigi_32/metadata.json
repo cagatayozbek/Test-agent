@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_32",
+  "bug_description": "Bug in except ImportError:",
+  "test_hint": "Bug touches file luigi/task_register.py (project luigi, bug #32).",
+  "source_project": "luigi",
+  "source_bug_number": "32",
+  "buggy_commit": "7233a0cc3e34c7c14259b1fa046f66332914f410",
+  "fixed_commit": "027ac3fbcf66d5d21554c9ac6da26eee5c2e0f3d",
+  "patched_file": "luigi/task_register.py"
+}

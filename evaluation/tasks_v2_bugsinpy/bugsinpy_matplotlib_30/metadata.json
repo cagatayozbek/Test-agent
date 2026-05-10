@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_matplotlib_30",
+  "bug_description": "Bug in def makeMappingArray(N, data, gamma=1.0):",
+  "test_hint": "Bug touches file lib/matplotlib/colors.py (project matplotlib, bug #30).",
+  "source_project": "matplotlib",
+  "source_bug_number": "30",
+  "buggy_commit": "3b26ee6f6b31bc0cca4be0407dbb40f44756030d",
+  "fixed_commit": "d4de838fe7b38abb02f061540fd93962cc063fc4",
+  "patched_file": "lib/matplotlib/colors.py"
+}
