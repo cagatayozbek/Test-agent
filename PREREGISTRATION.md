@@ -99,6 +99,20 @@ Five LLMs are evaluated:
    `adaptive` modes worked normally and remain in the benchmark. Encoded in
    `scripts/run_full_benchmark.py:MODEL_MODE_EXCLUSIONS`.
 
+#### Post-hoc deviations (logged honestly)
+
+3. **`meta/llama-3.1-8b-instruct` — fully removed mid-run on 2026-05-10.**
+   The first attempt of the full benchmark (results dir
+   `analysis_vs_direct_20260510_190408`) produced 410/465 jobs with a
+   NVIDIA-side `400 Bad Request: "Function id 'e62a4350-...': DEGRADED
+   function cannot be invoked"` error. This is a service outage on
+   NVIDIA Build's hosted endpoint, not an LLM-capability signal.
+   Pre-mid-restart, this model was in the pre-registered set; its data is
+   discarded for the primary analysis. The model may be re-added in a
+   follow-up run once the endpoint recovers; that re-run will be reported
+   separately and clearly labelled as a supplementary measurement.
+   Effective primary-analysis model count: **4**.
+
 ## 6. Modes
 
 Three pipeline modes (`bugtest/pipeline.py`):

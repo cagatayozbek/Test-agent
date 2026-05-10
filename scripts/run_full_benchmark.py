@@ -29,9 +29,12 @@ RESULTS_DIR = REPO_ROOT / "results"
 ADAPTIVE_RUNNER = REPO_ROOT / "run_adaptive_all.py"
 FULL_OUTPUT = REPO_ROOT / "full_benchmark_summary.json"
 
-# Pre-registered models (mistral excluded — see PREREGISTRATION.md)
+# Models — see PREREGISTRATION.md for exclusion criteria.
+# - mistralai/mistral-medium-3.5-128b: pre-registered, smoke instability
+# - meta/llama-3.1-8b-instruct: post-hoc, NVIDIA function id
+#     'e62a4350-...' DEGRADED on 2026-05-10 (>88% requests returned 400 in
+#     attempt run 19:04). Re-add when endpoint recovers.
 MODELS: list[tuple[str, str]] = [
-    ("meta/llama-3.1-8b-instruct", "NVIDIA_API_KEY"),
     ("meta/llama-3.3-70b-instruct", "NVIDIA_API_KEY"),
     ("meta/llama-4-maverick-17b-128e-instruct", "NVIDIA_API_KEY"),
     ("openai/gpt-oss-120b", "NVIDIA_API_KEY"),
