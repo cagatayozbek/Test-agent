@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_bucketsort",
+  "task_name": "bucketsort",
+  "difficulty": "medium",
+  "bug_type": "wrong_variable_reference",
+  "bug_description": "İçteki döngü `arr` üzerinde iteration yapıyor ama doğrusu sayım dizisi (`counts`) üzerinde olmalı; bu yüzden çıktı yanlış sıralı/eksik elemanlı oluyor.",
+  "test_hint": "Tekrar eden değerler içeren küçük bir liste (örn. [3, 1, 2, 1]) ve yeterince büyük bucket sayısı (k=4) ile çağır; sonucun sıralı eşit listeye eşit olduğunu assert et.",
+  "expected_failure_signal": "Çıktı sıralı liste değil veya eleman sayısı/değeri girdiyle uyuşmuyor.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "medium"
+  ]
+}

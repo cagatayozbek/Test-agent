@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_next_permutation",
+  "task_name": "next_permutation",
+  "difficulty": "medium",
+  "bug_type": "reversed_comparison",
+  "bug_description": "Pivot bulma karşılaştırması `perm[j] < perm[i]`; doğrusu `perm[i] < perm[j]`. Lexicographic next yerine yanlış swap ediyor.",
+  "test_hint": "next_permutation([3, 2, 4, 1]) için bilinen lex-next ([3, 4, 1, 2]) çıktısını assert et.",
+  "expected_failure_signal": "Çıktı doğru lex-next değil; verilen örnekte yanlış permütasyon döner.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "medium"
+  ]
+}

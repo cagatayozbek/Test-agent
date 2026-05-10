@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_pascal",
+  "task_name": "pascal",
+  "difficulty": "medium",
+  "bug_type": "off_by_one_range",
+  "bug_description": "İç döngü `range(0, r)`; doğrusu `range(0, r + 1)`. Her satırın son elemanı (1) eksik kalır.",
+  "test_hint": "pascal(3) çağrısında satır uzunluklarının [1, 2, 3] olduğunu assert et.",
+  "expected_failure_signal": "Satır uzunluğu beklenenden bir eksik (örn. son satır 2 elemanlı).",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "medium"
+  ]
+}

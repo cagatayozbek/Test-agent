@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_is_valid_parenthesization",
+  "task_name": "is_valid_parenthesization",
+  "difficulty": "medium",
+  "bug_type": "missing_final_check",
+  "bug_description": "Fonksiyon karakterleri tarayınca `True` dönüyor; ama açık kalan parantezi kontrol etmiyor. Doğrusu sonda `depth == 0` kontrolü.",
+  "test_hint": "is_valid_parenthesization('((') gibi açık fazlası girdi için False beklenir.",
+  "expected_failure_signal": "Açık parantez fazla olan girdi için True döner.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "medium"
+  ]
+}

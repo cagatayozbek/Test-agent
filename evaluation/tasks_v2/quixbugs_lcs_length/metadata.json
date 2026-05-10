@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_lcs_length",
+  "task_name": "lcs_length",
+  "difficulty": "hard",
+  "bug_type": "dp_index_error",
+  "bug_description": "Match durumunda DP güncellemesi `dp[i-1, j] + 1` yerine `dp[i-1, j-1] + 1` olmalı; aksi halde aynı j sütununu zincirler ve LCS uzunluğunu şişirir.",
+  "test_hint": "lcs_length('ABCBDAB', 'BDCAB') gibi bir çiftte bilinen sonucu (4) assert et.",
+  "expected_failure_signal": "Gerçek LCS uzunluğundan farklı (genellikle daha büyük) bir değer döner.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "hard"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_quicksort",
+  "task_name": "quicksort",
+  "difficulty": "medium",
+  "bug_type": "strict_comparison",
+  "bug_description": "Greater bölmesi `x > pivot` ile filtreleniyor; eşit pivot değerleri tamamen düşüyor. Doğrusu `x >= pivot` (ilk elemanı pivot olarak çıkardıktan sonra).",
+  "test_hint": "Tekrar eden değerler içeren liste (örn. [3, 1, 3, 2]) için sıralı çıktıyı assert et; uzunluk korunmalı.",
+  "expected_failure_signal": "Çıktı uzunluğu girdiden küçük; tekrar eden eleman düşmüş.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "medium"
+  ]
+}

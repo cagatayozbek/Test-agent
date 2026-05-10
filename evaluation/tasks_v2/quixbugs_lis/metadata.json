@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_lis",
+  "task_name": "lis",
+  "difficulty": "hard",
+  "bug_type": "missing_max",
+  "bug_description": "Uzunluk güncellemesi `longest = length + 1`; doğrusu `longest = max(longest, length + 1)`. Aksi hâlde ulaşılan en uzun yerine en son zincir tutulur.",
+  "test_hint": "lis([4, 1, 5, 2, 3]) gibi bir girdide doğru LIS uzunluğunu (3) assert et.",
+  "expected_failure_signal": "LIS uzunluğu olası değerin altında döner.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "hard"
+  ]
+}

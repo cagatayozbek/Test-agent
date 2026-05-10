@@ -26,4 +26,6 @@ Thumbs.db
 
 # Project
 results/
+runs/
+evaluation/quixbugs_raw/
 *.jsonl

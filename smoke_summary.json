@@ -1,0 +1,211 @@
+{
+  "started_at": "2026-05-10T19:32:58",
+  "tasks": [
+    "quixbugs_bitcount",
+    "quixbugs_gcd",
+    "quixbugs_flatten"
+  ],
+  "runs_per_task": 1,
+  "modes": [
+    "baseline",
+    "agentic",
+    "adaptive"
+  ],
+  "models": [
+    {
+      "model_id": "meta/llama-3.1-8b-instruct",
+      "api_key_env": "NVIDIA_API_KEY",
+      "duration_seconds": 157.4,
+      "exit_code": 0,
+      "error_count": 4,
+      "errors": [
+        "[agentic] run 1/1... FAIL (attempts: 3, 5.6s)",
+        "[baseline] run 1/1... FAIL (attempts: 3, 5.4s)",
+        "[agentic] run 1/1... ERROR: 1 validation error for CodeAnalysis",
+        "[adaptive] run 1/1... FAIL (attempts: 3, 6.4s)"
+      ],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 0.6667,
+          "successful": 2,
+          "total": 3,
+          "avg_duration_s": 33.34
+        },
+        "agentic": {
+          "brtr": 0.5,
+          "successful": 1,
+          "total": 2,
+          "avg_duration_s": 5.32
+        },
+        "adaptive": {
+          "brtr": 0.6667,
+          "successful": 2,
+          "total": 3,
+          "avg_duration_s": 14.9
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260510_163258",
+      "succeeded": true
+    },
+    {
+      "model_id": "meta/llama-3.3-70b-instruct",
+      "api_key_env": "NVIDIA_API_KEY",
+      "duration_seconds": 208.5,
+      "exit_code": 0,
+      "error_count": 0,
+      "errors": [],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 21.73
+        },
+        "agentic": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 27.96
+        },
+        "adaptive": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 19.69
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260510_163535",
+      "succeeded": true
+    },
+    {
+      "model_id": "meta/llama-4-maverick-17b-128e-instruct",
+      "api_key_env": "NVIDIA_API_KEY",
+      "duration_seconds": 121.0,
+      "exit_code": 0,
+      "error_count": 0,
+      "errors": [],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 12.33
+        },
+        "agentic": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 13.98
+        },
+        "adaptive": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 13.93
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260510_163904",
+      "succeeded": true
+    },
+    {
+      "model_id": "mistralai/mistral-medium-3.5-128b",
+      "api_key_env": "NVIDIA_API_KEY",
+      "duration_seconds": 1301.2,
+      "exit_code": 0,
+      "error_count": 2,
+      "errors": [
+        "[baseline] run 1/1... FAIL (attempts: 3, 140.0s)",
+        "[agentic] run 1/1... FAIL (attempts: 3, 354.1s)"
+      ],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 0.6667,
+          "successful": 2,
+          "total": 3,
+          "avg_duration_s": 140.38
+        },
+        "agentic": {
+          "brtr": 0.6667,
+          "successful": 2,
+          "total": 3,
+          "avg_duration_s": 165.12
+        },
+        "adaptive": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 128.14
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260510_164105",
+      "succeeded": true
+    },
+    {
+      "model_id": "openai/gpt-oss-120b",
+      "api_key_env": "NVIDIA_API_KEY",
+      "duration_seconds": 127.8,
+      "exit_code": 0,
+      "error_count": 3,
+      "errors": [
+        "[agentic] run 1/1... ERROR: 1 validation error for CodeAnalysis",
+        "[agentic] run 1/1... ERROR: 1 validation error for CodeAnalysis",
+        "[agentic] run 1/1... ERROR: 1 validation error for CodeAnalysis"
+      ],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 18.95
+        },
+        "agentic": {
+          "brtr": 0.0,
+          "successful": 0,
+          "total": 0,
+          "avg_duration_s": 0.0
+        },
+        "adaptive": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 18.53
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260510_170246",
+      "succeeded": true
+    },
+    {
+      "model_id": "sonnet",
+      "api_key_env": "CLAUDE_CODE_KEY",
+      "duration_seconds": 407.4,
+      "exit_code": 0,
+      "error_count": 1,
+      "errors": [
+        "[agentic] run 1/1... ERROR: 1 validation error for CodeAnalysis"
+      ],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 37.05
+        },
+        "agentic": {
+          "brtr": 1.0,
+          "successful": 2,
+          "total": 2,
+          "avg_duration_s": 60.52
+        },
+        "adaptive": {
+          "brtr": 1.0,
+          "successful": 3,
+          "total": 3,
+          "avg_duration_s": 30.44
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260510_170454",
+      "succeeded": true
+    }
+  ],
+  "finished_at": "2026-05-10T20:11:41"
+}

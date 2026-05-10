@@ -1,9 +1,17 @@
 """LLM client supporting both Gemini and OpenAI-compatible APIs (NVIDIA, etc.)."""
 
 import json
+import random
 import time
 from dataclasses import dataclass
 from typing import Optional
+
+
+def _backoff_seconds(attempt: int) -> float:
+    """Exponential backoff with jitter to reduce thundering herd under concurrency."""
+    base = min(60.0, 5.0 * (2 ** attempt))  # 5, 10, 20, 40, 60, 60, ...
+    jitter = random.uniform(0, base * 0.5)
+    return base + jitter
 
 
 @dataclass(frozen=True)
@@ -83,8 +91,8 @@ class NvidiaClient:
                 retryable = any(k in err_str.lower() for k in ["429", "rate", "limit", "500", "503", "overloaded"])
                 if not retryable or attempt == self._max_retries - 1:
                     raise
-                wait = 15 * (attempt + 1)
-                print(f"  [retry {attempt+1}/{self._max_retries}] waiting {wait}s...")
+                wait = _backoff_seconds(attempt)
+                print(f"  [retry {attempt+1}/{self._max_retries}] waiting {wait:.1f}s...")
                 time.sleep(wait)
         raise RuntimeError("Retry loop exited unexpectedly")
 
@@ -131,8 +139,8 @@ class GeminiClient:
                 retryable = status in (429, 500, 503)
                 if not retryable or attempt == self._max_retries - 1:
                     raise
-                wait = 15 * (attempt + 1)
-                print(f"  [retry {attempt+1}/{self._max_retries}] {status} - waiting {wait}s...")
+                wait = _backoff_seconds(attempt)
+                print(f"  [retry {attempt+1}/{self._max_retries}] {status} - waiting {wait:.1f}s...")
                 time.sleep(wait)
         raise RuntimeError("Retry loop exited unexpectedly")
 

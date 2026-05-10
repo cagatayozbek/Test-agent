@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_max_sublist_sum",
+  "task_name": "max_sublist_sum",
+  "difficulty": "easy",
+  "bug_type": "missing_zero_floor",
+  "bug_description": "Kadane güncellemesi `max_ending_here + x`; doğrusu `max(0, max_ending_here + x)`. Negatif birikim sıfırlanmadığı için sonuç bozulur.",
+  "test_hint": "Negatif değer içeren bir liste için (örn. [4, -5, 2, 1, -1, 3]) doğru max-subarray toplamını (5) assert et.",
+  "expected_failure_signal": "Kümülatif negatif düşüşü taşıdığı için sonuç gerçekten alınabilecek max'tan küçük.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "easy"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "task_name": "sqrt",
+  "difficulty": "medium",
+  "bug_type": "wrong_convergence_check",
+  "bug_description": "Konverjans koşulu `abs(x - approx)`; Newton-Raphson için `abs(x - approx ** 2)` olmalı. Gerçek kare köke yaklaşmayan bir döngü.",
+  "test_hint": "sqrt(2, 0.01) çıktısının yaklaşık 1.41 olduğunu (epsilon ile) assert et.",
+  "expected_failure_signal": "Sonuç gerçek karekökten çok uzak veya algoritma çok erken döner.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "medium"
+  ]
+}

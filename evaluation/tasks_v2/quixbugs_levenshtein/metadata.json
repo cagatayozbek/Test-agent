@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_levenshtein",
+  "task_name": "levenshtein",
+  "difficulty": "hard",
+  "bug_type": "extra_increment",
+  "bug_description": "İlk karakterler eşitken sonuca `1 +` ekleniyor; eşit karakter mesafeyi artırmamalı. Doğrusu sadece `levenshtein(source[1:], target[1:])`.",
+  "test_hint": "İlk karakterleri eşit iki kelime için sonuç (örn. levenshtein('abc', 'abd') == 1) assert et.",
+  "expected_failure_signal": "Beklenen düzenleme mesafesinden büyük değer döner.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "hard"
+  ]
+}

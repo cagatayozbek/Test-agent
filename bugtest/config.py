@@ -33,6 +33,7 @@ class ExperimentMeta(BaseModel):
     name: str = "analysis_vs_direct"
     runs_per_task: int = 10
     modes: list[str] = ["baseline", "agentic", "adaptive"]
+    concurrency: int = 1
 
 
 class Config(BaseModel):

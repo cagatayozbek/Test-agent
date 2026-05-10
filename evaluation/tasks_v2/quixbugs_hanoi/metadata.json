@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_hanoi",
+  "task_name": "hanoi",
+  "difficulty": "medium",
+  "bug_type": "wrong_target_variable",
+  "bug_description": "Tek-disk durumunda adım `(start, helper)` olarak append ediliyor; doğrusu `(start, end)`. Üretilen hareketler problem semantiğine uymuyor.",
+  "test_hint": "hanoi(2, start=1, end=3) çıktısının tam olarak [(1,2),(1,3),(2,3)] olduğunu assert et.",
+  "expected_failure_signal": "Hareket listesi yanlış hedeflere işaret eder; doğrudan eşitlik kontrolü fail eder.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "medium"
+  ]
+}

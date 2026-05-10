@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_gcd",
+  "task_name": "gcd",
+  "difficulty": "easy",
+  "bug_type": "argument_order",
+  "bug_description": "Recursive çağrıda argümanlar `(a % b, b)` sırasında; doğrusu `(b, a % b)`. `a % b < b` olduğundan yeniden aynı argümanla çağrılır → sonsuz recursion.",
+  "test_hint": "gcd(35, 21) gibi bir çağrıda timeout/recursion error gözle ya da sonucu 7'ye eşit assert et.",
+  "expected_failure_signal": "Test RecursionError veya timeout üretir.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "easy"
+  ]
+}

@@ -3,6 +3,9 @@
 import json
 import math
 import shutil
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -150,7 +153,11 @@ def _now_iso() -> str:
 
 
 def run_experiment(config_path: Path) -> ExperimentSummary:
-    """Run complete experiment: all tasks x both modes x N runs."""
+    """Run complete experiment: all tasks x modes x N runs.
+
+    Uses ThreadPoolExecutor when config.experiment.concurrency > 1,
+    sequential loop otherwise (backward-compatible).
+    """
     config = load_config(config_path)
     api_key = config.get_api_key()
     llm = create_client(model_id=config.model.model_id, api_key=api_key)
@@ -165,41 +172,75 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
     experiment_id = f"{config.experiment.name}_{ts}"
     results_dir = Path(config.results.dir) / experiment_id
     runs_dir = results_dir / "runs"
-
-    all_runs: list[RunRecord] = []
-
     for task in tasks:
-        task_out = runs_dir / task.task_id
-        task_out.mkdir(parents=True, exist_ok=True)
-        print(f"\n--- Task: {task.task_id} ---")
+        (runs_dir / task.task_id).mkdir(parents=True, exist_ok=True)
 
+    # Build job list: (task, run_num, mode) triples
+    jobs: list[tuple[Task, int, str]] = []
+    for task in tasks:
         for run_num in range(1, config.experiment.runs_per_task + 1):
             for mode in config.experiment.modes:
-                label = f"[{mode}] run {run_num}/{config.experiment.runs_per_task}"
-                print(f"  {label}...", end=" ", flush=True)
+                jobs.append((task, run_num, mode))
 
-                try:
-                    record = run_pipeline(
-                        task=task,
-                        mode=mode,
-                        run_number=run_num,
-                        llm=llm,
-                        validator=validator,
-                        max_attempts=config.retry.max_attempts,
-                    )
-                except Exception as e:
-                    print(f"ERROR: {e} — skipping")
-                    continue
+    concurrency = max(1, getattr(config.experiment, "concurrency", 1))
+    print(f"Total jobs: {len(jobs)}, concurrency: {concurrency}")
 
-                filename = f"{mode}_run_{run_num:02d}.json"
-                (task_out / filename).write_text(
-                    record.model_dump_json(indent=2), encoding="utf-8"
-                )
+    write_lock = threading.Lock()
+    all_runs: list[RunRecord] = []
+
+    def _run_job(task: Task, run_num: int, mode: str) -> Optional[RunRecord]:
+        try:
+            record = run_pipeline(
+                task=task,
+                mode=mode,
+                run_number=run_num,
+                llm=llm,
+                validator=validator,
+                max_attempts=config.retry.max_attempts,
+            )
+        except Exception as e:
+            print(f"ERROR [{task.task_id} {mode} run{run_num}]: {e}")
+            return None
+
+        # Persist immediately so a crash doesn't lose work
+        filename = f"{mode}_run_{run_num:02d}.json"
+        out_path = runs_dir / task.task_id / filename
+        with write_lock:
+            out_path.write_text(record.model_dump_json(indent=2), encoding="utf-8")
+        return record
+
+    started_at = time.time()
+    completed = 0
+    if concurrency == 1:
+        # Sequential path (backward compatible, easier debugging)
+        for task, run_num, mode in jobs:
+            record = _run_job(task, run_num, mode)
+            completed += 1
+            if record is not None:
                 all_runs.append(record)
-
                 status = "OK" if record.success else "FAIL"
-                print(f"{status} (attempts: {record.total_attempts}, "
-                      f"{record.duration_seconds:.1f}s)")
+                print(f"  [{completed}/{len(jobs)}] {task.task_id} {mode} "
+                      f"run{run_num}: {status} ({record.duration_seconds:.1f}s)")
+    else:
+        # Concurrent path
+        with ThreadPoolExecutor(max_workers=concurrency) as pool:
+            futures = {
+                pool.submit(_run_job, task, run_num, mode): (task, run_num, mode)
+                for task, run_num, mode in jobs
+            }
+            for fut in as_completed(futures):
+                task, run_num, mode = futures[fut]
+                record = fut.result()
+                completed += 1
+                if record is not None:
+                    all_runs.append(record)
+                    status = "OK" if record.success else "FAIL"
+                    elapsed = time.time() - started_at
+                    rate = completed / elapsed if elapsed > 0 else 0.0
+                    eta = (len(jobs) - completed) / rate if rate > 0 else 0.0
+                    print(f"  [{completed}/{len(jobs)}] {task.task_id} {mode} "
+                          f"run{run_num}: {status} ({record.duration_seconds:.1f}s) "
+                          f"| ETA {eta/60:.1f}min")
 
     # Compute statistics
     baseline_runs = [r for r in all_runs if r.mode == "baseline"]

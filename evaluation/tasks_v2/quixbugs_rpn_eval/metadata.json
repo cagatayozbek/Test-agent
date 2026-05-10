@@ -1,0 +1,16 @@
+{
+  "task_id": "quixbugs_rpn_eval",
+  "task_name": "rpn_eval",
+  "difficulty": "hard",
+  "bug_type": "swapped_operands",
+  "bug_description": "Operatör çağrısı `op(token, a, b)`; doğrusu `op(token, b, a)`. Çıkarma/bölme gibi non-commutative ops yanlış sıralı uygulanır.",
+  "test_hint": "Çıkarma ya da bölme içeren bir RPN ifadesi (örn. ['5', '1', '-'] sonucu 4) ile test et.",
+  "expected_failure_signal": "Çıkarma/bölme sonucu işaret veya değer olarak ters çıkar.",
+  "source": "QuixBugs",
+  "source_url": "https://github.com/jkoppel/QuixBugs",
+  "tags": [
+    "quixbugs",
+    "algorithmic",
+    "hard"
+  ]
+}
