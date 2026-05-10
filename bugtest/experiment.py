@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Optional
 
 from bugtest.config import Config, load_config
+from bugtest.cost import estimate_cost_usd
 from bugtest.llm import create_client
 from bugtest.models import (
     ExperimentSummary,
@@ -59,7 +60,6 @@ def load_tasks(
             Task(
                 task_id=task_id,
                 buggy_code=(buggy_dir / "source.py").read_text(encoding="utf-8"),
-                fixed_code=(fixed_dir / "source.py").read_text(encoding="utf-8"),
                 buggy_dir=buggy_dir,
                 fixed_dir=fixed_dir,
                 metadata=meta,
@@ -84,7 +84,7 @@ def _wilson_ci(successes: int, total: int, z: float = 1.96) -> tuple[float, floa
     return max(0.0, center - margin), min(1.0, center + margin)
 
 
-def _compute_mode_stats(mode: str, runs: list[RunRecord]) -> ModeStats:
+def _compute_mode_stats(mode: str, runs: list[RunRecord], model_id: str = "") -> ModeStats:
     total = len(runs)
     successes = sum(1 for r in runs if r.success)
     brtr = successes / total if total > 0 else 0.0
@@ -97,6 +97,16 @@ def _compute_mode_stats(mode: str, runs: list[RunRecord]) -> ModeStats:
         else None
     )
 
+    total_p = sum(r.prompt_tokens_total for r in runs)
+    total_c = sum(r.completion_tokens_total for r in runs)
+    total_dur = sum(r.duration_seconds for r in runs)
+    total_cost = sum(
+        estimate_cost_usd(model_id, r.prompt_tokens_total, r.completion_tokens_total)
+        for r in runs
+    )
+    avg_cost = total_cost / total if total else 0.0
+    avg_cost_succ = (total_cost / successes) if successes else None
+
     return ModeStats(
         mode=mode,
         total_runs=total,
@@ -105,15 +115,15 @@ def _compute_mode_stats(mode: str, runs: list[RunRecord]) -> ModeStats:
         brtr_ci_lower=round(ci_low, 4),
         brtr_ci_upper=round(ci_high, 4),
         avg_attempts_to_success=round(avg_att, 2) if avg_att else None,
-        avg_prompt_tokens=round(
-            sum(r.prompt_tokens_total for r in runs) / max(total, 1), 1
-        ),
-        avg_completion_tokens=round(
-            sum(r.completion_tokens_total for r in runs) / max(total, 1), 1
-        ),
-        avg_duration_seconds=round(
-            sum(r.duration_seconds for r in runs) / max(total, 1), 2
-        ),
+        avg_prompt_tokens=round(total_p / max(total, 1), 1),
+        avg_completion_tokens=round(total_c / max(total, 1), 1),
+        avg_duration_seconds=round(total_dur / max(total, 1), 2),
+        total_prompt_tokens=total_p,
+        total_completion_tokens=total_c,
+        total_duration_seconds=round(total_dur, 2),
+        total_cost_usd=round(total_cost, 6),
+        avg_cost_per_run_usd=round(avg_cost, 6),
+        avg_cost_per_success_usd=round(avg_cost_succ, 6) if avg_cost_succ is not None else None,
     )
 
 
@@ -160,13 +170,17 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
     tasks = load_tasks(tasks_dir, config.tasks.include, config.tasks.exclude)
     print(f"Loaded {len(tasks)} tasks from {tasks_dir}")
 
-    # Setup results directory
-    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    experiment_id = f"{config.experiment.name}_{ts}"
+    # Setup results directory — honour fixed experiment_id for resume support
+    if config.experiment.experiment_id:
+        experiment_id = config.experiment.experiment_id
+    else:
+        ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+        experiment_id = f"{config.experiment.name}_{ts}"
     results_dir = Path(config.results.dir) / experiment_id
     runs_dir = results_dir / "runs"
 
     all_runs: list[RunRecord] = []
+    skipped_already_done = 0
 
     for task in tasks:
         task_out = runs_dir / task.task_id
@@ -176,6 +190,24 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
         for run_num in range(1, config.experiment.runs_per_task + 1):
             for mode in config.experiment.modes:
                 label = f"[{mode}] run {run_num}/{config.experiment.runs_per_task}"
+                filename = f"{mode}_run_{run_num:02d}.json"
+                target = task_out / filename
+
+                # Resume support: if this exact run is already on disk, load + skip
+                if target.exists():
+                    try:
+                        existing = RunRecord.model_validate_json(
+                            target.read_text(encoding="utf-8")
+                        )
+                        all_runs.append(existing)
+                        skipped_already_done += 1
+                        status = "OK" if existing.success else "FAIL"
+                        print(f"  {label}... SKIP (already done: {status})")
+                        continue
+                    except Exception:
+                        # corrupt file — fall through and re-run
+                        pass
+
                 print(f"  {label}...", end=" ", flush=True)
 
                 try:
@@ -186,13 +218,13 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
                         llm=llm,
                         validator=validator,
                         max_attempts=config.retry.max_attempts,
+                        model_id=config.model.model_id,
                     )
                 except Exception as e:
                     print(f"ERROR: {e} — skipping")
                     continue
 
-                filename = f"{mode}_run_{run_num:02d}.json"
-                (task_out / filename).write_text(
+                target.write_text(
                     record.model_dump_json(indent=2), encoding="utf-8"
                 )
                 all_runs.append(record)
@@ -205,11 +237,13 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
     baseline_runs = [r for r in all_runs if r.mode == "baseline"]
     agentic_runs = [r for r in all_runs if r.mode == "agentic"]
     adaptive_runs = [r for r in all_runs if r.mode == "adaptive"]
+    deep_runs = [r for r in all_runs if r.mode == "deep"]
 
     mode_stats = [
-        _compute_mode_stats("baseline", baseline_runs),
-        _compute_mode_stats("agentic", agentic_runs),
-        _compute_mode_stats("adaptive", adaptive_runs),
+        _compute_mode_stats("baseline", baseline_runs, config.model.model_id),
+        _compute_mode_stats("agentic", agentic_runs, config.model.model_id),
+        _compute_mode_stats("adaptive", adaptive_runs, config.model.model_id),
+        _compute_mode_stats("deep", deep_runs, config.model.model_id),
     ]
 
     task_ids = sorted(set(r.task_id for r in all_runs))
@@ -261,6 +295,9 @@ def _print_results(summary: ExperimentSummary) -> None:
         print(f"    Avg tokens: {ms.avg_prompt_tokens:.0f} prompt, "
               f"{ms.avg_completion_tokens:.0f} completion")
         print(f"    Avg duration: {ms.avg_duration_seconds:.1f}s")
+        print(f"    Total cost: ${ms.total_cost_usd:.4f}  (avg/run ${ms.avg_cost_per_run_usd:.4f})")
+        if ms.avg_cost_per_success_usd is not None:
+            print(f"    Cost per success: ${ms.avg_cost_per_success_usd:.4f}")
 
     print(f"\n  {'Task':<35} {'Baseline':>10} {'Agentic':>10} {'Delta':>10}")
     print(f"  {'-' * 65}")
