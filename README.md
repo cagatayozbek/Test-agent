@@ -8,8 +8,9 @@ four models:
 - `openai/gpt-oss-120b`
 - `meta/llama-4-maverick-17b-128e-instruct`
 
-The main entrypoint is `run_pilot_all.py`. It runs the same selected task set
-across the configured models and modes, then writes results under `results/`.
+The main entrypoint is `run_pilot_all.py`. It runs the branch-assigned task set
+from `bugtest_config.yaml` across the configured models and modes, then writes
+results under `results/`.
 
 ## What This Branch Contains
 
@@ -80,8 +81,8 @@ Notes:
 - retry budget
 - per-run task directory
 
-On split branches, `tasks.include` may already be pre-filled with that branch's
-assigned 25 tasks.
+On split branches, `tasks.include` is pre-filled with that branch's assigned
+25 tasks.
 
 ## How To Run
 
@@ -126,8 +127,10 @@ This writes aggregate CSV and Markdown summaries under `results/`.
 
 ## Practical Notes
 
-- `run_pilot_all.py` sorts BugsInPy tasks by buggy source size and picks the
-  first `--limit` tasks from that ordering.
+- If `bugtest_config.yaml` contains `tasks.include`, `run_pilot_all.py` uses
+  that assigned list first. `--limit` only caps that list.
+- If `tasks.include` is empty, the runner falls back to smallest-source-first
+  dataset ordering.
 - The pilot runner rewrites `bugtest_config.yaml` during execution for each
   model. That is expected behavior.
 - Existing matching `results/bugsinpy_pilot_*` directories are reused for
