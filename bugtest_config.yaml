@@ -18,4 +18,29 @@ retry:
 tasks:
   dir: evaluation/tasks_v2_bugsinpy
   exclude: []
-  include: []
+  include:
+    - bugsinpy_keras_16
+    - bugsinpy_keras_23
+    - bugsinpy_keras_3
+    - bugsinpy_keras_25
+    - bugsinpy_pandas_22
+    - bugsinpy_pandas_18
+    - bugsinpy_ansible_8
+    - bugsinpy_luigi_25
+    - bugsinpy_keras_33
+    - bugsinpy_keras_28
+    - bugsinpy_keras_7
+    - bugsinpy_luigi_1
+    - bugsinpy_luigi_21
+    - bugsinpy_PySnooper_2
+    - bugsinpy_keras_39
+    - bugsinpy_luigi_5
+    - bugsinpy_ansible_15
+    - bugsinpy_keras_9
+    - bugsinpy_luigi_2
+    - bugsinpy_luigi_28
+    - bugsinpy_luigi_23
+    - bugsinpy_luigi_9
+    - bugsinpy_fastapi_15
+    - bugsinpy_keras_13
+    - bugsinpy_keras_27
