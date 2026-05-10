@@ -94,6 +94,7 @@ class RunRecord(BaseModel):
     completion_tokens_total: int = 0
     duration_seconds: float = 0.0
     timestamp: str = ""
+    error: Optional[str] = None  # populated when pipeline raised before completion
 
 
 # --- Experiment Summary ---

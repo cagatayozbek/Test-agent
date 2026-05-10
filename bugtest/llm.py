@@ -14,6 +14,64 @@ def _backoff_seconds(attempt: int) -> float:
     return base + jitter
 
 
+def _extract_json_object(text: str) -> str:
+    """Strip markdown fences and trailing prose so small LLMs' replies parse.
+
+    Smaller chat models often ignore "respond with JSON only" and wrap the
+    object in ```json fences or add explanatory text. Pull out the first
+    `{...}` substring whose braces balance.
+    """
+    import re
+    text = text.strip()
+    # Try as-is first
+    try:
+        json.loads(text)
+        return text
+    except json.JSONDecodeError:
+        pass
+    # Strip ```json ... ``` or ``` ... ``` fences
+    m = re.search(r"```(?:json)?\s*\n?(.*?)```", text, re.DOTALL)
+    if m:
+        candidate = m.group(1).strip()
+        try:
+            json.loads(candidate)
+            return candidate
+        except json.JSONDecodeError:
+            text = candidate  # fall through to brace scan
+    # Find first '{' and matching close
+    start = text.find("{")
+    if start < 0:
+        return text
+    depth = 0
+    in_str = False
+    esc = False
+    for i in range(start, len(text)):
+        c = text[i]
+        if esc:
+            esc = False
+            continue
+        if c == "\\":
+            esc = True
+            continue
+        if c == '"':
+            in_str = not in_str
+            continue
+        if in_str:
+            continue
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                candidate = text[start:i + 1]
+                try:
+                    json.loads(candidate)
+                    return candidate
+                except json.JSONDecodeError:
+                    return candidate  # let caller surface the error
+    return text
+
+
 @dataclass(frozen=True)
 class LLMResponse:
     text: str
@@ -60,13 +118,22 @@ class NvidiaClient:
     ) -> LLMResponse:
         """Generate JSON output. Instructs model via prompt to return JSON."""
         json_system = system + "\n\nIMPORTANT: Respond with valid JSON only. No markdown, no explanation."
-        return self._call_with_retry(
+        resp = self._call_with_retry(
             messages=[
                 {"role": "system", "content": json_system},
                 {"role": "user", "content": user},
             ],
             temperature=temperature,
             max_tokens=max_output_tokens,
+        )
+        # Smaller chat models (e.g. llama-3.1-8b) often ignore "JSON only" and
+        # wrap output in markdown fences or trail prose. Extract the JSON object
+        # so downstream pydantic validation succeeds.
+        return LLMResponse(
+            text=_extract_json_object(resp.text),
+            prompt_tokens=resp.prompt_tokens,
+            completion_tokens=resp.completion_tokens,
+            total_tokens=resp.total_tokens,
         )
 
     def _call_with_retry(self, messages, temperature, max_tokens) -> LLMResponse:
@@ -165,7 +232,7 @@ class ClaudeCodeClient:
         return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
 
     def generate_json(self, *, system: str, user: str, **kwargs) -> LLMResponse:
-        import subprocess, json as _json, re
+        import subprocess
         json_system = system + "\n\nIMPORTANT: Respond with valid JSON only. No markdown fences, no explanation."
         prompt = f"{json_system}\n\n{user}"
         result = subprocess.run(
@@ -176,31 +243,18 @@ class ClaudeCodeClient:
             timeout=120,
         )
         raw = result.stdout.strip()
-        # --output-format json wraps response in {"result":"..."}
+        # --output-format json wraps response in {"result": "..."}
         try:
-            wrapper = _json.loads(raw)
+            wrapper = json.loads(raw)
             text = wrapper.get("result", raw) if isinstance(wrapper, dict) else raw
-        except _json.JSONDecodeError:
+        except json.JSONDecodeError:
             text = raw
-        # Extract JSON object from markdown or mixed text
-        text = text.strip()
-        # Try as-is first
-        try:
-            _json.loads(text)
-            return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
-        except _json.JSONDecodeError:
-            pass
-        # Try extracting from markdown fences
-        m = re.search(r"```(?:json)?\s*\n(.*?)```", text, re.DOTALL)
-        if m:
-            text = m.group(1).strip()
-        else:
-            # Try finding first { ... last }
-            start = text.find("{")
-            end = text.rfind("}")
-            if start != -1 and end != -1:
-                text = text[start:end + 1]
-        return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
+        return LLMResponse(
+            text=_extract_json_object(text),
+            prompt_tokens=0,
+            completion_tokens=0,
+            total_tokens=0,
+        )
 
 
 def create_client(model_id: str, api_key: str, provider: str = "auto"):

@@ -199,8 +199,25 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
                 max_attempts=config.retry.max_attempts,
             )
         except Exception as e:
+            # Synthesize a failed RunRecord so BRTR denominators stay correct
+            # (otherwise an Analyzer schema-validation crash would silently drop
+            # the run, biasing rates upward).
             print(f"ERROR [{task.task_id} {mode} run{run_num}]: {e}")
-            return None
+            record = RunRecord(
+                task_id=task.task_id,
+                mode=mode,
+                run_number=run_num,
+                success=False,
+                attempts=[],
+                total_attempts=0,
+                attempts_to_success=None,
+                analysis=None,
+                prompt_tokens_total=0,
+                completion_tokens_total=0,
+                duration_seconds=0.0,
+                timestamp=_now_iso(),
+                error=f"{type(e).__name__}: {e}",
+            )
 
         # Persist immediately so a crash doesn't lose work
         filename = f"{mode}_run_{run_num:02d}.json"

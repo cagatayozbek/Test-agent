@@ -373,3 +373,111 @@ from both buggy and fixed versions), token usage, duration, and CodeAnalysis
 - Mistral Medium 3.5: baseline+agentic (20260430_XXXXXX), adaptive (20260501_112310)
 - Llama 4 Maverick: baseline+agentic (20260430_XXXXXX), adaptive (20260501_112331)
 - GPT-OSS 120B: baseline+agentic (20260430_XXXXXX), adaptive (20260501_120830)
+
+---
+
+## 10. QuixBugs Benchmark (Pre-Registered Expansion, 2026-05)
+
+The 12-task suite in §2.5 is a curated bug corpus assembled by the authors; it
+is small (n=12) and has heterogeneous metadata. To address the
+sample-size and selection-bias concerns of a thesis-grade evaluation, this
+section reports a separate, **pre-registered** benchmark on
+[QuixBugs](https://github.com/jkoppel/QuixBugs) (Lin et al., SPLASH 2017
+Companion).
+
+The pre-registration document is in `PREREGISTRATION.md` (committed before any
+QuixBugs benchmark run; commit `f440114`). It fixes models, modes, runs,
+exclusions, metrics, and analysis plan up-front.
+
+### 10.1 Coverage
+
+- **31 tasks** under `evaluation/tasks_v2/quixbugs_*/`, byte-identical to the
+  upstream `python_programs/<name>.py` and `correct_python_programs/<name>.py`.
+- **9 graph algorithms excluded** (`breadth_first_search`,
+  `depth_first_search`, `detect_cycle`, `minimum_spanning_tree`,
+  `reverse_linked_list`, `shortest_path_length`, `shortest_path_lengths`,
+  `shortest_paths`, `topological_ordering`) because they depend on a shared
+  `node.py` helper that is not part of this repo's single-file task layout.
+  This benchmark is therefore "non-graph QuixBugs Python", not all of
+  QuixBugs.
+- Difficulty / `bug_type` annotations are the authors' attribution, recorded
+  in `scripts/convert_quixbugs.py:TASK_CATALOG`. Distribution: **7 easy / 13
+  medium / 11 hard**, **29 distinct `bug_type` categories** across the 31
+  tasks.
+
+### 10.2 Models, runs, modes
+
+- 5 models (Llama 3.1 8B, Llama 3.3 70B, Llama 4 Maverick, GPT-OSS 120B,
+  Claude Sonnet 4.6).
+- `runs_per_task = 5`, `max_attempts = 3`, three modes (baseline, agentic,
+  adaptive).
+- Total planned runs: 2 325; effective after the pre-registered
+  `gpt-oss-120b × agentic` exclusion: **2 170**.
+
+#### Pre-registered exclusions (justification before run)
+
+1. **`mistralai/mistral-medium-3.5-128b` — fully excluded.** In the smoke run
+   on 2026-05-10 (`smoke_summary.json`, parent commit `29905ed`), this model
+   produced 2 errors with 0.67 / 0.67 / 1.0 BRTR across the 3 modes — a
+   pattern of infrastructure instability rather than capability variation.
+2. **`openai/gpt-oss-120b × agentic` — combination excluded.** In the same
+   smoke, every agentic attempt failed with
+   `pydantic.ValidationError` on `CodeAnalysis`. The model's `baseline` and
+   `adaptive` modes worked normally and remain in the benchmark.
+
+Both exclusions are encoded in `scripts/run_full_benchmark.py` and discussed
+in §10.4.
+
+### 10.3 Concurrency
+
+The full benchmark runs through `bugtest.experiment.run_experiment` with
+`experiment.concurrency = 8`, executing (task, run, mode) jobs through a
+`ThreadPoolExecutor`. Per-job `RunRecord`s are persisted immediately so an
+interrupted run keeps completed work. Exponential backoff with jitter
+(`bugtest.llm._backoff_seconds`) mitigates thundering-herd risk on rate-limited
+endpoints.
+
+The sequential path remains available for debugging by setting
+`concurrency: 1`.
+
+### 10.4 Threats to validity
+
+- **Data contamination.** QuixBugs has been public on GitHub since 2017 and is
+  almost certainly present in every evaluated LLM's training corpus.
+  Reported BRTR values must be read as **upper bounds on capability**, not as
+  out-of-distribution measurements. Mitigations such as paraphrased or
+  mutated variants of QuixBugs programs are out of scope for this thesis and
+  flagged as future work.
+- **Difficulty / bug_type labels are author-attributed.** The QuixBugs paper
+  does not provide a difficulty taxonomy. Labels were assigned before any
+  full-benchmark run, with reasoning recorded in `TASK_CATALOG`. They are
+  used only as post-hoc stratification covariates and are never shown to the
+  LLM.
+- **Excluded graph algorithms (n = 9).** This benchmark covers 31/40 of the
+  Python QuixBugs corpus. The 9 excluded tasks share a `node.py` helper that
+  would require pipeline changes; including them is future work.
+- **No non-LLM baseline.** Comparisons are LLM-vs-LLM; absolute BRTR cannot
+  be interpreted as "tool quality." Pynguin / Hypothesis / random fuzzer
+  baselines were considered and explicitly deferred.
+- **Concurrency-induced variance.** `duration_seconds` and token-count means
+  are affected by parallel execution and rate-limit backoff. BRTR is a binary
+  per-run outcome and is not affected.
+- **Single subprocess pytest validator.** `bugtest.validator.Validator` runs
+  pytest in a fresh tempdir per call. Tests that interact with the
+  filesystem, time, or randomness can in principle behave differently
+  between buggy and fixed runs even when semantically identical; in
+  practice all 31 QuixBugs algorithms are pure functions, so this risk is
+  negligible for this benchmark.
+
+### 10.5 Reading the QuixBugs results
+
+Once the run is complete, results land in
+`results/analysis_vs_direct_<timestamp>/` per model, with the cross-model
+aggregate in `full_benchmark_summary.json` at the repo root. The analysis
+plan in `PREREGISTRATION.md §8` lists the tables and figures to be reported.
+
+A success criterion for the difficulty stratification: **at least one model ×
+mode × hard-task cell must show BRTR < 1.0**. If every cell is at the
+ceiling, either the difficulty labelling is wrong or the benchmark cannot
+discriminate the models — this needs to be reported honestly rather than
+glossed over.
