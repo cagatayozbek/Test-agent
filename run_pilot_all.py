@@ -3,8 +3,8 @@
 Streams progress to stdout so the user can watch it live.
 
 Usage:
-    python run_pilot_all.py            # default 30 tasks, 1 run each
-    python run_pilot_all.py --limit 100 --runs 1
+    python run_pilot_all.py            # use config-assigned task set
+    python run_pilot_all.py --limit 25 --runs 1
 """
 
 from __future__ import annotations
@@ -33,6 +33,16 @@ MODELS = [
 MODES = ["baseline", "adaptive", "deep"]
 
 
+def _discover_all_tasks() -> list[str]:
+    candidate_dirs = [
+        p for p in TASKS_DIR.iterdir()
+        if p.is_dir() and (p / "buggy" / "source.py").exists()
+    ]
+    # Sort by buggy source size ascending so smallest tasks run first.
+    candidate_dirs.sort(key=lambda p: (p / "buggy" / "source.py").stat().st_size)
+    return [p.name for p in candidate_dirs]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, default=30,
@@ -51,16 +61,33 @@ def main():
         print(f"!! tasks dir missing: {TASKS_DIR}")
         sys.exit(2)
 
-    candidate_dirs = [p for p in TASKS_DIR.iterdir() if p.is_dir() and (p / "buggy" / "source.py").exists()]
-    # Sort by buggy source size ascending so smallest tasks run first.
-    candidate_dirs.sort(key=lambda p: (p / "buggy" / "source.py").stat().st_size)
-    all_tasks = [p.name for p in candidate_dirs]
+    with CONFIG_PATH.open("r") as f:
+        base_config = yaml.safe_load(f)
+
+    assigned_tasks = list(base_config.get("tasks", {}).get("include", []) or [])
+    all_tasks = _discover_all_tasks()
     if not all_tasks:
         print("!! no tasks found")
         sys.exit(2)
 
-    pilot_tasks = all_tasks[: args.limit]
-    print(f"== {len(pilot_tasks)} pilot tasks (out of {len(all_tasks)} total, smallest-first)")
+    if assigned_tasks:
+        missing = [task for task in assigned_tasks if task not in all_tasks]
+        if missing:
+            print("!! assigned tasks missing from dataset:")
+            for task in missing:
+                print(f"   - {task}")
+            sys.exit(2)
+        selected_pool = assigned_tasks
+        selection_note = "config-assigned"
+    else:
+        selected_pool = all_tasks
+        selection_note = "smallest-first dataset order"
+
+    pilot_tasks = selected_pool[: args.limit]
+    print(
+        f"== {len(pilot_tasks)} pilot tasks "
+        f"(pool={len(selected_pool)}, source={selection_note})"
+    )
 
     models = MODELS
     if args.models:
