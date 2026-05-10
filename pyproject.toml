@@ -5,7 +5,9 @@ description = "Multi-agent bug-revealing test generation framework"
 requires-python = ">=3.9"
 dependencies = [
     "google-genai>=1.0",
+    "openai>=1.0",
     "pydantic>=2.0",
+    "pytest>=7.0",
     "pyyaml>=6.0",
 ]
 

@@ -1,147 +1,149 @@
-# BugTest: Does Code Analysis Improve LLM Test Generation?
+# BugTest BugsInPy Pilot
 
-An experimental framework for measuring whether a structured code analysis step
-improves an LLM's ability to generate bug-revealing tests.
+This branch is prepared for running BugsInPy test-generation experiments with
+four models:
 
-## Research Question
+- `sonnet`
+- `opus`
+- `openai/gpt-oss-120b`
+- `meta/llama-4-maverick-17b-128e-instruct`
 
-> Does adding a structured code analysis step before test generation improve
-> the LLM's Bug-Revealing Test Rate (BRTR)?
+The main entrypoint is `run_pilot_all.py`. It runs the same selected task set
+across the configured models and modes, then writes results under `results/`.
 
-## Experimental Design
+## What This Branch Contains
 
-```
-Baseline:  Task --> TestWriter --> Validate (retry x3)
-Agentic:   Task --> Analyzer --> TestWriter --> Validate (retry x3)
-```
+- `bugtest/`: experiment framework
+- `evaluation/tasks_v2_bugsinpy/`: local BugsInPy-derived benchmark tasks
+- `run_pilot_all.py`: multi-model pilot runner
+- `aggregate_pilot.py`: aggregate per-model summaries after runs finish
 
-**Fair comparison**: Both modes use the **same** TestWriter prompt, **same**
-retry budget, and **same** deterministic validator. The only variable is whether
-the TestWriter receives a structured code analysis as additional context.
+This cleaned branch intentionally excludes reports, PDFs, logs, and unrelated
+older task artifacts.
 
-### How Validation Works
+## Experiment Modes
 
-A test is **bug-revealing** if and only if:
-- It **FAILS** on the buggy code (exposes the bug)
-- It **PASSES** on the fixed code (confirms the fix)
-
-Validation is purely deterministic (pytest + return code). No LLM judgment.
-
-## Architecture
-
-```
-bugtest/
-  config.py          # Experiment configuration
-  llm.py             # Gemini client (google.genai SDK, system_instruction)
-  models.py          # All Pydantic data models
-  agents/
-    protocol.py      # Agent base class
-    analyzer.py      # Code analysis agent (produces CodeAnalysis)
-    test_writer.py   # Test generation agent (produces pytest code)
-  validator.py       # Pytest-based validation (deterministic, no LLM)
-  pipeline.py        # Pipeline orchestrator with retry logic
-  experiment.py      # Batch runner with statistical output
-  __main__.py        # CLI entry point
-
-evaluation/
-  tasks_v2/          # 12 evaluation tasks
-    <task_id>/
-      buggy/source.py
-      fixed/source.py
-      metadata.json
+```text
+baseline: TestWriter -> Validate
+adaptive: TestWriter -> Validate, then Analyzer-assisted retry after failure
+deep:     Tool-augmented agent loop with deterministic validation
 ```
 
-### Agents
+Validation is deterministic:
 
-| Agent | Role | Output |
-|---|---|---|
-| **Analyzer** | Reads buggy code, identifies the bug | Structured `CodeAnalysis` JSON |
-| **TestWriter** | Writes pytest test targeting the bug | Python test code |
+- test must fail on `buggy/source.py`
+- test must pass on `fixed/source.py`
 
-### Key Design Decisions
+## Requirements
 
-1. **Gemini SDK**: Uses `system_instruction` properly (not string concatenation)
-2. **Fair baseline**: Same retry budget, same prompt, same validator
-3. **Deterministic validation**: pytest return codes, no LLM-as-judge
-4. **Interleaved execution**: baseline/agentic runs alternate to control for temporal bias
-5. **Statistical rigor**: Wilson score 95% confidence intervals for BRTR
+- Python 3.9+
+- `pytest`
+- Claude Code CLI available as `claude` for `sonnet` / `opus`
+- NVIDIA API key for OSS model runs
 
-## Setup
+## Install
+
+Using `pip`:
 
 ```bash
-pip install google-genai pydantic pyyaml
+pip install -e .
 ```
 
-Set your API key:
+Or without editable install:
+
 ```bash
-export GOOGLE_API_KEY=your_key_here
+pip install pydantic pyyaml pytest openai google-genai
 ```
 
-## Usage
+## Environment
 
-### Quick Test (1 run per task)
+Set the keys you plan to use:
 
-Edit `bugtest_config.yaml`:
-```yaml
-experiment:
-  runs_per_task: 1
-tasks:
-  include: ["boundary_threshold"]
+```bash
+export CLAUDE_CODE_KEY=claude-code
+export NVIDIA_API_KEY=your_nvidia_key
 ```
+
+Notes:
+
+- `CLAUDE_CODE_KEY=claude-code` is the expected value in this repo when Claude
+  Code CLI auth is already configured locally.
+- `run_pilot_all.py` reads `NVIDIA_API_KEY` from the environment and falls back
+  to `.env` if present.
+
+## Default Config
+
+`bugtest_config.yaml` controls:
+
+- selected task subset via `tasks.include`
+- default modes
+- retry budget
+- per-run task directory
+
+On split branches, `tasks.include` may already be pre-filled with that branch's
+assigned 25 tasks.
+
+## How To Run
+
+Run the branch's assigned tasks across all 4 models:
+
+```bash
+python run_pilot_all.py --limit 25 --runs 1
+```
+
+Run only selected models:
+
+```bash
+python run_pilot_all.py --limit 25 --runs 1 --models sonnet opus
+```
+
+Run only selected modes:
+
+```bash
+python run_pilot_all.py --limit 25 --runs 1 --modes baseline adaptive deep
+```
+
+Run the current config directly without the pilot wrapper:
 
 ```bash
 python -m bugtest bugtest_config.yaml
 ```
 
-### Full Experiment
+## Results
+
+Outputs are written to `results/<experiment_id>/`:
+
+- `summary.json`: aggregated metrics
+- `runs/<task_id>/...json`: individual run records
+
+After multiple model runs complete:
 
 ```bash
-python -m bugtest bugtest_config.yaml
+python aggregate_pilot.py
 ```
 
-Results are saved to `results/<experiment_id>/`:
-- `summary.json` — Aggregated statistics with BRTR and confidence intervals
-- `runs/<task_id>/` — Individual run records with test code and validation output
-- `config.yaml` — Snapshot of experiment configuration
+This writes aggregate CSV and Markdown summaries under `results/`.
 
-## Evaluation Tasks
+## Practical Notes
 
-12 tasks spanning different bug categories:
+- `run_pilot_all.py` sorts BugsInPy tasks by buggy source size and picks the
+  first `--limit` tasks from that ordering.
+- The pilot runner rewrites `bugtest_config.yaml` during execution for each
+  model. That is expected behavior.
+- Existing matching `results/bugsinpy_pilot_*` directories are reused for
+  resume support.
 
-| Category | Tasks |
-|---|---|
-| Boundary/Logic | boundary_threshold, off_by_one_loop |
-| Concurrency | async_race_condition |
-| State Management | cache_invalidation |
-| Error Handling | swallowed_exception |
-| Type Safety | type_coercion_price, null_handling_profile |
-| Real-world (BugsInPy) | black, pysnooper, thefuck (x2), tqdm |
+## Key Files
 
-## Metrics
-
-- **BRTR** (Bug-Revealing Test Rate): Proportion of runs producing a bug-revealing test
-- **Attempts-to-success**: Average retries needed (lower = better)
-- **Token cost**: Prompt + completion tokens per run per mode
-- **Wilson score 95% CI**: Proper confidence intervals for small sample sizes
-
-## Configuration
-
-See `bugtest_config.yaml` for all options:
-
-```yaml
-experiment:
-  name: "analysis_vs_direct"
-  runs_per_task: 10
-
-model:
-  model_id: "gemini-2.5-flash"
-  temperature: 1.0
-
-retry:
-  max_attempts: 3
-  test_timeout_seconds: 30
+```text
+bugtest/config.py
+bugtest/experiment.py
+bugtest/llm.py
+bugtest/pipeline.py
+bugtest/validator.py
+bugtest/agents/deep_agent.py
+bugtest/deep/
+run_pilot_all.py
+aggregate_pilot.py
+bugtest_config.yaml
 ```
-
-## License
-
-MIT
