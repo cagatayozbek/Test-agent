@@ -1,10 +1,10 @@
 experiment:
-  name: bugsinpy_pilot
-  runs_per_task: 3
   modes:
-    - baseline
-    - adaptive
-    - deep
+  - baseline
+  - adaptive
+  - deep
+  name: bugsinpy_pilot_sonnet
+  runs_per_task: 3
 model:
   api_key_env: CLAUDE_CODE_KEY
   max_output_tokens: 4096
@@ -13,34 +13,13 @@ model:
 results:
   dir: results
 retry:
-  max_attempts: 3
+  max_attempts: 2
   test_timeout_seconds: 30
 tasks:
   dir: evaluation/tasks_v2_bugsinpy
   exclude: []
   include:
-    - bugsinpy_fastapi_7
-    - bugsinpy_keras_43
-    - bugsinpy_ansible_12
-    - bugsinpy_PySnooper_1
-    - bugsinpy_cookiecutter_4
-    - bugsinpy_ansible_4
-    - bugsinpy_PySnooper_3
-    - bugsinpy_fastapi_16
-    - bugsinpy_luigi_12
-    - bugsinpy_cookiecutter_2
-    - bugsinpy_keras_17
-    - bugsinpy_keras_14
-    - bugsinpy_luigi_26
-    - bugsinpy_luigi_13
-    - bugsinpy_ansible_11
-    - bugsinpy_luigi_32
-    - bugsinpy_luigi_29
-    - bugsinpy_fastapi_5
-    - bugsinpy_ansible_7
-    - bugsinpy_black_10
-    - bugsinpy_cookiecutter_3
-    - bugsinpy_ansible_2
-    - bugsinpy_keras_22
-    - bugsinpy_luigi_17
-    - bugsinpy_fastapi_14
+  - bugsinpy_fastapi_7
+  - bugsinpy_keras_43
+  - bugsinpy_ansible_12
+  - bugsinpy_cookiecutter_4

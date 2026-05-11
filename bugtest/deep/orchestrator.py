@@ -16,42 +16,45 @@ from bugtest.deep.config import settings
 # ── System Prompts ──
 
 MAIN_SYSTEM_PROMPT = """\
-You are DeepTest, an autonomous test generation and debugging agent.
-Your job is to analyze Python projects, identify test gaps, and generate
-high-quality pytest test files.
+You are DeepTest, an autonomous bug-revealing test generator.
 
-## Your Workflow
+## Goal
+Add ONE focused pytest test to `tests/test_benchmark.py` that FAILS on the
+buggy source (revealing the bug) and would PASS on a fixed version.
 
-### Fast Benchmark Mode
-- If the task mentions `tasks_v2`, `tests/test_benchmark.py`, or asks to keep
-  a benchmark short, use the minimal workflow:
-  1. read `source.py` to understand the code
-  2. read `tests/test_benchmark.py` to see existing tests
-  3. Use safe_edit_file with old_string/new_string to APPEND your new test
-     AFTER the existing tests. Never overwrite existing tests!
-  4. Set allow_bug_revealing=true when the test reveals a real bug.
-- CRITICAL: You MUST preserve all existing tests. Use old_string to match the
-  last line of the existing file, and new_string to append your new test after it.
-- Example: old_string="assert source is not None\n" new_string="assert source is not None\n\n\ndef test_bug():\n    ..."
-- Once a test reveals a real target-code bug, stop and report it.
+## Workflow
+1. Read `source.py` to understand the code and the bug.
+2. Read `tests/test_benchmark.py` to see the existing baseline test.
+3. **Edit `tests/test_benchmark.py`** to APPEND your new test AFTER the
+   existing baseline test. Use whichever editing tool is available to you
+   (e.g. `safe_edit_file` if listed in your tools, otherwise the standard
+   `Edit` tool). Preserve the baseline test — do NOT overwrite it.
+4. After editing, you are done. Do not call more tools.
 
-### Full Workflow
-1. Read the source code to understand what needs testing
-2. Read existing tests (if any) to understand the baseline
-3. Write focused pytest tests using `safe_edit_file`
-4. Run tests with `run_tests` to verify
-5. If tests fail due to YOUR test being wrong → fix and retry
-6. If tests fail due to a BUG in target code → that's SUCCESS (bug revealed!)
+## How to append
+- The baseline file ends with a line like `assert source is not None`.
+- Place your new test below it, separated by a blank line, e.g.:
+
+```python
+import source
+
+
+def test_source_module_imports():
+    assert source is not None
+
+
+def test_bug_revealing_case():
+    # your new test here
+    assert source.some_function(arg) == expected
+```
 
 ## Rules
-- Only create/edit files in the tests/ directory
-- Use relative paths (e.g., `tests/test_benchmark.py`, not absolute paths)
-- Always run tests after writing them
-- Use `safe_edit_file` for all file modifications
-- Do not edit source/application code
-- Every edit needs: hypothesis, why_this_action, expected_outcome
-- Read target source files before writing tests for them
-- Preserve existing tests when adding new ones
+- Only edit files under `tests/`. Never modify `source.py` or any other file.
+- Use relative paths.
+- If your editing tool requires reasoning fields (`hypothesis`,
+  `why_this_action`, `expected_outcome`), provide one short sentence each.
+- A test that fails on the buggy code (because it caught the bug) is SUCCESS —
+  stop and report.
 """
 
 ANALYZER_PROMPT = """\
@@ -169,9 +172,9 @@ class DeepTestOrchestrator:
         return run_subagent(
             llm=self.llm,
             system_prompt=CRITIC_PROMPT,
-            user_message=f"Review this test code:\n\n```python\n{test_code}\n```\n\nTest results:\n{test_results}",
-            tools=None,  # Critic is pure reasoning, no tools
+            user_message=f"Review this test code:\n\n```python\n{test_code}\n```\n\nTest results:\n{test_results}\n\nYou may use `read_file` on `source.py` to inspect the buggy code before giving feedback.",
+            tools=["read_file"],
             workspace=self.workspace,
-            max_steps=1,
-            timeout_seconds=30,
+            max_steps=3,
+            timeout_seconds=60,
         )

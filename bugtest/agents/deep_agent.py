@@ -69,23 +69,41 @@ def _build_workspace(task: Task) -> Path:
 
 
 def _build_problem(task: Task, critic_feedback: Optional[str] = None) -> str:
+    # Local import to avoid circular import with bugtest.pipeline.
+    from bugtest.pipeline import _build_source_view, _focus_terms
+
     bug_desc = task.metadata.bug_description or "(no description)"
     hint = task.metadata.test_hint or ""
+    # Same bug-focused source view that baseline/adaptive get, so deep mode
+    # doesn't have to discover the relevant region from full source on its own.
+    source_view = _build_source_view(task)
+    focus = _focus_terms(task)
     parts = [
-        f"Task: Add a focused bug-revealing pytest test for tasks_v2 task '{task.task_id}'.",
+        f"Task: Add a focused bug-revealing pytest test for task '{task.task_id}'.",
         f"Target test file: `tests/test_benchmark.py`.",
         f"Known bug description: {bug_desc}",
         f"Hint: {hint}",
+    ]
+    if focus:
+        parts.append(f"Focus on these names from the bug description: {', '.join(focus)}.")
+    parts += [
+        "",
+        "--- source.py (bug-focused excerpt, full file also available via Read) ---",
+        source_view,
+        "--- end source.py excerpt ---",
         "",
         "Steps:",
-        "1. Read source.py to understand the code and the bug.",
+        "1. The relevant region of source.py is shown above. Read the full",
+        "   source.py with the Read tool only if you need more context.",
         "2. Read tests/test_benchmark.py to see the existing baseline test.",
-        "3. Use safe_edit_file with old_string/new_string to APPEND your new test",
-        "   AFTER the existing tests. Use old_string to match the last line of the",
-        "   existing file, new_string to add your test after it. Set",
-        "   allow_bug_revealing=true.",
-        "4. The new test must FAIL on the buggy code (revealing the bug).",
-        "Keep the test focused. Do NOT overwrite existing tests.",
+        "3. Edit tests/test_benchmark.py to APPEND your new test AFTER the existing",
+        "   baseline test. Use whichever editing tool is available to you (the",
+        "   `safe_edit_file` tool if you see it listed, otherwise the standard",
+        "   `Edit` tool). Do NOT overwrite the baseline test.",
+        "4. The new test must FAIL on the buggy code (revealing the bug). A failure",
+        "   from your test catching the bug is SUCCESS — stop and report.",
+        "Target the SPECIFIC behavior described in the bug description above —",
+        "do not test unrelated behavior of the same module.",
     ]
     if critic_feedback:
         parts.extend([

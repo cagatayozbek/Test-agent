@@ -140,16 +140,32 @@ class GeminiClient:
 
 
 _CLAUDE_LIMIT_SIGNALS = (
-    "usage limit", "rate limit", "rate_limit", "5-hour limit", "5 hour limit",
-    "weekly limit", "limit_exceeded", "limit exceeded", "too many requests",
-    "429", "quota", "you've reached", "you have reached", "claude usage limit",
-    "max requests", "approaching usage limit",
+    "rate_limit_exceeded", "rate limit exceeded",
+    "5-hour limit", "5 hour limit", "weekly limit",
+    "usage limit reached", "quota exceeded",
+    "too many requests",
 )
 
 
 def _claude_is_limit_error(stdout: str, stderr: str, returncode: int) -> bool:
-    text_l = ((stdout or "") + " " + (stderr or "")).lower()
-    return any(sig in text_l for sig in _CLAUDE_LIMIT_SIGNALS)
+    # Trust Claude CLI's JSON envelope first — if it marks success, ignore any
+    # limit-like phrases that may appear in the model's response text.
+    import json as _json
+    try:
+        wrapper = _json.loads((stdout or "").strip())
+        if isinstance(wrapper, dict):
+            if wrapper.get("is_error") is False and wrapper.get("subtype") == "success":
+                return False
+    except (_json.JSONDecodeError, ValueError):
+        pass
+    if returncode == 0:
+        return False
+    stderr_l = (stderr or "").lower()
+    matched = next((sig for sig in _CLAUDE_LIMIT_SIGNALS if sig in stderr_l), None)
+    if matched:
+        print(f"  [limit-detect] matched signal '{matched}' in stderr (rc={returncode})", flush=True)
+        return True
+    return False
 
 
 def _claude_sleep_through_limit(attempt: int, max_attempts: int = 6,

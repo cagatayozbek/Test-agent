@@ -134,8 +134,13 @@ class Agent:
                 )
 
             # Has tool calls → execute them
-            # Some models only support single tool calls — take first only
-            tool_calls = response.tool_calls[:1] if len(response.tool_calls) > 1 else response.tool_calls
+            # OSS models on NVIDIA build sometimes mishandle parallel tool calls;
+            # Claude handles them correctly. Cap only for non-Claude models.
+            is_claude = self.llm.model.startswith("claude:")
+            if is_claude:
+                tool_calls = response.tool_calls
+            else:
+                tool_calls = response.tool_calls[:1]
 
             # Add assistant message with tool calls
             assistant_msg = {"role": "assistant", "content": response.content or ""}

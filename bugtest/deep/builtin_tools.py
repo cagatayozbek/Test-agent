@@ -125,6 +125,7 @@ def safe_edit_file(
 
     # Resolve content
     final_content = new_content
+    fallback_note = None
     if final_content is None:
         if old_string is None or new_string is None:
             return "Error: Provide new_content, or both old_string and new_string."
@@ -132,11 +133,27 @@ def safe_edit_file(
         if not full_path.exists():
             return "Error: old_string/new_string edits require an existing file."
         current = full_path.read_text(encoding="utf-8")
-        if old_string not in current:
-            return "Error: old_string not found in file."
-        if current.count(old_string) != 1:
-            return "Error: old_string must match exactly one location."
-        final_content = current.replace(old_string, new_string, 1)
+        if old_string in current:
+            if current.count(old_string) != 1:
+                return "Error: old_string must match exactly one location."
+            final_content = current.replace(old_string, new_string, 1)
+        else:
+            # Fallback chain: tolerate whitespace mismatch, then append-only
+            stripped = old_string.strip()
+            if stripped and current.count(stripped) == 1:
+                idx = current.find(stripped)
+                final_content = current[:idx] + new_string + current[idx + len(stripped):]
+                fallback_note = "old_string matched after stripping whitespace"
+            elif new_string.startswith(old_string):
+                # Agent intent: keep old text + add suffix → append just the suffix
+                suffix = new_string[len(old_string):]
+                sep = "" if current.endswith("\n") else "\n"
+                final_content = current + sep + suffix
+                fallback_note = "old_string not found; appended new content as suffix"
+            else:
+                sep = "" if current.endswith("\n") else "\n"
+                final_content = current + sep + new_string
+                fallback_note = "old_string not found; appended new_string verbatim"
 
     # Write file directly and run tests (simplified — no revert on bug-revealing)
     full_path = workspace_path / relative
@@ -147,17 +164,22 @@ def safe_edit_file(
     runner = TestRunner(workspace)
     test_result = runner.run_quick(".")
 
+    def _with_note(payload: dict) -> dict:
+        if fallback_note:
+            payload["fallback_note"] = fallback_note
+        return payload
+
     if test_result.passed:
-        return json.dumps({
+        return json.dumps(_with_note({
             "status": "success",
             "path": str(relative),
             "message": f"Tests pass ({test_result.num_passed} passed)",
             "tests_after": {"passed": True, "num_passed": test_result.num_passed, "num_failed": 0},
-        }, indent=2)
+        }), indent=2)
 
     if allow_bug_revealing and test_result.exit_code == 1 and test_result.num_failed > 0:
         # Bug-revealing: test fails because of target code bug — this is success!
-        return json.dumps({
+        return json.dumps(_with_note({
             "status": "success",
             "path": str(relative),
             "message": f"Bug-revealing test added ({test_result.num_passed} passed, {test_result.num_failed} failed — reveals target bug)",
@@ -167,7 +189,7 @@ def safe_edit_file(
                 "num_failed": test_result.num_failed,
                 "failure_messages": test_result.failure_messages[:3],
             },
-        }, indent=2)
+        }), indent=2)
 
     if test_result.exit_code not in (0, 1):
         # Syntax/collection error — revert
@@ -175,15 +197,15 @@ def safe_edit_file(
             "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n",
             encoding="utf-8"
         )
-        return json.dumps({
+        return json.dumps(_with_note({
             "status": "failed",
             "path": str(relative),
             "message": f"Reverted — syntax/collection error (exit={test_result.exit_code})",
             "reverted": True,
             "stderr": test_result.stderr[:500],
-        }, indent=2)
+        }), indent=2)
 
-    return json.dumps({
+    return json.dumps(_with_note({
         "status": "success",
         "path": str(relative),
         "message": f"Written ({test_result.num_passed} passed, {test_result.num_failed} failed)",
@@ -191,7 +213,7 @@ def safe_edit_file(
             "passed": False, "num_passed": test_result.num_passed,
             "num_failed": test_result.num_failed,
         },
-    }, indent=2)
+    }), indent=2)
 
 
 @register_tool(name="analyze_project", description="AST analysis of the workspace project.")

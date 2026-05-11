@@ -28,17 +28,35 @@ class LLMResponse:
     completion_tokens: int = 0
 
 
+# Tight signals — only high-confidence rate-limit phrases. Vague terms removed
+# to avoid false positives from model response text.
 _LIMIT_SIGNALS = (
-    "usage limit", "rate limit", "rate_limit", "5-hour limit", "5 hour limit",
-    "weekly limit", "limit_exceeded", "limit exceeded", "too many requests",
-    "429", "quota", "you've reached", "you have reached", "claude usage limit",
-    "max requests", "approaching usage limit",
+    "rate_limit_exceeded", "rate limit exceeded",
+    "5-hour limit", "5 hour limit", "weekly limit",
+    "usage limit reached", "quota exceeded",
+    "too many requests",
 )
 
 
-def _is_claude_limit_error(stdout: str, stderr: str) -> bool:
-    text_l = ((stdout or "") + " " + (stderr or "")).lower()
-    return any(sig in text_l for sig in _LIMIT_SIGNALS)
+def _is_claude_limit_error(stdout: str, stderr: str, returncode: int = 0) -> bool:
+    # Trust Claude CLI's JSON envelope first — if it marks success, ignore any
+    # limit-like phrases that may legitimately appear in the model's response.
+    try:
+        wrapper = json.loads((stdout or "").strip())
+        if isinstance(wrapper, dict):
+            if wrapper.get("is_error") is False and wrapper.get("subtype") == "success":
+                return False
+    except (json.JSONDecodeError, ValueError):
+        pass
+    # Require non-zero exit AND a high-confidence signal in stderr.
+    if returncode == 0:
+        return False
+    stderr_l = (stderr or "").lower()
+    matched = next((sig for sig in _LIMIT_SIGNALS if sig in stderr_l), None)
+    if matched:
+        print(f"  [limit-detect] matched signal '{matched}' in stderr (rc={returncode})", flush=True)
+        return True
+    return False
 
 
 def _sleep_through_claude_limit(attempt: int, wait_minutes: int = 60) -> None:
@@ -167,10 +185,11 @@ class LLMClient:
                     capture_output=True,
                     text=True,
                     timeout=900,
+                    cwd=self.workspace,  # so relative paths in the prompt resolve to the task workspace
                 )
             except subprocess.TimeoutExpired:
                 raise TimeoutError("Claude CLI timed out after 900s")
-            if _is_claude_limit_error(result.stdout, result.stderr):
+            if _is_claude_limit_error(result.stdout, result.stderr, result.returncode):
                 _sleep_through_claude_limit(limit_attempt)
                 continue
             break
