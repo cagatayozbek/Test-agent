@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_1",
+  "bug_description": "Bug in def verify_collections(collections, search_paths, apis, validate_certs, ignore_e",
+  "test_hint": "Bug touches file lib/ansible/galaxy/collection.py (project ansible, bug #1).",
+  "source_project": "ansible",
+  "source_bug_number": "1",
+  "buggy_commit": "25c5388fdec9e56517a93feb5e8d485680946c25",
+  "fixed_commit": "343ffaa18b63c92e182b16c3ad84b8d81ca4df69",
+  "patched_file": "lib/ansible/galaxy/collection.py"
+}

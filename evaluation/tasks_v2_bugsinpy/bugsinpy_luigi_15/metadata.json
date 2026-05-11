@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_15",
+  "bug_description": "Bug in class SimpleTaskState(object):",
+  "test_hint": "Bug touches file luigi/scheduler.py (project luigi, bug #15).",
+  "source_project": "luigi",
+  "source_bug_number": "15",
+  "buggy_commit": "a822f55d4d7c5adf5b9e3b64f23189d8305e9bf9",
+  "fixed_commit": "736c0f1352463c20ece84f2f651bcd37fd2b88ae",
+  "patched_file": "luigi/scheduler.py"
+}

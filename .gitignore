@@ -27,3 +27,5 @@ Thumbs.db
 # Project
 results/
 *.jsonl
+.tmp/
+logs/

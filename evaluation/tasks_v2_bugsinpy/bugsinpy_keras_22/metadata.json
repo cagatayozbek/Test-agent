@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_22",
+  "bug_description": "Bug in class InputLayer(Layer):",
+  "test_hint": "Bug touches file keras/engine/input_layer.py (project keras, bug #22).",
+  "source_project": "keras",
+  "source_bug_number": "22",
+  "buggy_commit": "54386efa549f850dff13f79fc3af67799a4e5d4f",
+  "fixed_commit": "ee02d256611b17d11e37b86bd4f618d7f2a37d84",
+  "patched_file": "keras/engine/input_layer.py"
+}

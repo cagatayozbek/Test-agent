@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_25",
+  "bug_description": "Bug in def _preprocess_numpy_input(x, data_format, mode):",
+  "test_hint": "Bug touches file keras/applications/imagenet_utils.py (project keras, bug #25).",
+  "source_project": "keras",
+  "source_bug_number": "25",
+  "buggy_commit": "b470a595f7278acf5e7e47521edf25d3c4f479f1",
+  "fixed_commit": "84e168b5fa55933e02e767ff7c86fcc0232aecc6",
+  "patched_file": "keras/applications/imagenet_utils.py"
+}

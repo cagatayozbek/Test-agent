@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_16",
+  "bug_description": "Bug in class CentralPlannerScheduler(Scheduler):",
+  "test_hint": "Bug touches file luigi/scheduler.py (project luigi, bug #16).",
+  "source_project": "luigi",
+  "source_bug_number": "16",
+  "buggy_commit": "e38392a1381dd8daee0f180f0ac7f651edb88e0c",
+  "fixed_commit": "96f2b5a97c2cc5f63bea0f422c57f93dcec0ebac",
+  "patched_file": "luigi/scheduler.py"
+}

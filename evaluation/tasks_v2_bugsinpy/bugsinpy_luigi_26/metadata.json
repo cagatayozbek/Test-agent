@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_26",
+  "bug_description": "Bug in class HadoopJarJobRunner(luigi.contrib.hadoop.JobRunner):",
+  "test_hint": "Bug touches file luigi/contrib/hadoop_jar.py (project luigi, bug #26).",
+  "source_project": "luigi",
+  "source_bug_number": "26",
+  "buggy_commit": "ed351ca3c3baf3657de584db08dfe0414fa000a3",
+  "fixed_commit": "13673fd488c25325db633b1d49e664fb937fabc2",
+  "patched_file": "luigi/contrib/hadoop_jar.py"
+}

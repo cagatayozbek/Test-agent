@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_1",
+  "bug_description": "Bug in class MetricsHandler(tornado.web.RequestHandler):",
+  "test_hint": "Bug touches file luigi/server.py (project luigi, bug #1).",
+  "source_project": "luigi",
+  "source_bug_number": "1",
+  "buggy_commit": "1164eb6b85b8a70f596dbb99452bec513e72c12e",
+  "fixed_commit": "aec5dc2ed8db53fc282a0bd24aabe59031b6d1ba",
+  "patched_file": "luigi/server.py"
+}

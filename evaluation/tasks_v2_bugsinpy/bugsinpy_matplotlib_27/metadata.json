@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_matplotlib_27",
+  "bug_description": "Bug in class ColorbarBase(_ColorbarMappableDummy):",
+  "test_hint": "Bug touches file lib/matplotlib/colorbar.py (project matplotlib, bug #27).",
+  "source_project": "matplotlib",
+  "source_bug_number": "27",
+  "buggy_commit": "11269123d516cda369764a081ddfb8c1a10ddc53",
+  "fixed_commit": "02f25d60139b160fd9b321802b4a2f6c6f3f8672",
+  "patched_file": "lib/matplotlib/colorbar.py"
+}

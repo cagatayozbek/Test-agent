@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from typing import Optional
 
 import yaml
 from pydantic import BaseModel, Field
@@ -33,6 +34,9 @@ class ExperimentMeta(BaseModel):
     name: str = "analysis_vs_direct"
     runs_per_task: int = 10
     modes: list[str] = ["baseline", "agentic", "adaptive"]
+    # Optional fixed experiment id; lets restart re-use an existing results dir
+    # so per-run JSONs that already exist are skipped (resume support).
+    experiment_id: Optional[str] = None
 
 
 class Config(BaseModel):

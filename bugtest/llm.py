@@ -17,9 +17,10 @@ class LLMResponse:
 class NvidiaClient:
     """Client for NVIDIA Build (OpenAI-compatible API)."""
 
-    def __init__(self, model_id: str, api_key: str, base_url: str = "https://integrate.api.nvidia.com/v1", max_retries: int = 5):
+    def __init__(self, model_id: str, api_key: str, base_url: str = "https://integrate.api.nvidia.com/v1", max_retries: int = 3):
         from openai import OpenAI
-        self._client = OpenAI(base_url=base_url, api_key=api_key)
+        # Tight timeout so a hung request doesn't stall the whole pilot.
+        self._client = OpenAI(base_url=base_url, api_key=api_key, timeout=60.0)
         self._model_id = model_id
         self._max_retries = max_retries
 
@@ -70,6 +71,7 @@ class NvidiaClient:
                     messages=messages,
                     temperature=temperature,
                     max_tokens=max_tokens,
+                    timeout=60.0,  # per-call timeout regardless of TCP state
                 )
                 usage = resp.usage
                 return LLMResponse(
@@ -137,6 +139,29 @@ class GeminiClient:
         raise RuntimeError("Retry loop exited unexpectedly")
 
 
+_CLAUDE_LIMIT_SIGNALS = (
+    "usage limit", "rate limit", "rate_limit", "5-hour limit", "5 hour limit",
+    "weekly limit", "limit_exceeded", "limit exceeded", "too many requests",
+    "429", "quota", "you've reached", "you have reached", "claude usage limit",
+    "max requests", "approaching usage limit",
+)
+
+
+def _claude_is_limit_error(stdout: str, stderr: str, returncode: int) -> bool:
+    text_l = ((stdout or "") + " " + (stderr or "")).lower()
+    return any(sig in text_l for sig in _CLAUDE_LIMIT_SIGNALS)
+
+
+def _claude_sleep_through_limit(attempt: int, max_attempts: int = 6,
+                                 wait_minutes: int = 60) -> None:
+    """Sleep wait_minutes (default 60) up to max_attempts times, with progress
+    prints — meant to outwait Claude Max's 5-hour rolling window."""
+    import time as _time
+    print(f"  !! claude limit detected — sleeping {wait_minutes}min "
+          f"(limit-retry {attempt + 1}/{max_attempts})", flush=True)
+    _time.sleep(wait_minutes * 60)
+
+
 class ClaudeCodeClient:
     """Client that calls Claude Code CLI (claude -p) for Max subscription users."""
 
@@ -144,17 +169,40 @@ class ClaudeCodeClient:
         self._model = model_id  # sonnet, opus, haiku
 
     def generate(self, *, system: str, user: str, **kwargs) -> LLMResponse:
-        import subprocess
+        import subprocess, json as _json, time as _time
         prompt = f"{system}\n\n{user}"
-        result = subprocess.run(
-            ["claude", "-p", "--model", self._model],
-            input=prompt,
-            capture_output=True,
-            text=True,
-            timeout=120,
-        )
-        text = result.stdout.strip()
-        return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
+        cmd = ["claude", "-p", "--model", self._model, "--output-format", "json"]
+        result = None
+        for limit_attempt in range(6):
+            result = subprocess.run(
+                cmd,
+                input=prompt,
+                capture_output=True,
+                text=True,
+                timeout=900,
+            )
+            if _claude_is_limit_error(result.stdout, result.stderr, result.returncode):
+                _claude_sleep_through_limit(limit_attempt)
+                continue
+            break
+        # Inter-call cooldown to avoid Anthropic-side queueing under Max sub
+        _time.sleep(3)
+        raw = (result.stdout or "").strip()
+        text, p_tok, c_tok = raw, 0, 0
+        try:
+            wrapper = _json.loads(raw)
+            if isinstance(wrapper, dict):
+                text = wrapper.get("result", raw)
+                usage = wrapper.get("usage") or {}
+                p_tok = (
+                    usage.get("input_tokens", 0)
+                    + usage.get("cache_creation_input_tokens", 0)
+                    + usage.get("cache_read_input_tokens", 0)
+                )
+                c_tok = usage.get("output_tokens", 0)
+        except _json.JSONDecodeError:
+            pass
+        return LLMResponse(text=text, prompt_tokens=p_tok, completion_tokens=c_tok, total_tokens=p_tok + c_tok)
 
     def generate_json(self, *, system: str, user: str, **kwargs) -> LLMResponse:
         import subprocess, json as _json, re
@@ -165,7 +213,7 @@ class ClaudeCodeClient:
             input=prompt,
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=300,
         )
         raw = result.stdout.strip()
         # --output-format json wraps response in {"result":"..."}

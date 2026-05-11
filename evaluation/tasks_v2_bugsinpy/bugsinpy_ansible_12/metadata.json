@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_12",
+  "bug_description": "Bug in RETURN = \"\"\"",
+  "test_hint": "Bug touches file lib/ansible/plugins/lookup/env.py (project ansible, bug #12).",
+  "source_project": "ansible",
+  "source_bug_number": "12",
+  "buggy_commit": "05e2e1806162393d76542a75c2520c7d61c2d855",
+  "fixed_commit": "2fa8f9cfd80daf32c7d222190edf7cfc7234582a",
+  "patched_file": "lib/ansible/plugins/lookup/env.py"
+}

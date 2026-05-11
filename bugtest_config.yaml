@@ -1,10 +1,11 @@
 experiment:
-  name: analysis_vs_direct
-  runs_per_task: 3
+  experiment_id: bugsinpy_pilot_sonnet_20260509_231937
   modes:
-    - baseline
-    - agentic
-    - adaptive
+  - baseline
+  - adaptive
+  - deep
+  name: bugsinpy_pilot_sonnet
+  runs_per_task: 3
 model:
   api_key_env: CLAUDE_CODE_KEY
   max_output_tokens: 4096
@@ -16,6 +17,56 @@ retry:
   max_attempts: 3
   test_timeout_seconds: 30
 tasks:
-  dir: evaluation/tasks_v2
+  dir: evaluation/tasks_v2_bugsinpy
   exclude: []
-  include: []
+  include:
+  - bugsinpy_fastapi_7
+  - bugsinpy_keras_43
+  - bugsinpy_ansible_12
+  - bugsinpy_PySnooper_1
+  - bugsinpy_cookiecutter_4
+  - bugsinpy_ansible_4
+  - bugsinpy_PySnooper_3
+  - bugsinpy_fastapi_16
+  - bugsinpy_luigi_12
+  - bugsinpy_cookiecutter_2
+  - bugsinpy_keras_17
+  - bugsinpy_keras_14
+  - bugsinpy_luigi_26
+  - bugsinpy_luigi_13
+  - bugsinpy_ansible_11
+  - bugsinpy_luigi_32
+  - bugsinpy_luigi_29
+  - bugsinpy_fastapi_5
+  - bugsinpy_ansible_7
+  - bugsinpy_black_10
+  - bugsinpy_cookiecutter_3
+  - bugsinpy_ansible_2
+  - bugsinpy_keras_22
+  - bugsinpy_luigi_17
+  - bugsinpy_fastapi_14
+  - bugsinpy_keras_16
+  - bugsinpy_keras_23
+  - bugsinpy_keras_3
+  - bugsinpy_keras_25
+  - bugsinpy_pandas_22
+  - bugsinpy_pandas_18
+  - bugsinpy_ansible_8
+  - bugsinpy_luigi_25
+  - bugsinpy_keras_33
+  - bugsinpy_keras_28
+  - bugsinpy_keras_7
+  - bugsinpy_luigi_1
+  - bugsinpy_luigi_21
+  - bugsinpy_PySnooper_2
+  - bugsinpy_keras_39
+  - bugsinpy_luigi_5
+  - bugsinpy_ansible_15
+  - bugsinpy_keras_9
+  - bugsinpy_luigi_2
+  - bugsinpy_luigi_28
+  - bugsinpy_luigi_23
+  - bugsinpy_luigi_9
+  - bugsinpy_fastapi_15
+  - bugsinpy_keras_13
+  - bugsinpy_keras_27

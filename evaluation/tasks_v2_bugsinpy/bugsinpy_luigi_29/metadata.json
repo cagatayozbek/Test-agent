@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_29",
+  "bug_description": "Bug in class Register(abc.ABCMeta):",
+  "test_hint": "Bug touches file luigi/task_register.py (project luigi, bug #29).",
+  "source_project": "luigi",
+  "source_bug_number": "29",
+  "buggy_commit": "07efdd9136966ffe143ea57e15b1a57b5698fd5a",
+  "fixed_commit": "2898a2d2d178499435892d7a69bb1dfc90c70b29",
+  "patched_file": "luigi/task_register.py"
+}

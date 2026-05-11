@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_2",
+  "bug_description": "Bug in class _Alpha:",
+  "test_hint": "Bug touches file lib/ansible/utils/version.py (project ansible, bug #2).",
+  "source_project": "ansible",
+  "source_bug_number": "2",
+  "buggy_commit": "de59b17c7f69d5cfb72479b71776cc8b97e29a6b",
+  "fixed_commit": "5b9418c06ca6d51507468124250bb58046886be6",
+  "patched_file": "lib/ansible/utils/version.py"
+}

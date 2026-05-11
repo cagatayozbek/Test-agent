@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_16",
+  "bug_description": "Bug in class LinuxHardware(Hardware):",
+  "test_hint": "Bug touches file lib/ansible/module_utils/facts/hardware/linux.py (project ansible, bug #16).",
+  "source_project": "ansible",
+  "source_bug_number": "16",
+  "buggy_commit": "2a9964ede8b2b77a62a005f6f5abc964b2819b0e",
+  "fixed_commit": "93d9d640380252084855885ad27873b4377898ec",
+  "patched_file": "lib/ansible/module_utils/facts/hardware/linux.py"
+}

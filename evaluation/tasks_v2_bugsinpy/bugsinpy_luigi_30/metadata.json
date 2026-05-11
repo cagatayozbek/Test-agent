@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_30",
+  "bug_description": "Bug in class TaskProcess(AbstractTaskProcess):",
+  "test_hint": "Bug touches file luigi/worker.py (project luigi, bug #30).",
+  "source_project": "luigi",
+  "source_bug_number": "30",
+  "buggy_commit": "97fa4afea3748f0d714482d2c97990bb467bc9d1",
+  "fixed_commit": "f1e3fb48fe9877e511a2d079636fd75eaaba4573",
+  "patched_file": "luigi/worker.py"
+}

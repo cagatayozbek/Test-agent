@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_25",
+  "bug_description": "Bug in class S3CopyToTable(rdbms.CopyToTable):",
+  "test_hint": "Bug touches file luigi/contrib/redshift.py (project luigi, bug #25).",
+  "source_project": "luigi",
+  "source_bug_number": "25",
+  "buggy_commit": "d7ec31609c88503391d12d65b6037f397feff816",
+  "fixed_commit": "040bbc9ef8d1703b64d13c60f271fded63e13601",
+  "patched_file": "luigi/contrib/redshift.py"
+}

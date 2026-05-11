@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_27",
+  "bug_description": "Bug in class Parameter(object):",
+  "test_hint": "Bug touches file luigi/parameter.py (project luigi, bug #27).",
+  "source_project": "luigi",
+  "source_bug_number": "27",
+  "buggy_commit": "69dfec33dc7c34d551ddc71742fa9c847295b01f",
+  "fixed_commit": "fa17292ebb54c8b83db8cf0995618a2a057103a6",
+  "patched_file": "luigi/parameter.py"
+}

@@ -1,0 +1,13 @@
+{
+  "accepted": 100,
+  "examined": 202,
+  "skipped": {
+    "multifile": 7,
+    "fetch_fail": 1,
+    "too_big": 68,
+    "import_fail": 26,
+    "no_change": 0,
+    "delegating": 0
+  },
+  "tasks_dir": "/Users/ozdemir/Desktop/TestAgents/Test-agent/evaluation/tasks_v2_bugsinpy"
+}

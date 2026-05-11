@@ -6,7 +6,7 @@
     "pytest_cmd": "pytest tests/shells/test_fish.py::TestFish::test_info",
     "difficulty": "easy",
     "bug_type": "version_parsing",
-    "bug_description": "fish version helper used an interactive command and returned the whole string instead of the version token.",
-    "expected_failure_signal": "Reported version still contains prefix like 'fish, version'.",
-    "test_hint": "Assert that fish_info returns only the numeric version even if the runner yields a prefixed string."
+    "bug_description": "fish version helper used an interactive command and kept the raw command output instead of extracting the version token for the final Fish Shell label.",
+    "expected_failure_signal": "Reported version still contains raw command text like 'fish, version'.",
+    "test_hint": "Assert that fish_info returns the normalized shell label. For command output 'fish, version 3.1.2\\n', the fixed version returns 'Fish Shell 3.1.2', while the buggy version returns 'Fish Shell fish, version 3.1.2'."
 }

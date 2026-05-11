@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_fastapi_7",
+  "bug_description": "Bug in async def request_validation_exception_handler(",
+  "test_hint": "Bug touches file fastapi/exception_handlers.py (project fastapi, bug #7).",
+  "source_project": "fastapi",
+  "source_bug_number": "7",
+  "buggy_commit": "cc4c13e4ae3f65fc76c23962b316df4a60e0c7e0",
+  "fixed_commit": "19c77e35bdde33aeec1eb2cfa680f95016492b69",
+  "patched_file": "fastapi/exception_handlers.py"
+}

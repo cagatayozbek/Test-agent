@@ -1,6 +1,6 @@
 {
     "task_name": "swallowed_exception",
     "bug_description": "A bare 'except:' block swallows a NameError (missing function), making it look like a valid failure case (returning None).",
-    "expected_failure_signal": "The function returns None instead of raising NameError, or the test expects a valid return but gets None due to the hidden error.",
-    "test_hint": "Call the function with valid input. The buggy version returns None (hiding the crash), the fixed version works (or exposes the crash if not fixed)."
+    "expected_failure_signal": "The buggy version returns None for a valid transaction because a bare except swallows the hidden helper failure.",
+    "test_hint": "Call the function with valid input and assert the amount including tax is returned. For input 'item123:100', the fixed version returns 118.0. The buggy version returns None."
 }

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_14",
+  "bug_description": "Bug in def top_k_categorical_accuracy(y_true, y_pred, k=5):",
+  "test_hint": "Bug touches file keras/metrics.py (project keras, bug #14).",
+  "source_project": "keras",
+  "source_bug_number": "14",
+  "buggy_commit": "98465b85d020f1326bcef7632f1261a9a7a84e92",
+  "fixed_commit": "02bc5010a04bb11c8e91835cc9775c8149dec754",
+  "patched_file": "keras/metrics.py"
+}

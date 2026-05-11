@@ -11,10 +11,10 @@ def test_get_display_name_with_null_profile():
     # This input data mimics the scenario where the profile is explicitly None.
     user_data_with_null_profile = {'id': 1, 'profile': None}
 
-    # In the buggy code, this call will raise a TypeError: 'NoneType' object is not subscriptable
-    # A correct fix should handle this gracefully by returning a default value like None.
+    # In the buggy code, this call will raise a TypeError: 'NoneType' object is not subscriptable.
+    # The fixed implementation handles this gracefully by returning the default display name.
     result = get_user_display_name(user_data_with_null_profile)
 
-    assert result is None, (
-        f"Expected None for a user with a null profile, but got {result!r}"
+    assert result == "Anonymous", (
+        f"Expected default display name for a user with a null profile, but got {result!r}"
     )

@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_9",
+  "bug_description": "Bug in def _partition_tasks(worker):",
+  "test_hint": "Bug touches file luigi/execution_summary.py (project luigi, bug #9).",
+  "source_project": "luigi",
+  "source_bug_number": "9",
+  "buggy_commit": "f7e0b7710fd8b12f27625b1efb62a8fde6e206c4",
+  "fixed_commit": "b7115974c3deadf77113686248b39567cb67e38f",
+  "patched_file": "luigi/execution_summary.py"
+}

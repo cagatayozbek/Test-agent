@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_35",
+  "bug_description": "Bug in class ImageDataGenerator(object):",
+  "test_hint": "Bug touches file keras/preprocessing/image.py (project keras, bug #35).",
+  "source_project": "keras",
+  "source_bug_number": "35",
+  "buggy_commit": "06eaeebecfb73c23bfd531013ca172ee3bf5069c",
+  "fixed_commit": "738819de0b7e6bc45abed8d0640f02b81c6ac4e9",
+  "patched_file": "keras/preprocessing/image.py"
+}

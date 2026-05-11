@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_matplotlib_19",
+  "bug_description": "Bug in class RadialLocator(mticker.Locator):",
+  "test_hint": "Bug touches file lib/matplotlib/projections/polar.py (project matplotlib, bug #19).",
+  "source_project": "matplotlib",
+  "source_bug_number": "19",
+  "buggy_commit": "47cfa35fc01af26498f493affcd8cb42b8fb2fc8",
+  "fixed_commit": "670d5614e884be8013cf5dbb2160b4d33314d771",
+  "patched_file": "lib/matplotlib/projections/polar.py"
+}

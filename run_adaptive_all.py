@@ -9,12 +9,10 @@ import yaml
 
 # (model_id, api_key_env)
 MODELS = [
-    # NVIDIA models only (Claude already completed)
-    ("meta/llama-3.3-70b-instruct", "NVIDIA_API_KEY"),
-    ("meta/llama-4-maverick-17b-128e-instruct", "NVIDIA_API_KEY"),
-    ("mistralai/mistral-medium-3.5-128b", "NVIDIA_API_KEY"),
+    ("sonnet", "CLAUDE_CODE_KEY"),
+    ("opus", "CLAUDE_CODE_KEY"),
     ("openai/gpt-oss-120b", "NVIDIA_API_KEY"),
-    ("meta/llama-3.1-8b-instruct", "NVIDIA_API_KEY"),
+    ("meta/llama-4-maverick-17b-128e-instruct", "NVIDIA_API_KEY"),
 ]
 
 config_path = Path("bugtest_config.yaml")

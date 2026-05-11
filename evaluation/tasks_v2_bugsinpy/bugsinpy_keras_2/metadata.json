@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_2",
+  "bug_description": "Bug in def l2_normalize(x, axis=-1):",
+  "test_hint": "Bug touches file keras/backend/numpy_backend.py (project keras, bug #2).",
+  "source_project": "keras",
+  "source_bug_number": "2",
+  "buggy_commit": "2f55055a9f053b35fa721d3eb75dd07ea5a5f1e3",
+  "fixed_commit": "c24d16af155e20976bdf61e468ba760408e676ff",
+  "patched_file": "keras/backend/numpy_backend.py"
+}

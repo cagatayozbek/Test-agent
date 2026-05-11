@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_14",
+  "bug_description": "Bug in class scheduler(Config):",
+  "test_hint": "Bug touches file luigi/scheduler.py (project luigi, bug #14).",
+  "source_project": "luigi",
+  "source_bug_number": "14",
+  "buggy_commit": "f7219c38121098d464011a094156d99b5b320362",
+  "fixed_commit": "43f2de2646c8e1efd6e17ffabbb11accc21e70b6",
+  "patched_file": "luigi/scheduler.py"
+}

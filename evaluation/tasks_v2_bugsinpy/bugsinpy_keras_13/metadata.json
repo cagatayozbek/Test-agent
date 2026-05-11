@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_13",
+  "bug_description": "Bug in def fit_generator(model,",
+  "test_hint": "Bug touches file keras/engine/training_generator.py (project keras, bug #13).",
+  "source_project": "keras",
+  "source_bug_number": "13",
+  "buggy_commit": "2bfd1f2c950df5fc3f40b903c1966f1b0a48bee4",
+  "fixed_commit": "a07253d8269e1b750f0a64767cc9a07da8a3b7ea",
+  "patched_file": "keras/engine/training_generator.py"
+}

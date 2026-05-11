@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_3",
+  "bug_description": "Bug in class TupleParameter(ListParameter):",
+  "test_hint": "Bug touches file luigi/parameter.py (project luigi, bug #3).",
+  "source_project": "luigi",
+  "source_bug_number": "3",
+  "buggy_commit": "a0f1db01ddab5b4b2bda3fbe58bad09a6d94a7b4",
+  "fixed_commit": "3a0bfbff69addfb3be1107adab3d4914bcae3e4b",
+  "patched_file": "luigi/parameter.py"
+}

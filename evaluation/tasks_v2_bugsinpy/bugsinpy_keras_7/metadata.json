@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_7",
+  "bug_description": "Bug in class KerasRegressor(BaseWrapper):",
+  "test_hint": "Bug touches file keras/wrappers/scikit_learn.py (project keras, bug #7).",
+  "source_project": "keras",
+  "source_bug_number": "7",
+  "buggy_commit": "26b620fb37c885d60183f83abc744f43775ce75a",
+  "fixed_commit": "c05ef1fd95a6024155ab59656fef8dac5a45c335",
+  "patched_file": "keras/wrappers/scikit_learn.py"
+}

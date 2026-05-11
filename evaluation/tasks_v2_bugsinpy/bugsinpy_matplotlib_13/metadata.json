@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_matplotlib_13",
+  "bug_description": "Bug in class Path:",
+  "test_hint": "Bug touches file lib/matplotlib/path.py (project matplotlib, bug #13).",
+  "source_project": "matplotlib",
+  "source_bug_number": "13",
+  "buggy_commit": "2c845db9d961ddea6e072c3e6dbb0bec823ac25e",
+  "fixed_commit": "eb4b15b47a4d019f0e9edb2fb0587aebc2dbd8e8",
+  "patched_file": "lib/matplotlib/path.py"
+}

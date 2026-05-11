@@ -1,8 +1,7 @@
-import pytest
+import asyncio
 from source import run_race, AsyncCounter
 
-@pytest.mark.asyncio
-async def test_async_counter_race_condition():
+def test_async_counter_race_condition():
     """Test that the async counter is not susceptible to a race condition.
 
     Bug: The increment method reads the count, yields control during an await, and
@@ -13,7 +12,7 @@ async def test_async_counter_race_condition():
     expected_count = 50
     
     # In the buggy version, many increments will be lost due to the race condition
-    final_count = await run_race()
+    final_count = asyncio.run(run_race())
     
     assert final_count == expected_count, (
         f"Counter is subject to a race condition. "

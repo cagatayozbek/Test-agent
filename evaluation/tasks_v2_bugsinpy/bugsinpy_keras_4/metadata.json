@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_keras_4",
+  "bug_description": "Bug in class TFOptimizer(Optimizer):",
+  "test_hint": "Bug touches file keras/optimizers.py (project keras, bug #4).",
+  "source_project": "keras",
+  "source_bug_number": "4",
+  "buggy_commit": "b0bfd5201da2bfced84028bcc5bda05bdfd75af7",
+  "fixed_commit": "4185cbb50bfcae9cc30b0fc7b67e81d67a50a8ac",
+  "patched_file": "keras/optimizers.py"
+}

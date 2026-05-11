@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_matplotlib_9",
+  "bug_description": "Bug in class PolarAxes(Axes):",
+  "test_hint": "Bug touches file lib/matplotlib/projections/polar.py (project matplotlib, bug #9).",
+  "source_project": "matplotlib",
+  "source_bug_number": "9",
+  "buggy_commit": "8673167d4c44dc2ede02fedd718dadf7f88e102d",
+  "fixed_commit": "c01f9d3eff9b6239446c1bb2d205eccd69054aeb",
+  "patched_file": "lib/matplotlib/projections/polar.py"
+}

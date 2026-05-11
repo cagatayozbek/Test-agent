@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_15",
+  "bug_description": "Bug in def map_obj_to_commands(updates, module, warnings):",
+  "test_hint": "Bug touches file lib/ansible/modules/network/eos/eos_eapi.py (project ansible, bug #15).",
+  "source_project": "ansible",
+  "source_bug_number": "15",
+  "buggy_commit": "b1e8a6c1cbd2a668b462995487b819ef7dd8ba4b",
+  "fixed_commit": "68de182555b185737353e780882159a3d213908c",
+  "patched_file": "lib/ansible/modules/network/eos/eos_eapi.py"
+}

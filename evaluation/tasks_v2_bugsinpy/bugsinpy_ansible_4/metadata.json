@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_ansible_4",
+  "bug_description": "Bug in __metaclass__ = type",
+  "test_hint": "Bug touches file lib/ansible/playbook/collectionsearch.py (project ansible, bug #4).",
+  "source_project": "ansible",
+  "source_bug_number": "4",
+  "buggy_commit": "d91658ec0c8434c82c3ef98bfe9eb4e1027a43a3",
+  "fixed_commit": "18a66e291dad71128a32d662aa808213acefe0e9",
+  "patched_file": "lib/ansible/playbook/collectionsearch.py"
+}

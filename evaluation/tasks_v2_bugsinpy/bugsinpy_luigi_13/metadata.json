@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_13",
+  "bug_description": "Bug in class LocalFileSystem(FileSystem):",
+  "test_hint": "Bug touches file luigi/file.py (project luigi, bug #13).",
+  "source_project": "luigi",
+  "source_bug_number": "13",
+  "buggy_commit": "3c90bcdac63d978dbdaeae408420e22b963c9863",
+  "fixed_commit": "a8e64fe7f83d69702166a44c7e8cb9470ff31040",
+  "patched_file": "luigi/file.py"
+}

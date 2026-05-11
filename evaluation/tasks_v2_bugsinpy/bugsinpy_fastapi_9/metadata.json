@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_fastapi_9",
+  "bug_description": "Bug in def get_body_field(*, dependant: Dependant, name: str) -> Optional[Field]:",
+  "test_hint": "Bug touches file fastapi/dependencies/utils.py (project fastapi, bug #9).",
+  "source_project": "fastapi",
+  "source_bug_number": "9",
+  "buggy_commit": "a7a92bc63768ccee3f3afc2b73b2c581928dfe75",
+  "fixed_commit": "c5817912d2be25bb310bf9da517882f57bbe7bb5",
+  "patched_file": "fastapi/dependencies/utils.py"
+}

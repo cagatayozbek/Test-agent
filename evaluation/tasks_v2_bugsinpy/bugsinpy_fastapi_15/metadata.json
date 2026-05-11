@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_fastapi_15",
+  "bug_description": "Bug in class APIRouter(routing.Router):",
+  "test_hint": "Bug touches file fastapi/routing.py (project fastapi, bug #15).",
+  "source_project": "fastapi",
+  "source_bug_number": "15",
+  "buggy_commit": "b16ca54c30644667ab9f65a712704850666a039c",
+  "fixed_commit": "6d77e2ac5f2cadc63424f2d85d8d8cded2975922",
+  "patched_file": "fastapi/routing.py"
+}

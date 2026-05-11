@@ -1,0 +1,10 @@
+{
+  "task_id": "bugsinpy_luigi_6",
+  "bug_description": "Bug in def _recursively_freeze(value):",
+  "test_hint": "Bug touches file luigi/parameter.py (project luigi, bug #6).",
+  "source_project": "luigi",
+  "source_bug_number": "6",
+  "buggy_commit": "d9667b7c8ce75f17efa383e8f64e27e5852e6f89",
+  "fixed_commit": "ce881b2a95743887c6147ff4ba23ce5f622b3f5e",
+  "patched_file": "luigi/parameter.py"
+}
