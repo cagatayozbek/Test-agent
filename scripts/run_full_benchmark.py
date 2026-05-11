@@ -1,6 +1,8 @@
-"""Full benchmark runner: 5 models × all converted QuixBugs tasks × 3 modes × N runs.
+"""Full benchmark runner: N models × all converted QuixBugs tasks × 3 modes × N runs.
 
 Per model: in-place updates bugtest_config.yaml, runs concurrent experiment, restores config.
+Supports NVIDIA Build and Together.ai as OpenAI-compatible providers, plus Claude Code CLI.
+
 Pre-registered exclusions:
   - mistralai/mistral-medium-3.5-128b: out (smoke instability)
   - openai/gpt-oss-120b × agentic: skipped (CodeAnalysis schema validation error)
@@ -8,6 +10,7 @@ Pre-registered exclusions:
 Usage:
     python scripts/run_full_benchmark.py
     python scripts/run_full_benchmark.py --concurrency 8 --runs 5 --tasks-glob 'quixbugs_*'
+    python scripts/run_full_benchmark.py --models "meta-llama/Llama-3.3-70B-Instruct-Turbo"
 """
 from __future__ import annotations
 
@@ -23,22 +26,40 @@ from pathlib import Path
 
 import yaml
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = REPO_ROOT / "bugtest_config.yaml"
 RESULTS_DIR = REPO_ROOT / "results"
 ADAPTIVE_RUNNER = REPO_ROOT / "run_adaptive_all.py"
 FULL_OUTPUT = REPO_ROOT / "full_benchmark_summary.json"
 
+TOGETHER_BASE_URL = "https://api.together.xyz/v1"
+
 # Models — see PREREGISTRATION.md for exclusion criteria.
+# Tuple format: (model_id, api_key_env, base_url_or_None).
+# base_url=None → provider inferred from key prefix (nvapi-, claude-code, etc.).
+#
+# History:
 # - mistralai/mistral-medium-3.5-128b: pre-registered, smoke instability
 # - meta/llama-3.1-8b-instruct: post-hoc, NVIDIA function id
-#     'e62a4350-...' DEGRADED on 2026-05-10 (>88% requests returned 400 in
-#     attempt run 19:04). Re-add when endpoint recovers.
-MODELS: list[tuple[str, str]] = [
-    ("meta/llama-3.3-70b-instruct", "NVIDIA_API_KEY"),
-    ("meta/llama-4-maverick-17b-128e-instruct", "NVIDIA_API_KEY"),
-    ("openai/gpt-oss-120b", "NVIDIA_API_KEY"),
-    ("sonnet", "CLAUDE_CODE_KEY"),
+#     'e62a4350-...' DEGRADED on 2026-05-10 (>88% requests returned 400).
+#     Re-add when endpoint recovers.
+# - Together migration (2026-05-11): moved to Together.ai to bypass NVIDIA's
+#     50% 429 rate-limit on llama-3.3-70b. See PREREGISTRATION.md §5.4.
+MODELS: list[tuple[str, str, str | None]] = [
+    # Together.ai (paid, no rate-limit, ~$0.20-1.00 per full run per model)
+    ("meta-llama/Llama-3.3-70B-Instruct-Turbo", "TOGETHER_API_KEY", TOGETHER_BASE_URL),
+    ("openai/gpt-oss-120b", "TOGETHER_API_KEY", TOGETHER_BASE_URL),
+    # Qwen/Qwen2.5-Coder-32B-Instruct → not serverless (needs dedicated endpoint).
+    # Swapped for DeepSeek-V3 (serverless, strong code model).
+    ("deepseek-ai/DeepSeek-V3", "TOGETHER_API_KEY", TOGETHER_BASE_URL),
+    # Anthropic via Claude Code CLI (still here, see Sonnet anomaly notes)
+    ("sonnet", "CLAUDE_CODE_KEY", None),
 ]
 
 # Pre-registered (model, mode) exclusions
@@ -49,7 +70,8 @@ MODEL_MODE_EXCLUSIONS: dict[str, list[str]] = {
 ALL_MODES = ["baseline", "agentic", "adaptive"]
 
 
-def get_nvidia_key() -> str:
+def get_nvidia_key() -> str | None:
+    """Return NVIDIA_API_KEY from env or run_adaptive_all.py fallback. None if absent."""
     if k := os.environ.get("NVIDIA_API_KEY"):
         return k
     if ADAPTIVE_RUNNER.exists():
@@ -57,7 +79,12 @@ def get_nvidia_key() -> str:
         match = re.search(r'NVIDIA_API_KEY"\]\s*=\s*"(nvapi-[A-Za-z0-9_\-]+)"', text)
         if match:
             return match.group(1)
-    raise SystemExit("NVIDIA_API_KEY ortamda yok ve run_adaptive_all.py'de bulunamadi")
+    return None
+
+
+def get_together_key() -> str | None:
+    """Return TOGETHER_API_KEY from env. None if absent."""
+    return os.environ.get("TOGETHER_API_KEY") or None
 
 
 def discover_tasks(glob_pattern: str) -> list[str]:
@@ -68,6 +95,7 @@ def discover_tasks(glob_pattern: str) -> list[str]:
 def write_config_for(
     model_id: str,
     api_key_env: str,
+    base_url: str | None,
     runs_per_task: int,
     concurrency: int,
     modes: list[str],
@@ -76,6 +104,7 @@ def write_config_for(
     config = yaml.safe_load(CONFIG_PATH.read_text())
     config["model"]["model_id"] = model_id
     config["model"]["api_key_env"] = api_key_env
+    config["model"]["base_url"] = base_url
     config["experiment"]["runs_per_task"] = runs_per_task
     config["experiment"]["concurrency"] = concurrency
     config["experiment"]["modes"] = modes
@@ -88,6 +117,7 @@ def restore_config() -> None:
     config = yaml.safe_load(CONFIG_PATH.read_text())
     config["model"]["model_id"] = "sonnet"
     config["model"]["api_key_env"] = "CLAUDE_CODE_KEY"
+    config["model"]["base_url"] = None
     config["experiment"]["runs_per_task"] = 5
     config["experiment"]["concurrency"] = 8
     config["experiment"]["modes"] = ALL_MODES
@@ -99,13 +129,14 @@ def restore_config() -> None:
 def run_model(
     model_id: str,
     api_key_env: str,
+    base_url: str | None,
     env: dict,
     runs_per_task: int,
     concurrency: int,
     tasks: list[str],
 ) -> dict:
     modes = [m for m in ALL_MODES if m not in MODEL_MODE_EXCLUSIONS.get(model_id, [])]
-    write_config_for(model_id, api_key_env, runs_per_task, concurrency, modes, tasks)
+    write_config_for(model_id, api_key_env, base_url, runs_per_task, concurrency, modes, tasks)
 
     print(f"\n{'=' * 78}")
     print(f"  MODEL: {model_id}")
@@ -152,6 +183,7 @@ def run_model(
     return {
         "model_id": model_id,
         "api_key_env": api_key_env,
+        "base_url": base_url,
         "duration_seconds": round(duration, 1),
         "exit_code": proc.returncode,
         "modes_run": modes,
@@ -183,13 +215,37 @@ def main() -> int:
 
     models_to_run = MODELS
     if args.models:
-        models_to_run = [(m, e) for m, e in MODELS if m in args.models]
+        models_to_run = [(m, e, b) for m, e, b in MODELS if m in args.models]
         if not models_to_run:
             raise SystemExit(f"Belirtilen modeller MODELS listesinde yok: {args.models}")
 
     env = os.environ.copy()
-    env["NVIDIA_API_KEY"] = get_nvidia_key()
     env["CLAUDE_CODE_KEY"] = "claude-code"
+
+    nv_key = get_nvidia_key()
+    if nv_key:
+        env["NVIDIA_API_KEY"] = nv_key
+
+    tg_key = get_together_key()
+    if tg_key:
+        env["TOGETHER_API_KEY"] = tg_key
+
+    # Filter out models whose required api_key_env is not available
+    available_envs = {k for k in ("NVIDIA_API_KEY", "TOGETHER_API_KEY", "CLAUDE_CODE_KEY") if env.get(k)}
+    filtered = []
+    skipped = []
+    for m, e, b in models_to_run:
+        if e in available_envs:
+            filtered.append((m, e, b))
+        else:
+            skipped.append((m, e))
+    if skipped:
+        print("Skipping (no API key):")
+        for m, e in skipped:
+            print(f"  - {m} (needs {e})")
+    if not filtered:
+        raise SystemExit("Hicbir modelin API key'i bulunamadi (NVIDIA_API_KEY / TOGETHER_API_KEY / CLAUDE_CODE_KEY)")
+    models_to_run = filtered
 
     aggregate = {
         "started_at": datetime.now().isoformat(timespec="seconds"),
@@ -202,10 +258,11 @@ def main() -> int:
     }
 
     try:
-        for model_id, api_key_env in models_to_run:
+        for model_id, api_key_env, base_url in models_to_run:
             result = run_model(
                 model_id,
                 api_key_env,
+                base_url,
                 env,
                 runs_per_task=args.runs,
                 concurrency=args.concurrency,

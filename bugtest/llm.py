@@ -1,4 +1,4 @@
-"""LLM client supporting both Gemini and OpenAI-compatible APIs (NVIDIA, etc.)."""
+"""LLM client supporting Gemini, Claude Code CLI, and OpenAI-compatible APIs (NVIDIA, Together)."""
 
 import json
 import random
@@ -80,8 +80,12 @@ class LLMResponse:
     total_tokens: int
 
 
-class NvidiaClient:
-    """Client for NVIDIA Build (OpenAI-compatible API)."""
+class OpenAICompatibleClient:
+    """Client for any OpenAI-compatible chat.completions endpoint.
+
+    Tested with NVIDIA Build (https://integrate.api.nvidia.com/v1) and
+    Together.ai (https://api.together.xyz/v1). Same protocol on both.
+    """
 
     def __init__(self, model_id: str, api_key: str, base_url: str = "https://integrate.api.nvidia.com/v1", max_retries: int = 5):
         from openai import OpenAI
@@ -257,13 +261,39 @@ class ClaudeCodeClient:
         )
 
 
-def create_client(model_id: str, api_key: str, provider: str = "auto"):
-    """Factory: create the right client based on provider or api_key format."""
+NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
+TOGETHER_BASE_URL = "https://api.together.xyz/v1"
+
+# Backward-compat alias: existing imports (`pipeline.py`, `protocol.py`,
+# scripts) still work, but new code should prefer OpenAICompatibleClient.
+NvidiaClient = OpenAICompatibleClient
+
+
+def create_client(
+    model_id: str,
+    api_key: str,
+    base_url: Optional[str] = None,
+    provider: str = "auto",
+):
+    """Factory: create the right client based on provider, api_key, or base_url.
+
+    Resolution order:
+      1. If `base_url` is given → OpenAI-compatible (NVIDIA / Together / any).
+      2. If `provider != "auto"` → use that provider directly.
+      3. Otherwise infer from api_key prefix.
+    """
+    if base_url is not None:
+        return OpenAICompatibleClient(
+            model_id=model_id, api_key=api_key, base_url=base_url
+        )
+
     if provider == "auto":
         if api_key == "claude-code":
             provider = "claude"
         elif api_key.startswith("nvapi-"):
             provider = "nvidia"
+        elif api_key.startswith("tgp_v1_") or api_key.startswith("tgp_"):
+            provider = "together"
         elif api_key.startswith("AIzaSy") or api_key.startswith("AQ."):
             provider = "gemini"
         else:
@@ -272,6 +302,12 @@ def create_client(model_id: str, api_key: str, provider: str = "auto"):
     if provider == "claude":
         return ClaudeCodeClient(model_id=model_id)
     elif provider == "nvidia":
-        return NvidiaClient(model_id=model_id, api_key=api_key)
+        return OpenAICompatibleClient(
+            model_id=model_id, api_key=api_key, base_url=NVIDIA_BASE_URL
+        )
+    elif provider == "together":
+        return OpenAICompatibleClient(
+            model_id=model_id, api_key=api_key, base_url=TOGETHER_BASE_URL
+        )
     else:
         return GeminiClient(model_id=model_id, api_key=api_key)

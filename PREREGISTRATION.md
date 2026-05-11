@@ -113,6 +113,30 @@ Five LLMs are evaluated:
    separately and clearly labelled as a supplementary measurement.
    Effective primary-analysis model count: **4**.
 
+4. **Provider migration: NVIDIA Build → Together.ai (2026-05-11).**
+   In the 2026-05-10 full run, `meta/llama-3.3-70b-instruct` on NVIDIA Build
+   returned HTTP 429 on roughly half of all requests at `concurrency=4`,
+   suppressing its measured BRTR (42.6%) below its true capability. To
+   eliminate this infrastructure confound in follow-up runs the
+   OpenAI-compatible models are migrated to **Together.ai** (paid tier, no
+   free-tier rate limits). Code change: `OpenAICompatibleClient` replaces
+   `NvidiaClient` (alias retained), `ModelConfig.base_url` is added so each
+   model can target its own endpoint, and `scripts/run_full_benchmark.py`
+   accepts a `(model_id, api_key_env, base_url)` tuple. The new model set is:
+
+   | Model | Provider |
+   | --- | --- |
+   | `meta-llama/Llama-3.3-70B-Instruct-Turbo` | Together.ai |
+   | `openai/gpt-oss-120b` | Together.ai |
+   | `Qwen/Qwen2.5-Coder-32B-Instruct` | Together.ai (new) |
+   | `sonnet` | Claude Code CLI |
+
+   `meta/llama-4-maverick-17b-128e-instruct` is dropped because Together.ai
+   does not host it; `Qwen/Qwen2.5-Coder-32B-Instruct` (code-specialist)
+   replaces it as the third open-weight comparator. Together-tier results
+   will be reported in a new results directory and clearly separated from
+   the 2026-05-10 NVIDIA run.
+
 ## 6. Modes
 
 Three pipeline modes (`bugtest/pipeline.py`):

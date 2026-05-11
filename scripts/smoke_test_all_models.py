@@ -18,6 +18,12 @@ from pathlib import Path
 
 import yaml
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = REPO_ROOT / "bugtest_config.yaml"
 ADAPTIVE_RUNNER = REPO_ROOT / "run_adaptive_all.py"
@@ -26,31 +32,38 @@ SMOKE_OUTPUT = REPO_ROOT / "smoke_summary.json"
 
 TASKS = ["quixbugs_bitcount", "quixbugs_gcd", "quixbugs_flatten"]
 
-MODELS: list[tuple[str, str]] = [
-    ("meta/llama-3.1-8b-instruct", "NVIDIA_API_KEY"),
-    ("meta/llama-3.3-70b-instruct", "NVIDIA_API_KEY"),
-    ("meta/llama-4-maverick-17b-128e-instruct", "NVIDIA_API_KEY"),
-    # mistralai/mistral-medium-3.5-128b: pre-registered exclusion
-    # (smoke run 2026-05-10 yielded 2 errors across baseline+agentic; instability)
-    ("openai/gpt-oss-120b", "NVIDIA_API_KEY"),
-    ("sonnet", "CLAUDE_CODE_KEY"),
+TOGETHER_BASE_URL = "https://api.together.xyz/v1"
+
+# (model_id, api_key_env, base_url_or_None)
+MODELS: list[tuple[str, str, str | None]] = [
+    # Together.ai
+    ("meta-llama/Llama-3.3-70B-Instruct-Turbo", "TOGETHER_API_KEY", TOGETHER_BASE_URL),
+    ("openai/gpt-oss-120b", "TOGETHER_API_KEY", TOGETHER_BASE_URL),
+    ("deepseek-ai/DeepSeek-V3", "TOGETHER_API_KEY", TOGETHER_BASE_URL),
+    # Claude Code CLI
+    ("sonnet", "CLAUDE_CODE_KEY", None),
 ]
 
 
-def get_nvidia_key() -> str:
+def get_nvidia_key() -> str | None:
     if k := os.environ.get("NVIDIA_API_KEY"):
         return k
+    if not ADAPTIVE_RUNNER.exists():
+        return None
     text = ADAPTIVE_RUNNER.read_text(encoding="utf-8")
     match = re.search(r'NVIDIA_API_KEY"\]\s*=\s*"(nvapi-[A-Za-z0-9_\-]+)"', text)
-    if not match:
-        raise SystemExit("NVIDIA_API_KEY ortamda yok ve run_adaptive_all.py'de bulunamadi")
-    return match.group(1)
+    return match.group(1) if match else None
 
 
-def write_config_for(model_id: str, api_key_env: str) -> None:
+def get_together_key() -> str | None:
+    return os.environ.get("TOGETHER_API_KEY") or None
+
+
+def write_config_for(model_id: str, api_key_env: str, base_url: str | None) -> None:
     config = yaml.safe_load(CONFIG_PATH.read_text())
     config["model"]["model_id"] = model_id
     config["model"]["api_key_env"] = api_key_env
+    config["model"]["base_url"] = base_url
     config["experiment"]["runs_per_task"] = 1
     config["experiment"]["modes"] = ["baseline", "agentic", "adaptive"]
     config["tasks"]["include"] = list(TASKS)
@@ -62,6 +75,7 @@ def restore_config() -> None:
     config = yaml.safe_load(CONFIG_PATH.read_text())
     config["model"]["model_id"] = "sonnet"
     config["model"]["api_key_env"] = "CLAUDE_CODE_KEY"
+    config["model"]["base_url"] = None
     config["experiment"]["runs_per_task"] = 3
     config["experiment"]["modes"] = ["baseline", "agentic", "adaptive"]
     config["tasks"]["include"] = []
@@ -87,8 +101,8 @@ def parse_errors(combined: str) -> list[str]:
     return out
 
 
-def run_model(model_id: str, api_key_env: str, env: dict) -> dict:
-    write_config_for(model_id, api_key_env)
+def run_model(model_id: str, api_key_env: str, base_url: str | None, env: dict) -> dict:
+    write_config_for(model_id, api_key_env, base_url)
 
     print(f"\n{'=' * 70}")
     print(f"  MODEL: {model_id}")
@@ -140,6 +154,7 @@ def run_model(model_id: str, api_key_env: str, env: dict) -> dict:
     return {
         "model_id": model_id,
         "api_key_env": api_key_env,
+        "base_url": base_url,
         "duration_seconds": round(duration, 1),
         "exit_code": proc.returncode,
         "error_count": len(errors),
@@ -155,8 +170,21 @@ def main() -> int:
         raise SystemExit(f"Config bulunamadi: {CONFIG_PATH}")
 
     env = os.environ.copy()
-    env["NVIDIA_API_KEY"] = get_nvidia_key()
     env["CLAUDE_CODE_KEY"] = "claude-code"
+    if nv := get_nvidia_key():
+        env["NVIDIA_API_KEY"] = nv
+    if tg := get_together_key():
+        env["TOGETHER_API_KEY"] = tg
+
+    available_envs = {k for k in ("NVIDIA_API_KEY", "TOGETHER_API_KEY", "CLAUDE_CODE_KEY") if env.get(k)}
+    models_to_run = [(m, e, b) for m, e, b in MODELS if e in available_envs]
+    skipped = [(m, e) for m, e, _ in MODELS if e not in available_envs]
+    if skipped:
+        print("Skipping (no API key):")
+        for m, e in skipped:
+            print(f"  - {m} (needs {e})")
+    if not models_to_run:
+        raise SystemExit("Hicbir modelin API key'i bulunamadi")
 
     aggregate: dict = {
         "started_at": datetime.now().isoformat(timespec="seconds"),
@@ -167,8 +195,8 @@ def main() -> int:
     }
 
     try:
-        for model_id, api_key_env in MODELS:
-            result = run_model(model_id, api_key_env, env)
+        for model_id, api_key_env, base_url in models_to_run:
+            result = run_model(model_id, api_key_env, base_url, env)
             aggregate["models"].append(result)
             SMOKE_OUTPUT.write_text(
                 json.dumps(aggregate, indent=2, ensure_ascii=False)

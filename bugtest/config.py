@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from typing import Optional
 
 import yaml
 from pydantic import BaseModel, Field
@@ -12,6 +13,7 @@ class ModelConfig(BaseModel):
     api_key_env: str = "GOOGLE_API_KEY"
     temperature: float = 1.0
     max_output_tokens: int = 8192
+    base_url: Optional[str] = None
 
 
 class RetryConfig(BaseModel):

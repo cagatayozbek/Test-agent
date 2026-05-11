@@ -160,7 +160,11 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
     """
     config = load_config(config_path)
     api_key = config.get_api_key()
-    llm = create_client(model_id=config.model.model_id, api_key=api_key)
+    llm = create_client(
+        model_id=config.model.model_id,
+        api_key=api_key,
+        base_url=config.model.base_url,
+    )
     validator = Validator(timeout_seconds=config.retry.test_timeout_seconds)
 
     tasks_dir = Path(config.tasks.dir)

@@ -11,6 +11,7 @@ model:
   max_output_tokens: 4096
   model_id: sonnet
   temperature: 0.7
+  base_url: null
 results:
   dir: results
 retry:

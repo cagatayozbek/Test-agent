@@ -1,0 +1,189 @@
+{
+  "started_at": "2026-05-11T12:33:10",
+  "tasks": [
+    "quixbugs_bitcount",
+    "quixbugs_bucketsort",
+    "quixbugs_find_first_in_sorted",
+    "quixbugs_find_in_sorted",
+    "quixbugs_flatten",
+    "quixbugs_gcd",
+    "quixbugs_get_factors",
+    "quixbugs_hanoi",
+    "quixbugs_is_valid_parenthesization",
+    "quixbugs_kheapsort",
+    "quixbugs_knapsack",
+    "quixbugs_kth",
+    "quixbugs_lcs_length",
+    "quixbugs_levenshtein",
+    "quixbugs_lis",
+    "quixbugs_longest_common_subsequence",
+    "quixbugs_max_sublist_sum",
+    "quixbugs_mergesort",
+    "quixbugs_next_palindrome",
+    "quixbugs_next_permutation",
+    "quixbugs_pascal",
+    "quixbugs_possible_change",
+    "quixbugs_powerset",
+    "quixbugs_quicksort",
+    "quixbugs_rpn_eval",
+    "quixbugs_shunting_yard",
+    "quixbugs_sieve",
+    "quixbugs_sqrt",
+    "quixbugs_subsequences",
+    "quixbugs_to_base",
+    "quixbugs_wrap"
+  ],
+  "runs_per_task": 5,
+  "concurrency": 8,
+  "modes_default": [
+    "baseline",
+    "agentic",
+    "adaptive"
+  ],
+  "exclusions": {
+    "openai/gpt-oss-120b": [
+      "agentic"
+    ]
+  },
+  "models": [
+    {
+      "model_id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "api_key_env": "TOGETHER_API_KEY",
+      "base_url": "https://api.together.xyz/v1",
+      "duration_seconds": 729.1,
+      "exit_code": 0,
+      "modes_run": [
+        "baseline",
+        "agentic",
+        "adaptive"
+      ],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 0.6645,
+          "successful": 103,
+          "total": 155,
+          "ci": [
+            0.587,
+            0.7341
+          ],
+          "avg_duration_s": 9.89
+        },
+        "agentic": {
+          "brtr": 0.6065,
+          "successful": 94,
+          "total": 155,
+          "ci": [
+            0.5279,
+            0.6799
+          ],
+          "avg_duration_s": 14.32
+        },
+        "adaptive": {
+          "brtr": 0.671,
+          "successful": 104,
+          "total": 155,
+          "ci": [
+            0.5936,
+            0.74
+          ],
+          "avg_duration_s": 12.06
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260511_093310",
+      "succeeded": true
+    },
+    {
+      "model_id": "openai/gpt-oss-120b",
+      "api_key_env": "TOGETHER_API_KEY",
+      "base_url": "https://api.together.xyz/v1",
+      "duration_seconds": 541.1,
+      "exit_code": 0,
+      "modes_run": [
+        "baseline",
+        "adaptive"
+      ],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 0.9419,
+          "successful": 146,
+          "total": 155,
+          "ci": [
+            0.8933,
+            0.9692
+          ],
+          "avg_duration_s": 12.58
+        },
+        "agentic": {
+          "brtr": 0.0,
+          "successful": 0,
+          "total": 0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "avg_duration_s": 0.0
+        },
+        "adaptive": {
+          "brtr": 0.9806,
+          "successful": 152,
+          "total": 155,
+          "ci": [
+            0.9446,
+            0.9934
+          ],
+          "avg_duration_s": 14.49
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260511_094520",
+      "succeeded": true
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-V3",
+      "api_key_env": "TOGETHER_API_KEY",
+      "base_url": "https://api.together.xyz/v1",
+      "duration_seconds": 570.4,
+      "exit_code": 0,
+      "modes_run": [
+        "baseline",
+        "agentic",
+        "adaptive"
+      ],
+      "mode_stats": {
+        "baseline": {
+          "brtr": 0.7613,
+          "successful": 118,
+          "total": 155,
+          "ci": [
+            0.6884,
+            0.8216
+          ],
+          "avg_duration_s": 7.16
+        },
+        "agentic": {
+          "brtr": 0.7677,
+          "successful": 119,
+          "total": 155,
+          "ci": [
+            0.6953,
+            0.8273
+          ],
+          "avg_duration_s": 12.97
+        },
+        "adaptive": {
+          "brtr": 0.7871,
+          "successful": 122,
+          "total": 155,
+          "ci": [
+            0.7161,
+            0.8442
+          ],
+          "avg_duration_s": 9.05
+        }
+      },
+      "results_dir": "analysis_vs_direct_20260511_095642",
+      "succeeded": true
+    }
+  ],
+  "finished_at": "2026-05-11T13:06:12",
+  "notes": "Original Qwen/Qwen2.5-Coder-32B-Instruct entry dropped — that model is not serverless on Together.ai and all 465 calls returned HTTP 400. Replaced with deepseek-ai/DeepSeek-V3 in a separate run."
+}
