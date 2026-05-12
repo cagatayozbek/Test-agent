@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List, Literal, Optional
+from typing import Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -78,6 +78,10 @@ class AttemptRecord(BaseModel):
     test_code: str
     validation: ValidationResult
     timestamp: str
+    # v2.0 instrumentation (default values preserve v1.x deserializability).
+    tool_call_count: int = 0
+    tool_failure_mode_count: Dict[str, int] = Field(default_factory=dict)
+    reasoning_filled: bool = False
 
 
 class RunRecord(BaseModel):
@@ -96,6 +100,12 @@ class RunRecord(BaseModel):
     duration_seconds: float = 0.0
     timestamp: str = ""
     error: Optional[str] = None  # populated when pipeline raised before completion
+    # v2.0 prompt-strategy provenance. Defaults keep older summary.json files
+    # deserializable as v1.x; the migration script tags them retroactively.
+    prompt_version: str = ""
+    prompt_template_hash: str = ""
+    capabilities_used: Dict[str, bool] = Field(default_factory=dict)
+    tool_choice_mode: Literal["auto", "required", "none", ""] = ""
 
 
 # --- Experiment Summary ---
