@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_071",
+  "task_name": "triangle_area",
+  "difficulty": "easy",
+  "bug_type": "missing logic",
+  "bug_description": "A required clause is omitted in the buggy version. Buggy line: `s = (a + b + c)`; correct line: `s = (a + b + c)/2`. Observable failure: incorrect output.",
+  "test_hint": "Call `triangle_area` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `triangle_area` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/71",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "missing_logic"
+  ]
+}

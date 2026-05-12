@@ -3,9 +3,9 @@
   "task_name": "bucketsort",
   "difficulty": "medium",
   "bug_type": "wrong_variable_reference",
-  "bug_description": "İçteki döngü `arr` üzerinde iteration yapıyor ama doğrusu sayım dizisi (`counts`) üzerinde olmalı; bu yüzden çıktı yanlış sıralı/eksik elemanlı oluyor.",
-  "test_hint": "Tekrar eden değerler içeren küçük bir liste (örn. [3, 1, 2, 1]) ve yeterince büyük bucket sayısı (k=4) ile çağır; sonucun sıralı eşit listeye eşit olduğunu assert et.",
-  "expected_failure_signal": "Çıktı sıralı liste değil veya eleman sayısı/değeri girdiyle uyuşmuyor.",
+  "bug_description": "The inner loop iterates over `arr` but should iterate over the bucket counts array; as a result, the output is unsorted or contains the wrong number of elements.",
+  "test_hint": "Call with a small list containing repeated values (e.g. [3, 1, 2, 1]) and a sufficient bucket count (k=4); assert the output equals the sorted list.",
+  "expected_failure_signal": "Output is not sorted or its element multiset differs from the input.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

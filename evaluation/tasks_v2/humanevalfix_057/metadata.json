@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_057",
+  "task_name": "monotonic",
+  "difficulty": "easy",
+  "bug_type": "operator misuse",
+  "bug_description": "The buggy version uses the wrong operator. Buggy line: `return False return True`; correct line: `return True return False`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `monotonic([1, 2, 4, 20])` should return `True`; `monotonic([1, 20, 4, 10])` should return `False`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `monotonic` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/57",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "operator_misuse"
+  ]
+}

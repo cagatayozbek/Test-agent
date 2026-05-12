@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_078",
+  "task_name": "hex_key",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `total = 1`; correct line: `total = 0`. Observable failure: incorrect output.",
+  "test_hint": "Call `hex_key` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `hex_key` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/78",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

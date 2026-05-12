@@ -3,9 +3,9 @@
   "task_name": "find_first_in_sorted",
   "difficulty": "easy",
   "bug_type": "loop_boundary",
-  "bug_description": "Binary search döngü koşulu `lo <= hi`; bu bazı eşit-değer durumlarda sonsuz döngüye yol açıyor (`mid` değişmediğinde).",
-  "test_hint": "Tekrar eden hedef değerler içeren sıralı bir dizide ilk konumu ara (örn. [3, 4, 5, 5, 5, 6], hedef 5 → 2).",
-  "expected_failure_signal": "Test timeout olur veya yanlış index döner.",
+  "bug_description": "The binary search loop condition is `lo <= hi`; with certain equal-value configurations `mid` does not advance and the loop never terminates.",
+  "test_hint": "Search for the first occurrence in a sorted array with duplicates (e.g. [3, 4, 5, 5, 5, 6], target=5 → expected 2).",
+  "expected_failure_signal": "Test times out or returns the wrong index.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

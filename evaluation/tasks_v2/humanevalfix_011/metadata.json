@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_011",
+  "task_name": "string_xor",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `(missing)`; correct line: `return '0' else:`. Buggy line: `else: return '0'`; correct line: `(missing)`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `string_xor('010', '110')` should return `'100'`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `string_xor` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/11",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

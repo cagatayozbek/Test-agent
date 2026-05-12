@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_063",
+  "task_name": "fibfib",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `(missing)`; correct line: `return 0 if n == 2:`. Buggy line: `if n == 2: return 2`; correct line: `(missing)`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `fibfib(1)` should return `0`; `fibfib(5)` should return `4`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `fibfib` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/63",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

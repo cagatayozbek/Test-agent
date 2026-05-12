@@ -3,9 +3,9 @@
   "task_name": "is_valid_parenthesization",
   "difficulty": "medium",
   "bug_type": "missing_final_check",
-  "bug_description": "Fonksiyon karakterleri tarayınca `True` dönüyor; ama açık kalan parantezi kontrol etmiyor. Doğrusu sonda `depth == 0` kontrolü.",
-  "test_hint": "is_valid_parenthesization('((') gibi açık fazlası girdi için False beklenir.",
-  "expected_failure_signal": "Açık parantez fazla olan girdi için True döner.",
+  "bug_description": "The function returns True after scanning all characters but never checks whether the depth counter ended at zero; the correct version requires a final `depth == 0` check.",
+  "test_hint": "Assert that is_valid_parenthesization('((') returns False (more openings than closings).",
+  "expected_failure_signal": "The function returns True for an unbalanced input that has too many opening parens.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

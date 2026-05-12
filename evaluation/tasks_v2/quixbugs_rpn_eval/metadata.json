@@ -3,9 +3,9 @@
   "task_name": "rpn_eval",
   "difficulty": "hard",
   "bug_type": "swapped_operands",
-  "bug_description": "Operatör çağrısı `op(token, a, b)`; doğrusu `op(token, b, a)`. Çıkarma/bölme gibi non-commutative ops yanlış sıralı uygulanır.",
-  "test_hint": "Çıkarma ya da bölme içeren bir RPN ifadesi (örn. ['5', '1', '-'] sonucu 4) ile test et.",
-  "expected_failure_signal": "Çıkarma/bölme sonucu işaret veya değer olarak ters çıkar.",
+  "bug_description": "The operator is invoked as `op(token, a, b)`; the correct order is `op(token, b, a)`. Non-commutative operations (subtraction, division) are applied with swapped operands.",
+  "test_hint": "Use an RPN expression containing subtraction or division (e.g. ['5', '1', '-'] → 4) and assert the correct result.",
+  "expected_failure_signal": "Subtraction or division returns the wrong sign or value.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

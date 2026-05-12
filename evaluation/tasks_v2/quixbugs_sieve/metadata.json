@@ -3,9 +3,9 @@
   "task_name": "sieve",
   "difficulty": "easy",
   "bug_type": "wrong_quantifier",
-  "bug_description": "Asallık testi `any(n % p > 0)`; doğrusu `all(n % p > 0)`. `any` neredeyse her sayıya True döner → asal olmayanlar da listelenir.",
-  "test_hint": "sieve(7) çağrısının sadece [2, 3, 5, 7] döndüğünü assert et.",
-  "expected_failure_signal": "Çıktı [2, 3, 4, 5, 6, 7] gibi composite'leri içerir.",
+  "bug_description": "The primality predicate is `any(n % p > 0)`; the correct predicate is `all(n % p > 0)`. `any` is true for nearly every n, so composite numbers are also reported as prime.",
+  "test_hint": "Assert that sieve(7) returns exactly [2, 3, 5, 7].",
+  "expected_failure_signal": "The output contains composite numbers such as [2, 3, 4, 5, 6, 7].",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

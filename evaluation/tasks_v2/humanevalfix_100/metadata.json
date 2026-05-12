@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_100",
+  "task_name": "make_a_pile",
+  "difficulty": "easy",
+  "bug_type": "excess logic",
+  "bug_description": "The buggy version contains an extraneous operation. Buggy line: `return [n + 2*i + i for i in range(n)]`; correct line: `return [n + 2*i for i in range(n)]`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `make_a_pile(3)` should return `[3, 5, 7]`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `make_a_pile` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/100",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "excess_logic"
+  ]
+}

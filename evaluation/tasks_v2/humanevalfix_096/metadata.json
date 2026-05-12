@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_096",
+  "task_name": "count_up_to",
+  "difficulty": "easy",
+  "bug_type": "variable misuse",
+  "bug_description": "The buggy version references the wrong variable. Buggy line: `if j % i == 0:`; correct line: `if i % j == 0:`. Observable failure: incorrect output.",
+  "test_hint": "Call `count_up_to` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `count_up_to` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/96",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "variable_misuse"
+  ]
+}

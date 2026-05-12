@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_001",
+  "task_name": "separate_paren_groups",
+  "difficulty": "medium",
+  "bug_type": "operator misuse",
+  "bug_description": "The buggy version uses the wrong operator. Buggy line: `if current_depth < 0:`; correct line: `if current_depth == 0:`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `separate_paren_groups('( ) (( )) (( )( ))')` should return `['()', '(())', '(()())']`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `separate_paren_groups` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/1",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "medium",
+    "operator_misuse"
+  ]
+}

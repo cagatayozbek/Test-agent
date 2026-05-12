@@ -3,9 +3,9 @@
   "task_name": "knapsack",
   "difficulty": "hard",
   "bug_type": "off_by_one_comparison",
-  "bug_description": "Ağırlık karşılaştırması `weight < j`; doğrusu `weight <= j`. Bu yüzden tam kapasiteyi dolduran item'lar değerlendirmeye dahil edilmiyor.",
-  "test_hint": "Tam kapasite eşleşmesi gerektiren bir durum üret (örn. capacity=3, items=[(3, 10), (1, 5)]) ve optimum değeri assert et.",
-  "expected_failure_signal": "Tam kapasiteyi dolduran item'lar paketlenmediğinden değer eksik döner.",
+  "bug_description": "The weight comparison uses `weight < j` but should use `weight <= j`; items that exactly fill the remaining capacity are excluded.",
+  "test_hint": "Construct an instance where the optimal solution exactly fills capacity (e.g. capacity=3, items=[(3, 10), (1, 5)]); assert the optimal value.",
+  "expected_failure_signal": "The returned value is smaller than the true optimum because exact-fit items are skipped.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

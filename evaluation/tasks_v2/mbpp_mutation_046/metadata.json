@@ -1,0 +1,19 @@
+{
+  "task_id": "mbpp_mutation_046",
+  "task_name": "is_nonagonal",
+  "difficulty": "easy",
+  "bug_type": "arithmetic_operator",
+  "bug_description": "Synthetic single-mutation bug derived from MBPP problem 641. Mutation: `*` -> `//` (arithmetic operator). This mutation flips 3/3 of the MBPP test assertions when applied to the canonical solution.",
+  "test_hint": "Underlying task: Write a function to find the nth nonagonal number. Pick a small input where the arithmetic operator actually affects the output, and assert the canonical value.",
+  "expected_failure_signal": "At least one MBPP assertion fails on the buggy version (the mutation flips 3 of 3 canonical asserts).",
+  "source": "MBPP-mutation",
+  "source_url": "https://huggingface.co/datasets/google-research-datasets/mbpp",
+  "original_task_id": "641",
+  "mbpp_prompt": "Write a function to find the nth nonagonal number.",
+  "tags": [
+    "mbpp",
+    "synthetic",
+    "mutation",
+    "arithmetic_operator"
+  ]
+}

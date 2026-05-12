@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_139",
+  "task_name": "special_factorial",
+  "difficulty": "easy",
+  "bug_type": "excess logic",
+  "bug_description": "The buggy version contains an extraneous operation. Buggy line: `i *= n`; correct line: `(missing)`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `special_factorial(4)` should return `288`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `special_factorial` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/139",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "excess_logic"
+  ]
+}

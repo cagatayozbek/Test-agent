@@ -1,0 +1,37 @@
+{
+  "quixbugs": [
+    "quixbugs_bitcount",
+    "quixbugs_find_in_sorted",
+    "quixbugs_is_valid_parenthesization",
+    "quixbugs_pascal",
+    "quixbugs_quicksort"
+  ],
+  "humanevalfix": [
+    "humanevalfix_026",
+    "humanevalfix_035",
+    "humanevalfix_057",
+    "humanevalfix_062",
+    "humanevalfix_139"
+  ],
+  "mbpp_mutation": [
+    "mbpp_mutation_001",
+    "mbpp_mutation_002",
+    "mbpp_mutation_005",
+    "mbpp_mutation_027",
+    "mbpp_mutation_037"
+  ],
+  "bugsinpy": [
+    "bugsinpy_black_async_for_13",
+    "bugsinpy_pysnooper_unicode_1",
+    "bugsinpy_thefuck_fish_version_3",
+    "bugsinpy_thefuck_fix_file_28",
+    "bugsinpy_tqdm_enumerate_start_1"
+  ],
+  "legacy": [
+    "async_race_condition",
+    "null_handling_profile",
+    "off_by_one_loop",
+    "swallowed_exception",
+    "type_coercion_price"
+  ]
+}

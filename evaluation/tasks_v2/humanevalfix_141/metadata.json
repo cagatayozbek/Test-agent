@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_141",
+  "task_name": "file_name_check",
+  "difficulty": "medium",
+  "bug_type": "missing logic",
+  "bug_description": "A required clause is omitted in the buggy version. Buggy line: `(missing)`; correct line: `return 'No' if not lst[1] in suf:`. Observable failure: incorrect output.",
+  "test_hint": "Call `file_name_check` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `file_name_check` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/141",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "medium",
+    "missing_logic"
+  ]
+}

@@ -1,0 +1,49 @@
+experiment:
+  name: benchmark_deep_deepseek
+  runs_per_task: 3
+  concurrency: 4
+  modes:
+  - deep
+model:
+  api_key_env: TOGETHER_API_KEY
+  max_output_tokens: 4096
+  model_id: deepseek-ai/DeepSeek-V3
+  temperature: 0.7
+  base_url: https://api.together.xyz/v1
+results:
+  dir: results
+retry:
+  max_attempts: 3
+  test_timeout_seconds: 30
+tasks:
+  dir: evaluation/tasks_v2
+  include:
+  - quixbugs_bitcount
+  - quixbugs_find_in_sorted
+  - quixbugs_is_valid_parenthesization
+  - quixbugs_pascal
+  - quixbugs_quicksort
+  - humanevalfix_026
+  - humanevalfix_035
+  - humanevalfix_057
+  - humanevalfix_062
+  - humanevalfix_139
+  - mbpp_mutation_001
+  - mbpp_mutation_002
+  - mbpp_mutation_005
+  - mbpp_mutation_027
+  - mbpp_mutation_037
+  - bugsinpy_black_async_for_13
+  - bugsinpy_pysnooper_unicode_1
+  - bugsinpy_thefuck_fish_version_3
+  - bugsinpy_thefuck_fix_file_28
+  - bugsinpy_tqdm_enumerate_start_1
+  - async_race_condition
+  - null_handling_profile
+  - off_by_one_loop
+  - swallowed_exception
+  - type_coercion_price
+  exclude: []
+  sources: []
+  difficulties: []
+  bug_types: []

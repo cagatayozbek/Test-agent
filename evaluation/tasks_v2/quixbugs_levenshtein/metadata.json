@@ -3,9 +3,9 @@
   "task_name": "levenshtein",
   "difficulty": "hard",
   "bug_type": "extra_increment",
-  "bug_description": "İlk karakterler eşitken sonuca `1 +` ekleniyor; eşit karakter mesafeyi artırmamalı. Doğrusu sadece `levenshtein(source[1:], target[1:])`.",
-  "test_hint": "İlk karakterleri eşit iki kelime için sonuç (örn. levenshtein('abc', 'abd') == 1) assert et.",
-  "expected_failure_signal": "Beklenen düzenleme mesafesinden büyük değer döner.",
+  "bug_description": "When the first characters are equal the result is `1 + levenshtein(source[1:], target[1:])`; the correct version omits the `1 +`. Equal characters should not increase the edit distance.",
+  "test_hint": "Use two words whose first characters are equal and assert the result, e.g. levenshtein('abc', 'abd') == 1.",
+  "expected_failure_signal": "The returned distance is larger than the true edit distance.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

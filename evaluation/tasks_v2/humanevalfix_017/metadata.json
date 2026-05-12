@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_017",
+  "task_name": "parse_music",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `note_map = {'o': 3, 'o|': 2, '.|': 1}`; correct line: `note_map = {'o': 4, 'o|': 2, '.|': 1}`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `parse_music('o o| .| o| o| .| .| .| .| o o')` should return `[4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `parse_music` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/17",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

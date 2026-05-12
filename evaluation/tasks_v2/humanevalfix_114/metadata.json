@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_114",
+  "task_name": "minSubArraySum",
+  "difficulty": "easy",
+  "bug_type": "function misuse",
+  "bug_description": "The buggy version calls the wrong function or method. Buggy line: `min_sum = min(-i for i in nums)`; correct line: `min_sum = -max_sum`. Observable failure: incorrect output.",
+  "test_hint": "Call `minSubArraySum` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `minSubArraySum` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/114",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "function_misuse"
+  ]
+}

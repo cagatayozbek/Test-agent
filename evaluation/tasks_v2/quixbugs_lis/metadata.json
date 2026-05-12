@@ -3,9 +3,9 @@
   "task_name": "lis",
   "difficulty": "hard",
   "bug_type": "missing_max",
-  "bug_description": "Uzunluk güncellemesi `longest = length + 1`; doğrusu `longest = max(longest, length + 1)`. Aksi hâlde ulaşılan en uzun yerine en son zincir tutulur.",
-  "test_hint": "lis([4, 1, 5, 2, 3]) gibi bir girdide doğru LIS uzunluğunu (3) assert et.",
-  "expected_failure_signal": "LIS uzunluğu olası değerin altında döner.",
+  "bug_description": "The length update reads `longest = length + 1`; the correct version is `longest = max(longest, length + 1)`. Without the `max` the variable tracks the last chain instead of the longest.",
+  "test_hint": "Assert the correct LIS length on a small input, e.g. lis([4, 1, 5, 2, 3]) == 3.",
+  "expected_failure_signal": "The returned LIS length is smaller than the true value.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

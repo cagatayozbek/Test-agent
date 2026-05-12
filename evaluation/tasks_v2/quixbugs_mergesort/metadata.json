@@ -3,9 +3,9 @@
   "task_name": "mergesort",
   "difficulty": "medium",
   "bug_type": "wrong_base_case",
-  "bug_description": "Recursion taban koşulu `len(arr) == 0`; doğrusu `len(arr) <= 1`. Tek elemanlı listeler split edilmeye çalışıldığı için sonsuz recursion oluşur.",
-  "test_hint": "Tek elemanlı bir listeyle (mergesort([1])) ya da küçük listeyle çağırıp recursion error/timeout gözle.",
-  "expected_failure_signal": "RecursionError veya timeout.",
+  "bug_description": "The base case is `len(arr) == 0`; the correct base case is `len(arr) <= 1`. A single-element list is split further and the recursion never terminates.",
+  "test_hint": "Call with a single-element list (e.g. mergesort([1])) or a small list and observe a recursion error or timeout.",
+  "expected_failure_signal": "RecursionError or timeout.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

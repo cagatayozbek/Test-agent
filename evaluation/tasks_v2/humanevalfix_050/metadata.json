@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_050",
+  "task_name": "decode_shift",
+  "difficulty": "easy",
+  "bug_type": "variable misuse",
+  "bug_description": "The buggy version references the wrong variable. Buggy line: `return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(ch)) for ch in s])`; correct line: `return \"\".join([chr(((ord(ch) - 5 - ord(\"a\")) % 26) + ord(\"a\")) for ch in s])`. Observable failure: incorrect output.",
+  "test_hint": "Call `decode_shift` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `decode_shift` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/50",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "variable_misuse"
+  ]
+}

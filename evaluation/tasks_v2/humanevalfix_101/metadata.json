@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_101",
+  "task_name": "words_string",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `s_list.append(',')`; correct line: `s_list.append(' ')`. Observable failure: incorrect output.",
+  "test_hint": "Call `words_string` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `words_string` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/101",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_162",
+  "task_name": "string_to_md5",
+  "difficulty": "easy",
+  "bug_type": "function misuse",
+  "bug_description": "The buggy version calls the wrong function or method. Buggy line: `return hashlib.md5('text').hexdigest() if text else None`; correct line: `return hashlib.md5(text.encode('ascii')).hexdigest() if text else None`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'` should return `\"\"\"`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `string_to_md5` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/162",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "function_misuse"
+  ]
+}

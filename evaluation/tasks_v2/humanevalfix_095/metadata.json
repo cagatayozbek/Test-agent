@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_095",
+  "task_name": "check_dict_case",
+  "difficulty": "hard",
+  "bug_type": "operator misuse",
+  "bug_description": "The buggy version uses the wrong operator. Buggy line: `elif (state == \"upper\" and not key.isupper()) and (state == \"lower\" and not key.islower()):`; correct line: `elif (state == \"upper\" and not key.isupper()) or (state == \"lower\" and not key.islower()):`. Observable failure: incorrect output.",
+  "test_hint": "Call `check_dict_case` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `check_dict_case` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/95",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "hard",
+    "operator_misuse"
+  ]
+}

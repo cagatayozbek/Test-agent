@@ -3,9 +3,9 @@
   "task_name": "to_base",
   "difficulty": "hard",
   "bug_type": "wrong_concat_order",
-  "bug_description": "Sonuç birikimi `result + alphabet[i]`; doğrusu `alphabet[i] + result`. Çıktı tabanın ters sırasında oluşur.",
-  "test_hint": "to_base(31, 16) çıktısının '1F' olduğunu assert et.",
-  "expected_failure_signal": "Beklenen string'in tersini döner (örn. 'F1').",
+  "bug_description": "The accumulation is `result + alphabet[i]`; the correct order is `alphabet[i] + result`. The resulting digits are produced in reverse.",
+  "test_hint": "Assert that to_base(31, 16) returns '1F'.",
+  "expected_failure_signal": "The function returns the reverse of the expected string (e.g. 'F1').",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

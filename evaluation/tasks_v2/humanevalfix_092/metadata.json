@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_092",
+  "task_name": "any_int",
+  "difficulty": "easy",
+  "bug_type": "missing logic",
+  "bug_description": "A required clause is omitted in the buggy version. Buggy line: `if (x+y==z) or (y+z==x):`; correct line: `if (x+y==z) or (x+z==y) or (y+z==x):`. Observable failure: incorrect output.",
+  "test_hint": "Call `any_int` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `any_int` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/92",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "missing_logic"
+  ]
+}

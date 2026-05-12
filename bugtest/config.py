@@ -22,9 +22,25 @@ class RetryConfig(BaseModel):
 
 
 class TasksConfig(BaseModel):
+    """Task selection filters. Empty lists mean "no filter" for that axis.
+
+    Filter precedence applied in load_tasks():
+        1. include  (if set, restrict to these task_ids; ignore everything else)
+        2. exclude  (drop these task_ids)
+        3. sources  (keep only tasks whose canonical source matches)
+        4. difficulties (keep only tasks whose metadata.difficulty matches)
+        5. bug_types    (keep only tasks whose metadata.bug_type matches)
+
+    Canonical source names (case-insensitive): quixbugs, humanevalfix,
+    mbpp_mutation, bugsinpy, legacy.
+    """
+
     dir: str = "evaluation/tasks_v2"
     include: list[str] = Field(default_factory=list)
     exclude: list[str] = Field(default_factory=list)
+    sources: list[str] = Field(default_factory=list)
+    difficulties: list[str] = Field(default_factory=list)
+    bug_types: list[str] = Field(default_factory=list)
 
 
 class ResultsConfig(BaseModel):

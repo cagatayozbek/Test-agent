@@ -1,0 +1,19 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "task_name": "snake_to_camel",
+  "difficulty": "easy",
+  "bug_type": "boolean_operator",
+  "bug_description": "Synthetic single-mutation bug derived from MBPP problem 411. Mutation: `or` -> `and` (boolean operator). This mutation flips 3/3 of the MBPP test assertions when applied to the canonical solution.",
+  "test_hint": "Underlying task: Write a function to convert the given snake case string to camel case string. Pick a small input where the boolean operator actually affects the output, and assert the canonical value.",
+  "expected_failure_signal": "At least one MBPP assertion fails on the buggy version (the mutation flips 3 of 3 canonical asserts).",
+  "source": "MBPP-mutation",
+  "source_url": "https://huggingface.co/datasets/google-research-datasets/mbpp",
+  "original_task_id": "411",
+  "mbpp_prompt": "Write a function to convert the given snake case string to camel case string.",
+  "tags": [
+    "mbpp",
+    "synthetic",
+    "mutation",
+    "boolean_operator"
+  ]
+}

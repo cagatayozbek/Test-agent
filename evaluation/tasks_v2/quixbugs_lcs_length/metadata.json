@@ -3,9 +3,9 @@
   "task_name": "lcs_length",
   "difficulty": "hard",
   "bug_type": "dp_index_error",
-  "bug_description": "Match durumunda DP güncellemesi `dp[i-1, j] + 1` yerine `dp[i-1, j-1] + 1` olmalı; aksi halde aynı j sütununu zincirler ve LCS uzunluğunu şişirir.",
-  "test_hint": "lcs_length('ABCBDAB', 'BDCAB') gibi bir çiftte bilinen sonucu (4) assert et.",
-  "expected_failure_signal": "Gerçek LCS uzunluğundan farklı (genellikle daha büyük) bir değer döner.",
+  "bug_description": "On a character match the DP update reads `dp[i-1, j] + 1` but should read `dp[i-1, j-1] + 1`; chaining the same column inflates the reported LCS length.",
+  "test_hint": "Assert the known result on a small instance, e.g. lcs_length('ABCBDAB', 'BDCAB') == 4.",
+  "expected_failure_signal": "The returned LCS length differs from (typically exceeds) the true value.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_061",
+  "task_name": "correct_bracketing",
+  "difficulty": "easy",
+  "bug_type": "operator misuse",
+  "bug_description": "The buggy version uses the wrong operator. Buggy line: `return True`; correct line: `return False`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `correct_bracketing(\"(\")` should return `False`; `correct_bracketing(\"()\")` should return `True`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `correct_bracketing` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/61",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "operator_misuse"
+  ]
+}

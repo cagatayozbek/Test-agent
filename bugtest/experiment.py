@@ -27,10 +27,49 @@ from bugtest.validator import Validator
 # --- Task loading ---
 
 
+# Task-id prefix -> canonical source name. Order matters: longer prefixes first
+# so "mbpp_mutation_" wins over a hypothetical "mbpp_".
+_SOURCE_PREFIXES: list[tuple[str, str]] = [
+    ("mbpp_mutation_", "mbpp_mutation"),
+    ("humanevalfix_", "humanevalfix"),
+    ("quixbugs_", "quixbugs"),
+    ("bugsinpy_", "bugsinpy"),
+]
+
+
+def _infer_source(task_id: str, meta: TaskMetadata) -> str:
+    """Return canonical lowercase source name for a task.
+
+    Prefers the metadata.source field (already normalized by our conversion
+    scripts); falls back to the task_id prefix for legacy tasks that predate
+    the source-tagging convention.
+    """
+    if meta.source:
+        return meta.source.lower().replace("-", "_")
+    for prefix, src in _SOURCE_PREFIXES:
+        if task_id.startswith(prefix):
+            return src
+    return "legacy"
+
+
 def load_tasks(
-    tasks_dir: Path, include: list[str], exclude: list[str]
+    tasks_dir: Path,
+    include: list[str],
+    exclude: list[str],
+    sources: list[str] | None = None,
+    difficulties: list[str] | None = None,
+    bug_types: list[str] | None = None,
 ) -> list[Task]:
-    """Discover and load all tasks from tasks_v2/ directory."""
+    """Discover and load tasks from tasks_v2/, applying optional filters.
+
+    Filters are applied in order: include, exclude, source, difficulty,
+    bug_type. Empty / None lists disable that filter axis. See TasksConfig
+    docstring for the canonical source names.
+    """
+    src_filter = {s.lower().replace("-", "_") for s in (sources or [])}
+    diff_filter = {d.lower() for d in (difficulties or [])}
+    bt_filter = {b.lower() for b in (bug_types or [])}
+
     tasks = []
     for task_path in sorted(tasks_dir.iterdir()):
         if not task_path.is_dir():
@@ -57,6 +96,13 @@ def load_tasks(
 
         if not meta.get_id():
             meta.task_id = task_id
+
+        if src_filter and _infer_source(task_id, meta) not in src_filter:
+            continue
+        if diff_filter and (meta.difficulty or "").lower() not in diff_filter:
+            continue
+        if bt_filter and (meta.bug_type or "").lower() not in bt_filter:
+            continue
 
         tasks.append(
             Task(
@@ -168,7 +214,14 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
     validator = Validator(timeout_seconds=config.retry.test_timeout_seconds)
 
     tasks_dir = Path(config.tasks.dir)
-    tasks = load_tasks(tasks_dir, config.tasks.include, config.tasks.exclude)
+    tasks = load_tasks(
+        tasks_dir,
+        config.tasks.include,
+        config.tasks.exclude,
+        sources=config.tasks.sources,
+        difficulties=config.tasks.difficulties,
+        bug_types=config.tasks.bug_types,
+    )
     print(f"Loaded {len(tasks)} tasks from {tasks_dir}")
 
     # Setup results directory
@@ -201,6 +254,7 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
                 llm=llm,
                 validator=validator,
                 max_attempts=config.retry.max_attempts,
+                model_id=config.model.model_id,
             )
         except Exception as e:
             # Synthesize a failed RunRecord so BRTR denominators stay correct
@@ -263,15 +317,10 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
                           f"run{run_num}: {status} ({record.duration_seconds:.1f}s) "
                           f"| ETA {eta/60:.1f}min")
 
-    # Compute statistics
-    baseline_runs = [r for r in all_runs if r.mode == "baseline"]
-    agentic_runs = [r for r in all_runs if r.mode == "agentic"]
-    adaptive_runs = [r for r in all_runs if r.mode == "adaptive"]
-
+    # Compute statistics — one ModeStats row per mode actually requested in config.
     mode_stats = [
-        _compute_mode_stats("baseline", baseline_runs),
-        _compute_mode_stats("agentic", agentic_runs),
-        _compute_mode_stats("adaptive", adaptive_runs),
+        _compute_mode_stats(mode, [r for r in all_runs if r.mode == mode])
+        for mode in config.experiment.modes
     ]
 
     task_ids = sorted(set(r.task_id for r in all_runs))

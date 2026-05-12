@@ -3,9 +3,9 @@
   "task_name": "possible_change",
   "difficulty": "medium",
   "bug_type": "missing_base_case",
-  "bug_description": "`coins` boşalınca taban durumu yok; sadece `total < 0` kontrolü var. Boş paralarla pozitif total ulaşıldığında IndexError fırlar.",
-  "test_hint": "possible_change([], 5) çağrısında IndexError yerine 0 sayısının döndüğünü assert et.",
-  "expected_failure_signal": "Test IndexError yakalar veya yanlış değer alır.",
+  "bug_description": "There is no base case for an empty `coins` list; only `total < 0` is handled. When coins is exhausted with a positive total, indexing raises IndexError.",
+  "test_hint": "Call possible_change([], 5) and assert it returns 0 (rather than raising IndexError).",
+  "expected_failure_signal": "The test catches IndexError or observes an incorrect value.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

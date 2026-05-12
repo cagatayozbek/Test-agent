@@ -3,9 +3,9 @@
   "task_name": "subsequences",
   "difficulty": "medium",
   "bug_type": "wrong_base_case",
-  "bug_description": "k=0 için boş liste `[]` dönülüyor; doğrusu `[[]]` (bir tane boş alt-dizi). Yokluğu kombinatoryel sayıyı sıfırlar.",
-  "test_hint": "subsequences(a=1, b=5, k=2) çağrısının uzunluğunun C(4,2)=6 olduğunu assert et.",
-  "expected_failure_signal": "Çıktı boş liste; uzunluk kontrolü 0 verir.",
+  "bug_description": "The base case for k=0 returns `[]`; the correct base case is `[[]]` (a list containing the empty subsequence). With `[]` the combinatorial count is zero.",
+  "test_hint": "Assert that subsequences(a=1, b=5, k=2) has length C(4, 2) = 6.",
+  "expected_failure_signal": "The output is an empty list; its length is 0.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

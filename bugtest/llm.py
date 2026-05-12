@@ -217,23 +217,58 @@ class GeminiClient:
 
 
 class ClaudeCodeClient:
-    """Client that calls Claude Code CLI (claude -p) for Max subscription users."""
+    """Client that calls Claude Code CLI (claude -p) for Max subscription users.
+
+    Both generate paths use ``--output-format json`` so we can extract
+    token-usage telemetry. The ``usage`` field includes uncached input,
+    cache-creation, cache-read, and output token counts; we report the sum of
+    all input-side fields as ``prompt_tokens`` (consistent with how the
+    OpenAI-compatible clients report their input token totals).
+    """
 
     def __init__(self, model_id: str = "sonnet", **kwargs):
         self._model = model_id  # sonnet, opus, haiku
+
+    @staticmethod
+    def _parse_response(raw: str) -> tuple[str, int, int]:
+        """Parse `claude -p --output-format json` output.
+
+        Returns (text, prompt_tokens, completion_tokens). Falls back to raw
+        text and zero counts if the wrapper is missing or malformed.
+        """
+        try:
+            wrapper = json.loads(raw)
+        except json.JSONDecodeError:
+            return raw, 0, 0
+        if not isinstance(wrapper, dict):
+            return raw, 0, 0
+        text = wrapper.get("result", raw)
+        usage = wrapper.get("usage") or {}
+        prompt = (
+            int(usage.get("input_tokens", 0))
+            + int(usage.get("cache_creation_input_tokens", 0))
+            + int(usage.get("cache_read_input_tokens", 0))
+        )
+        completion = int(usage.get("output_tokens", 0))
+        return text, prompt, completion
 
     def generate(self, *, system: str, user: str, **kwargs) -> LLMResponse:
         import subprocess
         prompt = f"{system}\n\n{user}"
         result = subprocess.run(
-            ["claude", "-p", "--model", self._model],
+            ["claude", "-p", "--model", self._model, "--output-format", "json"],
             input=prompt,
             capture_output=True,
             text=True,
             timeout=120,
         )
-        text = result.stdout.strip()
-        return LLMResponse(text=text, prompt_tokens=0, completion_tokens=0, total_tokens=0)
+        text, p_tok, c_tok = self._parse_response(result.stdout.strip())
+        return LLMResponse(
+            text=text,
+            prompt_tokens=p_tok,
+            completion_tokens=c_tok,
+            total_tokens=p_tok + c_tok,
+        )
 
     def generate_json(self, *, system: str, user: str, **kwargs) -> LLMResponse:
         import subprocess
@@ -246,18 +281,12 @@ class ClaudeCodeClient:
             text=True,
             timeout=120,
         )
-        raw = result.stdout.strip()
-        # --output-format json wraps response in {"result": "..."}
-        try:
-            wrapper = json.loads(raw)
-            text = wrapper.get("result", raw) if isinstance(wrapper, dict) else raw
-        except json.JSONDecodeError:
-            text = raw
+        text, p_tok, c_tok = self._parse_response(result.stdout.strip())
         return LLMResponse(
             text=_extract_json_object(text),
-            prompt_tokens=0,
-            completion_tokens=0,
-            total_tokens=0,
+            prompt_tokens=p_tok,
+            completion_tokens=c_tok,
+            total_tokens=p_tok + c_tok,
         )
 
 

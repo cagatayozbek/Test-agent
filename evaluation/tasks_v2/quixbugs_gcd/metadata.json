@@ -3,9 +3,9 @@
   "task_name": "gcd",
   "difficulty": "easy",
   "bug_type": "argument_order",
-  "bug_description": "Recursive çağrıda argümanlar `(a % b, b)` sırasında; doğrusu `(b, a % b)`. `a % b < b` olduğundan yeniden aynı argümanla çağrılır → sonsuz recursion.",
-  "test_hint": "gcd(35, 21) gibi bir çağrıda timeout/recursion error gözle ya da sonucu 7'ye eşit assert et.",
-  "expected_failure_signal": "Test RecursionError veya timeout üretir.",
+  "bug_description": "The recursive call passes arguments as `(a % b, b)`; the correct order is `(b, a % b)`. Because `a % b < b`, the recursion repeats with the same arguments and never terminates.",
+  "test_hint": "Use a call like gcd(35, 21); observe a timeout/recursion error or assert the result equals 7.",
+  "expected_failure_signal": "Test raises RecursionError or times out.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

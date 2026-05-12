@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from bugtest.agents.analyzer import Analyzer
+from bugtest.agents.deep_agent import run_deep_agent
 from bugtest.agents.test_writer import TestWriter
 from bugtest.llm import GeminiClient
 from bugtest.models import (
@@ -95,14 +96,18 @@ def run_pipeline(
     llm: GeminiClient,
     validator: Validator,
     max_attempts: int = 3,
+    model_id: Optional[str] = None,
 ) -> RunRecord:
-    """Run one complete pipeline with three possible modes.
+    """Run one complete pipeline with four possible modes.
 
     Modes:
         baseline:  TestWriter only, retry on failure
         agentic:   Analyzer first, then TestWriter, retry on failure
         adaptive:  Attempt 1 without analysis (baseline-style),
                    if it fails, add analysis for remaining attempts
+        deep:      Tool-augmented ReAct agent in a sandbox workspace.
+                   On failure, a critic subagent's feedback feeds the next
+                   outer iteration. Uses the deep/ orchestrator port.
     """
     start_time = time.perf_counter()
     prompt_tokens = 0
@@ -111,6 +116,46 @@ def run_pipeline(
     attempts: list[AttemptRecord] = []
     base_user_message = _build_user_message(task)
     user_message = base_user_message
+
+    # --- DEEP: tool-augmented agent, separate code path ---
+    if mode == "deep":
+        if model_id is None:
+            raise ValueError("deep mode requires model_id")
+        deep_result = run_deep_agent(
+            task=task,
+            model_id=model_id,
+            validator=validator,
+            max_attempts=max_attempts,
+        )
+        final_validation = validator.validate(
+            test_code=deep_result.final_test_code,
+            buggy_dir=task.buggy_dir,
+            fixed_dir=task.fixed_dir,
+        )
+        attempts.append(
+            AttemptRecord(
+                attempt_number=deep_result.outer_iterations or 1,
+                test_code=deep_result.final_test_code,
+                validation=final_validation,
+                timestamp=_now_iso(),
+            )
+        )
+        duration = time.perf_counter() - start_time
+        success = final_validation.is_bug_revealing
+        return RunRecord(
+            task_id=task.task_id,
+            mode=mode,
+            run_number=run_number,
+            success=success,
+            attempts=attempts,
+            total_attempts=deep_result.outer_iterations or 1,
+            attempts_to_success=(deep_result.outer_iterations if success else None),
+            analysis=None,
+            prompt_tokens_total=deep_result.prompt_tokens,
+            completion_tokens_total=deep_result.completion_tokens,
+            duration_seconds=round(duration, 2),
+            timestamp=_now_iso(),
+        )
 
     # --- AGENTIC: run Analyzer upfront ---
     if mode == "agentic":

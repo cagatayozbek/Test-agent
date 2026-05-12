@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_020",
+  "task_name": "find_closest_elements",
+  "difficulty": "hard",
+  "bug_type": "operator misuse",
+  "bug_description": "The buggy version uses the wrong operator. Buggy line: `if new_distance > distance:`; correct line: `if new_distance < distance:`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2])` should return `(2.0, 2.2)`; `find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.0])` should return `(2.0, 2.0)`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `find_closest_elements` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/20",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "hard",
+    "operator_misuse"
+  ]
+}

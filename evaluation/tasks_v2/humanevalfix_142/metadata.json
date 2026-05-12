@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_142",
+  "task_name": "sum_squares",
+  "difficulty": "medium",
+  "bug_type": "missing logic",
+  "bug_description": "A required clause is omitted in the buggy version. Buggy line: `elif i%3 != 0:`; correct line: `elif i % 4 == 0 and i%3 != 0:`. Observable failure: incorrect output.",
+  "test_hint": "Call `sum_squares` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `sum_squares` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/142",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "medium",
+    "missing_logic"
+  ]
+}

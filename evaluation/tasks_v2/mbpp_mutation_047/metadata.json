@@ -1,0 +1,19 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "task_name": "amicable_numbers_sum",
+  "difficulty": "easy",
+  "bug_type": "comparison_operator",
+  "bug_description": "Synthetic single-mutation bug derived from MBPP problem 123. Mutation: `!=` -> `==` (comparison operator). This mutation flips 3/3 of the MBPP test assertions when applied to the canonical solution.",
+  "test_hint": "Underlying task: Write a function to sum all amicable numbers from 1 to a specified number. Pick a small input where the comparison operator actually affects the output, and assert the canonical value.",
+  "expected_failure_signal": "At least one MBPP assertion fails on the buggy version (the mutation flips 3 of 3 canonical asserts).",
+  "source": "MBPP-mutation",
+  "source_url": "https://huggingface.co/datasets/google-research-datasets/mbpp",
+  "original_task_id": "123",
+  "mbpp_prompt": "Write a function to sum all amicable numbers from 1 to a specified number.",
+  "tags": [
+    "mbpp",
+    "synthetic",
+    "mutation",
+    "comparison_operator"
+  ]
+}

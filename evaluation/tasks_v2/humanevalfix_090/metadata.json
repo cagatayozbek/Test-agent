@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_090",
+  "task_name": "next_smallest",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `return None if len(lst) < 3 else lst[1]`; correct line: `return None if len(lst) < 2 else lst[1]`. Observable failure: incorrect output.",
+  "test_hint": "Call `next_smallest` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `next_smallest` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/90",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

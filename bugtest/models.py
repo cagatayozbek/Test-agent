@@ -21,6 +21,7 @@ class TaskMetadata(BaseModel):
     difficulty: str = ""
     test_hint: str = ""
     expected_failure_signal: str = ""
+    source: str = ""
     model_config = {"extra": "allow"}
 
     def get_id(self) -> str:
@@ -83,7 +84,7 @@ class RunRecord(BaseModel):
     """Complete record of one pipeline run (all retries for one task+mode)."""
 
     task_id: str
-    mode: Literal["baseline", "agentic", "adaptive"]
+    mode: Literal["baseline", "agentic", "adaptive", "deep"]
     run_number: int
     success: bool
     attempts: list[AttemptRecord]
@@ -103,7 +104,7 @@ class RunRecord(BaseModel):
 class ModeStats(BaseModel):
     """Aggregated statistics for one mode across all tasks."""
 
-    mode: Literal["baseline", "agentic", "adaptive"]
+    mode: Literal["baseline", "agentic", "adaptive", "deep"]
     total_runs: int
     successful_runs: int
     brtr: float

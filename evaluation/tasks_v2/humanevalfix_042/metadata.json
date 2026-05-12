@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_042",
+  "task_name": "incr_list",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `return [(e + 2) for e in l]`; correct line: `return [(e + 1) for e in l]`. Observable failure: incorrect output.",
+  "test_hint": "Try the docstring examples: `incr_list([1, 2, 3])` should return `[2, 3, 4]`; `incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])` should return `[6, 4, 6, 3, 4, 4, 10, 1, 124]`.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `incr_list` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/42",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

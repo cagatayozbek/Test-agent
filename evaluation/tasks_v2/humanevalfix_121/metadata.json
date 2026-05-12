@@ -1,0 +1,18 @@
+{
+  "task_id": "humanevalfix_121",
+  "task_name": "solution",
+  "difficulty": "easy",
+  "bug_type": "value misuse",
+  "bug_description": "The buggy version uses a wrong literal or constant. Buggy line: `return sum([x for idx, x in enumerate(lst) if idx%2==1 and x%2==1])`; correct line: `return sum([x for idx, x in enumerate(lst) if idx%2==0 and x%2==1])`. Observable failure: incorrect output.",
+  "test_hint": "Call `solution` with a small concrete input and assert the expected return value based on the docstring.",
+  "expected_failure_signal": "Observable: incorrect output. Calling `solution` on inputs covered by the docstring examples produces a different value from the canonical version.",
+  "source": "HumanEvalFix",
+  "source_url": "https://huggingface.co/datasets/bigcode/humanevalpack",
+  "original_task_id": "Python/121",
+  "tags": [
+    "humanevalfix",
+    "function_level",
+    "easy",
+    "value_misuse"
+  ]
+}

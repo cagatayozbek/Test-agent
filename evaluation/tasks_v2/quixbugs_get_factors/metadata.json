@@ -3,9 +3,9 @@
   "task_name": "get_factors",
   "difficulty": "medium",
   "bug_type": "wrong_base_case",
-  "bug_description": "Asal sayı için boş liste `[]` dönülüyor; doğrusu `[n]`. Sonuçta asal girdiler eksik dönüyor.",
-  "test_hint": "Asal bir sayı (örn. get_factors(7)) için sonucun [7] olduğunu assert et.",
-  "expected_failure_signal": "Asal girdi için fonksiyon [] döner.",
+  "bug_description": "For a prime number the function returns `[]`; it should return `[n]`. Prime inputs lose their own factor.",
+  "test_hint": "Assert that get_factors(7) returns [7] (a prime number).",
+  "expected_failure_signal": "The function returns [] for a prime input.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

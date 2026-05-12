@@ -3,9 +3,9 @@
   "task_name": "flatten",
   "difficulty": "easy",
   "bug_type": "yield_wrong_value",
-  "bug_description": "Non-list dalında `yield flatten(x)` (generator yield ediyor) yapılmış; doğrusu `yield x`. Sonuç bir liste yerine generator nesneleri içerir.",
-  "test_hint": "İç içe basit liste (örn. [1, [2, 3], [[4]]]) ile çağırıp `list(flatten(...))` çıktısını [1, 2, 3, 4]'e eşit assert et.",
-  "expected_failure_signal": "Çıktı listesi içinde generator object'leri (skaler değil) bulunur.",
+  "bug_description": "In the non-list branch the code yields `flatten(x)` (a generator) instead of `x`; the resulting list contains generator objects rather than scalar values.",
+  "test_hint": "Call with a small nested list (e.g. [1, [2, 3], [[4]]]) and assert `list(flatten(...))` equals [1, 2, 3, 4].",
+  "expected_failure_signal": "Output contains generator objects instead of scalars.",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

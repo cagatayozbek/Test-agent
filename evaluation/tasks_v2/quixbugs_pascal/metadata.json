@@ -3,9 +3,9 @@
   "task_name": "pascal",
   "difficulty": "medium",
   "bug_type": "off_by_one_range",
-  "bug_description": "İç döngü `range(0, r)`; doğrusu `range(0, r + 1)`. Her satırın son elemanı (1) eksik kalır.",
-  "test_hint": "pascal(3) çağrısında satır uzunluklarının [1, 2, 3] olduğunu assert et.",
-  "expected_failure_signal": "Satır uzunluğu beklenenden bir eksik (örn. son satır 2 elemanlı).",
+  "bug_description": "The inner loop is `range(0, r)`; it should be `range(0, r + 1)`. Each row is missing its final element (the trailing 1).",
+  "test_hint": "Assert that pascal(3) produces rows of lengths [1, 2, 3].",
+  "expected_failure_signal": "Each row is one element shorter than expected (e.g. the last row has only 2 elements).",
   "source": "QuixBugs",
   "source_url": "https://github.com/jkoppel/QuixBugs",
   "tags": [

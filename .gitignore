@@ -26,6 +26,12 @@ Thumbs.db
 
 # Project
 results/
+results_v2/
 runs/
+benchmark_runs/
+benchmark_runs_v2/
+.tmp/
+logs/
 evaluation/quixbugs_raw/
 *.jsonl
+*.log

@@ -19,5 +19,10 @@ retry:
   test_timeout_seconds: 30
 tasks:
   dir: evaluation/tasks_v2
-  exclude: []
-  include: []
+  # Empty lists = no filter on that axis. Applied in order:
+  # include -> exclude -> sources -> difficulties -> bug_types
+  include: []           # exact task_id whitelist (highest priority)
+  exclude: []           # exact task_id blacklist
+  sources: []           # quixbugs | humanevalfix | mbpp_mutation | bugsinpy | legacy
+  difficulties: []      # easy | medium | hard
+  bug_types: []         # e.g. comparison_operator, missing logic

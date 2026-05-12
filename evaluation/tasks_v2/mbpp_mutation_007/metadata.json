@@ -1,0 +1,19 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "task_name": "min_k",
+  "difficulty": "easy",
+  "bug_type": "constant_literal",
+  "bug_description": "Synthetic single-mutation bug derived from MBPP problem 753. Mutation: `1` -> `0` (constant literal). This mutation flips 1/3 of the MBPP test assertions when applied to the canonical solution.",
+  "test_hint": "Underlying task: Write a function to find minimum k records from tuple list. https://www.geeksforgeeks.org/python-find-minimum-k-records-from-tuple-list/ - in this case a verbatim copy of test cases Pick a small input where the constant literal actually affects the output, and assert the canonical value.",
+  "expected_failure_signal": "At least one MBPP assertion fails on the buggy version (the mutation flips 1 of 3 canonical asserts).",
+  "source": "MBPP-mutation",
+  "source_url": "https://huggingface.co/datasets/google-research-datasets/mbpp",
+  "original_task_id": "753",
+  "mbpp_prompt": "Write a function to find minimum k records from tuple list. https://www.geeksforgeeks.org/python-find-minimum-k-records-from-tuple-list/ - in this case a verbatim copy of test cases",
+  "tags": [
+    "mbpp",
+    "synthetic",
+    "mutation",
+    "constant_literal"
+  ]
+}
