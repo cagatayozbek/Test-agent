@@ -30,6 +30,14 @@ class AgentResult:
     total_prompt_tokens: int = 0
     total_completion_tokens: int = 0
     duration_seconds: float = 0.0
+    # v2.0 instrumentation — populated by Agent.run; surfaces into RunRecord.
+    tool_call_count: int = 0
+    tool_failure_mode_count: dict = field(default_factory=dict)
+    reasoning_filled: bool = False
+    prompt_version: str = ""
+    prompt_template_hash: str = ""
+    capabilities_used: dict = field(default_factory=dict)
+    tool_choice_mode: str = ""
 
 
 class Agent:
@@ -56,6 +64,8 @@ class Agent:
         timeout_seconds: int = 120,
         temperature: float = 0.7,
         max_tokens: int = 4096,
+        prompt_version: str = "",
+        prompt_template_hash: str = "",
     ):
         self.llm = llm
         self.system_prompt = system_prompt
@@ -65,7 +75,46 @@ class Agent:
         self.timeout_seconds = timeout_seconds
         self.temperature = temperature
         self.max_tokens = max_tokens
-        self.context: dict = {"consecutive_failures": 0}
+        self.prompt_version = prompt_version
+        self.prompt_template_hash = prompt_template_hash
+        self.context: dict = {
+            "consecutive_failures": 0,
+            "tool_failure_mode_count": {},
+            "last_reasoning_filled": False,
+        }
+
+    def _bake_result(
+        self,
+        status: str,
+        messages: list[dict],
+        steps: int,
+        total_prompt: int,
+        total_completion: int,
+        duration: float,
+        tool_call_count: int,
+        reasoning_seen: bool,
+        error: Optional[str] = None,
+        final_response: str = "",
+    ) -> AgentResult:
+        """Single construction point for AgentResult so every return path
+        carries the same v2.0 instrumentation snapshot."""
+        return AgentResult(
+            status=status,
+            messages=messages,
+            final_response=final_response,
+            error=error,
+            steps_used=steps,
+            total_prompt_tokens=total_prompt,
+            total_completion_tokens=total_completion,
+            duration_seconds=duration,
+            tool_call_count=tool_call_count,
+            tool_failure_mode_count=dict(self.context.get("tool_failure_mode_count", {})),
+            reasoning_filled=reasoning_seen,
+            prompt_version=self.prompt_version,
+            prompt_template_hash=self.prompt_template_hash,
+            capabilities_used=dict(getattr(self.llm, "capabilities", {})),
+            tool_choice_mode="auto",
+        )
 
     def run(self, user_message: str) -> AgentResult:
         """Run the agent loop until completion or limits reached."""
@@ -80,64 +129,73 @@ class Agent:
         steps = 0
         total_prompt = 0
         total_completion = 0
+        tool_call_count = 0
+        reasoning_seen = False
+
+        # Parallel-tool policy is driven by the provider's capability dict.
+        # Models that can't serialize multiple tool_calls cleanly (gpt-oss
+        # Harmony recovery, llama-3.x via Together) still take one at a time.
+        caps = getattr(self.llm, "capabilities", None) or {}
+        allow_parallel = bool(caps.get("supports_parallel_tools", False))
 
         while steps < self.max_steps:
-            # Check timeout
             elapsed = time.time() - start_time
             if elapsed > self.timeout_seconds:
-                return AgentResult(
+                return self._bake_result(
                     status="timeout",
                     messages=messages,
+                    steps=steps,
+                    total_prompt=total_prompt,
+                    total_completion=total_completion,
+                    duration=elapsed,
+                    tool_call_count=tool_call_count,
+                    reasoning_seen=reasoning_seen,
                     error=f"Agent timed out after {elapsed:.0f}s",
-                    steps_used=steps,
-                    total_prompt_tokens=total_prompt,
-                    total_completion_tokens=total_completion,
-                    duration_seconds=elapsed,
                 )
-
-            # Call LLM — on last step, don't provide tools so it gives final text
-            use_tools = tool_schemas if (tool_schemas and steps < self.max_steps - 1) else None
 
             try:
                 response = self.llm.chat(
                     messages=messages,
-                    tools=use_tools,
+                    tools=tool_schemas if tool_schemas else None,
                     temperature=self.temperature,
                     max_tokens=self.max_tokens,
                 )
             except Exception as e:
-                return AgentResult(
+                return self._bake_result(
                     status="error",
                     messages=messages,
+                    steps=steps,
+                    total_prompt=total_prompt,
+                    total_completion=total_completion,
+                    duration=time.time() - start_time,
+                    tool_call_count=tool_call_count,
+                    reasoning_seen=reasoning_seen,
                     error=f"LLM call failed: {str(e)}",
-                    steps_used=steps,
-                    total_prompt_tokens=total_prompt,
-                    total_completion_tokens=total_completion,
-                    duration_seconds=time.time() - start_time,
                 )
 
             total_prompt += response.prompt_tokens
             total_completion += response.completion_tokens
             steps += 1
 
-            # No tool calls → agent is done
+            # No tool calls → agent has emitted its final summary.
             if not response.tool_calls:
                 messages.append({"role": "assistant", "content": response.content})
-                return AgentResult(
+                return self._bake_result(
                     status="completed",
                     messages=messages,
+                    steps=steps,
+                    total_prompt=total_prompt,
+                    total_completion=total_completion,
+                    duration=time.time() - start_time,
+                    tool_call_count=tool_call_count,
+                    reasoning_seen=reasoning_seen,
                     final_response=response.content,
-                    steps_used=steps,
-                    total_prompt_tokens=total_prompt,
-                    total_completion_tokens=total_completion,
-                    duration_seconds=time.time() - start_time,
                 )
 
-            # Has tool calls → execute them
-            # Some models only support single tool calls — take first only
-            tool_calls = response.tool_calls[:1] if len(response.tool_calls) > 1 else response.tool_calls
+            tool_calls = (
+                response.tool_calls if allow_parallel else response.tool_calls[:1]
+            )
 
-            # Add assistant message with tool calls
             assistant_msg = {"role": "assistant", "content": response.content or ""}
             assistant_msg["tool_calls"] = [
                 {
@@ -152,7 +210,7 @@ class Agent:
             ]
             messages.append(assistant_msg)
 
-            # Execute each tool call
+            saw_bug_revealed = False
             for tc in tool_calls:
                 result = execute_tool(
                     name=tc["name"],
@@ -160,21 +218,83 @@ class Agent:
                     workspace=self.workspace,
                     context=self.context,
                 )
+                tool_call_count += 1
+                if self.context.get("last_reasoning_filled"):
+                    reasoning_seen = True
+
+                # Sniff the result for an explicit bug-revealed success so
+                # the loop can short-circuit instead of waiting for the model
+                # to figure out it should stop.
+                if not saw_bug_revealed and '"bug_revealed": true' in result:
+                    saw_bug_revealed = True
+
                 messages.append({
                     "role": "tool",
                     "tool_call_id": tc["id"],
                     "content": result,
                 })
 
-        # Max steps reached
-        return AgentResult(
+            # STOP-on-success: if we just reported a bug-revealing test, ask
+            # the model for its final one-sentence summary with no tools
+            # available and return. Saves 1-3 wasted steps per task on weak
+            # models that don't read their own tool outputs carefully.
+            if saw_bug_revealed:
+                try:
+                    final = self.llm.chat(
+                        messages=messages
+                        + [{
+                            "role": "user",
+                            "content": (
+                                "The previous tool call returned bug_revealed=true. "
+                                "Emit a one-sentence final summary now. Do NOT call "
+                                "any further tools."
+                            ),
+                        }],
+                        tools=None,
+                        temperature=self.temperature,
+                        max_tokens=self.max_tokens,
+                    )
+                    total_prompt += final.prompt_tokens
+                    total_completion += final.completion_tokens
+                    steps += 1
+                    messages.append({"role": "assistant", "content": final.content})
+                    return self._bake_result(
+                        status="completed",
+                        messages=messages,
+                        steps=steps,
+                        total_prompt=total_prompt,
+                        total_completion=total_completion,
+                        duration=time.time() - start_time,
+                        tool_call_count=tool_call_count,
+                        reasoning_seen=reasoning_seen,
+                        final_response=final.content,
+                    )
+                except Exception:
+                    # If the wrap-up call fails, fall through to natural loop
+                    # exit — the bug was already revealed; we just lose a
+                    # graceful summary turn.
+                    return self._bake_result(
+                        status="completed",
+                        messages=messages,
+                        steps=steps,
+                        total_prompt=total_prompt,
+                        total_completion=total_completion,
+                        duration=time.time() - start_time,
+                        tool_call_count=tool_call_count,
+                        reasoning_seen=reasoning_seen,
+                        final_response="(bug revealed; final-summary turn skipped)",
+                    )
+
+        return self._bake_result(
             status="max_steps",
             messages=messages,
+            steps=steps,
+            total_prompt=total_prompt,
+            total_completion=total_completion,
+            duration=time.time() - start_time,
+            tool_call_count=tool_call_count,
+            reasoning_seen=reasoning_seen,
             error=f"Reached max_steps ({self.max_steps})",
-            steps_used=steps,
-            total_prompt_tokens=total_prompt,
-            total_completion_tokens=total_completion,
-            duration_seconds=time.time() - start_time,
         )
 
 

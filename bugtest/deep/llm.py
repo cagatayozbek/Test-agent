@@ -132,12 +132,17 @@ class LLMClient:
         max_retries: int = 2,
         workspace: Optional[str] = None,
     ):
+        from bugtest.deep import capabilities  # local import; avoid cycle
+
         self.model = model
         self.timeout = timeout
         self.max_retries = max(max_retries, 5)  # Min 5 retries for rate limits
         # Optional workspace path used by the Claude CLI provider so its
         # built-in Read/Edit/Bash tools can touch the task workspace.
         self.workspace: Optional[str] = workspace
+        # Per-model capability dict. Drives parallel-tool policy in the agent
+        # loop and tool-name substitution in the rendered system prompt.
+        self.capabilities = capabilities.for_model(model)
 
         if model.startswith("claude:"):
             self.provider = "claude_cli"
@@ -312,10 +317,12 @@ class LLMClient:
         }
         if tools:
             kwargs["tools"] = tools
-            kwargs["tool_choice"] = "required"
-        else:
-            # No tools = final response mode
-            pass
+            # tool_choice="auto" — the model decides when to stop. v1.x used
+            # "required" but that forced halluc'd tool calls when the model
+            # would otherwise have emitted a final-summary text turn, which
+            # inflated step counts for weak-tool-callers. The STOP_CONDITIONS
+            # section of the rendered system prompt now carries that contract.
+            kwargs["tool_choice"] = "auto"
 
         resp = client.chat.completions.create(**kwargs)
         msg = resp.choices[0].message
