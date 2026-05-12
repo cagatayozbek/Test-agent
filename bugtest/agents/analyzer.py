@@ -7,26 +7,8 @@ from bugtest.agents.protocol import Agent
 from bugtest.llm import LLMResponse
 from bugtest.models import CodeAnalysis
 
-SYSTEM_PROMPT = """\
-You are a code analysis expert. You will receive source code that contains a known bug.
-
-Your job:
-1. Identify the most likely bug in the code
-2. Determine exactly what input/condition triggers it
-3. Explain expected vs actual behavior
-4. Suggest a concrete test strategy to reveal the bug
-
-Respond with ONLY valid JSON (no markdown fences, no explanation) matching this schema:
-{
-  "bug_hypothesis": "your theory about the bug",
-  "bug_location": "function name, line number",
-  "trigger_condition": "what input triggers the bug",
-  "expected_vs_actual": "what SHOULD vs DOES happen",
-  "suggested_test_strategy": "how to test for this bug",
-  "confidence": "low" | "medium" | "high"
-}
-
-Be concrete. Reference specific functions, values, and operators."""
+# v2.0: shared with the deep-mode subagent prompt for cross-mode consistency.
+from bugtest.deep.prompts import ANALYZER_SYSTEM_PROMPT as SYSTEM_PROMPT  # noqa: E402, F401
 
 
 class Analyzer(Agent):

@@ -14,6 +14,7 @@ from typing import Optional
 from bugtest.agents.analyzer import Analyzer
 from bugtest.agents.deep_agent import run_deep_agent
 from bugtest.agents.test_writer import TestWriter
+from bugtest.deep.prompts import PROMPT_VERSION
 from bugtest.llm import GeminiClient
 from bugtest.models import (
     AttemptRecord,
@@ -138,6 +139,9 @@ def run_pipeline(
                 test_code=deep_result.final_test_code,
                 validation=final_validation,
                 timestamp=_now_iso(),
+                tool_call_count=deep_result.tool_call_count,
+                tool_failure_mode_count=dict(deep_result.tool_failure_mode_count),
+                reasoning_filled=deep_result.reasoning_filled,
             )
         )
         duration = time.perf_counter() - start_time
@@ -155,6 +159,10 @@ def run_pipeline(
             completion_tokens_total=deep_result.completion_tokens,
             duration_seconds=round(duration, 2),
             timestamp=_now_iso(),
+            prompt_version=deep_result.prompt_version,
+            prompt_template_hash=deep_result.prompt_template_hash,
+            capabilities_used=dict(deep_result.capabilities_used),
+            tool_choice_mode="auto" if deep_result.capabilities_used else "",
         )
 
     # --- AGENTIC: run Analyzer upfront ---
@@ -229,4 +237,8 @@ def run_pipeline(
         completion_tokens_total=completion_tokens,
         duration_seconds=round(duration, 2),
         timestamp=_now_iso(),
+        # Non-deep modes share the v2.0 failure-mode taxonomy via the
+        # TestWriter prompt re-exported from bugtest.deep.prompts; tagging
+        # the version makes pre/post refactor BRTRs comparable across modes.
+        prompt_version=PROMPT_VERSION,
     )

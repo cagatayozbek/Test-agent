@@ -53,6 +53,14 @@ class DeepRunResult:
     outer_iterations: int = 0
     status: str = ""
     critic_feedback: list[str] = field(default_factory=list)
+    # v2.0 instrumentation propagated up from the inner AgentResult so the
+    # pipeline can stamp the outer RunRecord with the same provenance.
+    prompt_version: str = ""
+    prompt_template_hash: str = ""
+    capabilities_used: dict = field(default_factory=dict)
+    tool_call_count: int = 0
+    tool_failure_mode_count: dict = field(default_factory=dict)
+    reasoning_filled: bool = False
 
 
 def _resolve_deep_model_name(model_id: str) -> str:
@@ -90,48 +98,24 @@ def _build_workspace(task: Task) -> Path:
     return workspace
 
 
-def _build_problem(task: Task, critic_feedback: Optional[str] = None,
-                   use_cli_tools: bool = False) -> str:
+def _build_problem(task: Task, critic_feedback: Optional[str] = None) -> str:
     """Compose the user message handed to the orchestrator.
 
-    When `use_cli_tools=True` (Claude Code CLI provider), the prompt refers to
-    Claude's native Read/Edit/Bash tools. Otherwise it refers to the
-    orchestrator-side tool registry (`safe_edit_file`, `run_tests`).
+    The workflow steps are NOT duplicated here — they live in the rendered
+    system prompt (`bugtest/deep/prompts.py`) with tool-name placeholders.
+    The user message only carries the task-specific context (bug
+    description, hint, optional critic feedback).
     """
     bug_desc = task.metadata.bug_description or "(no description)"
     hint = task.metadata.test_hint or ""
     parts = [
-        f"Task: Add a focused bug-revealing pytest test for tasks_v2 task '{task.task_id}'.",
-        f"Target test file: `tests/test_benchmark.py`.",
+        f"Task: Add a focused bug-revealing pytest test for tasks_v2 task "
+        f"'{task.task_id}'.",
+        "Target test file: `tests/test_benchmark.py` (preserve the existing "
+        "baseline import test).",
         f"Known bug description: {bug_desc}",
         f"Hint: {hint}",
-        "",
     ]
-    if use_cli_tools:
-        parts += [
-            "Steps:",
-            "1. Use Read on `source.py` to understand the code and the bug.",
-            "2. Use Read on `tests/test_benchmark.py` to see the baseline test.",
-            "3. Use Edit on `tests/test_benchmark.py` to APPEND a new test after",
-            "   the existing baseline test. Set old_string to the last line of",
-            "   the file and new_string to that same line followed by your new",
-            "   test function. NEVER overwrite the existing import / baseline test.",
-            "4. Use Bash to run: `python -m pytest tests/test_benchmark.py -v`",
-            "   and confirm your new test FAILS (because the code is buggy).",
-            "Keep the test focused. A failing test on the buggy code is the goal.",
-        ]
-    else:
-        parts += [
-            "Steps:",
-            "1. Read source.py to understand the code and the bug.",
-            "2. Read tests/test_benchmark.py to see the existing baseline test.",
-            "3. Use safe_edit_file with old_string/new_string to APPEND your new test",
-            "   AFTER the existing tests. Use old_string to match the last line of the",
-            "   existing file, new_string to add your test after it. Set",
-            "   allow_bug_revealing=true.",
-            "4. The new test must FAIL on the buggy code (revealing the bug).",
-            "Keep the test focused. Do NOT overwrite existing tests.",
-        ]
     if critic_feedback:
         parts.extend([
             "",
@@ -189,7 +173,6 @@ def run_deep_agent(task: Task, model_id: str, validator: Validator,
     from bugtest.deep.orchestrator import DeepTestOrchestrator
 
     model_name = _resolve_deep_model_name(model_id)
-    use_cli_tools = model_name.startswith("claude:")
 
     if model_name.startswith("nvidia:") and not os.environ.get("NVIDIA_API_KEY"):
         raise EnvironmentError("Set NVIDIA_API_KEY for NVIDIA-routed deep mode.")
@@ -209,6 +192,7 @@ def run_deep_agent(task: Task, model_id: str, validator: Validator,
     critic_feedback: Optional[str] = None
     critic_history: list[str] = []
     outer = 0
+    last_result = None  # most recent AgentResult, source of instrumentation
 
     for outer in range(1, max_attempts + 1):
         workspace = _build_workspace(task)
@@ -219,8 +203,9 @@ def run_deep_agent(task: Task, model_id: str, validator: Validator,
                 max_steps=inner_max_steps,
                 timeout_seconds=inner_timeout,
             )
-            problem = _build_problem(task, critic_feedback, use_cli_tools=use_cli_tools)
+            problem = _build_problem(task, critic_feedback)
             result = orch.run(problem)
+            last_result = result
             total_p += result.total_prompt_tokens
             total_c += result.total_completion_tokens
             total_steps += result.steps_used
@@ -251,6 +236,11 @@ def run_deep_agent(task: Task, model_id: str, validator: Validator,
         finally:
             shutil.rmtree(workspace, ignore_errors=True)
 
+    # Pull v2.0 instrumentation off the most recent inner run. We snapshot
+    # the LAST attempt rather than aggregating across attempts because the
+    # prompt_version / prompt_template_hash are the same across attempts
+    # (workspace resets but the prompt does not) and the tool counts of the
+    # final attempt are what produced `final_test_code`.
     return DeepRunResult(
         final_test_code=final_test_code,
         prompt_tokens=total_p,
@@ -259,4 +249,10 @@ def run_deep_agent(task: Task, model_id: str, validator: Validator,
         outer_iterations=outer,
         status=last_status,
         critic_feedback=critic_history,
+        prompt_version=getattr(last_result, "prompt_version", "") if last_result else "",
+        prompt_template_hash=getattr(last_result, "prompt_template_hash", "") if last_result else "",
+        capabilities_used=dict(getattr(last_result, "capabilities_used", {})) if last_result else {},
+        tool_call_count=getattr(last_result, "tool_call_count", 0) if last_result else 0,
+        tool_failure_mode_count=dict(getattr(last_result, "tool_failure_mode_count", {})) if last_result else {},
+        reasoning_filled=bool(getattr(last_result, "reasoning_filled", False)) if last_result else False,
     )

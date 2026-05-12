@@ -5,22 +5,10 @@ import re
 from bugtest.agents.protocol import Agent
 from bugtest.llm import GeminiClient, LLMResponse
 
-SYSTEM_PROMPT = """\
-You are a test engineer. Write a pytest test that REVEALS a specific bug.
-
-REQUIREMENTS:
-1. The test MUST FAIL on the buggy code (expose the bug)
-2. The test MUST PASS on the fixed code (confirm the fix works)
-3. Import from the local file: `from source import <symbols>`
-4. Use exact boundary values / edge cases that trigger the bug
-5. Include a clear assertion with a descriptive message
-6. Return ONLY the Python test code — no explanation, no markdown fences
-
-GUIDELINES:
-- Focus on the SPECIFIC bug, not general correctness
-- Use the exact values that trigger the bug condition
-- One focused test function is better than many unfocused ones
-- Name the test descriptively: test_<what_it_checks>"""
+# v2.0: the TestWriter prompt is sourced from bugtest.deep.prompts so the
+# non-deep modes (baseline / agentic / adaptive) share the same failure-mode
+# taxonomy (TEST_PASSES_ON_BUG, OVERFIT_TO_BUG) as the deep mode's CRITIC.
+from bugtest.deep.prompts import TEST_WRITER_SYSTEM_PROMPT as SYSTEM_PROMPT  # noqa: E402, F401
 
 _RETRY_TEMPLATE = """
 === PREVIOUS ATTEMPTS (fix these issues) ===
