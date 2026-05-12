@@ -1,0 +1,30 @@
+experiment:
+  name: smoke_v4_haiku_deep
+  runs_per_task: 1
+  concurrency: 1
+  modes:
+  - deep
+model:
+  api_key_env: CLAUDE_CODE_KEY
+  max_output_tokens: 4096
+  model_id: haiku
+  temperature: 0.7
+  base_url: null
+retry:
+  max_attempts: 2
+  test_timeout_seconds: 30
+results:
+  dir: results
+tasks:
+  dir: evaluation/tasks_v2
+  include:
+  - humanevalfix_042
+  - humanevalfix_058
+  - mbpp_mutation_013
+  - mbpp_mutation_033
+  - quixbugs_quicksort
+  - swallowed_exception
+  exclude: []
+  sources: []
+  difficulties: []
+  bug_types: []
