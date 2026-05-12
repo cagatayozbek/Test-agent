@@ -109,9 +109,41 @@ _LIMIT_SIGNALS = (
 )
 
 
-def _is_claude_limit_error(stdout: str, stderr: str) -> bool:
-    text_l = ((stdout or "") + " " + (stderr or "")).lower()
-    return any(sig in text_l for sig in _LIMIT_SIGNALS)
+def _is_claude_limit_error(stdout: str, stderr: str, returncode: int = 0) -> bool:
+    """True only when output indicates a real Claude usage-limit hit.
+
+    The v1.x form (any signal substring anywhere in stdout+stderr) produced
+    false positives because the agent's own response — test code, docstrings,
+    even task descriptions — may contain words like "quota" or "429" that
+    have nothing to do with the API quota. One false positive costs up to
+    6×60min of useless sleep, so we tighten the heuristic:
+
+      - stderr signals always count (claude writes operator errors there);
+      - non-zero returncode + signal anywhere counts (the CLI itself failed);
+      - otherwise inspect the JSON wrapper's `is_error` flag and only match
+        signals inside the error payload, not the normal result text.
+    """
+    stderr_l = (stderr or "").lower()
+    if any(sig in stderr_l for sig in _LIMIT_SIGNALS):
+        return True
+
+    if returncode != 0:
+        combined = ((stdout or "") + " " + (stderr or "")).lower()
+        if any(sig in combined for sig in _LIMIT_SIGNALS):
+            return True
+
+    # Inspect the JSON wrapper for an explicit error flag. claude returns a
+    # well-formed JSON with `is_error: bool` and `api_error_status: str|null`
+    # under `--output-format json`. We only treat the response as a real
+    # limit when claude itself flagged it as an error.
+    try:
+        wrapper = json.loads((stdout or "").strip())
+        if isinstance(wrapper, dict) and wrapper.get("is_error"):
+            error_text = json.dumps(wrapper).lower()
+            return any(sig in error_text for sig in _LIMIT_SIGNALS)
+    except (json.JSONDecodeError, AttributeError):
+        pass
+    return False
 
 
 def _sleep_through_claude_limit(attempt: int, wait_minutes: int = 60) -> None:
@@ -249,7 +281,7 @@ class LLMClient:
                 )
             except subprocess.TimeoutExpired:
                 raise TimeoutError("Claude CLI timed out after 900s")
-            if _is_claude_limit_error(result.stdout, result.stderr):
+            if _is_claude_limit_error(result.stdout, result.stderr, result.returncode):
                 _sleep_through_claude_limit(limit_attempt)
                 continue
             break
