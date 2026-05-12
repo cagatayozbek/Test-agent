@@ -80,7 +80,14 @@ def get_tool_schemas(tool_names: Optional[list[str]] = None) -> list[dict]:
 
 
 def execute_tool(name: str, arguments: str, workspace: str, context: dict) -> str:
-    """Execute a registered tool and return result as string."""
+    """Execute a registered tool and return result as string.
+
+    Side effects on `context` that the agent loop reads after the call:
+      - `last_reasoning_filled`: set by the tool when it accepts reasoning
+        fields; cleared here so it reflects the latest call only.
+      - `tool_failure_mode_count`: aggregated across calls; the agent loop
+        snapshots this dict at end-of-attempt for AttemptRecord.
+    """
     if name not in _TOOLS:
         return f"Error: Unknown tool '{name}'"
 
@@ -96,6 +103,8 @@ def execute_tool(name: str, arguments: str, workspace: str, context: dict) -> st
         args["workspace"] = workspace
     if "context" in sig.parameters:
         args["context"] = context
+        # Reset per-call signal — tool will set this if it accepts reasoning.
+        context["last_reasoning_filled"] = False
 
     try:
         result = func(**args)

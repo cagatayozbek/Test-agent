@@ -121,95 +121,150 @@ def _syntax_error_snippet(stderr: str, stdout: str = "", max_lines: int = 2) -> 
     return "\n".join(out_lines[:max_lines])
 
 
+def _bump_failure_mode(context: Optional[dict], tag: str) -> None:
+    """Increment a counter in `context["tool_failure_mode_count"]`.
+
+    The agent loop reads this dict to populate AttemptRecord.
+    Safe no-op when the tool is invoked outside an agent run (no context).
+    """
+    if context is None:
+        return
+    counts = context.setdefault("tool_failure_mode_count", {})
+    counts[tag] = counts.get(tag, 0) + 1
+
+
+def _classify_revert(stderr: str, stdout: str) -> str:
+    """Distinguish a Python SyntaxError from a generic pytest collection error.
+
+    SyntaxError/IndentationError prints to stdout during pytest collection on
+    Python 3.13; older Python versions route some of it through stderr. We
+    sniff both — if any of those tokens appear, tag it `revert_syntax`,
+    otherwise `revert_collection`.
+    """
+    blob = (stderr or "") + " " + (stdout or "")
+    if "SyntaxError" in blob or "IndentationError" in blob:
+        return "revert_syntax"
+    return "revert_collection"
+
+
 @register_tool(
     name="safe_edit_file",
     description=(
-        "Create or edit a pytest test file under tests/. Pick exactly one content mode: "
-        "`append` (recommended — adds text to end of file), `new_content` (full rewrite), "
-        "or `old_string`+`new_string` (exact substring substitution). "
-        "Edits that produce syntax/collection errors are auto-reverted to the baseline."
+        "Add or correct a pytest test under `tests/`. Pick exactly one mode: "
+        "`mode='append'` (DEFAULT — concat `append` text to end of file) "
+        "OR `mode='replace'` (substitute `old_string` with `new_string`, "
+        "exact single match). Edits that produce a Python syntax or "
+        "pytest-collection error are auto-reverted to the baseline."
     ),
     param_descriptions={
         "file_path": "Path relative to workspace; must start with `tests/` and end with `.py`.",
-        "append": "RECOMMENDED for adding a test. Text appended to end of existing file (a newline is added between the existing content and your text if needed). Use this to add new tests without worrying about old_string matching.",
-        "new_content": "Full replacement contents of the file. Use when rewriting completely. Mutually exclusive with append/old_string.",
-        "old_string": "Exact substring to replace; must match the file exactly once including any newlines. Mutually exclusive with append/new_content.",
-        "new_string": "Replacement text for old_string. Required when old_string is provided.",
-        "allow_bug_revealing": "Set true when you intend the new test to FAIL on the buggy code — the tool will report bug_revealed=true instead of treating the failure as an error.",
-        "hypothesis": "Optional. Short rationale for the edit (≥10 chars recommended).",
+        "mode": "Either 'append' (default — add to end of file) or 'replace' (substitute old_string with new_string).",
+        "append": "Text to append. Required when mode='append'. A newline is inserted between the existing content and your text if needed.",
+        "old_string": "Exact substring to replace; must match the file exactly once including any newlines. Required when mode='replace'.",
+        "new_string": "Replacement text for old_string. Required when mode='replace'.",
+        "allow_bug_revealing": "Set true when you intend the new test to FAIL on the buggy code — the tool reports bug_revealed=true instead of treating the failure as an error.",
+        "hypothesis": "Optional. Short rationale for the edit (any length).",
         "why_this_action": "Optional. Why this specific edit shape was chosen.",
         "expected_outcome": "Optional. What you expect to see after the edit.",
     },
 )
 def safe_edit_file(
     file_path: str,
+    mode: str = "append",
+    append: Optional[str] = None,
+    old_string: Optional[str] = None,
+    new_string: Optional[str] = None,
     hypothesis: str = "",
     why_this_action: str = "",
     expected_outcome: str = "",
-    new_content: Optional[str] = None,
-    old_string: Optional[str] = None,
-    new_string: Optional[str] = None,
-    append: Optional[str] = None,
     allow_bug_revealing: bool = False,
     workspace: str = ".",
+    context: Optional[dict] = None,
 ) -> str:
-    """Edit or create a file in tests/ with auto-validation and revert-on-syntax-error.
+    """Edit a file under tests/ with auto-validation and revert-on-error.
 
-    Three content modes, exactly one must be provided:
-      - append            -> concat to end of existing file (recommended for tests)
-      - new_content       -> overwrite full file
-      - old_string + new_string -> exact-match substitution
+    Two modes:
+      - mode='append'   -> concat `append` to end of existing file
+      - mode='replace'  -> substitute exact `old_string` -> `new_string`
     """
-    # Reasoning fields are optional; missing values just synthesize placeholders
-    # so small models don't bounce on length/empty validation.
+    # Track whether the model bothered to fill any reasoning field; the agent
+    # loop snapshots this into AttemptRecord.reasoning_filled.
+    if context is not None:
+        context["last_reasoning_filled"] = bool(
+            (hypothesis or "").strip()
+            or (why_this_action or "").strip()
+            or (expected_outcome or "").strip()
+        )
+
+    # Synthesize placeholders so downstream string formatting never sees empty;
+    # reasoning content itself is opt-in (no validation, no length floor).
     hypothesis = hypothesis or "(not provided)"
     why_this_action = why_this_action or "(not provided)"
     expected_outcome = expected_outcome or "(not provided)"
 
-    # Validate path (must be under tests/)
+    # --- Mode validation ----------------------------------------------------
+    if mode not in ("append", "replace"):
+        _bump_failure_mode(context, "mode_conflict")
+        return (
+            f"Error: mode must be 'append' or 'replace', got {mode!r}. "
+            "For adding a new test, use mode='append' with `append=\"...\"`."
+        )
+
+    if mode == "append":
+        if append is None:
+            _bump_failure_mode(context, "mode_conflict")
+            return (
+                "Error: mode='append' requires the `append` parameter "
+                "containing the test code to add."
+            )
+        if old_string is not None or new_string is not None:
+            _bump_failure_mode(context, "mode_conflict")
+            return (
+                "Error: mode='append' must not pass `old_string`/`new_string`. "
+                "Switch to mode='replace' for substring edits."
+            )
+    else:  # mode == "replace"
+        if old_string is None or new_string is None:
+            _bump_failure_mode(context, "mode_conflict")
+            return (
+                "Error: mode='replace' requires both `old_string` and "
+                "`new_string`."
+            )
+        if append is not None:
+            _bump_failure_mode(context, "mode_conflict")
+            return (
+                "Error: mode='replace' must not pass `append`. "
+                "Switch to mode='append' to add at the end of the file."
+            )
+
+    # --- Path validation ----------------------------------------------------
     workspace_path = Path(workspace).resolve()
     candidate = (workspace_path / file_path).resolve()
     try:
         relative = candidate.relative_to(workspace_path)
     except ValueError:
+        _bump_failure_mode(context, "path_outside_tests")
         return "Error: Path escapes workspace."
 
     if relative.parts[:1] != ("tests",):
+        _bump_failure_mode(context, "path_outside_tests")
         return "Error: safe_edit_file may only write under tests/."
     if not candidate.name.endswith(".py"):
+        _bump_failure_mode(context, "path_outside_tests")
         return "Error: Only .py files allowed."
 
-    # Resolve content — exactly one of {append, new_content, (old_string+new_string)}
     full_path = workspace_path / relative
-    modes_provided = sum(
-        x is not None
-        for x in (new_content, old_string if (old_string is not None or new_string is not None) else None, append)
-    )
-    if modes_provided == 0:
-        return (
-            "Error: Provide one of `append`, `new_content`, or both `old_string` and "
-            "`new_string`. Recommended for adding a test: `append=\"<your test code>\"`."
-        )
-    if modes_provided > 1:
-        return (
-            "Error: Provide exactly one content mode. You supplied more than one of "
-            "`append` / `new_content` / `old_string`."
-        )
 
-    if append is not None:
+    # --- Content resolution -------------------------------------------------
+    if mode == "append":
         if not full_path.exists():
             return "Error: append mode requires an existing file."
         current = full_path.read_text(encoding="utf-8")
         sep = "" if current.endswith("\n") or current == "" else "\n"
-        final_content = current + sep + append
-    elif new_content is not None:
-        final_content = new_content
-    else:
-        # old_string / new_string path
-        if old_string is None or new_string is None:
-            return "Error: old_string mode requires both `old_string` and `new_string`."
+        final_content = current + sep + append  # type: ignore[operator]
+    else:  # replace
         if not full_path.exists():
-            return "Error: old_string/new_string edits require an existing file."
+            return "Error: replace mode requires an existing file."
         current = full_path.read_text(encoding="utf-8")
         if old_string not in current:
             tail = _file_tail_diagnostic(current)
@@ -217,20 +272,19 @@ def safe_edit_file(
                 "Error: old_string not found in file. File ends with:\n"
                 f"---\n{tail}\n---\n"
                 "Tip: extract the EXACT trailing substring (including newlines) "
-                "from the file, or use `append=\"...\"` to add at the end instead."
+                "from the file, or use mode='append' to add at the end instead."
             )
         if current.count(old_string) != 1:
             return (
                 f"Error: old_string matches {current.count(old_string)} locations; "
                 "it must match exactly one. Include more surrounding context to disambiguate."
             )
-        final_content = current.replace(old_string, new_string, 1)
+        final_content = current.replace(old_string, new_string, 1)  # type: ignore[arg-type]
 
-    # Write file directly and run tests (simplified — no revert on bug-revealing)
+    # --- Write + validate ---------------------------------------------------
     full_path.parent.mkdir(parents=True, exist_ok=True)
     full_path.write_text(final_content, encoding="utf-8")
 
-    # Run tests to validate
     runner = TestRunner(workspace)
     test_result = runner.run_quick(".")
 
@@ -243,11 +297,14 @@ def safe_edit_file(
         }, indent=2)
 
     if allow_bug_revealing and test_result.exit_code == 1 and test_result.num_failed > 0:
-        # Bug-revealing: test fails because of target code bug — this is success!
+        # Bug-revealing failure on buggy code — this is success.
         return json.dumps({
             "status": "success",
             "path": str(relative),
-            "message": f"Bug-revealing test added ({test_result.num_passed} passed, {test_result.num_failed} failed — reveals target bug)",
+            "message": (
+                f"Bug-revealing test added ({test_result.num_passed} passed, "
+                f"{test_result.num_failed} failed — reveals target bug)"
+            ),
             "bug_revealed": True,
             "tests_after": {
                 "passed": False, "num_passed": test_result.num_passed,
@@ -257,8 +314,9 @@ def safe_edit_file(
         }, indent=2)
 
     if test_result.exit_code not in (0, 1):
-        # Syntax/collection error — revert. Surface stderr snippet so the model
-        # can fix the actual SyntaxError instead of guessing.
+        # Syntax/collection error — revert to baseline and tag the failure mode.
+        revert_tag = _classify_revert(test_result.stderr, test_result.stdout)
+        _bump_failure_mode(context, revert_tag)
         full_path.write_text(_BASELINE_TEST_REVERT, encoding="utf-8")
         return json.dumps({
             "status": "failed",
@@ -268,6 +326,7 @@ def safe_edit_file(
                 "Your edit was rejected; the baseline test was restored. Fix the syntax and retry."
             ),
             "reverted": True,
+            "failure_mode": revert_tag,
             "stderr_snippet": _syntax_error_snippet(test_result.stderr, test_result.stdout),
             "stderr": test_result.stderr[:500],
         }, indent=2)
@@ -348,17 +407,25 @@ def save_knowledge(topic: str, content: str, workspace: str = ".") -> str:
 )
 def safe_edit_test_file(
     file_path: str,
-    hypothesis: str,
-    why_this_action: str,
-    expected_outcome: str,
+    hypothesis: str = "",
+    why_this_action: str = "",
+    expected_outcome: str = "",
     new_content: Optional[str] = None,
     old_string: Optional[str] = None,
     new_string: Optional[str] = None,
     workspace: str = ".",
+    context: Optional[dict] = None,
 ) -> str:
     """Edit test files for SWE Atlas (cross-language support)."""
-    if not hypothesis or len(hypothesis) < 10:
-        return "Error: hypothesis must be at least 10 characters."
+    # Reasoning fields opt-in to match deep mode's policy; SWE Atlas tasks
+    # historically required ≥10 chars of hypothesis but that biased weak
+    # tool-callers' success rates, so the floor is removed.
+    if context is not None:
+        context["last_reasoning_filled"] = bool(
+            (hypothesis or "").strip()
+            or (why_this_action or "").strip()
+            or (expected_outcome or "").strip()
+        )
 
     workspace_path = Path(workspace).resolve()
     candidate = (workspace_path / file_path).resolve()
