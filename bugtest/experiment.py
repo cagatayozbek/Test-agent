@@ -2,6 +2,7 @@
 
 import json
 import math
+import os
 import shutil
 import threading
 import time
@@ -224,10 +225,14 @@ def run_experiment(config_path: Path) -> ExperimentSummary:
     )
     print(f"Loaded {len(tasks)} tasks from {tasks_dir}")
 
-    # Setup results directory
+    # Setup results directory. `DEEPTEST_RESULTS_DIR` env var overrides the
+    # YAML's `results.dir` so v2.0 runs can be biriktirildi at `results_v2/`
+    # without editing every config file (and v1.x results stay where they
+    # are for retroactive tagging).
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     experiment_id = f"{config.experiment.name}_{ts}"
-    results_dir = Path(config.results.dir) / experiment_id
+    results_root = os.environ.get("DEEPTEST_RESULTS_DIR", config.results.dir)
+    results_dir = Path(results_root) / experiment_id
     runs_dir = results_dir / "runs"
     for task in tasks:
         (runs_dir / task.task_id).mkdir(parents=True, exist_ok=True)
