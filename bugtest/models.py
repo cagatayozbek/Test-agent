@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -104,7 +104,8 @@ class RunRecord(BaseModel):
     # deserializable as v1.x; the migration script tags them retroactively.
     prompt_version: str = ""
     prompt_template_hash: str = ""
-    capabilities_used: Dict[str, bool] = Field(default_factory=dict)
+    # Mixed-type values (provider str, parallel/structured bools, tool_names dict).
+    capabilities_used: Dict[str, Any] = Field(default_factory=dict)
     tool_choice_mode: Literal["auto", "required", "none", ""] = ""
 
 

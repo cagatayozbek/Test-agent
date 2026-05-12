@@ -72,7 +72,11 @@ def test_v2_round_trip():
     payload = _v1_run()
     payload["prompt_version"] = "v2.0"
     payload["prompt_template_hash"] = "abc123def456"
-    payload["capabilities_used"] = {"supports_parallel_tools": True}
+    payload["capabilities_used"] = {
+        "provider": "claude_cli",
+        "supports_parallel_tools": True,
+        "tool_names": {"read": "Read", "edit": "Edit", "run": "Bash"},
+    }
     payload["tool_choice_mode"] = "auto"
     payload["attempts"][0]["tool_call_count"] = 3
     payload["attempts"][0]["tool_failure_mode_count"] = {"revert_syntax": 1}
@@ -83,6 +87,8 @@ def test_v2_round_trip():
     assert serialized["prompt_version"] == "v2.0"
     assert serialized["prompt_template_hash"] == "abc123def456"
     assert serialized["capabilities_used"]["supports_parallel_tools"] is True
+    assert serialized["capabilities_used"]["provider"] == "claude_cli"
+    assert serialized["capabilities_used"]["tool_names"]["read"] == "Read"
     assert serialized["tool_choice_mode"] == "auto"
     assert serialized["attempts"][0]["tool_call_count"] == 3
     assert serialized["attempts"][0]["tool_failure_mode_count"] == {"revert_syntax": 1}
