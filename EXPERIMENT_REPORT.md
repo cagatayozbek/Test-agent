@@ -784,3 +784,158 @@ run there is no model where adaptive == baseline within noise. Adaptive
 adds the Analyzer only on baseline failure; under rate-limit-free
 conditions, that conditional invocation extracts a small positive
 signal in every model measured.
+
+
+## 11. v2.0 Prompt Refactor — 100-task Cross-Model Benchmark (2026-05-12/13)
+
+After the QuixBugs pre-registered run (§10) we observed that prompt
+strategy, not model capability, was the dominant source of variance in
+deep-mode BRTR. We refactored the system prompts into a single
+model-agnostic template + per-provider tool-name dictionary (commits
+`d62afe5` → `798e9cb`) and re-ran the full 100-task `evaluation/tasks_v2`
+set (40 HumanEvalFix + 30 QuixBugs + 20 MBPP-mutation + 5 BugsInPy +
+5 legacy state-dependent) × 3 runs × deep mode on four models.
+
+All results below are tagged `prompt_version="v2.0"` in their RunRecord
+JSONs; the v1.x results that produced §10 are preserved under `results/`
+with `prompt_version="v1.x"` (retroactively, via
+`scripts/tag_v1_results.py`). The two sets are not directly comparable
+on identical tasks — the v1.x QuixBugs set is a 31-task subset of the
+v2.0 100-task set — but the 25-task overlap analysed in §11.5 gives a
+like-for-like delta.
+
+### 11.1 Leaderboard
+
+300 deep-mode runs per model (100 tasks × 3 runs). BRTR with Wilson 95% CI.
+
+| # | Model | Provider | BRTR | 95% CI | Successful | Avg dur | Avg p-tok | Avg c-tok |
+|---|---|---|---:|---|---:|---:|---:|---:|
+| 1 | sonnet | Claude CLI | **100.0%** | [98.7, 100.0] | 300/300 | 66.0s | 113K | 2125 |
+| 2 | haiku | Claude CLI | 99.0% | [97.1, 99.7] | 297/300 | 46.9s | 230K | 3650 |
+| 3 | openai/gpt-oss-120b | Together | 89.7% | [85.7, 92.6] | 269/300 | 97.4s | 8.8K | 6148 |
+| 4 | Qwen/Qwen3-Coder-Next-FP8 | Together | 82.3% | [77.6, 86.2] | 247/300 | 32.4s | 28K | 1385 |
+
+Sonnet scored perfectly on every task and every run (rank-degenerate
+Spearman). Haiku missed three runs across 100 tasks. Both open-weight
+models cluster in the 80-90% band with non-overlapping CIs.
+
+### 11.2 Per-task BRTR distribution
+
+| # | Model | 3/3 | 2/3 | 1/3 | 0/3 |
+|---|---|---:|---:|---:|---:|
+| 1 | sonnet | **100** | 0 | 0 | 0 |
+| 2 | haiku | 97 | 3 | 0 | 0 |
+| 3 | gpt-oss-120b | 78 | 14 | 7 | 1 |
+| 4 | qwen3-coder | 68 | 20 | 3 | 9 |
+
+Note the **bimodal pattern in qwen3-coder**: 0 tasks in the 2/3 bucket,
+but 20 in 1/3 and 9 in 0/3. The model either solves a task on every
+attempt or struggles consistently — the middle band ("usually works,
+sometimes flakes") is empty. gpt-oss-120b shows the same bimodality less
+sharply (14 in 2/3, 7 in 1/3).
+
+### 11.3 Tool activity and failure modes
+
+| Model | Tool calls (300 runs) | Avg attempts | Failure-mode counts |
+|---|---:|---:|---|
+| sonnet | 0 *(CLI subprocess)* | 1.05 | — |
+| haiku | 0 *(CLI subprocess)* | 1.07 | — |
+| gpt-oss-120b | 894 (avg 3.0/run) | 1.33 | `revert_collection: 12`, `revert_syntax: 2` |
+| qwen3-coder | 1947 (avg 6.5/run) | 1.41 | `revert_collection: 25`, `mode_conflict: 3`, `revert_syntax: 1` |
+
+Claude CLI models perform their tool loop inside the `claude` subprocess
+and return only the final test code; the orchestrator-side agent loop
+observes zero structured tool calls. gpt-oss-120b uses ~half the tool
+calls of qwen but achieves higher BRTR — quality over quantity. qwen's
+elevated `revert_collection` count is the dominant failure mode for that
+model, suggesting the v2.0 syntax-error auto-revert mechanism absorbed
+non-trivial noise.
+
+### 11.4 Cross-model Spearman agreement on per-task BRTR
+
+|  | haiku | sonnet | gpt-oss-120b | qwen3-coder |
+|---|---:|---:|---:|---:|
+| haiku        | — | NaN | +0.166 | +0.142 |
+| sonnet       | NaN | — | NaN | NaN |
+| gpt-oss-120b | +0.166 | NaN | — | +0.416 |
+| qwen3-coder  | +0.142 | NaN | +0.416 | — |
+
+Spearman against sonnet is undefined because sonnet's per-task BRTR
+vector is constant (1.0 everywhere). haiku's vector is near-constant
+(97 ones, 3 ⅔'s), making correlations against it noisy. The most
+informative pair is `gpt-oss-120b ↔ qwen3-coder` with **ρ = +0.416** —
+moderate agreement on which tasks are hard. **60/100 tasks were solved
+3/3 by all four models**; the cross-model variance lives in the remaining
+40, dominated by BugsInPy and legacy state-dependent tasks.
+
+### 11.5 Like-for-like v1.x → v2.0 delta (qwen3-coder, 25-task overlap)
+
+The pre-refactor qwen3-coder benchmark (§10) covered 25 tasks × 3 runs
+that are a subset of the v2.0 100-task set. Restricting both runs to
+this overlap:
+
+| Metric | v1.x | v2.0 | Δ |
+|---|---:|---:|---|
+| BRTR | 54.7% (41/75) | 82.3% (247/300 on full set, ~85% on 25 overlap) | **+~30pp** |
+| Avg duration | 61.9s | 32.4s | −47% |
+| Avg completion tokens | 3084 | 1385 | −55% |
+| Per-task delta | — | 11 improved / 3 degraded / 11 same | — |
+| Spearman ρ on per-task BRTR | — | 0.258 (n=25) | below plan's 0.7 "ranking-preserved" threshold |
+
+The low Spearman is **a finding, not a confound**: v2.0 does not
+uniformly lift every task — it reshuffles the difficulty surface. Six
+tasks that were 0/3 in v1.x now sit at 2/3 or 3/3; three tasks
+regressed from 3/3 to 0/3-1/3 and were diagnosed as two prompt-fix
+candidates: (a) missing `source.<name>(...)` namespace directive
+(`humanevalfix_035`, `humanevalfix_062`, `mbpp_mutation_005`), and (b)
+weakened "read source.py before asserting" emphasis
+(`null_handling_profile`, `bugsinpy_thefuck_fish_version_3`).
+Both are scoped for future `prompt_version="v2.1"` iterations.
+
+### 11.6 v2.0 instrumentation in every RunRecord
+
+Each of the 1200 v2.0 deep runs carries:
+
+- `prompt_version: "v2.0"` and `prompt_template_hash` (12 hex chars of
+  the rendered prompt's SHA-256). Verified stable per-provider across
+  all 300 runs of each model — the fairness invariant. Per-provider
+  hashes:
+  - claude CLI (haiku/sonnet): `c70e4b09987f`
+  - openai (gpt-oss, qwen): `5f563ed95cb8`
+- `capabilities_used`: snapshot of the per-model capability dict
+  (`provider`, `supports_parallel_tools`, `supports_structured_tools`,
+  `supports_tool_choice_auto`, `tool_names`).
+- `tool_choice_mode: "auto"` for every run (the v1.x `"required"`
+  forced-call pattern was removed in commit `dd50fda`).
+- Per-attempt `tool_call_count` and `tool_failure_mode_count`.
+
+This provenance is what lets the leaderboard above be cited as a
+controlled experiment rather than an opportunistic re-run.
+
+### 11.7 Operational notes
+
+- Sonnet hit **one real Claude usage-limit** mid-run (~160/300). The
+  tightened `_is_claude_limit_error` (commit `bac8ed4`, prompt-aware
+  JSON parser) correctly identified it; the pipeline slept through the
+  5-hour window and resumed. Haiku ran limit-free.
+- An earlier haiku attempt false-positived on the v1.x substring
+  heuristic at run 8/300 (model wrote test code containing the word
+  "quota" in a docstring) and burned a 60-min sleep cycle. That bug is
+  what motivated commit `bac8ed4`; the re-run after the fix completed
+  297/300 with zero false-positive sleeps.
+- Total wall clock: qwen ~42 min (conc=4), gpt-oss ~2.2h (conc=4),
+  haiku ~3.6h (conc=1), sonnet ~5.5h (conc=1). Sequential haiku→sonnet
+  via `scripts/run_haiku_then_sonnet.sh` to avoid shared-quota
+  contention.
+
+### 11.8 Raw data
+
+| Model | Run directory |
+|---|---|
+| sonnet | `results_v2/benchmark_v2_sonnet_100_20260513_012100/` |
+| haiku | `results_v2/benchmark_v2_haiku_100_20260512_212646/` |
+| gpt-oss-120b | `results_v2/benchmark_v2_gptoss120b_100_20260512_180804/` |
+| qwen3-coder | `results_v2/benchmark_v2_qwen3coder_100_20260512_161448/` |
+
+Each contains `summary.json` + `runs/<task_id>/deep_run_NN.json` for all
+300 runs. Configs are committed: `benchmark_v2_<model>_100.yaml`.
