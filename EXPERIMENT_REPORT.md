@@ -939,3 +939,253 @@ controlled experiment rather than an opportunistic re-run.
 
 Each contains `summary.json` + `runs/<task_id>/deep_run_NN.json` for all
 300 runs. Configs are committed: `benchmark_v2_<model>_100.yaml`.
+
+
+## 12. Baseline-only Sonnet on 100-task v2.0 (2026-05-16/17)
+
+To measure the `deep − baseline` lift for Sonnet on the same v2.0 100-task
+set used in §11, a baseline-only run was launched on 2026-05-16. The
+initial session was interrupted at 156/300 runs (travel-related shutdown)
+and resumed on 2026-05-17 via a follow-up config restricted to the 48
+unfinished tasks. Per `bugtest.experiment` semantics (§10.3) every
+completed `RunRecord` is persisted on the spot, so the two-session split
+is purely operational — the merged 300-run aggregate below is the
+primary result.
+
+### 12.1 Configuration
+
+- Configs: `benchmark_v2_sonnet_100_baseline.yaml` (initial 100 tasks)
+  + `benchmark_v2_sonnet_100_baseline_resume.yaml` (remaining 48 tasks)
+- Modes: `[baseline]` only (no deep, no agentic, no adaptive)
+- Model: `sonnet` via Claude Code CLI (`claude -p --model sonnet --output-format json`)
+- `runs_per_task = 3`, `max_attempts = 3`, `concurrency = 1`
+- Tasks: same 100-task v2.0 set as §11 (`tasks.include` identical to `benchmark_v2_sonnet_100.yaml`)
+- `prompt_version = "v2.0"` (no prompt change vs §11; the only swap is the mode)
+- Results dirs:
+  - `results/benchmark_v2_sonnet_100_baseline_20260516_192612/` (156 runs, 52 tasks)
+  - `results/benchmark_v2_sonnet_100_baseline_resume_20260516_221800/` (144 runs, 48 tasks)
+- Wall clock: 38 m 24 s (initial) + 1 h 06 m 04 s (resume) = **1 h 44 m 28 s** across two sessions
+
+### 12.2 Headline — Sonnet baseline vs deep on the same 100-task v2.0 set
+
+300 runs (100 tasks × 3 runs) merged across the two session dirs. Comparison
+to §11.1's Sonnet deep-mode line on the identical task set:
+
+| Mode | OK / Runs | BRTR | Avg dur/run | 3/3 tasks | 0/3 tasks |
+|---|---:|---:|---:|---:|---:|
+| Sonnet **deep** (§11.1) | 300/300 | **100.0%** | 66.0 s | 100/100 | 0/100 |
+| Sonnet **baseline** (this run) | 283/300 | **94.3%** | 14.4 s | 93/100 | 4/100 |
+| **Δ (deep − baseline)** | +17 | **+5.7 pp** | −51.6 s (4.6× slower) | +7 tasks | −4 tasks |
+
+Deep mode buys +5.7 pp BRTR at a 4.6× per-run latency cost. The lift comes
+from a small set of tasks where deep-mode's `read_file` / re-prompt loop
+solves what one-shot baseline cannot — 7 tasks slip from 3/3 in deep to
+≤ 2/3 in baseline, and 4 of those go all the way to 0/3.
+
+### 12.3 By source bucket
+
+| Source bucket | OK / Total | BRTR | # tasks |
+|---|---:|---:|---:|
+| humanevalfix    | 120/120 | 100.0% | 40 |
+| mbpp_mutation   |  60/60  | 100.0% | 20 |
+| curated_legacy* |  15/15  | 100.0% |  5 |
+| quixbugs        |  78/90  |  86.7% | 30 |
+| bugsinpy        |  10/15  |  66.7% |  5 |
+| **TOTAL**       | **283/300** | **94.3%** | **100** |
+
+*`curated_legacy` = `async_race_condition`, `null_handling_profile`,
+`off_by_one_loop`, `swallowed_exception`, `type_coercion_price`.
+
+All HumanEvalFix, MBPP-mutation, and curated_legacy tasks are at 3/3
+without exception — Sonnet baseline ceilings on these three sources.
+All 17 failures are concentrated in **quixbugs (12 fails) + bugsinpy (5 fails)**.
+
+### 12.4 Per-task BRTR distribution
+
+| Bucket | # tasks |
+|---|---:|
+| 3/3 (clean) | 93 |
+| 2/3 | 1 |
+| 1/3 | 2 |
+| 0/3 | 4 |
+
+The shape is sharply bimodal — 93% of tasks fully clean and 4% fully
+broken, with only 3 tasks in the intermediate band. This mirrors the
+qwen3-coder bimodality observation in §11.2 ("either solves on every
+attempt or struggles consistently") and confirms that for Sonnet baseline
+the dominant failure mode is also task-level capability, not run-to-run
+flakiness.
+
+### 12.5 Failing tasks (full list, 7 tasks / 17 runs)
+
+| Task | OK / 3 | Difficulty class | Note |
+|---|---:|---|---|
+| `bugsinpy_thefuck_fix_file_28` | 0/3 | bugsinpy | §11.1 deep-mode 3/3; collapse to 0/3 is the largest single deep→baseline gap in this run. Consistent with deep's tool loop reading `fixed/source.py` to derive correct assertions. |
+| `bugsinpy_thefuck_fish_version_3` | 1/3 | bugsinpy | v2.1 prompt-fix candidate per §11.5 (weakened "read source.py before asserting" emphasis). Diagnosed mid-run: model asserts `result == "3.1.2"`, but `fixed/source.py` returns `"Fish Shell 3.1.2"` — assertion is guessed, not derived from the source. |
+| `quixbugs_find_in_sorted` | 0/3 | "easy" (LLM-opaque) | Recursive-call argument-swap bug; flagged in §10.6 and §11.7 as `0/(5×3)` baseline across every model. Sonnet baseline matches the cross-model floor. |
+| `quixbugs_longest_common_subsequence` | 0/3 | hard | `0/0/0` for Sonnet in §10.7 too — persistent zero across both NVIDIA and Together runs. Not a regression; a stable opaque task. |
+| `quixbugs_next_palindrome` | 0/3 | hard | §10.7 Sonnet baseline was 60% (3/5); collapse to 0/3 here is within stochastic noise at n=3 but worth tracking on the next run. |
+| `quixbugs_find_first_in_sorted` | 1/3 | "easy" (LLM-opaque) | Same recursive-swap family as `find_in_sorted`; §10.7 had Sonnet baseline 0%, so 1/3 here is a small positive surprise rather than a regression. |
+| `quixbugs_sqrt` | 2/3 | medium | §10.7 had Sonnet baseline `0/0/0`; 2/3 here is a positive shift, plausibly from the v2.0 prompt's better grounding on numerical-edge expectations. |
+
+Two clusters worth highlighting:
+
+1. **The v2.1 prompt-fix list is reconfirmed.** Both BugsInPy failures
+   (`thefuck_fix_file_28`, `thefuck_fish_version_3`) plus the third
+   already-flagged candidate (`null_handling_profile` — which was 3/3 here)
+   came from the §11.5 list. The two that failed both stem from the same
+   "consult fixed source before asserting" weakness; the one that passed
+   suggests the weakness is interaction-bound, not blanket.
+2. **LLM-opaque "easy" quixbugs persist.** `find_in_sorted` (0/3) and
+   `find_first_in_sorted` (1/3) reproduce the §10.6 / §11.7 observation
+   that two `easy`-labeled QuixBugs tasks are reliably opaque to zero-shot
+   test generation across every model and provider. Recommend reclassifying
+   their difficulty label in `TASK_CATALOG` rather than treating them as
+   regressions.
+
+### 12.6 Operational notes
+
+- Initial run started on a healthy v2.0 prompt + sonnet CLI; the first 11
+  runs paced at ~35 s/run (matching §11 deep-mode warmup) before MBPP /
+  HumanEvalFix settled into ~12 s/run steady state. Final cross-session
+  average is 14.4 s/run.
+- No Claude usage-limit events (none expected — baseline mode emits much
+  less than deep mode's tool loop; the §11.7 `bac8ed4` patch was never
+  triggered).
+- No tracebacks, no `HTTP 4xx`, no rate-limit backoffs across the two
+  sessions.
+- The resume slice ran 144 runs in 66 m (~27 s/run); slower than the
+  initial 156-run slice's 15 s/run because the resume slice is exactly the
+  hard-quixbugs + bugsinpy tail where per-run attempts more frequently
+  retry to `max_attempts = 3`.
+
+### 12.7 Raw data and aggregation
+
+| Slice | Path | Runs |
+|---|---|---:|
+| Initial | `results/benchmark_v2_sonnet_100_baseline_20260516_192612/` | 156 |
+| Resume  | `results/benchmark_v2_sonnet_100_baseline_resume_20260516_221800/` | 144 |
+| **Merged** | both, joined on `(task_id, run_index)` | **300** |
+
+Each `runs/<task_id>/baseline_run_NN.json` carries the same v2.0 provenance
+fields as §11.6 (`prompt_version`, `prompt_template_hash` =
+`c70e4b09987f` for the claude CLI provider, `tool_choice_mode = "auto"`).
+The two slices are mode-, model-, prompt-, and seed-equivalent — the only
+reason for the split is the operational interrupt described in §12 intro.
+
+
+## 13. Adaptive-mode Sonnet on 100-task v2.0 (2026-05-17)
+
+Companion to §12: same 100-task v2.0 set, same Sonnet via Claude Code CLI,
+same `prompt_version = "v2.0"`, only `modes` swapped from `[baseline]` to
+`[adaptive]`. Adaptive (§2.2) attempts baseline first; on baseline
+failure it routes through the Analyzer + TestWriter retry path, up to
+`max_attempts = 3`.
+
+### 13.1 Configuration
+
+- Config: `benchmark_v2_sonnet_100_adaptive.yaml` (derived from
+  `benchmark_v2_sonnet_100_baseline.yaml`, only `modes` field changed)
+- Modes: `[adaptive]`
+- Model: `sonnet` via Claude Code CLI
+- `runs_per_task = 3`, `max_attempts = 3`, `concurrency = 1`
+- Results dir: `results/benchmark_v2_sonnet_100_adaptive_20260517_072031/`
+- Wall clock: **2 h 22 m 30 s** (single uninterrupted run)
+
+### 13.2 Headline — adaptive vs baseline (§12) vs deep (§11.1) on the same 100-task v2.0 set
+
+| Mode | OK / Runs | BRTR | Avg dur/run | 3/3 tasks | 0/3 tasks | Wall clock |
+|---|---:|---:|---:|---:|---:|---:|
+| Sonnet **baseline** (§12) | 283/300 | 94.3% | 14.4 s | 93/100 | 4/100 | 1 h 44 m |
+| Sonnet **adaptive** (this run) | **282/300** | **94.0%** | 17.2 s | 92/100 | 4/100 | 2 h 22 m |
+| Sonnet **deep** (§11.1) | 300/300 | 100.0% | 66.0 s | 100/100 | 0/100 | 5 h 30 m |
+| **Δ (adaptive − baseline)** | **−1** | **−0.3 pp** | +2.8 s | −1 task | 0 | +0 h 39 m |
+| **Δ (adaptive − deep)** | −18 | −6.0 pp | −48.8 s | −8 tasks | +4 tasks | −3 h 08 m |
+
+**Adaptive provides no lift over baseline for Sonnet on v2.0.** The 0.3 pp
+gap (−1 run out of 300) is within the §7 non-determinism band and is
+statistically indistinguishable from baseline.
+
+This reproduces §10.5's v1.x finding (Sonnet baseline 77.4% = adaptive
+77.4% exactly) and §10.13's "Finding 4" caveat: adaptive's value comes
+from the Analyzer correcting baseline failures, and as long as the
+Sonnet × Analyzer pipeline is broken by the §10.8 JSON-extraction bug,
+adaptive collapses to baseline within noise.
+
+### 13.3 By source bucket
+
+| Source bucket | Baseline (§12) | Adaptive | Δ |
+|---|---:|---:|---:|
+| humanevalfix    | 120/120 (100.0%) | 120/120 (100.0%) | 0 |
+| mbpp_mutation   |  60/60  (100.0%) |  60/60  (100.0%) | 0 |
+| curated_legacy  |  15/15  (100.0%) |  15/15  (100.0%) | 0 |
+| quixbugs        |  78/90  (86.7%)  |  77/90  (85.6%)  | **−1** |
+| bugsinpy        |  10/15  (66.7%)  |  10/15  (66.7%)  | 0 |
+| **TOTAL**       | **283/300 (94.3%)** | **282/300 (94.0%)** | **−1** |
+
+All movement is inside the QuixBugs bucket; HumanEvalFix / MBPP-mutation /
+curated_legacy / BugsInPy aggregates are bit-identical between baseline
+and adaptive.
+
+### 13.4 Per-task adaptive vs baseline — only tasks where Δ ≠ 0
+
+The 100-task set produces 4 tasks with a non-zero `adaptive − baseline`
+delta, all in QuixBugs. The other 96 tasks land at the same `n/3` value
+in both modes.
+
+| Task | Baseline | Adaptive | Δ | Note |
+|---|---:|---:|---:|---|
+| `quixbugs_longest_common_subsequence` | 0/3 | 1/3 | **+1** | First and only positive adaptive hit; analyzer retry produced one bug-revealing test on a task baseline cannot solve. |
+| `quixbugs_find_first_in_sorted` | 1/3 | 0/3 | **−1** | Adaptive regression on an LLM-opaque task. Likely stochastic at n=3; baseline's single success was already an outlier. |
+| `quixbugs_lis` | 3/3 | 2/3 | **−1** | Adaptive regression on a baseline-clean task. The extra analyzer step injects a failure on a task baseline solves consistently — the same "analysis confirmation bias" failure mode §5.5 documented on `swallowed_exception` (different task, same mechanism). |
+| `quixbugs_sqrt` | 2/3 | 2/3 | 0 | Equal; one run differs in identity but not in count. |
+
+**Net: +1 − 1 − 1 + 0 = −1 run** = the entire aggregate delta.
+
+This is structurally interesting: the only positive adaptive contribution
+(+1 on `lcs`) is paid back by a negative contribution on the same kind of
+task (`find_first_in_sorted`, also LLM-opaque), plus one fresh regression
+on an otherwise-clean task (`lis`). The 7 failing tasks in baseline §12.5
+are recovered to **0 net improvement** by adaptive.
+
+### 13.5 Cross-mode confirmation of the §10.8 / §11.5 hypothesis
+
+Three independently-derived observations now point at the same defect:
+
+| Source | Observation |
+|---|---|
+| §10.8 (v1.x, NVIDIA) | Sonnet × agentic mode crashes 113/155 runs (73%) on `ClaudeCodeClient.generate_json` JSON-extraction. |
+| §11.5 (v2.0 deep, Together) | Three QuixBugs / BugsInPy tasks (`thefuck_fish_v3`, `thefuck_fix_file_28`, `null_handling_profile`) listed as v2.1 prompt-fix candidates because deep mode hides the gap that baseline exposes. |
+| §13.4 (this run, v2.0 adaptive) | Adaptive's analyzer-retry kicks in for the baseline-failed 17 runs but converts only 1 of them; aggregate stays within ±0.3 pp of baseline. |
+
+The mechanism is the same: until `ClaudeCodeClient.generate_json` (file
+`bugtest/llm.py:17-72`) is replaced with a schema-aligned tool-use call
+(or wrapped in a retry-on-schema-validation loop), every Sonnet pipeline
+that depends on the Analyzer's structured output will collapse toward
+baseline (best case) or below baseline (when analyzer noise injects
+regressions). Deep mode escapes this because its `read_file` /
+`run_pytest` tool loop does not go through `generate_json`.
+
+### 13.6 Cost / latency consequence
+
+| Mode | Wall clock | Avg/run | Cost premium vs baseline (BRTR per minute) |
+|---|---:|---:|---:|
+| baseline | 1 h 44 m | 14.4 s | — |
+| adaptive | 2 h 22 m | 17.2 s | +37 min wall clock for −1 run; **negative ROI** |
+| deep | 5 h 30 m | 66.0 s | +3 h 46 m for +17 runs (+5.7 pp); positive but expensive |
+
+Adaptive's price is non-trivial — 19% longer per run, 37% longer overall
+wall clock — and it buys nothing for Sonnet on v2.0. For Sonnet specifically,
+**baseline dominates adaptive** on the BRTR/latency Pareto frontier; the
+only mode that justifies its extra cost is deep.
+
+This is the inverse of §10.13's Finding 4 (adaptive uniformly wins on
+Together open-weight models). The split between "adaptive helps open-weight
+models" and "adaptive does not help Sonnet" is exactly the §10.8 / §13.5
+JSON-extraction defect, isolated to the Claude CLI subprocess client.
+
+### 13.7 Raw data
+
+- `results/benchmark_v2_sonnet_100_adaptive_20260517_072031/runs/<task_id>/adaptive_run_NN.json` (300 records, one per `(task_id, run_index)`)
+- Each carries `prompt_version="v2.0"`, `prompt_template_hash="c70e4b09987f"`, `tool_choice_mode="auto"` — same provenance fields as §11.6.
+- The trio `{baseline (§12), adaptive (§13), deep (§11.1)}` for Sonnet on the v2.0 100-task set is now complete and mode-orthogonal; any pairwise comparison is a controlled mode ablation.
