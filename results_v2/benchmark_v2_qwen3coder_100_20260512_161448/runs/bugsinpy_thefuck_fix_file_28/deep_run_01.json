@@ -1,0 +1,47 @@
+{
+  "task_id": "bugsinpy_thefuck_fix_file_28",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_fix_file_column_aware_with_parentheses():\n    \"\"\"Test that fix_file properly handles column-aware patterns and escapes parentheses.\"\"\"\n    import os\n    \n    # Test case 1: stderr with '(line X)' format - should match first pattern\n    # but since parentheses aren't escaped in buggy code, this won't match properly\n    stderr_with_parens = '  File \"test.py\", line 10\\n    raise Error\\nError: test.py (line 5):'\n    \n    # Test case 2: stderr with ':line:col' format - should use column-aware settings\n    stderr_with_colon = 'test.py:10:5: error message'\n    \n    # Test case 3: Column-aware format with custom settings that include fixcolcmd\n    settings_with_col = {\n        \"fixlinecmd\": \"{editor} {file} +{line}\",\n        \"fixcolcmd\": \"{editor} {file} +{line}:{col}\",\n    }\n    \n    # For the colon format, the fixed version should use fixcolcmd when available\n    result = source.get_new_command(stderr_with_colon, settings_with_col)\n    \n    # The buggy version always uses fixlinecmd and ignores column info\n    # The fixed version should use fixcolcmd when column info is present\n    expected_with_col = os.environ.get(\"EDITOR\", \"vim\")\n    expected_with_col += \" test.py +10:5\"\n    \n    # Check that the result contains column info (indicates column-aware fixcolcmd is used)\n    assert result is not None\n    assert \":5\" in result, f\"Expected column info ':5' in command, got: {result}\"\n    assert result == expected_with_col, f\"Expected '{expected_with_col}', got: '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpeuqbp6g5\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_fix_file_column_aware_with_parentheses FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_fix_file_column_aware_with_parentheses __________________\n\n    def test_fix_file_column_aware_with_parentheses():\n        \"\"\"Test that fix_file properly handles column-aware patterns and escapes parentheses.\"\"\"\n        import os\n    \n        # Test case 1: stderr with '(line X)' format - should match first pattern\n        # but since parentheses aren't escaped in buggy code, this won't match properly\n        stderr_with_parens = '  File \"test.py\", line 10\\n    raise Error\\nError: test.py (line 5):'\n    \n        # Test case 2: stderr with ':line:col' format - should use column-aware settings\n        stderr_with_colon = 'test.py:10:5: error message'\n    \n        # Test case 3: Column-aware format with custom settings that include fixcolcmd\n        settings_with_col = {\n            \"fixlinecmd\": \"{editor} {file} +{line}\",\n            \"fixcolcmd\": \"{editor} {file} +{line}:{col}\",\n        }\n    \n        # For the colon format, the fixed version should use fixcolcmd when available\n        result = source.get_new_command(stderr_with_colon, settings_with_col)\n    \n        # The buggy version always uses fixlinecmd and ignores column info\n        # The fixed version should use fixcolcmd when column info is present\n        expected_with_col = os.environ.get(\"EDITOR\", \"vim\")\n        expected_with_col += \" test.py +10:5\"\n    \n        # Check that the result contains column info (indicates column-aware fixcolcmd is used)\n        assert result is not None\n>       assert \":5\" in result, f\"Expected column info ':5' in command, got: {result}\"\nE       AssertionError: Expected column info ':5' in command, got: vim test.py +10\nE       assert ':5' in 'vim test.py +10'\n\ntest_generated.py:33: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fix_file_column_aware_with_parentheses - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp6s8tshf9\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_fix_file_column_aware_with_parentheses PASSED    [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T16:17:57Z",
+      "tool_call_count": 9,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 60325,
+  "completion_tokens_total": 2602,
+  "duration_seconds": 67.96,
+  "timestamp": "2026-05-12T16:17:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

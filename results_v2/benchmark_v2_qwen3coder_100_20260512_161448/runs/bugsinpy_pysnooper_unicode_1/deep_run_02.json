@@ -1,0 +1,49 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_detect_encoding_with_utf8_content_without_header():\n    \"\"\"Test that UTF-8 content without coding header is handled correctly.\n    \n    BUG: detect_encoding defaults to 'ascii' even when UTF-8 content is present,\n    causing corruption when bytes are decoded with ASCII.\n    \"\"\"\n    # UTF-8 byte sequences for \"Héllo\" and \"✓\" WITHOUT coding header\n    source_without_header = [\n        'print(\"Héllo\")\\n'.encode('utf-8'),\n        'x = \"✓\"\\n'.encode('utf-8'),\n    ]\n    \n    # detect_encoding should handle UTF-8 content properly\n    encoding = source.detect_encoding(source_without_header)\n    # The fixed version should recognize UTF-8 content, not default to ASCII\n    assert encoding == \"utf-8\", f\"Expected 'utf-8', got '{encoding}'\"\n    \n    # Test Tracer.dump_source - should preserve UTF-8 characters without corruption\n    tracer = source.Tracer(\"/tmp/test_output2.txt\", overwrite=True)\n    result = tracer.dump_source(source_without_header)\n    \n    # UTF-8 characters should be preserved without replacement character (�)\n    assert \"Héllo\" in result, f\"Expected 'Héllo' in result, got: {repr(result)}\"\n    assert \"✓\" in result, f\"Expected '✓' in result, got: {repr(result)}\"\n    assert \"\\ufffd\" not in result, f\"Replacement character found in result, got: {repr(result)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpvxoxm16d\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_detect_encoding_with_utf8_content_without_header FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_detect_encoding_with_utf8_content_without_header _____________\n\n    def test_detect_encoding_with_utf8_content_without_header():\n        \"\"\"Test that UTF-8 content without coding header is handled correctly.\n    \n        BUG: detect_encoding defaults to 'ascii' even when UTF-8 content is present,\n        causing corruption when bytes are decoded with ASCII.\n        \"\"\"\n        # UTF-8 byte sequences for \"Héllo\" and \"✓\" WITHOUT coding header\n        source_without_header = [\n            'print(\"Héllo\")\\n'.encode('utf-8'),\n            'x = \"✓\"\\n'.encode('utf-8'),\n        ]\n    \n        # detect_encoding should handle UTF-8 content properly\n        encoding = source.detect_encoding(source_without_header)\n        # The fixed version should recognize UTF-8 content, not default to ASCII\n>       assert encoding == \"utf-8\", f\"Expected 'utf-8', got '{encoding}'\"\nE       AssertionError: Expected 'utf-8', got 'ascii'\nE       assert 'ascii' == 'utf-8'\nE         \nE         - utf-8\nE         + ascii\n\ntest_generated.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_detect_encoding_with_utf8_content_without_header\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpf_hf3fbw\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_detect_encoding_with_utf8_content_without_header PASSED [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T16:16:50Z",
+      "tool_call_count": 8,
+      "tool_failure_mode_count": {
+        "revert_syntax": 1
+      },
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 90975,
+  "completion_tokens_total": 5199,
+  "duration_seconds": 99.67,
+  "timestamp": "2026-05-12T16:16:50Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

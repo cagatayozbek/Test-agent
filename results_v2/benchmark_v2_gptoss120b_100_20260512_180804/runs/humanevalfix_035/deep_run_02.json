@@ -1,0 +1,47 @@
+{
+  "task_id": "humanevalfix_035",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_max_element_returns_correct_max():\n    # Test simple increasing list\n    assert source.max_element([1, 2, 3]) == 3\n    # Test list with mixed positive and negative numbers\n    lst = [5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10]\n    assert source.max_element(lst) == 123\n    # Test single-element list\n    assert source.max_element([42]) == 42\n    # Test list where the max is at the beginning\n    assert source.max_element([99, 1, 2, 3]) == 99\n    # Test list where the max is at the end\n    assert source.max_element([1, 2, 3, 99]) == 99\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpgzhgtjsd\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_max_element_returns_correct_max FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_max_element_returns_correct_max _____________________\n\n    def test_max_element_returns_correct_max():\n        # Test simple increasing list\n>       assert source.max_element([1, 2, 3]) == 3\nE       assert 1 == 3\nE        +  where 1 = <function max_element at 0x10ccc4cc0>([1, 2, 3])\nE        +    where <function max_element at 0x10ccc4cc0> = source.max_element\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_max_element_returns_correct_max - assert 1 == 3\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpucstynzh\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_max_element_returns_correct_max PASSED           [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T18:28:08Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 8138,
+  "completion_tokens_total": 4067,
+  "duration_seconds": 104.62,
+  "timestamp": "2026-05-12T18:28:08Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

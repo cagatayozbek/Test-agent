@@ -1,0 +1,47 @@
+{
+  "task_id": "humanevalfix_091",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_is_bored_counts_correctly():\n    # No sentence starts with \"I \"\n    assert source.is_bored(\"Hello world\") == 0\n    # One sentence starts with \"I \"\n    text = \"The sky is blue. The sun is shining. I love this weather\"\n    assert source.is_bored(text) == 1\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpx4vhy5ro\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_is_bored_counts_correctly FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_bored_counts_correctly ________________________\n\n    def test_is_bored_counts_correctly():\n        # No sentence starts with \"I \"\n        assert source.is_bored(\"Hello world\") == 0\n        # One sentence starts with \"I \"\n        text = \"The sky is blue. The sun is shining. I love this weather\"\n>       assert source.is_bored(text) == 1\nE       AssertionError: assert 0 == 1\nE        +  where 0 = <function is_bored at 0x107e88d60>('The sky is blue. The sun is shining. I love this weather')\nE        +    where <function is_bored at 0x107e88d60> = source.is_bored\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_counts_correctly - AssertionError: as...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmphghuiy01\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_is_bored_counts_correctly PASSED                 [100%]\n\n============================== 2 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T18:36:21Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 6650,
+  "completion_tokens_total": 4293,
+  "duration_seconds": 43.83,
+  "timestamp": "2026-05-12T18:36:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_amicable_numbers_sum_reveals_comparison_bug():\n    \"\"\"Test with 220 and 284 (first amicable pair) to reveal != -> == mutation.\"\"\"\n    result = source.amicable_numbers_sum(500)\n    # Canonical value: 220 and 284 are amicable; both sum to 504\n    # Buggy code (num == sum_fact instead of !=) fails to recognize them\n    assert result == 504\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp44jet5p9\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_amicable_numbers_sum_reveals_comparison_bug FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_amicable_numbers_sum_reveals_comparison_bug _______________\n\n    def test_amicable_numbers_sum_reveals_comparison_bug():\n        \"\"\"Test with 220 and 284 (first amicable pair) to reveal != -> == mutation.\"\"\"\n        result = source.amicable_numbers_sum(500)\n        # Canonical value: 220 and 284 are amicable; both sum to 504\n        # Buggy code (num == sum_fact instead of !=) fails to recognize them\n>       assert result == 504\nE       assert 530 == 504\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_reveals_comparison_bug - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpby6knse_\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_amicable_numbers_sum_reveals_comparison_bug PASSED [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T23:24:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 278868,
+  "completion_tokens_total": 5719,
+  "duration_seconds": 58.54,
+  "timestamp": "2026-05-12T23:24:01Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "c70e4b09987f",
+  "capabilities_used": {
+    "provider": "claude_cli",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": false,
+    "tool_names": {
+      "read": "Read",
+      "edit": "Edit",
+      "run": "Bash (`python -m pytest`)"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

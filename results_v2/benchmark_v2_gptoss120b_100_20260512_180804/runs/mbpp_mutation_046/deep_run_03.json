@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_046",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_is_nonagonal_correctness():\n    # The nth nonagonal number is given by n * (7*n - 5) // 2.\n    # Using n=1 which should yield 1. The buggy implementation uses floor division\n    # instead of multiplication, resulting in 0.\n    n = 1\n    expected = n * (7 * n - 5) // 2\n    assert source.is_nonagonal(n) == expected\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpi0v2lozh\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_is_nonagonal_correctness FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_nonagonal_correctness _________________________\n\n    def test_is_nonagonal_correctness():\n        # The nth nonagonal number is given by n * (7*n - 5) // 2.\n        # Using n=1 which should yield 1. The buggy implementation uses floor division\n        # instead of multiplication, resulting in 0.\n        n = 1\n        expected = n * (7 * n - 5) // 2\n>       assert source.is_nonagonal(n) == expected\nE       assert 0 == 1\nE        +  where 0 = <function is_nonagonal at 0x108894ae0>(1)\nE        +    where <function is_nonagonal at 0x108894ae0> = source.is_nonagonal\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_correctness - assert 0 == 1\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp80h3le6x\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_is_nonagonal_correctness PASSED                  [100%]\n\n============================== 2 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T19:14:09Z",
+      "tool_call_count": 4,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 9546,
+  "completion_tokens_total": 6935,
+  "duration_seconds": 81.26,
+  "timestamp": "2026-05-12T19:14:09Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

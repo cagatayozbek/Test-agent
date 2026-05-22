@@ -1,0 +1,47 @@
+{
+  "task_id": "quixbugs_next_palindrome",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_next_palindrome_typical():\n    \"\"\"Test that next_palindrome returns the correct next palindrome for a typical input.\"\"\"\n    result = source.next_palindrome([1, 4, 3, 4, 1])\n    # The function should return a list representing the next palindrome, not None.\n    assert isinstance(result, list)\n    assert result == [1, 4, 4, 4, 1]\n\n\ndef test_next_palindrome_all_nines_single_digit():\n    \"\"\"Test that a single-digit all-nines input returns the correct next palindrome.\n    The buggy implementation returns [1,0,1] instead of [1,1].\n    \"\"\"\n    result = source.next_palindrome([9])\n    assert result == [1, 1]\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpwnbdaqga\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_next_palindrome_typical PASSED                   [ 66%]\ntest_generated.py::test_next_palindrome_all_nines_single_digit FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_next_palindrome_all_nines_single_digit __________________\n\n    def test_next_palindrome_all_nines_single_digit():\n        \"\"\"Test that a single-digit all-nines input returns the correct next palindrome.\n        The buggy implementation returns [1,0,1] instead of [1,1].\n        \"\"\"\n        result = source.next_palindrome([9])\n>       assert result == [1, 1]\nE       AssertionError: assert [1, 0, 1] == [1, 1]\nE         \nE         At index 1 diff: 0 != 1\nE         Left contains one more item: 1\nE         \nE         Full diff:\nE           [\nE               1,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:21: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_palindrome_all_nines_single_digit - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 2 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp6noo1iu_\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_next_palindrome_typical PASSED                   [ 66%]\ntest_generated.py::test_next_palindrome_all_nines_single_digit PASSED    [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T19:46:50Z",
+      "tool_call_count": 4,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 9400,
+  "completion_tokens_total": 6834,
+  "duration_seconds": 61.3,
+  "timestamp": "2026-05-12T19:46:50Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

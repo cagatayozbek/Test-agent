@@ -1,0 +1,47 @@
+{
+  "task_id": "quixbugs_longest_common_subsequence",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_longest_common_subsequence_match_advances_both():\n    \"\"\"Test that on a character match, both strings advance.\n\n    Bug: On match, advances only a (a[1:], b) instead of both (a[1:], b[1:]),\n    allowing the same b character to be consumed multiple times.\n\n    For 'AAA' and 'A': the single 'A' in b can only be used once, so LCS is 'A'.\n    The buggy code reuses 'A' from b multiple times, returning 'AAA'.\n    \"\"\"\n    result = source.longest_common_subsequence('AAA', 'A')\n\n    # Helper to verify result is a valid subsequence\n    def is_subsequence(subseq, seq):\n        \"\"\"Check if subseq appears as a subsequence in seq.\"\"\"\n        it = iter(seq)\n        return all(char in it for char in subseq)\n\n    # The result must be a valid subsequence of both inputs\n    assert is_subsequence(result, 'AAA'), f\"'{result}' is not a subsequence of 'AAA'\"\n    assert is_subsequence(result, 'A'), f\"'{result}' is not a subsequence of 'A'\"\n\n    # For 'AAA' and 'A', the longest common subsequence is 'A' (length 1).\n    # The buggy code incorrectly returns 'AAA' (length 3) by reusing the single 'A'.\n    assert len(result) == 1, f\"Expected LCS length 1, got {len(result)}: '{result}'\"\n\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpsrt880kd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_longest_common_subsequence_match_advances_both FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_longest_common_subsequence_match_advances_both ______________\n\n    def test_longest_common_subsequence_match_advances_both():\n        \"\"\"Test that on a character match, both strings advance.\n    \n        Bug: On match, advances only a (a[1:], b) instead of both (a[1:], b[1:]),\n        allowing the same b character to be consumed multiple times.\n    \n        For 'AAA' and 'A': the single 'A' in b can only be used once, so LCS is 'A'.\n        The buggy code reuses 'A' from b multiple times, returning 'AAA'.\n        \"\"\"\n        result = source.longest_common_subsequence('AAA', 'A')\n    \n        # Helper to verify result is a valid subsequence\n        def is_subsequence(subseq, seq):\n            \"\"\"Check if subseq appears as a subsequence in seq.\"\"\"\n            it = iter(seq)\n            return all(char in it for char in subseq)\n    \n        # The result must be a valid subsequence of both inputs\n        assert is_subsequence(result, 'AAA'), f\"'{result}' is not a subsequence of 'AAA'\"\n>       assert is_subsequence(result, 'A'), f\"'{result}' is not a subsequence of 'A'\"\nE       AssertionError: 'AAA' is not a subsequence of 'A'\nE       assert False\nE        +  where False = <function test_longest_common_subsequence_match_advances_both.<locals>.is_subsequence at 0x1088aa840>('AAA', 'A')\n\ntest_generated.py:27: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence_match_advances_both\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpitzrk678\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_longest_common_subsequence_match_advances_both PASSED [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-13T00:26:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 368448,
+  "completion_tokens_total": 13810,
+  "duration_seconds": 114.68,
+  "timestamp": "2026-05-13T00:26:43Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "c70e4b09987f",
+  "capabilities_used": {
+    "provider": "claude_cli",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": false,
+    "tool_names": {
+      "read": "Read",
+      "edit": "Edit",
+      "run": "Bash (`python -m pytest`)"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

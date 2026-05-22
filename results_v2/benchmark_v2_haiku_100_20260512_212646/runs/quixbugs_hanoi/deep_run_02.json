@@ -1,0 +1,47 @@
+{
+  "task_id": "quixbugs_hanoi",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_hanoi_two_disks_correct_sequence():\n    \"\"\"Test that hanoi(2, 1, 3) produces the correct Tower of Hanoi moves.\n\n    The bug in source.py line 6 appends (start, helper) instead of (start, end),\n    which causes the disk to move to the wrong peg in the base case.\n\n    The correct sequence for 2 disks moving from peg 1 to peg 3 via peg 2:\n    1. Move disk 1 from peg 1 to peg 2: (1, 2)\n    2. Move disk 2 from peg 1 to peg 3: (1, 3)  <- Bug here in buggy code\n    3. Move disk 1 from peg 2 to peg 3: (2, 3)\n    \"\"\"\n    result = source.hanoi(2, start=1, end=3)\n    expected = [(1, 2), (1, 3), (2, 3)]\n    assert result == expected\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpaukobiqp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_hanoi_two_disks_correct_sequence FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_hanoi_two_disks_correct_sequence _____________________\n\n    def test_hanoi_two_disks_correct_sequence():\n        \"\"\"Test that hanoi(2, 1, 3) produces the correct Tower of Hanoi moves.\n    \n        The bug in source.py line 6 appends (start, helper) instead of (start, end),\n        which causes the disk to move to the wrong peg in the base case.\n    \n        The correct sequence for 2 disks moving from peg 1 to peg 3 via peg 2:\n        1. Move disk 1 from peg 1 to peg 2: (1, 2)\n        2. Move disk 2 from peg 1 to peg 3: (1, 3)  <- Bug here in buggy code\n        3. Move disk 1 from peg 2 to peg 3: (2, 3)\n        \"\"\"\n        result = source.hanoi(2, start=1, end=3)\n        expected = [(1, 2), (1, 3), (2, 3)]\n>       assert result == expected\nE       AssertionError: assert [(1, 3), (1, 2), (2, 1)] == [(1, 2), (1, 3), (2, 3)]\nE         \nE         At index 0 diff: (1, 3) != (1, 2)\nE         \nE         Full diff:\nE           [\nE         +     (\nE         +         1,...\nE         \nE         ...Full output truncated (16 lines hidden), use '-vv' to show\n\ntest_generated.py:21: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_hanoi_two_disks_correct_sequence - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp2tekafp1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_hanoi_two_disks_correct_sequence PASSED          [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T23:57:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 242331,
+  "completion_tokens_total": 4872,
+  "duration_seconds": 43.26,
+  "timestamp": "2026-05-12T23:57:52Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "c70e4b09987f",
+  "capabilities_used": {
+    "provider": "claude_cli",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": false,
+    "tool_names": {
+      "read": "Read",
+      "edit": "Edit",
+      "run": "Bash (`python -m pytest`)"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

@@ -1,0 +1,49 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\nimport math\nimport signal\nimport pytest\n\ndef _timeout_handler(signum, frame):\n    raise TimeoutError()\n\ndef test_sqrt_converges_correctly():\n    \"\"\"Verify that sqrt terminates and approximates the true value.\n    The buggy implementation loops forever because it uses an incorrect\n    convergence check, so this test will trigger a timeout and fail.\n    The corrected implementation should return a value within 0.02 of the\n    true sqrt(2) within the time limit.\n    \"\"\"\n    signal.signal(signal.SIGALRM, _timeout_handler)\n    signal.alarm(1)  # 1 second timeout\n    try:\n        result = source.sqrt(2, 0.01)\n        signal.alarm(0)  # cancel alarm\n    except TimeoutError:\n        pytest.fail(\"sqrt function did not terminate within timeout\")\n    assert math.isclose(result, math.sqrt(2), abs_tol=0.02)\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpv92lwo_f\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_sqrt_converges_correctly FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_sqrt_converges_correctly _________________________\n\n    def test_sqrt_converges_correctly():\n        \"\"\"Verify that sqrt terminates and approximates the true value.\n        The buggy implementation loops forever because it uses an incorrect\n        convergence check, so this test will trigger a timeout and fail.\n        The corrected implementation should return a value within 0.02 of the\n        true sqrt(2) within the time limit.\n        \"\"\"\n        signal.signal(signal.SIGALRM, _timeout_handler)\n        signal.alarm(1)  # 1 second timeout\n        try:\n>           result = source.sqrt(2, 0.01)\n                     ^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:24: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:4: in sqrt\n    while abs(x - approx) > epsilon:\n          ^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nsignum = 14\nframe = <frame at 0x10cb4fed0, file '/private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpv92lwo_f/source.py', line 4, code sqrt>\n\n    def _timeout_handler(signum, frame):\n>       raise TimeoutError()\nE       TimeoutError\n\ntest_generated.py:12: TimeoutError\n\nDuring handling of the above exception, another exception occurred:\n\n    def test_sqrt_converges_correctly():\n        \"\"\"Verify that sqrt terminates and approximates the true value.\n        The buggy implementation loops forever because it uses an incorrect\n        convergence check, so this test will trigger a timeout and fail.\n        The corrected implementation should return a value within 0.02 of the\n        true sqrt(2) within the time limit.\n        \"\"\"\n        signal.signal(signal.SIGALRM, _timeout_handler)\n        signal.alarm(1)  # 1 second timeout\n        try:\n            result = source.sqrt(2, 0.01)\n            signal.alarm(0)  # cancel alarm\n        except TimeoutError:\n>           pytest.fail(\"sqrt function did not terminate within timeout\")\nE           Failed: sqrt function did not terminate within timeout\n\ntest_generated.py:27: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sqrt_converges_correctly - Failed: sqrt functi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 1.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpu6f91gv0\nplugins: langsmith-0.8.0, anyio-4.11.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_sqrt_converges_correctly PASSED                  [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-12T20:00:20Z",
+      "tool_call_count": 5,
+      "tool_failure_mode_count": {
+        "revert_collection": 1
+      },
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 17772,
+  "completion_tokens_total": 18079,
+  "duration_seconds": 257.04,
+  "timestamp": "2026-05-12T20:00:20Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": false,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

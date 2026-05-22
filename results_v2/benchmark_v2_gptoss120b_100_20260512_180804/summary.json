@@ -1,0 +1,928 @@
+{
+  "experiment_name": "benchmark_v2_gptoss120b_100",
+  "model_id": "openai/gpt-oss-120b",
+  "timestamp": "2026-05-12T20:10:48Z",
+  "total_tasks": 100,
+  "runs_per_task": 3,
+  "max_attempts": 3,
+  "mode_stats": [
+    {
+      "mode": "deep",
+      "total_runs": 300,
+      "successful_runs": 269,
+      "brtr": 0.8967,
+      "brtr_ci_lower": 0.8571,
+      "brtr_ci_upper": 0.9262,
+      "avg_attempts_to_success": 1.33,
+      "avg_prompt_tokens": 8851.3,
+      "avg_completion_tokens": 6148.3,
+      "avg_duration_seconds": 97.43
+    }
+  ],
+  "task_stats": [
+    {
+      "task_id": "async_race_condition",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "bugsinpy_black_async_for_13",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "bugsinpy_pysnooper_unicode_1",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "bugsinpy_thefuck_fish_version_3",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "bugsinpy_thefuck_fix_file_28",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "bugsinpy_tqdm_enumerate_start_1",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_001",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_011",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_012",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_017",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_020",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_023",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_024",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_026",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_027",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_032",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_035",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_041",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_042",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_050",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_051",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_057",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_058",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_061",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_062",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_063",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_071",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_075",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_078",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_079",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_090",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_091",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_092",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_095",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_096",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_100",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_101",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_112",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_114",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_121",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_139",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_141",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_142",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_146",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_155",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "humanevalfix_162",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_001",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_002",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_005",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_007",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_013",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_015",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_016",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_018",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_020",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_025",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_026",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_027",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_033",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_037",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_039",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_045",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_046",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_047",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_048",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "mbpp_mutation_049",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "null_handling_profile",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "off_by_one_loop",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_bitcount",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_bucketsort",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_find_first_in_sorted",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_find_in_sorted",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_flatten",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_gcd",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_get_factors",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_hanoi",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_is_valid_parenthesization",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_kheapsort",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_knapsack",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_kth",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_lcs_length",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_levenshtein",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_lis",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_longest_common_subsequence",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_max_sublist_sum",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_mergesort",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_next_palindrome",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_pascal",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_possible_change",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_powerset",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_quicksort",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_rpn_eval",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_shunting_yard",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_sieve",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_sqrt",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_subsequences",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_to_base",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "quixbugs_wrap",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "swallowed_exception",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    },
+    {
+      "task_id": "type_coercion_price",
+      "baseline_brtr": 0.0,
+      "agentic_brtr": 0.0,
+      "baseline_avg_attempts": null,
+      "agentic_avg_attempts": null
+    }
+  ],
+  "raw_brtr_baseline": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "raw_brtr_agentic": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}
