@@ -1,0 +1,19 @@
+{
+  "task_id": "quixbugs_find_in_sorted",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [],
+  "total_attempts": 0,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 0,
+  "completion_tokens_total": 0,
+  "duration_seconds": 0.0,
+  "timestamp": "2026-05-17T08:44:51Z",
+  "error": "TimeoutExpired: Command '['claude', '-p', '--model', 'sonnet', '--output-format', 'json']' timed out after 120 seconds",
+  "prompt_version": "",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

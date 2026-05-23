@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_095",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import check_dict_case\n\ndef test_check_dict_case_upper_state_with_lowercase_key_returns_false():\n    # With the buggy `and` operator, both sub-conditions can never be true\n    # simultaneously (state can't be both \"upper\" and \"lower\"), so the elif\n    # never fires. The loop hits `else: break` and returns True (state==\"upper\").\n    # The fixed `or` operator correctly detects the mismatch and returns False.\n    result = check_dict_case({\"STATE\": \"NC\", \"zip\": \"12345\"})\n    assert result == False, (\n        \"A dict with mixed-case keys (some upper, some lower) must return False, \"\n        f\"but got {result!r}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp_2itp2xf\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_upper_state_with_lowercase_key_returns_false FAILED [100%]\n\n=================================== FAILURES ===================================\n______ test_check_dict_case_upper_state_with_lowercase_key_returns_false _______\n\n    def test_check_dict_case_upper_state_with_lowercase_key_returns_false():\n        # With the buggy `and` operator, both sub-conditions can never be true\n        # simultaneously (state can't be both \"upper\" and \"lower\"), so the elif\n        # never fires. The loop hits `else: break` and returns True (state==\"upper\").\n        # The fixed `or` operator correctly detects the mismatch and returns False.\n        result = check_dict_case({\"STATE\": \"NC\", \"zip\": \"12345\"})\n>       assert result == False, (\n            \"A dict with mixed-case keys (some upper, some lower) must return False, \"\n            f\"but got {result!r}\"\n        )\nE       AssertionError: A dict with mixed-case keys (some upper, some lower) must return False, but got True\nE       assert True == False\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_check_dict_case_upper_state_with_lowercase_key_returns_false\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpq8epkjbp\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_upper_state_with_lowercase_key_returns_false PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T07:58:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 18072,
+  "completion_tokens_total": 834,
+  "duration_seconds": 16.43,
+  "timestamp": "2026-05-17T07:58:34Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

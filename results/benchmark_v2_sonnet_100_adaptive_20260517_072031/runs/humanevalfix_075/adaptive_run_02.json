@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_075",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import is_multiply_prime\n\ndef test_is_multiply_prime_basic_product_of_three_primes():\n    # 30 = 2 * 3 * 5, should return True\n    # Buggy code: is_prime iterates range(0, n), causing ZeroDivisionError on n%0\n    # Fixed code: is_prime iterates range(2, n), correctly identifying primes\n    assert is_multiply_prime(30) == True, \"30 = 2 * 3 * 5 should return True\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmppfl50n0t\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_basic_product_of_three_primes FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_is_multiply_prime_basic_product_of_three_primes _____________\n\n    def test_is_multiply_prime_basic_product_of_three_primes():\n        # 30 = 2 * 3 * 5, should return True\n        # Buggy code: is_prime iterates range(0, n), causing ZeroDivisionError on n%0\n        # Fixed code: is_prime iterates range(2, n), correctly identifying primes\n>       assert is_multiply_prime(30) == True, \"30 = 2 * 3 * 5 should return True\"\n\ntest_generated.py:8: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:17: in is_multiply_prime\n    if not is_prime(i): continue\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 2\n\n    def is_prime(n):\n        for j in range(0,n):\n>           if n%j == 0:\nE           ZeroDivisionError: integer division or modulo by zero\n\nsource.py:12: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_multiply_prime_basic_product_of_three_primes\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp8dqgbn55\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_basic_product_of_three_primes PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T07:56:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17870,
+  "completion_tokens_total": 585,
+  "duration_seconds": 12.2,
+  "timestamp": "2026-05-17T07:56:00Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

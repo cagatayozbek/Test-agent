@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_basic_conversion():\n    result = snake_to_camel(\"python_program\")\n    assert result == \"PythonProgram\", (\n        f\"Expected 'PythonProgram' but got {result!r}; \"\n        \"bug: 'and' short-circuits to '_' instead of 'or' passing the capitalized word\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp7d8j6rc2\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_snake_to_camel_basic_conversion _____________________\n\n    def test_snake_to_camel_basic_conversion():\n        result = snake_to_camel(\"python_program\")\n>       assert result == \"PythonProgram\", (\n            f\"Expected 'PythonProgram' but got {result!r}; \"\n            \"bug: 'and' short-circuits to '_' instead of 'or' passing the capitalized word\"\n        )\nE       AssertionError: Expected 'PythonProgram' but got '__'; bug: 'and' short-circuits to '_' instead of 'or' passing the capitalized word\nE       assert '__' == 'PythonProgram'\nE         \nE         - PythonProgram\nE         + __\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic_conversion - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpe7h8_wsm\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:18:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17718,
+  "completion_tokens_total": 554,
+  "duration_seconds": 10.45,
+  "timestamp": "2026-05-17T08:18:13Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

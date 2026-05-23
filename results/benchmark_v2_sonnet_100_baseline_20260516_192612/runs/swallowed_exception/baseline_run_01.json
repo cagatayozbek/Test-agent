@@ -1,0 +1,36 @@
+{
+  "task_id": "swallowed_exception",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import process_transaction\n\n\ndef test_process_transaction_does_not_swallow_name_error():\n    # On buggy code: calculate_tax raises NameError, bare `except:` catches it,\n    # and returns None — hiding the crash entirely.\n    # On fixed code: calculate_tax is implemented and the except clause is\n    # specific (e.g. `except ValueError:`), so a real numeric result is returned.\n    result = process_transaction(\"item1:100\")\n    assert result is not None, (\n        \"process_transaction returned None for valid input — bare `except:` is \"\n        \"swallowing a NameError from calculate_tax instead of propagating it\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmphrk3kz2l\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_does_not_swallow_name_error FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_process_transaction_does_not_swallow_name_error _____________\n\n    def test_process_transaction_does_not_swallow_name_error():\n        # On buggy code: calculate_tax raises NameError, bare `except:` catches it,\n        # and returns None — hiding the crash entirely.\n        # On fixed code: calculate_tax is implemented and the except clause is\n        # specific (e.g. `except ValueError:`), so a real numeric result is returned.\n        result = process_transaction(\"item1:100\")\n>       assert result is not None, (\n            \"process_transaction returned None for valid input — bare `except:` is \"\n            \"swallowing a NameError from calculate_tax instead of propagating it\"\n        )\nE       AssertionError: process_transaction returned None for valid input — bare `except:` is swallowing a NameError from calculate_tax instead of propagating it\nE       assert None is not None\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_does_not_swallow_name_error\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpffax13o7\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_does_not_swallow_name_error PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T23:21:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17883,
+  "completion_tokens_total": 1386,
+  "duration_seconds": 24.53,
+  "timestamp": "2026-05-16T23:21:55Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

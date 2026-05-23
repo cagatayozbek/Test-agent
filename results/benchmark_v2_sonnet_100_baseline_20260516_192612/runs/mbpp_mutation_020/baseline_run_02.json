@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_020",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import newman_prime\n\ndef test_newman_prime_uses_n_minus_2_not_n_minus_1():\n    # The NSW recurrence is P(n) = 2*P(n-1) + P(n-2).\n    # The bug mutates `n - 2` to `n - 1`, making it 3*P(n-1) instead.\n    # n=3 is the first index where the two diverge:\n    #   correct: 2*P(2) + P(1) = 2*3 + 1 = 7\n    #   buggy:   2*P(2) + P(2) = 2*3 + 3 = 9\n    result = newman_prime(3)\n    assert result == 7, f\"newman_prime(3) should be 7 per NSW recurrence, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmplxg38pdn\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_uses_n_minus_2_not_n_minus_1 FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_newman_prime_uses_n_minus_2_not_n_minus_1 ________________\n\n    def test_newman_prime_uses_n_minus_2_not_n_minus_1():\n        # The NSW recurrence is P(n) = 2*P(n-1) + P(n-2).\n        # The bug mutates `n - 2` to `n - 1`, making it 3*P(n-1) instead.\n        # n=3 is the first index where the two diverge:\n        #   correct: 2*P(2) + P(1) = 2*3 + 1 = 7\n        #   buggy:   2*P(2) + P(2) = 2*3 + 3 = 9\n        result = newman_prime(3)\n>       assert result == 7, f\"newman_prime(3) should be 7 per NSW recurrence, got {result}\"\nE       AssertionError: newman_prime(3) should be 7 per NSW recurrence, got 9\nE       assert 9 == 7\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_newman_prime_uses_n_minus_2_not_n_minus_1 - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp7vfeaqsj\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_uses_n_minus_2_not_n_minus_1 PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:19:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17717,
+  "completion_tokens_total": 802,
+  "duration_seconds": 14.37,
+  "timestamp": "2026-05-16T22:19:29Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

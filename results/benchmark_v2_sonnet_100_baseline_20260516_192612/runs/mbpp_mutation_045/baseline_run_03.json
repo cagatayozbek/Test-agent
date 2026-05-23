@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_returns_capitalized_words_not_underscores():\n    # With the bug (`and` instead of `or`), `x.capitalize() and '_'` evaluates\n    # to '_' for every non-empty word, so \"hello_world\" -> \"__\" instead of \"HelloWorld\".\n    result = snake_to_camel(\"hello_world\")\n    assert result == \"HelloWorld\", (\n        f\"Expected 'HelloWorld' but got {result!r}; \"\n        \"likely caused by 'and' instead of 'or' in the generator expression\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp4dmea9yq\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_returns_capitalized_words_not_underscores FAILED [100%]\n\n=================================== FAILURES ===================================\n________ test_snake_to_camel_returns_capitalized_words_not_underscores _________\n\n    def test_snake_to_camel_returns_capitalized_words_not_underscores():\n        # With the bug (`and` instead of `or`), `x.capitalize() and '_'` evaluates\n        # to '_' for every non-empty word, so \"hello_world\" -> \"__\" instead of \"HelloWorld\".\n        result = snake_to_camel(\"hello_world\")\n>       assert result == \"HelloWorld\", (\n            f\"Expected 'HelloWorld' but got {result!r}; \"\n            \"likely caused by 'and' instead of 'or' in the generator expression\"\n        )\nE       AssertionError: Expected 'HelloWorld' but got '__'; likely caused by 'and' instead of 'or' in the generator expression\nE       assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_returns_capitalized_words_not_underscores\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpnlrgu247\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_returns_capitalized_words_not_underscores PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:24:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17702,
+  "completion_tokens_total": 689,
+  "duration_seconds": 13.17,
+  "timestamp": "2026-05-16T22:24:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

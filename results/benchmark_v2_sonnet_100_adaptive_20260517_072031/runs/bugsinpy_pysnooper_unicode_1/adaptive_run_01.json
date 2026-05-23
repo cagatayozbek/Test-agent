@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import os\nimport tempfile\nfrom source import Tracer\n\n\ndef test_dump_source_preserves_utf8_without_replacement_chars():\n    # b\"caf\\xc3\\xa9 = 42\\n\" is \"café = 42\\n\" in UTF-8, no coding declaration.\n    # Buggy path: detect_encoding returns \"ascii\" → decode(\"ascii\", \"replace\")\n    # turns the two-byte sequence 0xC3 0xA9 into U+FFFD U+FFFD (replacement chars).\n    # Fixed path: detect_encoding returns \"utf-8\" → the round-trip is lossless.\n    source = [b\"caf\\xc3\\xa9 = 42\\n\"]\n\n    with tempfile.TemporaryDirectory() as tmpdir:\n        path = os.path.join(tmpdir, \"trace.txt\")\n        tracer = Tracer(path, overwrite=True)\n        result = tracer.dump_source(source)\n\n    assert \"\\ufffd\" not in result, (\n        f\"UTF-8 bytes were corrupted into replacement chars: {result!r}. \"\n        \"detect_encoding must default to 'utf-8', not 'ascii'.\"\n    )\n    assert \"caf\\u00e9\" in result, (\n        f\"Expected U+00E9 ('é') to survive decoding, got: {result!r}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpdtbboa85\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_replacement_chars FAILED [100%]\n\n=================================== FAILURES ===================================\n__________ test_dump_source_preserves_utf8_without_replacement_chars ___________\n\n    def test_dump_source_preserves_utf8_without_replacement_chars():\n        # b\"caf\\xc3\\xa9 = 42\\n\" is \"café = 42\\n\" in UTF-8, no coding declaration.\n        # Buggy path: detect_encoding returns \"ascii\" → decode(\"ascii\", \"replace\")\n        # turns the two-byte sequence 0xC3 0xA9 into U+FFFD U+FFFD (replacement chars).\n        # Fixed path: detect_encoding returns \"utf-8\" → the round-trip is lossless.\n        source = [b\"caf\\xc3\\xa9 = 42\\n\"]\n    \n        with tempfile.TemporaryDirectory() as tmpdir:\n            path = os.path.join(tmpdir, \"trace.txt\")\n            tracer = Tracer(path, overwrite=True)\n            result = tracer.dump_source(source)\n    \n>       assert \"\\ufffd\" not in result, (\n            f\"UTF-8 bytes were corrupted into replacement chars: {result!r}. \"\n            \"detect_encoding must default to 'utf-8', not 'ascii'.\"\n        )\nE       AssertionError: UTF-8 bytes were corrupted into replacement chars: 'caf�� = 42\\n'. detect_encoding must default to 'utf-8', not 'ascii'.\nE       assert '�' not in 'caf�� = 42\\n'\nE         \nE         '�' is contained here:\nE           caf�� = 42\nE         ?     +\n\ntest_generated.py:18: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_dump_source_preserves_utf8_without_replacement_chars\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.07s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp699kd4vc\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_replacement_chars PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T07:23:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 39415,
+  "completion_tokens_total": 3627,
+  "duration_seconds": 53.81,
+  "timestamp": "2026-05-17T07:23:08Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

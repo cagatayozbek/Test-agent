@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_bitcount",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import threading\nimport pytest\nfrom source import bitcount\n\n\ndef test_bitcount_terminates_and_counts_correctly():\n    result = [None]\n\n    def run():\n        result[0] = bitcount(127)\n\n    thread = threading.Thread(target=run, daemon=True)\n    thread.start()\n    thread.join(timeout=2)\n\n    assert not thread.is_alive(), (\n        \"bitcount(127) did not terminate within 2 seconds — \"\n        \"XOR bug (n ^= n - 1) causes an infinite loop instead of clearing the lowest set bit\"\n    )\n    assert result[0] == 7, (\n        f\"bitcount(127) should return 7 (0b1111111 has seven 1-bits), got {result[0]}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp7aw1w1uj\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_bitcount_terminates_and_counts_correctly PASSED  [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:30:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17752,
+  "completion_tokens_total": 1016,
+  "duration_seconds": 46.96,
+  "timestamp": "2026-05-16T22:30:09Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

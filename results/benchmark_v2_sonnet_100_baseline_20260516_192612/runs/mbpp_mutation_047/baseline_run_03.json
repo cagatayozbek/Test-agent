@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\n\ndef test_amicable_pair_included_in_sum():\n    # 220 and 284 are the first amicable pair:\n    #   proper divisors of 220 sum to 284, proper divisors of 284 sum to 220.\n    # The bug changes `num != sum_fact` to `num == sum_fact`, which requires\n    # a number to equal its own divisor-sum — an impossible condition for any\n    # true amicable pair (where the two numbers differ). This causes the buggy\n    # code to return 0 instead of 504 for limit=300.\n    result = amicable_numbers_sum(300)\n    assert result == 504, (\n        f\"amicable_numbers_sum(300) returned {result!r}, expected 504 \"\n        f\"(220 + 284). The comparison operator bug prevents amicable pairs \"\n        f\"from ever being recognized.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpzrkdzpv7\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_pair_included_in_sum FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_amicable_pair_included_in_sum ______________________\n\n    def test_amicable_pair_included_in_sum():\n        # 220 and 284 are the first amicable pair:\n        #   proper divisors of 220 sum to 284, proper divisors of 284 sum to 220.\n        # The bug changes `num != sum_fact` to `num == sum_fact`, which requires\n        # a number to equal its own divisor-sum — an impossible condition for any\n        # true amicable pair (where the two numbers differ). This causes the buggy\n        # code to return 0 instead of 504 for limit=300.\n        result = amicable_numbers_sum(300)\n>       assert result == 504, (\n            f\"amicable_numbers_sum(300) returned {result!r}, expected 504 \"\n            f\"(220 + 284). The comparison operator bug prevents amicable pairs \"\n            f\"from ever being recognized.\"\n        )\nE       AssertionError: amicable_numbers_sum(300) returned 34, expected 504 (220 + 284). The comparison operator bug prevents amicable pairs from ever being recognized.\nE       assert 34 == 504\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_pair_included_in_sum - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpgvatajja\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_pair_included_in_sum PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:26:04Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 36941,
+  "completion_tokens_total": 1530,
+  "duration_seconds": 24.08,
+  "timestamp": "2026-05-16T22:26:04Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

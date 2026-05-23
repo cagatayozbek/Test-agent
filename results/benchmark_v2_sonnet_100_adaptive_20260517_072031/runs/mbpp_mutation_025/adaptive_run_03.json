@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_uses_subtraction_not_addition():\n    # n1=1, n2=2: fixed code computes abs(1-2)=1, digit sum=1\n    # buggy code computes abs(1+2)=3, digit sum=3\n    result = digit_distance_nums(1, 2)\n    assert result == 1, f\"Expected digit distance 1 (abs(1-2)=1), got {result}; likely using addition instead of subtraction\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpb4cvb7n_\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_uses_subtraction_not_addition FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_digit_distance_uses_subtraction_not_addition _______________\n\n    def test_digit_distance_uses_subtraction_not_addition():\n        # n1=1, n2=2: fixed code computes abs(1-2)=1, digit sum=1\n        # buggy code computes abs(1+2)=3, digit sum=3\n        result = digit_distance_nums(1, 2)\n>       assert result == 1, f\"Expected digit distance 1 (abs(1-2)=1), got {result}; likely using addition instead of subtraction\"\nE       AssertionError: Expected digit distance 1 (abs(1-2)=1), got 3; likely using addition instead of subtraction\nE       assert 3 == 1\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_uses_subtraction_not_addition\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.04s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpj9w9fnsw\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_uses_subtraction_not_addition PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:11:35Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17715,
+  "completion_tokens_total": 856,
+  "duration_seconds": 14.87,
+  "timestamp": "2026-05-17T08:11:35Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

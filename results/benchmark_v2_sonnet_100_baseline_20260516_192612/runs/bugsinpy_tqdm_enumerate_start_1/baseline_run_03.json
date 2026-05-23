@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_tqdm_enumerate_start_1",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import tenumerate\n\n\ndef test_tenumerate_start_is_applied_to_enumerate():\n    result = list(tenumerate(['a', 'b', 'c'], start=5))\n    first_index = result[0][0]\n    assert first_index == 5, (\n        f\"Expected enumeration to start at 5, but got index {first_index}. \"\n        \"The 'start' argument must be forwarded to enumerate(), not tqdm_class.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpnj_sk05d\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_is_applied_to_enumerate FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_tenumerate_start_is_applied_to_enumerate _________________\n\n    def test_tenumerate_start_is_applied_to_enumerate():\n        result = list(tenumerate(['a', 'b', 'c'], start=5))\n        first_index = result[0][0]\n>       assert first_index == 5, (\n            f\"Expected enumeration to start at 5, but got index {first_index}. \"\n            \"The 'start' argument must be forwarded to enumerate(), not tqdm_class.\"\n        )\nE       AssertionError: Expected enumeration to start at 5, but got index 0. The 'start' argument must be forwarded to enumerate(), not tqdm_class.\nE       assert 0 == 5\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_start_is_applied_to_enumerate - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp71q9se9s\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_is_applied_to_enumerate PASSED  [100%]\n\n============================== 1 passed in 0.00s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T19:44:46Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17794,
+  "completion_tokens_total": 513,
+  "duration_seconds": 9.93,
+  "timestamp": "2026-05-16T19:44:46Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

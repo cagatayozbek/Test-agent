@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_121",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import solution\n\ndef test_solution_sums_odd_elements_at_even_positions():\n    # [5, 8, 7, 1]: positions 0,2 have values 5,7 (both odd) → 5+7=12\n    # Buggy code checks idx%2==1 (odd positions), finding value 1 → returns 1\n    result = solution([5, 8, 7, 1])\n    assert result == 12, f\"Expected 12 (sum of odd values at even indices), got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpg6y50a85\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_sums_odd_elements_at_even_positions FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_solution_sums_odd_elements_at_even_positions _______________\n\n    def test_solution_sums_odd_elements_at_even_positions():\n        # [5, 8, 7, 1]: positions 0,2 have values 5,7 (both odd) → 5+7=12\n        # Buggy code checks idx%2==1 (odd positions), finding value 1 → returns 1\n        result = solution([5, 8, 7, 1])\n>       assert result == 12, f\"Expected 12 (sum of odd values at even indices), got {result}\"\nE       AssertionError: Expected 12 (sum of odd values at even indices), got 1\nE       assert 1 == 12\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_solution_sums_odd_elements_at_even_positions\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.04s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpp_93oxa8\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_sums_odd_elements_at_even_positions PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:01:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17823,
+  "completion_tokens_total": 141,
+  "duration_seconds": 5.74,
+  "timestamp": "2026-05-17T08:01:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

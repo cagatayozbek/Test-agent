@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_015",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import list_to_float\n\ndef test_first_element_not_overwritten_by_second():\n    result = list_to_float([['3', '4.5']])\n    assert result == [(3.0, 4.5)], (\n        f\"Expected [(3.0, 4.5)] but got {result}. \"\n        \"Bug: temp[1] used twice instead of (temp[0], temp[1]).\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpa52wry40\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_first_element_not_overwritten_by_second FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_first_element_not_overwritten_by_second _________________\n\n    def test_first_element_not_overwritten_by_second():\n        result = list_to_float([['3', '4.5']])\n>       assert result == [(3.0, 4.5)], (\n            f\"Expected [(3.0, 4.5)] but got {result}. \"\n            \"Bug: temp[1] used twice instead of (temp[0], temp[1]).\"\n        )\nE       AssertionError: Expected [(3.0, 4.5)] but got [(4.5, 4.5)]. Bug: temp[1] used twice instead of (temp[0], temp[1]).\nE       assert [(4.5, 4.5)] == [(3.0, 4.5)]\nE         \nE         At index 0 diff: (4.5, 4.5) != (3.0, 4.5)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         3.0,...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_first_element_not_overwritten_by_second - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp8z2uumfc\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_first_element_not_overwritten_by_second PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:08:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17772,
+  "completion_tokens_total": 577,
+  "duration_seconds": 12.17,
+  "timestamp": "2026-05-17T08:08:58Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

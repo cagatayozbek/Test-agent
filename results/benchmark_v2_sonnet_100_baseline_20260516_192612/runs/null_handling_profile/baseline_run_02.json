@@ -1,0 +1,36 @@
+{
+  "task_id": "null_handling_profile",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import get_user_display_name\n\n\ndef test_get_user_display_name_with_none_profile():\n    user_data = {'profile': None}\n    result = get_user_display_name(user_data)\n    assert result is None or isinstance(result, str), (\n        \"Expected get_user_display_name to handle None profile gracefully \"\n        \"and return None or a fallback string, but it raised an error instead.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp3vpcirgs\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_get_user_display_name_with_none_profile _________________\n\n    def test_get_user_display_name_with_none_profile():\n        user_data = {'profile': None}\n>       result = get_user_display_name(user_data)\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nuser_data = {'profile': None}\n\n    def get_user_display_name(user_data):\n        \"\"\"\n        Returns the display name from user data.\n        Expected structure: {'profile': {'display_name': '...', ...}, ...}\n        However, the 'profile' key can sometimes be None.\n        \"\"\"\n        # BUG: If user_data.get('profile') returns None,\n        # accessing ['display_name'] on None raises TypeError.\n        profile = user_data.get('profile')\n    \n        # The developer assumed profile is always present or forgot to check for None.\n>       return profile['display_name']\nE       TypeError: 'NoneType' object is not subscriptable\n\nsource.py:12: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_with_none_profile - Type...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpqkwadulo\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:27:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17750,
+  "completion_tokens_total": 120,
+  "duration_seconds": 4.96,
+  "timestamp": "2026-05-16T22:27:23Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

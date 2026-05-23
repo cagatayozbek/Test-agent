@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_057",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import monotonic\n\ndef test_monotonic_increasing_sequence_returns_true():\n    assert monotonic([1, 2, 4, 20]) == True, \"monotonic([1, 2, 4, 20]) should return True for strictly increasing list\"\n    assert monotonic([1, 20, 4, 10]) == False, \"monotonic([1, 20, 4, 10]) should return False for non-monotonic list\"\n    assert monotonic([4, 1, 0, -10]) == True, \"monotonic([4, 1, 0, -10]) should return True for strictly decreasing list\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpsrqyvxjq\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_increasing_sequence_returns_true FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_monotonic_increasing_sequence_returns_true ________________\n\n    def test_monotonic_increasing_sequence_returns_true():\n>       assert monotonic([1, 2, 4, 20]) == True, \"monotonic([1, 2, 4, 20]) should return True for strictly increasing list\"\nE       AssertionError: monotonic([1, 2, 4, 20]) should return True for strictly increasing list\nE       assert False == True\nE        +  where False = monotonic([1, 2, 4, 20])\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_increasing_sequence_returns_true - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpb4qjuvy5\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_increasing_sequence_returns_true PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T19:51:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17747,
+  "completion_tokens_total": 160,
+  "duration_seconds": 4.9,
+  "timestamp": "2026-05-16T19:51:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

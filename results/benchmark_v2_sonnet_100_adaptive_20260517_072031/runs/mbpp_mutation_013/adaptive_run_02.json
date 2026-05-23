@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_013",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import math\nfrom source import volume_cone\n\ndef test_volume_cone_uses_multiplication_not_floor_division():\n    r, h = 2, 3\n    expected = (1.0 / 3) * math.pi * r * r * h  # ≈ 12.566\n    result = volume_cone(r, h)\n    assert abs(result - expected) < 1e-9, (\n        f\"volume_cone({r}, {h}) returned {result}, expected {expected}. \"\n        f\"Bug: 'math.pi // r' (floor division) should be 'math.pi * r' (multiplication).\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpf4sc5dc_\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cone_uses_multiplication_not_floor_division FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_volume_cone_uses_multiplication_not_floor_division ____________\n\n    def test_volume_cone_uses_multiplication_not_floor_division():\n        r, h = 2, 3\n        expected = (1.0 / 3) * math.pi * r * r * h  # ≈ 12.566\n        result = volume_cone(r, h)\n>       assert abs(result - expected) < 1e-9, (\n            f\"volume_cone({r}, {h}) returned {result}, expected {expected}. \"\n            f\"Bug: 'math.pi // r' (floor division) should be 'math.pi * r' (multiplication).\"\n        )\nE       AssertionError: volume_cone(2, 3) returned 0.0, expected 12.566370614359172. Bug: 'math.pi // r' (floor division) should be 'math.pi * r' (multiplication).\nE       assert 12.566370614359172 < 1e-09\nE        +  where 12.566370614359172 = abs((0.0 - 12.566370614359172))\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cone_uses_multiplication_not_floor_division\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpybv77k_2\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cone_uses_multiplication_not_floor_division PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:08:19Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17715,
+  "completion_tokens_total": 556,
+  "duration_seconds": 10.83,
+  "timestamp": "2026-05-17T08:08:19Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

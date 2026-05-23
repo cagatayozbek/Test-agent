@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import min_k\n\ndef test_min_k_sorts_by_value_not_key():\n    # 'Akash' comes first alphabetically but 'Gangotri' has the smallest value (0).\n    # Buggy code (x[0]) sorts by name -> returns [('Akash', 2)]\n    # Fixed code (x[1]) sorts by value -> returns [('Gangotri', 0)]\n    test_list = [('Saranya', 101), ('Gangotri', 0), ('Akash', 2), ('Nikhil', 8)]\n    result = min_k(test_list, 1)\n    assert result == [('Gangotri', 0)], (\n        f\"Expected [('Gangotri', 0)] (minimum by value), got {result}. \"\n        \"Bug: lambda sorts by x[0] (key) instead of x[1] (value).\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpojmmxf15\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_value_not_key FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_sorts_by_value_not_key _______________________\n\n    def test_min_k_sorts_by_value_not_key():\n        # 'Akash' comes first alphabetically but 'Gangotri' has the smallest value (0).\n        # Buggy code (x[0]) sorts by name -> returns [('Akash', 2)]\n        # Fixed code (x[1]) sorts by value -> returns [('Gangotri', 0)]\n        test_list = [('Saranya', 101), ('Gangotri', 0), ('Akash', 2), ('Nikhil', 8)]\n        result = min_k(test_list, 1)\n>       assert result == [('Gangotri', 0)], (\n            f\"Expected [('Gangotri', 0)] (minimum by value), got {result}. \"\n            \"Bug: lambda sorts by x[0] (key) instead of x[1] (value).\"\n        )\nE       AssertionError: Expected [('Gangotri', 0)] (minimum by value), got [('Akash', 2)]. Bug: lambda sorts by x[0] (key) instead of x[1] (value).\nE       assert [('Akash', 2)] == [('Gangotri', 0)]\nE         \nE         At index 0 diff: ('Akash', 2) != ('Gangotri', 0)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'Gangotri',...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_sorts_by_value_not_key - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpmxfb_zcg\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_value_not_key PASSED              [100%]\n\n============================== 1 passed in 0.00s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T20:04:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17710,
+  "completion_tokens_total": 1353,
+  "duration_seconds": 21.25,
+  "timestamp": "2026-05-16T20:04:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

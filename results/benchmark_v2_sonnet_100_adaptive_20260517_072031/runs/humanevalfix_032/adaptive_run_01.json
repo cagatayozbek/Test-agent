@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_032",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_zero\n\n\ndef test_find_zero_bisection_converges_to_correct_root():\n    # With the bug (begin - end > 1e-10), begin < end always makes this False,\n    # so the bisection loop never executes and returns begin unrefined.\n    result_linear = round(find_zero([1, 2]), 2)\n    assert result_linear == -0.5, (\n        f\"find_zero([1, 2]) should return -0.5 (root of 1+2x), got {result_linear}. \"\n        \"Bug: 'while begin - end > 1e-10' is always False when begin < end, \"\n        \"so bisection never runs.\"\n    )\n\n    result_cubic = round(find_zero([-6, 11, -6, 1]), 2)\n    assert result_cubic == 1.0, (\n        f\"find_zero([-6, 11, -6, 1]) should return 1.0 (root of (x-1)(x-2)(x-3)), got {result_cubic}. \"\n        \"Bug: bisection loop condition is inverted, preventing convergence.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp3qaw7hfa\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bisection_converges_to_correct_root FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_find_zero_bisection_converges_to_correct_root ______________\n\n    def test_find_zero_bisection_converges_to_correct_root():\n        # With the bug (begin - end > 1e-10), begin < end always makes this False,\n        # so the bisection loop never executes and returns begin unrefined.\n        result_linear = round(find_zero([1, 2]), 2)\n>       assert result_linear == -0.5, (\n            f\"find_zero([1, 2]) should return -0.5 (root of 1+2x), got {result_linear}. \"\n            \"Bug: 'while begin - end > 1e-10' is always False when begin < end, \"\n            \"so bisection never runs.\"\n        )\nE       AssertionError: find_zero([1, 2]) should return -0.5 (root of 1+2x), got -1.0. Bug: 'while begin - end > 1e-10' is always False when begin < end, so bisection never runs.\nE       assert -1.0 == -0.5\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_bisection_converges_to_correct_root\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpvav7d4lf\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bisection_converges_to_correct_root PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T07:48:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 18156,
+  "completion_tokens_total": 496,
+  "duration_seconds": 10.55,
+  "timestamp": "2026-05-17T07:48:26Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

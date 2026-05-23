@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_114",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import minSubArraySum\n\n\ndef test_minSubArraySum_all_negative_returns_full_array_sum():\n    # With all-negative input the minimum subarray is the entire array.\n    # Buggy code returns min(-i for i in nums) = min(1, 2, 3) = 1\n    # Fixed code returns -max_sum = -(1+2+3) = -6\n    result = minSubArraySum([-1, -2, -3])\n    assert result == -6, (\n        f\"Expected -6 (sum of entire array), got {result}. \"\n        \"Bug: min(-i for i in nums) picks the least-negative single element \"\n        \"instead of the true minimum subarray sum.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp781bqj9f\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_all_negative_returns_full_array_sum FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_minSubArraySum_all_negative_returns_full_array_sum ____________\n\n    def test_minSubArraySum_all_negative_returns_full_array_sum():\n        # With all-negative input the minimum subarray is the entire array.\n        # Buggy code returns min(-i for i in nums) = min(1, 2, 3) = 1\n        # Fixed code returns -max_sum = -(1+2+3) = -6\n        result = minSubArraySum([-1, -2, -3])\n>       assert result == -6, (\n            f\"Expected -6 (sum of entire array), got {result}. \"\n            \"Bug: min(-i for i in nums) picks the least-negative single element \"\n            \"instead of the true minimum subarray sum.\"\n        )\nE       AssertionError: Expected -6 (sum of entire array), got 1. Bug: min(-i for i in nums) picks the least-negative single element instead of the true minimum subarray sum.\nE       assert 1 == -6\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_all_negative_returns_full_array_sum\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmppz8eqzlw\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_all_negative_returns_full_array_sum PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T19:58:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17808,
+  "completion_tokens_total": 1697,
+  "duration_seconds": 27.82,
+  "timestamp": "2026-05-16T19:58:22Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

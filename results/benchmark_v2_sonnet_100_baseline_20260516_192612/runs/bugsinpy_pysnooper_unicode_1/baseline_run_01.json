@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import os\nimport tempfile\nfrom source import Tracer, detect_encoding\n\n\ndef test_dump_source_utf8_roundtrip_no_replacement():\n    original = \"héllo wörld\\n\"\n    utf8_bytes = original.encode(\"utf-8\")\n    source = [utf8_bytes]\n\n    with tempfile.NamedTemporaryFile(\n        mode=\"w\", suffix=\".txt\", delete=False, encoding=\"utf-8\"\n    ) as f:\n        path = f.name\n\n    try:\n        tracer = Tracer(path, overwrite=True)\n        rendered = tracer.dump_source(source)\n\n        assert \"\\ufffd\" not in rendered, (\n            f\"dump_source corrupted UTF-8 content into replacement chars: got {rendered!r}; \"\n            \"detect_encoding must default to 'utf-8', not 'ascii', when no coding header is present\"\n        )\n        assert rendered == original, (\n            f\"dump_source must round-trip UTF-8 bytes faithfully: \"\n            f\"got {rendered!r}, expected {original!r}\"\n        )\n    finally:\n        os.unlink(path)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp3islfirp\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_utf8_roundtrip_no_replacement FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_dump_source_utf8_roundtrip_no_replacement ________________\n\n    def test_dump_source_utf8_roundtrip_no_replacement():\n        original = \"héllo wörld\\n\"\n        utf8_bytes = original.encode(\"utf-8\")\n        source = [utf8_bytes]\n    \n        with tempfile.NamedTemporaryFile(\n            mode=\"w\", suffix=\".txt\", delete=False, encoding=\"utf-8\"\n        ) as f:\n            path = f.name\n    \n        try:\n            tracer = Tracer(path, overwrite=True)\n            rendered = tracer.dump_source(source)\n    \n>           assert \"\\ufffd\" not in rendered, (\n                f\"dump_source corrupted UTF-8 content into replacement chars: got {rendered!r}; \"\n                \"detect_encoding must default to 'utf-8', not 'ascii', when no coding header is present\"\n            )\nE           AssertionError: dump_source corrupted UTF-8 content into replacement chars: got 'h��llo w��rld\\n'; detect_encoding must default to 'utf-8', not 'ascii', when no coding header is present\nE           assert '�' not in 'h��llo w��rld\\n'\nE             \nE             '�' is contained here:\nE               h��llo w��rld\nE             ?  +\n\ntest_generated.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_dump_source_utf8_roundtrip_no_replacement - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp4wiafhhk\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_utf8_roundtrip_no_replacement PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T19:28:14Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 37452,
+  "completion_tokens_total": 1682,
+  "duration_seconds": 36.54,
+  "timestamp": "2026-05-16T19:28:14Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

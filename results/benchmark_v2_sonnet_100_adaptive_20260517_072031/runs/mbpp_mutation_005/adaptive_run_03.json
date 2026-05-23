@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_005",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import average_tuple\n\ndef test_average_tuple_divides_not_multiplies():\n    result = average_tuple(((1, 2, 3), (4, 5, 6)))\n    expected = [2.5, 3.5, 4.5]\n    assert result == expected, (\n        f\"Expected averages {expected} but got {result}; \"\n        \"buggy code multiplies by len instead of dividing\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpm9k5s6d5\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_divides_not_multiplies FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_average_tuple_divides_not_multiplies ___________________\n\n    def test_average_tuple_divides_not_multiplies():\n        result = average_tuple(((1, 2, 3), (4, 5, 6)))\n        expected = [2.5, 3.5, 4.5]\n>       assert result == expected, (\n            f\"Expected averages {expected} but got {result}; \"\n            \"buggy code multiplies by len instead of dividing\"\n        )\nE       AssertionError: Expected averages [2.5, 3.5, 4.5] but got [10, 14, 18]; buggy code multiplies by len instead of dividing\nE       assert [10, 14, 18] == [2.5, 3.5, 4.5]\nE         \nE         At index 0 diff: 10 != 2.5\nE         \nE         Full diff:\nE           [\nE         +     10,\nE         -     2.5,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_divides_not_multiplies - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp1186rkhb\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_divides_not_multiplies PASSED      [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:06:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17718,
+  "completion_tokens_total": 347,
+  "duration_seconds": 9.15,
+  "timestamp": "2026-05-17T08:06:26Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

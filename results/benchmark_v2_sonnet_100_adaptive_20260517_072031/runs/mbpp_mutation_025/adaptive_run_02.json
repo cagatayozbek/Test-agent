@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_uses_subtraction_not_addition():\n    # With the bug (n1 + n2): abs(123 + 456) = 579, digit sum = 5+7+9 = 21\n    # With the fix (n1 - n2): abs(123 - 456) = 333, digit sum = 3+3+3 = 9\n    result = digit_distance_nums(123, 456)\n    assert result == 9, (\n        f\"digit_distance_nums(123, 456) should be 9 (sum of digits of |123-456|=333), \"\n        f\"got {result} — likely caused by using '+' instead of '-'\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpgusfzh0v\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_uses_subtraction_not_addition FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_digit_distance_uses_subtraction_not_addition _______________\n\n    def test_digit_distance_uses_subtraction_not_addition():\n        # With the bug (n1 + n2): abs(123 + 456) = 579, digit sum = 5+7+9 = 21\n        # With the fix (n1 - n2): abs(123 - 456) = 333, digit sum = 3+3+3 = 9\n        result = digit_distance_nums(123, 456)\n>       assert result == 9, (\n            f\"digit_distance_nums(123, 456) should be 9 (sum of digits of |123-456|=333), \"\n            f\"got {result} — likely caused by using '+' instead of '-'\"\n        )\nE       AssertionError: digit_distance_nums(123, 456) should be 9 (sum of digits of |123-456|=333), got 21 — likely caused by using '+' instead of '-'\nE       assert 21 == 9\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_uses_subtraction_not_addition\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmptepp8emw\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_uses_subtraction_not_addition PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:11:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17715,
+  "completion_tokens_total": 1118,
+  "duration_seconds": 19.76,
+  "timestamp": "2026-05-17T08:11:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

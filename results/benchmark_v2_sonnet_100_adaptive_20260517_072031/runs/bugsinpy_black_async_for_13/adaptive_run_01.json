@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_black_async_for_13",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import tokenize_async\n\n\ndef test_async_for_emits_async_token_not_name():\n    tokens = [\"async\", \"for\", \"x\", \"in\", \"y\"]\n    async_def, result_tokens = tokenize_async(tokens)\n\n    token_types = [typ for typ, _ in result_tokens]\n\n    assert \"ASYNC\" in token_types, (\n        \"Bug: 'async for' should emit an ASYNC token, but got only NAME tokens: \"\n        f\"{result_tokens}\"\n    )\n    assert async_def is False, (\n        \"'async for' must not set async_def=True (only 'async def' should)\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp4i813gd9\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_emits_async_token_not_name FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_async_for_emits_async_token_not_name ___________________\n\n    def test_async_for_emits_async_token_not_name():\n        tokens = [\"async\", \"for\", \"x\", \"in\", \"y\"]\n        async_def, result_tokens = tokenize_async(tokens)\n    \n        token_types = [typ for typ, _ in result_tokens]\n    \n>       assert \"ASYNC\" in token_types, (\n            \"Bug: 'async for' should emit an ASYNC token, but got only NAME tokens: \"\n            f\"{result_tokens}\"\n        )\nE       AssertionError: Bug: 'async for' should emit an ASYNC token, but got only NAME tokens: [('NAME', 'async'), ('NAME', 'for'), ('NAME', 'x'), ('NAME', 'in'), ('NAME', 'y')]\nE       assert 'ASYNC' in ['NAME', 'NAME', 'NAME', 'NAME', 'NAME']\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_for_emits_async_token_not_name - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmprvmxlbox\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_emits_async_token_not_name PASSED      [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T07:21:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17892,
+  "completion_tokens_total": 458,
+  "duration_seconds": 11.34,
+  "timestamp": "2026-05-17T07:21:09Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

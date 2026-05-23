@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_095",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import check_dict_case\n\ndef test_mixed_upper_and_lower_keys_returns_false():\n    # First key sets state=\"upper\", second key is lowercase.\n    # Buggy `and` makes the elif condition impossible (state can't be both\n    # \"upper\" and \"lower\" at once), so the else:break fires and state stays\n    # \"upper\", wrongly returning True.\n    # Fixed `or` correctly detects the mismatch and sets state=\"mixed\".\n    result = check_dict_case({\"STATE\": \"NC\", \"zip\": \"12345\"})\n    assert result == False, (\n        \"Expected False for dict with mixed upper/lower keys, got True — \"\n        \"likely caused by 'and' instead of 'or' in the elif condition\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp5qo2oy15\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_mixed_upper_and_lower_keys_returns_false FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_mixed_upper_and_lower_keys_returns_false _________________\n\n    def test_mixed_upper_and_lower_keys_returns_false():\n        # First key sets state=\"upper\", second key is lowercase.\n        # Buggy `and` makes the elif condition impossible (state can't be both\n        # \"upper\" and \"lower\" at once), so the else:break fires and state stays\n        # \"upper\", wrongly returning True.\n        # Fixed `or` correctly detects the mismatch and sets state=\"mixed\".\n        result = check_dict_case({\"STATE\": \"NC\", \"zip\": \"12345\"})\n>       assert result == False, (\n            \"Expected False for dict with mixed upper/lower keys, got True — \"\n            \"likely caused by 'and' instead of 'or' in the elif condition\"\n        )\nE       AssertionError: Expected False for dict with mixed upper/lower keys, got True — likely caused by 'and' instead of 'or' in the elif condition\nE       assert True == False\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mixed_upper_and_lower_keys_returns_false - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpfz92cujz\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_mixed_upper_and_lower_keys_returns_false PASSED  [100%]\n\n============================== 1 passed in 0.00s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T19:56:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 18028,
+  "completion_tokens_total": 874,
+  "duration_seconds": 16.46,
+  "timestamp": "2026-05-16T19:56:00Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

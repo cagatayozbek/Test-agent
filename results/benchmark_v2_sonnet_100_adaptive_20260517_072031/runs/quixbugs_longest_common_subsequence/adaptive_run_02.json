@@ -1,0 +1,52 @@
+{
+  "task_id": "quixbugs_longest_common_subsequence",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import longest_common_subsequence\n\ndef test_lcs_does_not_reuse_b_characters():\n    result = longest_common_subsequence('AGCAT', 'GAC')\n    assert len(result) == 2, (\n        f\"LCS of 'AGCAT' and 'GAC' should have length 2 (e.g. 'AC' or 'GC' or 'GA'), \"\n        f\"but got {repr(result)} of length {len(result)}. \"\n        \"Bug: when characters match, b is not advanced, allowing b's character to be reused.\"\n    )",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpkst_ww56\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_does_not_reuse_b_characters PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpt97cbdjz\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_does_not_reuse_b_characters PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-17T09:01:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import longest_common_subsequence\n\ndef test_lcs_does_not_reuse_b_characters():\n    # Bug: on a match, only `a` is advanced (`a[1:], b`), so the same\n    # character in `b` can be matched again.  With 'AA' vs 'A', the buggy\n    # code matches the lone 'A' in b twice and returns 'AA' (len 2).\n    # The correct answer is 'A' (len 1) because 'A' appears only once in b.\n    result = longest_common_subsequence('AA', 'A')\n    assert len(result) == 1, (\n        f\"LCS of 'AA' and 'A' must have length 1, got '{result}' (len {len(result)}). \"\n        \"Bug causes the single 'A' in b to be consumed twice.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpg5k95tje\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_does_not_reuse_b_characters FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_lcs_does_not_reuse_b_characters _____________________\n\n    def test_lcs_does_not_reuse_b_characters():\n        # Bug: on a match, only `a` is advanced (`a[1:], b`), so the same\n        # character in `b` can be matched again.  With 'AA' vs 'A', the buggy\n        # code matches the lone 'A' in b twice and returns 'AA' (len 2).\n        # The correct answer is 'A' (len 1) because 'A' appears only once in b.\n        result = longest_common_subsequence('AA', 'A')\n>       assert len(result) == 1, (\n            f\"LCS of 'AA' and 'A' must have length 1, got '{result}' (len {len(result)}). \"\n            \"Bug causes the single 'A' in b to be consumed twice.\"\n        )\nE       AssertionError: LCS of 'AA' and 'A' must have length 1, got 'AA' (len 2). Bug causes the single 'A' in b to be consumed twice.\nE       assert 2 == 1\nE        +  where 2 = len('AA')\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_does_not_reuse_b_characters - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpxocghnr5\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_does_not_reuse_b_characters PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T09:03:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 88307,
+  "completion_tokens_total": 8205,
+  "duration_seconds": 135.32,
+  "timestamp": "2026-05-17T09:03:53Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_gcd",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import sys\nimport pytest\nfrom source import gcd\n\n\ndef test_gcd_argument_order_in_recursive_call():\n    old_limit = sys.getrecursionlimit()\n    sys.setrecursionlimit(50)\n    try:\n        result = gcd(35, 21)\n    except RecursionError:\n        pytest.fail(\n            \"gcd(35, 21) caused infinite recursion: recursive call passes (a % b, b) \"\n            \"instead of (b, a % b), so 'b' never reduces and the base case is never reached\"\n        )\n    finally:\n        sys.setrecursionlimit(old_limit)\n    assert result == 7, f\"Expected gcd(35, 21) == 7, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp61dfxp7d\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_argument_order_in_recursive_call FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_gcd_argument_order_in_recursive_call ___________________\n\n    def test_gcd_argument_order_in_recursive_call():\n        old_limit = sys.getrecursionlimit()\n>       sys.setrecursionlimit(50)\nE       RecursionError: cannot set the recursion limit to 50 at the recursion depth 40: the limit is too low\n\ntest_generated.py:8: RecursionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_argument_order_in_recursive_call - Recursi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpbos8v5s0\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_argument_order_in_recursive_call FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_gcd_argument_order_in_recursive_call ___________________\n\n    def test_gcd_argument_order_in_recursive_call():\n        old_limit = sys.getrecursionlimit()\n>       sys.setrecursionlimit(50)\nE       RecursionError: cannot set the recursion limit to 50 at the recursion depth 40: the limit is too low\n\ntest_generated.py:8: RecursionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_argument_order_in_recursive_call - Recursi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:43:51Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import sys\nimport pytest\nfrom source import gcd\n\n\ndef test_gcd_argument_order_in_recursive_call():\n    old_limit = sys.getrecursionlimit()\n    sys.setrecursionlimit(50)\n    try:\n        result = gcd(35, 21)\n    except RecursionError:\n        pytest.fail(\n            \"gcd(35, 21) hit recursion limit — recursive call passes (a % b, b) \"\n            \"instead of (b, a % b), causing infinite recursion\"\n        )\n    finally:\n        sys.setrecursionlimit(old_limit)\n    assert result == 7, f\"gcd(35, 21) should return 7, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpm_0_s2uf\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_argument_order_in_recursive_call FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_gcd_argument_order_in_recursive_call ___________________\n\n    def test_gcd_argument_order_in_recursive_call():\n        old_limit = sys.getrecursionlimit()\n>       sys.setrecursionlimit(50)\nE       RecursionError: cannot set the recursion limit to 50 at the recursion depth 40: the limit is too low\n\ntest_generated.py:8: RecursionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_argument_order_in_recursive_call - Recursi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpnm_lsn90\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_argument_order_in_recursive_call FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_gcd_argument_order_in_recursive_call ___________________\n\n    def test_gcd_argument_order_in_recursive_call():\n        old_limit = sys.getrecursionlimit()\n>       sys.setrecursionlimit(50)\nE       RecursionError: cannot set the recursion limit to 50 at the recursion depth 40: the limit is too low\n\ntest_generated.py:8: RecursionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_argument_order_in_recursive_call - Recursi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:44:32Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import gcd\n\ndef test_gcd_returns_correct_value_without_infinite_recursion():\n    # Buggy code: gcd(a % b, b) keeps a % b < b, so next call yields\n    # gcd((a%b) % b, b) == gcd(a%b, b) — infinite recursion / RecursionError.\n    # Fixed code: gcd(b, a % b) reduces b on each step and terminates.\n    result = gcd(35, 21)\n    assert result == 7, (\n        f\"gcd(35, 21) should return 7 but got {result}; \"\n        \"wrong argument order (a%b, b) causes infinite recursion\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpd31on86r\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_returns_correct_value_without_infinite_recursion FAILED [100%]\n\n=================================== FAILURES ===================================\n__________ test_gcd_returns_correct_value_without_infinite_recursion ___________\n\n    def test_gcd_returns_correct_value_without_infinite_recursion():\n        # Buggy code: gcd(a % b, b) keeps a % b < b, so next call yields\n        # gcd((a%b) % b, b) == gcd(a%b, b) — infinite recursion / RecursionError.\n        # Fixed code: gcd(b, a % b) reduces b on each step and terminates.\n>       result = gcd(35, 21)\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:5: in gcd\n    return gcd(a % b, b)\nsource.py:5: in gcd\n    return gcd(a % b, b)\nsource.py:5: in gcd\n    return gcd(a % b, b)\nE   RecursionError: maximum recursion depth exceeded in comparison\n!!! Recursion detected (same locals & position)\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_returns_correct_value_without_infinite_recursion\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpvhue9279\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_returns_correct_value_without_infinite_recursion PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:45:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 74925,
+  "completion_tokens_total": 7711,
+  "duration_seconds": 134.93,
+  "timestamp": "2026-05-16T22:45:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

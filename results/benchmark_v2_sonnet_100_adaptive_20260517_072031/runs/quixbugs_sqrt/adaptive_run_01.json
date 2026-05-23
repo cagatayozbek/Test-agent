@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import signal\nfrom source import sqrt\n\n\ndef test_sqrt_converges_to_correct_value():\n    def _timeout(signum, frame):\n        raise AssertionError(\n            \"sqrt(2, 0.01) did not terminate — buggy convergence check \"\n            \"uses abs(x - approx) which never reaches epsilon because \"\n            \"approx converges to ~1.414 while x=2, so abs(2 - 1.414) ≈ 0.586 > 0.01 forever\"\n        )\n\n    signal.signal(signal.SIGALRM, _timeout)\n    signal.alarm(3)\n    try:\n        result = sqrt(2, 0.01)\n    finally:\n        signal.alarm(0)\n\n    assert abs(result - 1.41421356) < 0.01, (\n        f\"sqrt(2, 0.01) returned {result}, expected a value within 0.01 of sqrt(2) ≈ 1.41421\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpts_f9s6n\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_converges_to_correct_value FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_sqrt_converges_to_correct_value _____________________\n\n    def test_sqrt_converges_to_correct_value():\n        def _timeout(signum, frame):\n            raise AssertionError(\n                \"sqrt(2, 0.01) did not terminate — buggy convergence check \"\n                \"uses abs(x - approx) which never reaches epsilon because \"\n                \"approx converges to ~1.414 while x=2, so abs(2 - 1.414) ≈ 0.586 > 0.01 forever\"\n            )\n    \n        signal.signal(signal.SIGALRM, _timeout)\n        signal.alarm(3)\n        try:\n>           result = sqrt(2, 0.01)\n\ntest_generated.py:16: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:4: in sqrt\n    while abs(x - approx) > epsilon:\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nsignum = 14\nframe = <frame at 0x109b6a580, file '/private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpts_f9s6n/source.py', line 4, code sqrt>\n\n    def _timeout(signum, frame):\n>       raise AssertionError(\n            \"sqrt(2, 0.01) did not terminate — buggy convergence check \"\n            \"uses abs(x - approx) which never reaches epsilon because \"\n            \"approx converges to ~1.414 while x=2, so abs(2 - 1.414) ≈ 0.586 > 0.01 forever\"\n        )\nE       AssertionError: sqrt(2, 0.01) did not terminate — buggy convergence check uses abs(x - approx) which never reaches epsilon because approx converges to ~1.414 while x=2, so abs(2 - 1.414) ≈ 0.586 > 0.01 forever\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sqrt_converges_to_correct_value - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 3.06s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpjslq_6fg\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_converges_to_correct_value PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T09:22:32Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17815,
+  "completion_tokens_total": 9890,
+  "duration_seconds": 119.93,
+  "timestamp": "2026-05-17T09:22:32Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

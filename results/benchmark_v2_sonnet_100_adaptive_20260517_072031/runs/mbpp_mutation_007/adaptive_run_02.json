@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import min_k\n\ndef test_min_k_sorts_by_second_element_not_first():\n    test_list = [('b', 3), ('a', 5), ('c', 1)]\n    K = 2\n    result = min_k(test_list, K)\n    expected = [('c', 1), ('b', 3)]\n    assert result == expected, (\n        f\"min_k should return the K tuples with the smallest second-element values, \"\n        f\"got {result} but expected {expected}. \"\n        f\"Buggy code sorts by x[0] (first element); fixed code must sort by x[1].\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp3788w45e\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_second_element_not_first FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_min_k_sorts_by_second_element_not_first _________________\n\n    def test_min_k_sorts_by_second_element_not_first():\n        test_list = [('b', 3), ('a', 5), ('c', 1)]\n        K = 2\n        result = min_k(test_list, K)\n        expected = [('c', 1), ('b', 3)]\n>       assert result == expected, (\n            f\"min_k should return the K tuples with the smallest second-element values, \"\n            f\"got {result} but expected {expected}. \"\n            f\"Buggy code sorts by x[0] (first element); fixed code must sort by x[1].\"\n        )\nE       AssertionError: min_k should return the K tuples with the smallest second-element values, got [('a', 5), ('b', 3)] but expected [('c', 1), ('b', 3)]. Buggy code sorts by x[0] (first element); fixed code must sort by x[1].\nE       assert [('a', 5), ('b', 3)] == [('c', 1), ('b', 3)]\nE         \nE         At index 0 diff: ('a', 5) != ('c', 1)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'c',...\nE         \nE         ...Full output truncated (13 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_sorts_by_second_element_not_first - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp0621pqy7\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_second_element_not_first PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T08:07:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 36227,
+  "completion_tokens_total": 899,
+  "duration_seconds": 23.15,
+  "timestamp": "2026-05-17T08:07:20Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

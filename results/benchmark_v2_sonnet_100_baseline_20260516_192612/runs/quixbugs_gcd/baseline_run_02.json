@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_gcd",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import sys\nimport pytest\nfrom source import gcd\n\n\ndef test_gcd_reduces_correctly_without_infinite_recursion():\n    # The bug causes gcd(a%b, b) instead of gcd(b, a%b).\n    # When a%b < b, the next call computes (a%b) % b == a%b, producing the\n    # same pair forever. This hits Python's recursion limit.\n    # The fixed code must return 7 for gcd(35, 21).\n    old_limit = sys.getrecursionlimit()\n    sys.setrecursionlimit(200)\n    try:\n        result = gcd(35, 21)\n    except RecursionError:\n        pytest.fail(\n            \"gcd(35, 21) hit the recursion limit; \"\n            \"recursive call order is wrong — should be gcd(b, a % b), not gcd(a % b, b)\"\n        )\n    finally:\n        sys.setrecursionlimit(old_limit)\n\n    assert result == 7, (\n        f\"gcd(35, 21) returned {result!r} instead of 7; \"\n        \"check that the recursive call uses gcd(b, a % b)\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmperopiegx\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_reduces_correctly_without_infinite_recursion FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_gcd_reduces_correctly_without_infinite_recursion _____________\n\n    def test_gcd_reduces_correctly_without_infinite_recursion():\n        # The bug causes gcd(a%b, b) instead of gcd(b, a%b).\n        # When a%b < b, the next call computes (a%b) % b == a%b, producing the\n        # same pair forever. This hits Python's recursion limit.\n        # The fixed code must return 7 for gcd(35, 21).\n        old_limit = sys.getrecursionlimit()\n        sys.setrecursionlimit(200)\n        try:\n>           result = gcd(35, 21)\n\ntest_generated.py:14: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:5: in gcd\n    return gcd(a % b, b)\nsource.py:5: in gcd\n    return gcd(a % b, b)\nsource.py:5: in gcd\n    return gcd(a % b, b)\nE   RecursionError: maximum recursion depth exceeded in comparison\n!!! Recursion detected (same locals & position)\n\nDuring handling of the above exception, another exception occurred:\n\n    def test_gcd_reduces_correctly_without_infinite_recursion():\n        # The bug causes gcd(a%b, b) instead of gcd(b, a%b).\n        # When a%b < b, the next call computes (a%b) % b == a%b, producing the\n        # same pair forever. This hits Python's recursion limit.\n        # The fixed code must return 7 for gcd(35, 21).\n        old_limit = sys.getrecursionlimit()\n        sys.setrecursionlimit(200)\n        try:\n            result = gcd(35, 21)\n        except RecursionError:\n>           pytest.fail(\n                \"gcd(35, 21) hit the recursion limit; \"\n                \"recursive call order is wrong — should be gcd(b, a % b), not gcd(a % b, b)\"\n            )\nE           Failed: gcd(35, 21) hit the recursion limit; recursive call order is wrong — should be gcd(b, a % b), not gcd(a % b, b)\n\ntest_generated.py:16: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_reduces_correctly_without_infinite_recursion\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp6kosflvz\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_reduces_correctly_without_infinite_recursion PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:46:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17776,
+  "completion_tokens_total": 847,
+  "duration_seconds": 22.05,
+  "timestamp": "2026-05-16T22:46:09Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

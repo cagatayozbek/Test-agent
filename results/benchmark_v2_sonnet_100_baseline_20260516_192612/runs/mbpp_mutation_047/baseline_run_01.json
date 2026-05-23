@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_includes_smallest_pair():\n    # 220 and 284 are the smallest amicable pair:\n    #   sum of proper divisors of 220 = 284, and of 284 = 220, and 220 != 284.\n    # The buggy code has `num == sum_fact` instead of `num != sum_fact`,\n    # so it requires num to equal both sum_fact2 AND sum_fact simultaneously —\n    # impossible for a genuine amicable pair, producing 0 instead of 504.\n    result = amicable_numbers_sum(1000)\n    assert result == 504, (\n        f\"Expected 504 (220+284, the only amicable pair up to 1000), got {result}. \"\n        \"Likely caused by '==' instead of '!=' in the amicable-pair guard.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmp33_hqpf2\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_smallest_pair FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_amicable_numbers_sum_includes_smallest_pair _______________\n\n    def test_amicable_numbers_sum_includes_smallest_pair():\n        # 220 and 284 are the smallest amicable pair:\n        #   sum of proper divisors of 220 = 284, and of 284 = 220, and 220 != 284.\n        # The buggy code has `num == sum_fact` instead of `num != sum_fact`,\n        # so it requires num to equal both sum_fact2 AND sum_fact simultaneously —\n        # impossible for a genuine amicable pair, producing 0 instead of 504.\n        result = amicable_numbers_sum(1000)\n>       assert result == 504, (\n            f\"Expected 504 (220+284, the only amicable pair up to 1000), got {result}. \"\n            \"Likely caused by '==' instead of '!=' in the amicable-pair guard.\"\n        )\nE       AssertionError: Expected 504 (220+284, the only amicable pair up to 1000), got 530. Likely caused by '==' instead of '!=' in the amicable-pair guard.\nE       assert 530 == 504\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_includes_smallest_pair - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.08s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpytvsu0q_\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_smallest_pair PASSED [100%]\n\n============================== 1 passed in 0.04s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T22:25:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 17862,
+  "completion_tokens_total": 1197,
+  "duration_seconds": 23.17,
+  "timestamp": "2026-05-16T22:25:24Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

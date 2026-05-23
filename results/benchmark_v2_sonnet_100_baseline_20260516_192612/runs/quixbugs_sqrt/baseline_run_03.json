@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import threading\nimport pytest\nfrom source import sqrt\n\n\ndef test_sqrt_converges_to_actual_square_root():\n    \"\"\"Buggy check abs(x - approx) measures distance from x itself; once approx\n    converges to sqrt(x) the residual stabilises at abs(x - sqrt(x)) ≈ 0.586\n    for x=2, so the loop never terminates.  The fixed check abs(x - approx**2)\n    reaches zero as approx → sqrt(x) and exits correctly.\"\"\"\n    result = [None]\n\n    def run():\n        result[0] = sqrt(2, 0.01)\n\n    t = threading.Thread(target=run, daemon=True)\n    t.start()\n    t.join(timeout=3)\n\n    assert not t.is_alive(), (\n        \"sqrt(2, 0.01) did not terminate within 3 s — \"\n        \"wrong convergence check abs(x - approx) causes an infinite loop \"\n        \"because approx converges to sqrt(x), not to x\"\n    )\n\n    assert abs(result[0] - 1.41421356) < 0.01, (\n        f\"Expected sqrt(2, 0.01) ≈ 1.414 (within epsilon=0.01), got {result[0]}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpo3sl01yf\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_converges_to_actual_square_root PASSED      [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-16T23:18:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 40998,
+  "completion_tokens_total": 5807,
+  "duration_seconds": 116.76,
+  "timestamp": "2026-05-16T23:18:52Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

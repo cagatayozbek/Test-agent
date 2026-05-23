@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import os\nimport tempfile\nimport pytest\nfrom source import Tracer\n\n\ndef test_dump_source_preserves_utf8_without_coding_header():\n    # UTF-8 bytes containing non-ASCII characters but no coding declaration.\n    # Buggy code: detect_encoding returns \"ascii\" (its hardcoded default),\n    # then decode(\"ascii\", \"replace\") silently replaces every multi-byte UTF-8\n    # sequence with U+FFFD, so the non-ASCII characters are lost.\n    # Fixed code: detect_encoding defaults to \"utf-8\", round-trip is lossless.\n    source_text = \"result = '\\u2192 caf\\u00e9'\\n\"  # \"→ café\"\n    utf8_bytes = source_text.encode(\"utf-8\")         # no '# coding:' header\n\n    with tempfile.NamedTemporaryFile(\n        mode=\"w\", suffix=\".txt\", delete=False, encoding=\"utf-8\"\n    ) as f:\n        tmp_path = f.name\n\n    try:\n        tracer = Tracer(path=tmp_path, overwrite=True)\n        rendered = tracer.dump_source([utf8_bytes])\n\n        assert rendered == source_text, (\n            f\"Non-ASCII UTF-8 characters were corrupted during dump_source.\\n\"\n            f\"  expected: {source_text!r}\\n\"\n            f\"  got:      {rendered!r}\\n\"\n            \"detect_encoding must default to 'utf-8', not 'ascii'.\"\n        )\n    finally:\n        os.unlink(tmp_path)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpg5113jyy\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_coding_header FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_dump_source_preserves_utf8_without_coding_header _____________\n\n    def test_dump_source_preserves_utf8_without_coding_header():\n        # UTF-8 bytes containing non-ASCII characters but no coding declaration.\n        # Buggy code: detect_encoding returns \"ascii\" (its hardcoded default),\n        # then decode(\"ascii\", \"replace\") silently replaces every multi-byte UTF-8\n        # sequence with U+FFFD, so the non-ASCII characters are lost.\n        # Fixed code: detect_encoding defaults to \"utf-8\", round-trip is lossless.\n        source_text = \"result = '\\u2192 caf\\u00e9'\\n\"  # \"→ café\"\n        utf8_bytes = source_text.encode(\"utf-8\")         # no '# coding:' header\n    \n        with tempfile.NamedTemporaryFile(\n            mode=\"w\", suffix=\".txt\", delete=False, encoding=\"utf-8\"\n        ) as f:\n            tmp_path = f.name\n    \n        try:\n            tracer = Tracer(path=tmp_path, overwrite=True)\n            rendered = tracer.dump_source([utf8_bytes])\n    \n>           assert rendered == source_text, (\n                f\"Non-ASCII UTF-8 characters were corrupted during dump_source.\\n\"\n                f\"  expected: {source_text!r}\\n\"\n                f\"  got:      {rendered!r}\\n\"\n                \"detect_encoding must default to 'utf-8', not 'ascii'.\"\n            )\nE           AssertionError: Non-ASCII UTF-8 characters were corrupted during dump_source.\nE               expected: \"result = '→ café'\\n\"\nE               got:      \"result = '��� caf��'\\n\"\nE             detect_encoding must default to 'utf-8', not 'ascii'.\nE           assert \"result = '��� caf��'\\n\" == \"result = '→ café'\\n\"\nE             \nE             - result = '→ café'\nE             ?           ^    ^\nE             + result = '��� caf��'\nE             ?           ^^^    ^^\n\ntest_generated.py:25: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_dump_source_preserves_utf8_without_coding_header\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Applications/Xcode.app/Contents/Developer/usr/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/6p/b5ylw3ms4vj2c_fpdlvxjrmh0000gn/T/tmpi_psiimy\nplugins: anyio-4.12.1, langsmith-0.4.37\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_coding_header PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================\n\n/Users/ozdemir/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020\n  warnings.warn(",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-17T07:23:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 38187,
+  "completion_tokens_total": 2440,
+  "duration_seconds": 37.3,
+  "timestamp": "2026-05-17T07:23:45Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
