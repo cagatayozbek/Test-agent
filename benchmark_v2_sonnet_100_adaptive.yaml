@@ -1,9 +1,9 @@
 experiment:
-  name: benchmark_v2_sonnet_100
+  name: benchmark_v2_sonnet_100_adaptive
   runs_per_task: 3
   concurrency: 1
   modes:
-  - deep
+  - adaptive
 model:
   api_key_env: CLAUDE_CODE_KEY
   max_output_tokens: 4096
