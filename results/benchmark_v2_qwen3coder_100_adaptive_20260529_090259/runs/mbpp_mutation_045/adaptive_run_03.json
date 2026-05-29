@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_empty_segment():\n    # The bug is in the boolean expression: (x.capitalize() and '_')\n    # When x is empty string, x.capitalize() returns '' (falsy), so the and returns ''\n    # But when x is non-empty, x.capitalize() returns capitalized string (truthy), so and returns '_'\n    # Fixed version should use x.capitalize() directly without the '_'\n    # Test with input that has an empty segment (e.g., leading/trailing underscore or consecutive underscores)\n    # Using '_hello' to expose the bug: split('_') gives ['', 'hello']\n    # Buggy: ''.join((''.capitalize() and '_') for first '' -> '' and 'Hello'.capitalize() and '_' -> '_')\n    # So result is '' + '_' = '_' (but should be 'Hello')\n    # Actually, let's use a simpler case: single underscore between words\n    # But the real issue is with empty strings in split result\n    # Input: '_hello' -> split gives ['', 'hello']\n    # Buggy: '' -> ''.capitalize() = '' -> '' and '_' = '' (falsy)\n    #        'hello' -> 'Hello' -> 'Hello' and '_' = '_' (truthy, so returns '_')\n    # Result: '' + '_' = '_'\n    # Fixed: should be 'Hello'\n    assert snake_to_camel('_hello') == 'Hello'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1_p8dfdg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_empty_segment FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_snake_to_camel_empty_segment _______________________\n\n    def test_snake_to_camel_empty_segment():\n        # The bug is in the boolean expression: (x.capitalize() and '_')\n        # When x is empty string, x.capitalize() returns '' (falsy), so the and returns ''\n        # But when x is non-empty, x.capitalize() returns capitalized string (truthy), so and returns '_'\n        # Fixed version should use x.capitalize() directly without the '_'\n        # Test with input that has an empty segment (e.g., leading/trailing underscore or consecutive underscores)\n        # Using '_hello' to expose the bug: split('_') gives ['', 'hello']\n        # Buggy: ''.join((''.capitalize() and '_') for first '' -> '' and 'Hello'.capitalize() and '_' -> '_')\n        # So result is '' + '_' = '_' (but should be 'Hello')\n        # Actually, let's use a simpler case: single underscore between words\n        # But the real issue is with empty strings in split result\n        # Input: '_hello' -> split gives ['', 'hello']\n        # Buggy: '' -> ''.capitalize() = '' -> '' and '_' = '' (falsy)\n        #        'hello' -> 'Hello' -> 'Hello' and '_' = '_' (truthy, so returns '_')\n        # Result: '' + '_' = '_'\n        # Fixed: should be 'Hello'\n>       assert snake_to_camel('_hello') == 'Hello'\nE       AssertionError: assert '_' == 'Hello'\nE         \nE         - Hello\nE         + _\n\ntest_generated.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_empty_segment - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpedbc35mq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_empty_segment FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_snake_to_camel_empty_segment _______________________\n\n    def test_snake_to_camel_empty_segment():\n        # The bug is in the boolean expression: (x.capitalize() and '_')\n        # When x is empty string, x.capitalize() returns '' (falsy), so the and returns ''\n        # But when x is non-empty, x.capitalize() returns capitalized string (truthy), so and returns '_'\n        # Fixed version should use x.capitalize() directly without the '_'\n        # Test with input that has an empty segment (e.g., leading/trailing underscore or consecutive underscores)\n        # Using '_hello' to expose the bug: split('_') gives ['', 'hello']\n        # Buggy: ''.join((''.capitalize() and '_') for first '' -> '' and 'Hello'.capitalize() and '_' -> '_')\n        # So result is '' + '_' = '_' (but should be 'Hello')\n        # Actually, let's use a simpler case: single underscore between words\n        # But the real issue is with empty strings in split result\n        # Input: '_hello' -> split gives ['', 'hello']\n        # Buggy: '' -> ''.capitalize() = '' -> '' and '_' = '' (falsy)\n        #        'hello' -> 'Hello' -> 'Hello' and '_' = '_' (truthy, so returns '_')\n        # Result: '' + '_' = '_'\n        # Fixed: should be 'Hello'\n>       assert snake_to_camel('_hello') == 'Hello'\nE       AssertionError: assert '_Hello' == 'Hello'\nE         \nE         - Hello\nE         + _Hello\nE         ? +\n\ntest_generated.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_empty_segment - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:06Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_snake_to_camel_basic():\n    # Test the core functionality: convert snake_case to camelCase\n    # The bug uses 'and' instead of 'or', causing each segment to yield '_'\n    # instead of the capitalized word. For 'hello_world', we get 2 segments,\n    # so buggy code yields '__' (2 underscores), but expected is 'HelloWorld'.\n    assert snake_to_camel('hello_world') == 'HelloWorld'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps8kmaxxf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_basic ___________________________\n\n    def test_snake_to_camel_basic():\n        # Test the core functionality: convert snake_case to camelCase\n        # The bug uses 'and' instead of 'or', causing each segment to yield '_'\n        # instead of the capitalized word. For 'hello_world', we get 2 segments,\n        # so buggy code yields '__' (2 underscores), but expected is 'HelloWorld'.\n>       assert snake_to_camel('hello_world') == 'HelloWorld'\n               ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic - NameError: name 'snake_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5sbdjkqa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_basic ___________________________\n\n    def test_snake_to_camel_basic():\n        # Test the core functionality: convert snake_case to camelCase\n        # The bug uses 'and' instead of 'or', causing each segment to yield '_'\n        # instead of the capitalized word. For 'hello_world', we get 2 segments,\n        # so buggy code yields '__' (2 underscores), but expected is 'HelloWorld'.\n>       assert snake_to_camel('hello_world') == 'HelloWorld'\n               ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic - NameError: name 'snake_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_snake_to_camel_basic():\n    from source import snake_to_camel\n    assert snake_to_camel('hello_world') == 'HelloWorld'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplwkb0v3v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_basic ___________________________\n\n    def test_snake_to_camel_basic():\n        from source import snake_to_camel\n>       assert snake_to_camel('hello_world') == 'HelloWorld'\nE       AssertionError: assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:3: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic - AssertionError: assert ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1ojpze0b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic PASSED                      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The function incorrectly uses `and` instead of `or` in a boolean expression within a generator expression. Since `'_'` is truthy, `x.capitalize() and '_'` always evaluates to `'_'` regardless of `x`, causing the function to return a string of underscores instead of the properly camel-cased result.",
+    "bug_location": "snake_to_camel, line 4",
+    "trigger_condition": "Any non-empty snake_case string with at least one underscore (e.g., 'hello_world')",
+    "expected_vs_actual": "Expected: 'HelloWorld' (camel case); Actual: '___' (or same number of underscores as underscores in input + 1)",
+    "suggested_test_strategy": "Assert snake_to_camel('hello_world') == 'HelloWorld' — this will fail on the buggy version because the generator yields '_' for each segment, producing '___' for 'hello_world' (3 segments → 3 underscores).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2941,
+  "completion_tokens_total": 671,
+  "duration_seconds": 18.43,
+  "timestamp": "2026-05-29T09:08:17Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

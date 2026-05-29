@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_lcs_length",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import lcs_length\n\ndef test_lcs_length_diagonal_update():\n    \"\"\"Bug: DP update reads dp[i-1, j] but should read dp[i-1, j-1] for proper diagonal chaining.\"\"\"\n    assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"Longest common subsequence should chain diagonally, not down the same column\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp3_r_o_em\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_diagonal_update FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_lcs_length_diagonal_update ________________________\n\n    def test_lcs_length_diagonal_update():\n        \"\"\"Bug: DP update reads dp[i-1, j] but should read dp[i-1, j-1] for proper diagonal chaining.\"\"\"\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"Longest common subsequence should chain diagonally, not down the same column\"\nE       AssertionError: Longest common subsequence should chain diagonally, not down the same column\nE       assert 1 == 4\nE        +  where 1 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_diagonal_update - AssertionError: L...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpi43cntol\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_diagonal_update FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_lcs_length_diagonal_update ________________________\n\n    def test_lcs_length_diagonal_update():\n        \"\"\"Bug: DP update reads dp[i-1, j] but should read dp[i-1, j-1] for proper diagonal chaining.\"\"\"\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"Longest common subsequence should chain diagonally, not down the same column\"\nE       AssertionError: Longest common subsequence should chain diagonally, not down the same column\nE       assert 2 == 4\nE        +  where 2 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_diagonal_update - AssertionError: L...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-26T01:01:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import lcs_length\n\ndef test_lcs_length_diagonal_update():\n    result = lcs_length('AAB', 'BA')\n    assert result == 1, \"LCS of 'AAB' and 'BA' should be 1 using diagonal chaining in DP table\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp30skthbe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_diagonal_update FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_lcs_length_diagonal_update ________________________\n\n    def test_lcs_length_diagonal_update():\n        result = lcs_length('AAB', 'BA')\n>       assert result == 1, \"LCS of 'AAB' and 'BA' should be 1 using diagonal chaining in DP table\"\nE       AssertionError: LCS of 'AAB' and 'BA' should be 1 using diagonal chaining in DP table\nE       assert 2 == 1\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_diagonal_update - AssertionError: L...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmps4swydem\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_diagonal_update PASSED                [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-26T01:03:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The code references dp[i-1, j] (same column, previous row) instead of dp[i-1, j-1] (diagonal), causing character matches to chain vertically within the same column rather than diagonally. This breaks the subsequence matching logic: when s[i] == t[j], we should extend the length from the previous matching position (diagonal), not from an unrelated match in the same column of t.",
+    "bug_location": "lcs_length function, line 8: `dp[i, j] = dp[i - 1, j] + 1`",
+    "trigger_condition": "Any input where characters match in a pattern that reveals the flaw in column-chaining. Example: s='ABCBDAB', t='BDCAB' where the correct LCS is 'BDAB' (length 4). The buggy column-based chaining produces an incorrect, lower value.",
+    "expected_vs_actual": "Expected: lcs_length('ABCBDAB', 'BDCAB') == 4 (the longest common subsequence). Actual with buggy code: Returns a much smaller value (≤2) because vertical chaining within a column does not correctly track diagonal subsequence extensions.",
+    "suggested_test_strategy": "Assert lcs_length('ABCBDAB', 'BDCAB') == 4. Also test the provided docstring examples: lcs_length('witch', 'sandwich') == 2 and lcs_length('meow', 'homeowner') == 4. The first test case reliably exposes the bug because it requires proper diagonal chaining to reach length 4; the buggy column-based approach cannot achieve this.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 94529,
+  "completion_tokens_total": 37306,
+  "duration_seconds": 220.43,
+  "timestamp": "2026-05-26T01:03:48Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

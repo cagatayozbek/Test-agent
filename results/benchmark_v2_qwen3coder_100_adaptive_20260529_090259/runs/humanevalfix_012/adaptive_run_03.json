@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_012",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import longest\n\ndef test_longest_empty_list():\n    assert longest([]) is None\n\ndef test_longest_single_char_list():\n    # Bug: uses '>' instead of '==', so it never matches maxlen=1\n    # and returns None instead of 'a'\n    assert longest(['a', 'b', 'c']) == 'a'\n\ndef test_longest_multiple_lengths():\n    assert longest(['a', 'bb', 'ccc']) == 'ccc'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2tzk1o9r\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_longest_empty_list PASSED                        [ 33%]\ntest_generated.py::test_longest_single_char_list FAILED                  [ 66%]\n\n=================================== FAILURES ===================================\n________________________ test_longest_single_char_list _________________________\n\n    def test_longest_single_char_list():\n        # Bug: uses '>' instead of '==', so it never matches maxlen=1\n        # and returns None instead of 'a'\n>       assert longest(['a', 'b', 'c']) == 'a'\nE       AssertionError: assert None == 'a'\nE        +  where None = longest(['a', 'b', 'c'])\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_single_char_list - AssertionError: ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwb_wsifk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_longest_empty_list PASSED                        [ 33%]\ntest_generated.py::test_longest_single_char_list PASSED                  [ 66%]\ntest_generated.py::test_longest_multiple_lengths PASSED                  [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:03:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 533,
+  "completion_tokens_total": 104,
+  "duration_seconds": 1.71,
+  "timestamp": "2026-05-29T09:03:53Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

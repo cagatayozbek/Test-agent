@@ -1,0 +1,68 @@
+{
+  "task_id": "bugsinpy_thefuck_fish_version_3",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import fish_info\n\n\ndef test_fish_info_returns_numeric_version():\n    \"\"\"fish_info should return only the numeric version token.\"\"\"\n    expected_version = \"3.1.2\"\n    actual_version = fish_info()\n    assert actual_version == expected_version, (\n        f\"Expected numeric version '{expected_version}', got '{actual_version}'\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpj5j_sy5t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_numeric_version FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_numeric_version ____________________\n\n    def test_fish_info_returns_numeric_version():\n        \"\"\"fish_info should return only the numeric version token.\"\"\"\n        expected_version = \"3.1.2\"\n        actual_version = fish_info()\n>       assert actual_version == expected_version, (\n            f\"Expected numeric version '{expected_version}', got '{actual_version}'\"\n        )\nE       AssertionError: Expected numeric version '3.1.2', got 'Fish Shell fish, version 3.1.2'\nE       assert 'Fish Shell f...version 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_numeric_version - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp3or3dg5e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_numeric_version FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_numeric_version ____________________\n\n    def test_fish_info_returns_numeric_version():\n        \"\"\"fish_info should return only the numeric version token.\"\"\"\n        expected_version = \"3.1.2\"\n        actual_version = fish_info()\n>       assert actual_version == expected_version, (\n            f\"Expected numeric version '{expected_version}', got '{actual_version}'\"\n        )\nE       AssertionError: Expected numeric version '3.1.2', got 'Fish Shell 3.1.2'\nE       assert 'Fish Shell 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell 3.1.2\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_numeric_version - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:01:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import re\nfrom source import fish_info\n\ndef test_fish_info_parses_only_numeric_version():\n    # Simulate the command that returns the full fish version string\n    def fake_runner(_cmd):\n        return \"fish, version 3.1.2\\n\"\n\n    result = fish_info(fake_runner)\n    assert result == \"3.1.2\", f\"Expected only the numeric version, got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp32o8iv_o\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_parses_only_numeric_version FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_fish_info_parses_only_numeric_version __________________\n\n    def test_fish_info_parses_only_numeric_version():\n        # Simulate the command that returns the full fish version string\n        def fake_runner(_cmd):\n            return \"fish, version 3.1.2\\n\"\n    \n        result = fish_info(fake_runner)\n>       assert result == \"3.1.2\", f\"Expected only the numeric version, got '{result}'\"\nE       AssertionError: Expected only the numeric version, got 'Fish Shell fish, version 3.1.2'\nE       assert 'Fish Shell f...version 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_parses_only_numeric_version - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpel6oodcn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_parses_only_numeric_version FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_fish_info_parses_only_numeric_version __________________\n\n    def test_fish_info_parses_only_numeric_version():\n        # Simulate the command that returns the full fish version string\n        def fake_runner(_cmd):\n            return \"fish, version 3.1.2\\n\"\n    \n        result = fish_info(fake_runner)\n>       assert result == \"3.1.2\", f\"Expected only the numeric version, got '{result}'\"\nE       AssertionError: Expected only the numeric version, got 'Fish Shell 3.1.2'\nE       assert 'Fish Shell 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell 3.1.2\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_parses_only_numeric_version - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:01:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import re\nfrom source import fish_info\n\ndef test_fish_info_parses_only_numeric_version():\n    version = fish_info()\n    assert re.fullmatch(r\"\\d+\\.\\d+\\.\\d+\", version), (\n        f\"fish_info should return only a numeric version string, got: {version!r}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpbqxi4wr2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_parses_only_numeric_version FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_fish_info_parses_only_numeric_version __________________\n\n    def test_fish_info_parses_only_numeric_version():\n        version = fish_info()\n>       assert re.fullmatch(r\"\\d+\\.\\d+\\.\\d+\", version), (\n            f\"fish_info should return only a numeric version string, got: {version!r}\"\n        )\nE       AssertionError: fish_info should return only a numeric version string, got: 'Fish Shell fish, version 3.1.2'\nE       assert None\nE        +  where None = <function fullmatch at 0x1055fc360>('\\\\d+\\\\.\\\\d+\\\\.\\\\d+', 'Fish Shell fish, version 3.1.2')\nE        +    where <function fullmatch at 0x1055fc360> = re.fullmatch\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_parses_only_numeric_version - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpsiynpryl\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_parses_only_numeric_version FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_fish_info_parses_only_numeric_version __________________\n\n    def test_fish_info_parses_only_numeric_version():\n        version = fish_info()\n>       assert re.fullmatch(r\"\\d+\\.\\d+\\.\\d+\", version), (\n            f\"fish_info should return only a numeric version string, got: {version!r}\"\n        )\nE       AssertionError: fish_info should return only a numeric version string, got: 'Fish Shell 3.1.2'\nE       assert None\nE        +  where None = <function fullmatch at 0x10112c360>('\\\\d+\\\\.\\\\d+\\\\.\\\\d+', 'Fish Shell 3.1.2')\nE        +    where <function fullmatch at 0x10112c360> = re.fullmatch\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_parses_only_numeric_version - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:01:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2729,
+  "completion_tokens_total": 2895,
+  "duration_seconds": 28.42,
+  "timestamp": "2026-05-25T21:01:38Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

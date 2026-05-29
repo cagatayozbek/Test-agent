@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_033",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_shell_sort_with_equal_elements():\n    # Test with list containing equal elements to expose the >= vs > bug\n    # The buggy version uses '>' in the while condition, which causes\n    # equal elements to not be swapped, potentially leaving the array unsorted\n    # when equal elements are out of order in the initial array\n    input_list = [3, 1, 3, 2]\n    expected = [1, 2, 3, 3]\n    \n    result = shell_sort(input_list.copy())\n    \n    assert result == expected, f\"Shell sort failed on list with equal elements. Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5xb69qpk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_with_equal_elements FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_shell_sort_with_equal_elements ______________________\n\n    def test_shell_sort_with_equal_elements():\n        # Test with list containing equal elements to expose the >= vs > bug\n        # The buggy version uses '>' in the while condition, which causes\n        # equal elements to not be swapped, potentially leaving the array unsorted\n        # when equal elements are out of order in the initial array\n        input_list = [3, 1, 3, 2]\n        expected = [1, 2, 3, 3]\n    \n>       result = shell_sort(input_list.copy())\n                 ^^^^^^^^^^\nE       NameError: name 'shell_sort' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_shell_sort_with_equal_elements - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnzkyaf8c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_with_equal_elements FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_shell_sort_with_equal_elements ______________________\n\n    def test_shell_sort_with_equal_elements():\n        # Test with list containing equal elements to expose the >= vs > bug\n        # The buggy version uses '>' in the while condition, which causes\n        # equal elements to not be swapped, potentially leaving the array unsorted\n        # when equal elements are out of order in the initial array\n        input_list = [3, 1, 3, 2]\n        expected = [1, 2, 3, 3]\n    \n>       result = shell_sort(input_list.copy())\n                 ^^^^^^^^^^\nE       NameError: name 'shell_sort' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_shell_sort_with_equal_elements - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import shell_sort\n\ndef test_shell_sort_stability_with_duplicates():\n    # Use input where the '>' vs '>=' distinction affects ordering of equal elements\n    input_list = [2, 2, 1]\n    expected = [1, 2, 2]\n    \n    result = shell_sort(input_list.copy())\n    \n    # Assert the result matches expected canonical sorted order\n    assert result == expected, f\"Expected {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8z3ng53w\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_stability_with_duplicates FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_shell_sort_stability_with_duplicates ___________________\n\n    def test_shell_sort_stability_with_duplicates():\n        # Use input where the '>' vs '>=' distinction affects ordering of equal elements\n        input_list = [2, 2, 1]\n        expected = [1, 2, 2]\n    \n        result = shell_sort(input_list.copy())\n    \n        # Assert the result matches expected canonical sorted order\n>       assert result == expected, f\"Expected {expected}, but got {result}\"\nE       AssertionError: Expected [1, 2, 2], but got [2, 1, 2]\nE       assert [2, 1, 2] == [1, 2, 2]\nE         \nE         At index 0 diff: 2 != 1\nE         \nE         Full diff:\nE           [\nE         +     2,\nE               1,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_shell_sort_stability_with_duplicates - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8_mxozlv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_stability_with_duplicates PASSED      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:41Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The shell sort implementation uses '>' instead of '>=' in the comparison, causing unstable sorting and potentially incorrect ordering when equal elements are present, as equal elements may be unnecessarily shifted.",
+    "bug_location": "shell_sort, line 7",
+    "trigger_condition": "Input array containing duplicate elements, especially where equal elements appear in positions that cause the '>' vs '>=' distinction to affect the final ordering.",
+    "expected_vs_actual": "Expected: stable-ish shell sort preserving relative order of equal elements; Actual: unstable behavior due to '>' causing unnecessary swaps of equal elements, potentially changing their relative order.",
+    "suggested_test_strategy": "Create a test with an array containing duplicates where the comparison operator affects the sorting outcome, e.g., [3, 1, 2, 1] or [2, 2, 1], and assert the sorted result matches the expected canonical output.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1964,
+  "completion_tokens_total": 442,
+  "duration_seconds": 5.91,
+  "timestamp": "2026-05-29T09:07:41Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

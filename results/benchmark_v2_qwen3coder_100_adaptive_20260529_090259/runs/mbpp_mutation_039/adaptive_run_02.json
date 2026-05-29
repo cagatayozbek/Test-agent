@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_039",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_volume_cube_bug():\n    # The bug uses integer division (//) instead of multiplication (*)\n    # For l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3\n    # Correct computation should be 3 * 3 * 3 = 27\n    assert volume_cube(3) == 27, \"Volume of cube with side 3 should be 27\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4xwgorqe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_volume_cube_bug _____________________________\n\n    def test_volume_cube_bug():\n        # The bug uses integer division (//) instead of multiplication (*)\n        # For l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3\n        # Correct computation should be 3 * 3 * 3 = 27\n>       assert volume_cube(3) == 27, \"Volume of cube with side 3 should be 27\"\n               ^^^^^^^^^^^\nE       NameError: name 'volume_cube' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cube_bug - NameError: name 'volume_cube...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg5jzrb6t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_volume_cube_bug _____________________________\n\n    def test_volume_cube_bug():\n        # The bug uses integer division (//) instead of multiplication (*)\n        # For l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3\n        # Correct computation should be 3 * 3 * 3 = 27\n>       assert volume_cube(3) == 27, \"Volume of cube with side 3 should be 27\"\n               ^^^^^^^^^^^\nE       NameError: name 'volume_cube' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cube_bug - NameError: name 'volume_cube...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import volume_cube\n\ndef test_volume_cube_bug():\n    # Bug: uses // instead of *, so volume_cube(3) returns 3 instead of 27\n    # For l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3, but should be 3**3 = 27\n    assert volume_cube(3) == 27, \"Volume of cube with side 3 should be 27\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw7g3_6zq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_volume_cube_bug _____________________________\n\n    def test_volume_cube_bug():\n        # Bug: uses // instead of *, so volume_cube(3) returns 3 instead of 27\n        # For l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3, but should be 3**3 = 27\n>       assert volume_cube(3) == 27, \"Volume of cube with side 3 should be 27\"\nE       AssertionError: Volume of cube with side 3 should be 27\nE       assert 3 == 27\nE        +  where 3 = volume_cube(3)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cube_bug - AssertionError: Volume of cu...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpck7c96rw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_bug PASSED                           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:59Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug replaces multiplication (*) with floor division (//) in the volume calculation, causing incorrect volume results for inputs where l // l != 1 (e.g., when l=0 or when integer division truncates).",
+    "bug_location": "volume_cube, line 2",
+    "trigger_condition": "Any positive integer side length l > 1, where l // l * l evaluates to l (since l // l = 1, then 1 * l = l) instead of l³",
+    "expected_vs_actual": "Expected: volume_cube(3) should return 27 (3³). Actual: returns 3 (since 3 // 3 * 3 = 1 * 3 = 3).",
+    "suggested_test_strategy": "Write a test with l=3 (or any l>1) and assert that volume_cube(l) == l**3. For example: assert volume_cube(3) == 27.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1746,
+  "completion_tokens_total": 426,
+  "duration_seconds": 5.94,
+  "timestamp": "2026-05-29T09:07:59Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

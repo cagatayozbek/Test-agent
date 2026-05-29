@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_includes_amicable_pair():\n    # 220 and 284 are the smallest amicable pair\n    # sum_fact2 == num and num != sum_fact triggers amicable detection\n    # Buggy code (with != mutated to ==) requires num == sum_fact AND num == sum_fact2\n    # This rejects amicable pairs, only accepting perfect numbers (6, 28)\n    # Expected with buggy code: 6 + 28 = 34\n    # Expected with fixed code: 6 + 28 + 220 + 284 = 538\n    result = amicable_numbers_sum(300)\n    assert result == 538, f\"Expected 538 (includes amicable pair 220, 284), got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp3oq8014p\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_amicable_pair FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_amicable_numbers_sum_includes_amicable_pair _______________\n\n    def test_amicable_numbers_sum_includes_amicable_pair():\n        # 220 and 284 are the smallest amicable pair\n        # sum_fact2 == num and num != sum_fact triggers amicable detection\n        # Buggy code (with != mutated to ==) requires num == sum_fact AND num == sum_fact2\n        # This rejects amicable pairs, only accepting perfect numbers (6, 28)\n        # Expected with buggy code: 6 + 28 = 34\n        # Expected with fixed code: 6 + 28 + 220 + 284 = 538\n        result = amicable_numbers_sum(300)\n>       assert result == 538, f\"Expected 538 (includes amicable pair 220, 284), got {result}\"\nE       AssertionError: Expected 538 (includes amicable pair 220, 284), got 34\nE       assert 34 == 538\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_includes_amicable_pair - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmphrkwx7yh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_amicable_pair FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_amicable_numbers_sum_includes_amicable_pair _______________\n\n    def test_amicable_numbers_sum_includes_amicable_pair():\n        # 220 and 284 are the smallest amicable pair\n        # sum_fact2 == num and num != sum_fact triggers amicable detection\n        # Buggy code (with != mutated to ==) requires num == sum_fact AND num == sum_fact2\n        # This rejects amicable pairs, only accepting perfect numbers (6, 28)\n        # Expected with buggy code: 6 + 28 = 34\n        # Expected with fixed code: 6 + 28 + 220 + 284 = 538\n        result = amicable_numbers_sum(300)\n>       assert result == 538, f\"Expected 538 (includes amicable pair 220, 284), got {result}\"\nE       AssertionError: Expected 538 (includes amicable pair 220, 284), got 504\nE       assert 504 == 538\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_includes_amicable_pair - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-26T00:35:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import amicable_numbers_sum\n\n\ndef test_amicable_numbers_sum_identifies_first_amicable_pair():\n    result = amicable_numbers_sum(300)\n    assert result == 504, f\"amicable_numbers_sum(300) should return 504 (220 + 284), got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp0t8x_xwb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_identifies_first_amicable_pair FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_amicable_numbers_sum_identifies_first_amicable_pair ___________\n\n    def test_amicable_numbers_sum_identifies_first_amicable_pair():\n        result = amicable_numbers_sum(300)\n>       assert result == 504, f\"amicable_numbers_sum(300) should return 504 (220 + 284), got {result}\"\nE       AssertionError: amicable_numbers_sum(300) should return 504 (220 + 284), got 34\nE       assert 34 == 504\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_identifies_first_amicable_pair\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmppnca3zxz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_identifies_first_amicable_pair PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-26T00:36:41Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The condition checking for amicable numbers uses `==` where it should use `!=`. The logic should verify that num is DIFFERENT from sum_fact (excluding perfect numbers), not equal to it. The mutation changed `!=` to `==` in the first comparison, breaking the amicable pair detection.",
+    "bug_location": "Line 11: if num == sum_fact2 and num == sum_fact:",
+    "trigger_condition": "Any input where limit >= 220. The first amicable pair (220, 284) requires testing. At num=220: sum_fact=284 (sum of divisors), sum_fact2=220 (sum of divisors of 284). The buggy condition `220 == 284 and 220 == 220` evaluates to False, rejecting the valid pair.",
+    "expected_vs_actual": "Expected: amicable_numbers_sum(300) should return 504 (sum of the amicable pair 220+284). Actual: returns 0 or a smaller value because the amicable numbers are never added to the set due to the condition always failing.",
+    "suggested_test_strategy": "Test with limit=300 and assert the result equals 504. This captures the first known amicable pair (220, 284). The canonical code correctly identifies this pair when `num != sum_fact` is true (220 != 284) AND `sum_fact2 == num` is true (220 == 220). The buggy code fails because it requires `num == sum_fact` (220 == 284), which is false.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 94550,
+  "completion_tokens_total": 10615,
+  "duration_seconds": 77.97,
+  "timestamp": "2026-05-26T00:36:41Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_057",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_monotonic_buggy_operator():\n    # Test the case where the list is monotonically increasing\n    assert monotonic([1, 2, 4, 20]) == True, \"monotonic([1, 2, 4, 20]) should return True\"\n    # Test the case where the list is not monotonic\n    assert monotonic([1, 20, 4, 10]) == False, \"monotonic([1, 20, 4, 10]) should return False\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbp_rpug5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_buggy_operator FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_monotonic_buggy_operator _________________________\n\n    def test_monotonic_buggy_operator():\n        # Test the case where the list is monotonically increasing\n>       assert monotonic([1, 2, 4, 20]) == True, \"monotonic([1, 2, 4, 20]) should return True\"\n               ^^^^^^^^^\nE       NameError: name 'monotonic' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_buggy_operator - NameError: name 'mo...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps_fv9u9y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_buggy_operator FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_monotonic_buggy_operator _________________________\n\n    def test_monotonic_buggy_operator():\n        # Test the case where the list is monotonically increasing\n>       assert monotonic([1, 2, 4, 20]) == True, \"monotonic([1, 2, 4, 20]) should return True\"\n               ^^^^^^^^^\nE       NameError: name 'monotonic' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_buggy_operator - NameError: name 'mo...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import monotonic\n\ndef test_monotonic_buggy_operator():\n    # Test case 1: monotonically increasing list should return True\n    assert monotonic([1, 2, 4, 20]) == True, \"monotonic([1, 2, 4, 20]) should return True\"\n    \n    # Test case 2: non-monotonic list should return False\n    assert monotonic([1, 20, 4, 10]) == False, \"monotonic([1, 20, 4, 10]) should return False\"\n    \n    # Test case 3: monotonically decreasing list should return True\n    assert monotonic([4, 1, 0, -10]) == True, \"monotonic([4, 1, 0, -10]) should return True\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6vm8u9x2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_buggy_operator FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_monotonic_buggy_operator _________________________\n\n    def test_monotonic_buggy_operator():\n        # Test case 1: monotonically increasing list should return True\n>       assert monotonic([1, 2, 4, 20]) == True, \"monotonic([1, 2, 4, 20]) should return True\"\nE       AssertionError: monotonic([1, 2, 4, 20]) should return True\nE       assert False == True\nE        +  where False = monotonic([1, 2, 4, 20])\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_buggy_operator - AssertionError: mon...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7meowt9b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_buggy_operator PASSED                  [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:50Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function returns the opposite of what it should due to swapped return values in the final conditional: it returns False when it should return True, and vice versa.",
+    "bug_location": "monotonic, line 12-13",
+    "trigger_condition": "Any list that is monotonically increasing or decreasing (e.g., [1, 2, 4, 20] or [4, 1, 0, -10])",
+    "expected_vs_actual": "Expected: return True for monotonically increasing/decreasing lists; Actual: returns False for such lists. Expected: return False for non-monotonic lists; Actual: returns True for such lists.",
+    "suggested_test_strategy": "Run the docstring examples as tests: assert monotonic([1, 2, 4, 20]) == True, assert monotonic([1, 20, 4, 10]) == False, assert monotonic([4, 1, 0, -10]) == True.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2061,
+  "completion_tokens_total": 557,
+  "duration_seconds": 10.24,
+  "timestamp": "2026-05-29T09:04:50Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

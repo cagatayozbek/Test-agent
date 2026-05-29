@@ -1189,3 +1189,168 @@ JSON-extraction defect, isolated to the Claude CLI subprocess client.
 - `results/benchmark_v2_sonnet_100_adaptive_20260517_072031/runs/<task_id>/adaptive_run_NN.json` (300 records, one per `(task_id, run_index)`)
 - Each carries `prompt_version="v2.0"`, `prompt_template_hash="c70e4b09987f"`, `tool_choice_mode="auto"` — same provenance fields as §11.6.
 - The trio `{baseline (§12), adaptive (§13), deep (§11.1)}` for Sonnet on the v2.0 100-task set is now complete and mode-orthogonal; any pairwise comparison is a controlled mode ablation.
+
+## 14. Completing the 100-task mode matrix — cross-model baseline vs adaptive vs deep (2026-05-25/29)
+
+§11–§13 established the deep-mode 100-task leaderboard and the full
+baseline/adaptive/deep trio for Sonnet. This section closes the matrix:
+we ran **baseline + adaptive** on the same 100-task v2.0 set for the four
+remaining models, finished the interrupted **gpt-oss-20b deep** run, and
+re-acquired **qwen3-coder** (dropped from Together) via OpenRouter. The
+result is a complete model × mode grid where every pairwise comparison is
+a controlled mode ablation on identical tasks.
+
+### 14.1 Configuration and provenance
+
+- Tasks: `evaluation/tasks_v2` (the same 100-task v2.0 set: 41 HumanEvalFix
+  + 30 QuixBugs + 20 MBPP-mutation + 5 BugsInPy + 4 legacy state-dependent).
+- 3 runs/task, max 3 attempts, `test_timeout_seconds=30`, `temperature=0.7`,
+  `max_output_tokens=4096` — identical across all cells.
+- Claude models (haiku, sonnet) run through the `claude -p` CLI subprocess;
+  the open-weight models run through the OpenAI-compatible client.
+- **Provider change for qwen3-coder:** `Qwen/Qwen3-Coder-Next-FP8` is no
+  longer served on Together. We re-acquired it on OpenRouter as
+  `qwen/qwen3-coder-next` (`base_url=https://openrouter.ai/api/v1`), the
+  direct equivalent of the "Next" variant, so the qwen row stays comparable
+  to the §11.1 deep number. The `qwen/qwen3-coder:free` slug is **unusable**:
+  OpenRouter routes it to a provider (Venice) whose backing model
+  `qwen3-coder-480b-a35b-instruct` is deprecated → HTTP 404.
+
+### 14.2 The completed 5 × 3 BRTR matrix
+
+300 runs per cell (100 tasks × 3). BRTR with Wilson 95% CI.
+
+| Model | baseline | adaptive | deep | source of deep |
+|---|---:|---:|---:|---|
+| sonnet | 0.943 † | 0.940 † | **1.000** | §11.1 |
+| haiku | 0.980 | 0.990 | 0.990 | §11.1 |
+| gpt-oss-120b | 0.977 | 0.980 | 0.897 | §11.1 |
+| qwen3-coder-next | 0.890 | 0.870 | 0.823 | §11.1 (Together, same Next variant) |
+| gpt-oss-20b | 0.940 | 0.950 | **0.213** | §14.4 (merged, this run) |
+
+† Sonnet baseline/adaptive are depressed by a measurement artifact, not
+capability — see §14.6. Corrected, both sit at ≈0.99.
+
+Detailed statistics for the cells newly added here:
+
+| Model | mode | BRTR | 95% CI | ok | avg attempts | avg dur | avg p-tok | avg c-tok |
+|---|---|---:|---|---:|---:|---:|---:|---:|
+| haiku | baseline | 0.980 | [.957–.991] | 294/300 | 1.04 | 26.5s | 33.8K | 3576 |
+| haiku | adaptive | 0.990 | [.971–.997] | 297/300 | 1.07 | 29.9s | 37.2K | 4112 |
+| gpt-oss-120b | baseline | 0.977 | [.953–.989] | 293/300 | 1.08 | 9.5s | 742 | 627 |
+| gpt-oss-120b | adaptive | 0.980 | [.957–.991] | 294/300 | 1.06 | 9.2s | 788 | 629 |
+| gpt-oss-20b | baseline | 0.940 | [.907–.962] | 282/300 | 1.11 | 8.1s | 835 | 1083 |
+| gpt-oss-20b | adaptive | 0.950 | [.919–.970] | 285/300 | 1.08 | 9.2s | 841 | 1111 |
+| gpt-oss-20b | deep | 0.213 | [.171–.263] | 64/300 | 2.08 | 148.3s | 11.7K | 13.7K |
+| qwen3-coder-next | baseline | 0.890 | [.850–.921] | 267/300 | 1.36 | 8.1s | 1071 | 460 |
+| qwen3-coder-next | adaptive | 0.870 | [.827–.903] | 261/300 | 1.34 | 8.2s | 1403 | 460 |
+
+### 14.3 Headline — the value of analysis is graded by model capability
+
+With the matrix complete, the central result of the whole study sharpens
+into a monotone relationship between model strength and the marginal value
+of a pre-generation analysis step:
+
+- **Strong (sonnet):** deep perfects it (1.000); adaptive is neutral.
+- **Mid-high (haiku, gpt-oss-120b):** all three modes within ±1.3 pp;
+  analysis neither helps nor hurts. Deep costs 5–10× the tokens/latency for
+  no BRTR gain (haiku deep ≈ baseline at ~5× prompt tokens).
+- **Mid (qwen3-coder):** analysis **consistently hurts** —
+  baseline 0.890 > adaptive 0.870 > deep 0.823, monotone in analysis dose
+  (§14.5).
+- **Weak (gpt-oss-20b):** baseline/adaptive ≈ 0.94–0.95, but deep
+  **collapses to 0.213** — the agentic loop actively destroys the model's
+  output (§14.4).
+
+The adaptive−baseline delta never exceeds ±2 pp on any model and its sign
+flips across the capability range (positive for the weakest, negative for
+qwen), with overlapping CIs everywhere — i.e. **adaptive is statistically
+indistinguishable from baseline.** The research question's answer is
+therefore: *adding analysis does not reliably improve bug-revealing test
+generation; its effect ranges from neutral (strong models) to catastrophic
+(weak models under deep mode), and model capability dominates.*
+
+### 14.4 gpt-oss-20b deep — the merged 100-task run
+
+The deep run was interrupted at 15/100 tasks (`..._deep_20260526_062558/`,
+with `humanevalfix_032` partial at 2/3) and resumed on the remaining 85
+(`..._deep_resume_20260528_212629/`, which re-ran `humanevalfix_032` from
+scratch). `scripts/merge_gptoss20b_deep_100.py` merges them — resume is
+authoritative, the initial dir fills only the 15 task dirs it lacks, so the
+partial `humanevalfix_032` is dropped — into
+`results/benchmark_v2_gptoss20b_100_deep_merged/` (100 tasks, 300 runs).
+
+- **BRTR 0.213** [.171–.263], 64/300. Distribution: 3/3 = **2**, 2/3 = 10,
+  1/3 = 38, 0/3 = **50**.
+- **All 236 failures are real** (`is_bug_revealing=false`) — zero timeouts,
+  zero provider errors. The collapse is genuine model behaviour, not an
+  infrastructure artifact.
+- Cost of the collapse: 2.08 avg attempts, 148.3s/run, 11.7K prompt + 13.7K
+  completion tokens — i.e. the model spends ~18× the latency and ~10× the
+  tokens of its own baseline to produce a *quarter* the bug-revealing rate.
+
+The agentic tool loop overwhelms a 20B model: it edits the test into
+non-revealing states across attempts rather than converging. This is the
+strongest single refutation of "analysis always helps" in the study.
+
+### 14.5 qwen3-coder — the first model where analysis is monotonically harmful
+
+qwen3-coder-next is the clearest mid-capability case. All failures are real
+(no API/timeout errors). BRTR falls monotonically with analysis dose:
+
+| mode | BRTR | tasks <3/3 | avg p-tok |
+|---|---:|---:|---:|
+| baseline | 0.890 | 17 | 1071 |
+| adaptive | 0.870 | 22 | 1403 |
+| deep | 0.823 | — | (28K, §11.1) |
+
+Adaptive spends 31% more prompt tokens than baseline yet loses 2 pp and
+fails *more* tasks (22 vs 17). The analyzer fires on retries but biases the
+TestWriter toward the (wrong) intended behaviour rather than the bug —
+the confirmation-bias mechanism first seen on `swallowed_exception` (§5.5),
+here visible at the aggregate level. Persistent 0/3 failures in both modes
+cluster on the same hard tasks: `quixbugs_next_palindrome`,
+`quixbugs_find_in_sorted`, `quixbugs_lcs_length`, `mbpp_mutation_007`.
+
+### 14.6 Measurement caveat — the Sonnet baseline/adaptive timeout artifact
+
+Sonnet's baseline (0.943) and adaptive (0.940) sit *below* haiku and the
+gpt-oss models, which inverts the capability ordering and contradicts
+Sonnet's perfect deep score (1.000). Classifying the failures by cause
+explains it:
+
+| run | total fails | **timeout (120s)** | real |
+|---|---:|---:|---:|
+| sonnet baseline | 17 | **14** | 3 |
+| sonnet adaptive | 18 | **13** | 5 |
+| haiku baseline | 6 | 0 | 6 |
+| haiku adaptive | 3 | 0 | 3 |
+
+~80% of Sonnet's "failures" are `TimeoutExpired: claude -p … timed out
+after 120 seconds` with `attempts=0, completion_tokens=0` — the CLI
+subprocess hit the orchestrator's 120s wall-clock cap before emitting a
+single token. Haiku never times out. Removing the timeouts from the
+denominator (infrastructure, not model error) gives sonnet baseline
+283/286 ≈ **0.990** and adaptive 282/287 ≈ **0.983** — restoring the
+expected sonnet ≥ haiku ordering and matching sonnet's deep 1.000. The
+timeouts concentrate on long-running QuixBugs tasks (`find_in_sorted`,
+`longest_common_subsequence`, `next_palindrome`, `thefuck_fix_file_28`),
+several of which time out on all 3 runs. **Fix for future runs:** raise the
+`claude -p` subprocess timeout (deep runs already take 303s for sonnet) or
+report timed-out runs as a separate "infrastructure" bucket excluded from
+BRTR.
+
+### 14.7 Raw data
+
+- `results/benchmark_v2_haiku_100_baseline_20260525_211834/`
+- `results/benchmark_v2_haiku_100_adaptive_20260525_233102/`
+- `results/benchmark_v2_gptoss120b_100_baseline_20260525_201648/`
+- `results/benchmark_v2_gptoss120b_100_adaptive_20260525_202846/`
+- `results/benchmark_v2_gptoss20b_100_baseline_20260525_205021/`
+- `results/benchmark_v2_gptoss20b_100_adaptive_20260525_210036/`
+- `results/benchmark_v2_gptoss20b_100_deep_merged/` (via `scripts/merge_gptoss20b_deep_100.py`)
+- `results/benchmark_v2_qwen3coder_100_baseline_20260529_085248/`
+- `results/benchmark_v2_qwen3coder_100_adaptive_20260529_090259/`
+- Configs: `benchmark_v2_{haiku,gptoss120b,gptoss20b}_100_{baseline,adaptive}.yaml`,
+  `benchmark_v2_gptoss20b_100_deep{,_resume}.yaml`,
+  `benchmark_v2_qwen3coder_100_{baseline,adaptive}.yaml` (OpenRouter).

@@ -1,0 +1,19 @@
+{
+  "task_id": "quixbugs_powerset",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": false,
+  "attempts": [],
+  "total_attempts": 0,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 0,
+  "completion_tokens_total": 0,
+  "duration_seconds": 0.0,
+  "timestamp": "2026-05-25T20:59:12Z",
+  "error": "BadRequestError: Error code: 400 - {'id': 'okYmoq4-4YNCb4-a017766698e76e07', 'error': {'message': 'Input validation error', 'type': 'invalid_request_error', 'param': None, 'code': None}}",
+  "prompt_version": "",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

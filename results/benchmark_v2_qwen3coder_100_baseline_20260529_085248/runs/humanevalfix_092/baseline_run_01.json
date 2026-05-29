@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_092",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_any_int_bug_reveal():\n    # The bug is that the condition (x+z==y) is missing from the check.\n    # Using (2, 5, 3) where 2+3=5, so x+z=y should return True, but buggy version returns False.\n    assert any_int(2, 5, 3) == True, \"2+3=5, so one number (5) equals sum of other two (2+3)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxldikhky\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_bug_reveal FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_any_int_bug_reveal ____________________________\n\n    def test_any_int_bug_reveal():\n        # The bug is that the condition (x+z==y) is missing from the check.\n        # Using (2, 5, 3) where 2+3=5, so x+z=y should return True, but buggy version returns False.\n>       assert any_int(2, 5, 3) == True, \"2+3=5, so one number (5) equals sum of other two (2+3)\"\n               ^^^^^^^\nE       NameError: name 'any_int' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_any_int_bug_reveal - NameError: name 'any_int'...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpab1ajf3b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_bug_reveal FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_any_int_bug_reveal ____________________________\n\n    def test_any_int_bug_reveal():\n        # The bug is that the condition (x+z==y) is missing from the check.\n        # Using (2, 5, 3) where 2+3=5, so x+z=y should return True, but buggy version returns False.\n>       assert any_int(2, 5, 3) == True, \"2+3=5, so one number (5) equals sum of other two (2+3)\"\n               ^^^^^^^\nE       NameError: name 'any_int' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_any_int_bug_reveal - NameError: name 'any_int'...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:54:54Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import any_int\n\ndef test_any_int_bug_reveal():\n    # The bug is that the condition (x+z==y) is missing\n    # Test case: 2 + 5 = 7, so any_int(2, 5, 7) should return True\n    # But the buggy code only checks (x+y==z) or (y+z==x), missing (x+z==y)\n    # For (2, 5, 7): \n    #   x+y=7 == z → True (so this would pass in the buggy version)\n    # But we need a case where x+z==y is the only true condition\n    # Try: x=2, y=5, z=3 → x+z=5 == y → True\n    # Buggy condition: (2+5==3) or (5+3==2) → False or False → False\n    # Fixed condition: (2+5==3) or (2+3==5) or (5+3==2) → False or True or False → True\n    \n    assert any_int(2, 5, 3) == True, \"2+3=5, so one number (5) equals sum of other two (2+3)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplj6i39a8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_bug_reveal FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_any_int_bug_reveal ____________________________\n\n    def test_any_int_bug_reveal():\n        # The bug is that the condition (x+z==y) is missing\n        # Test case: 2 + 5 = 7, so any_int(2, 5, 7) should return True\n        # But the buggy code only checks (x+y==z) or (y+z==x), missing (x+z==y)\n        # For (2, 5, 7):\n        #   x+y=7 == z → True (so this would pass in the buggy version)\n        # But we need a case where x+z==y is the only true condition\n        # Try: x=2, y=5, z=3 → x+z=5 == y → True\n        # Buggy condition: (2+5==3) or (5+3==2) → False or False → False\n        # Fixed condition: (2+5==3) or (2+3==5) or (5+3==2) → False or True or False → True\n    \n>       assert any_int(2, 5, 3) == True, \"2+3=5, so one number (5) equals sum of other two (2+3)\"\nE       AssertionError: 2+3=5, so one number (5) equals sum of other two (2+3)\nE       assert False == True\nE        +  where False = any_int(2, 5, 3)\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_any_int_bug_reveal - AssertionError: 2+3=5, so...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqn5kg4rt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_bug_reveal PASSED                        [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:54:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1487,
+  "completion_tokens_total": 381,
+  "duration_seconds": 5.28,
+  "timestamp": "2026-05-29T08:54:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

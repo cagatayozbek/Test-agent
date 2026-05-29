@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_lis",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpz5eliqt8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp3_75osmc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:09:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import lis\n\ndef test_lis_handles_subsequence_replacement():\n    arr = [1, 2, 3, 4, 0, 5]\n    expected_length = 5\n    result = lis(arr)\n    assert result == expected_length, (\n        f\"Expected LIS length {expected_length} for {arr}, \"\n        f\"but got {result}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpg3w2uh2x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_handles_subsequence_replacement FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_lis_handles_subsequence_replacement ___________________\n\n    def test_lis_handles_subsequence_replacement():\n        arr = [1, 2, 3, 4, 0, 5]\n        expected_length = 5\n        result = lis(arr)\n>       assert result == expected_length, (\n            f\"Expected LIS length {expected_length} for {arr}, \"\n            f\"but got {result}\"\n        )\nE       AssertionError: Expected LIS length 5 for [1, 2, 3, 4, 0, 5], but got 2\nE       assert 2 == 5\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lis_handles_subsequence_replacement - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpobfmxq_2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_handles_subsequence_replacement PASSED       [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:09:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is that the variable `longest` is overwritten with `length + 1` instead of being updated with the maximum of its current value and `length + 1`. This causes `longest` to be incorrectly decreased when a new element replaces a shorter subsequence that is not the current longest.",
+    "bug_location": "lis function, line 13 (longest = length + 1)",
+    "trigger_condition": "An input that first achieves a long increasing subsequence and later contains a smaller element that replaces a shorter subsequence, e.g. [1, 2, 3, 4, 0, 5] where the LIS length is 5 but the buggy code returns 2.",
+    "expected_vs_actual": "Expected output: 5 (the true LIS length). Actual output of buggy code: 2, because `longest` is set to 1 after processing 0 and then to 2 after 5, losing the previously found longer subsequence.",
+    "suggested_test_strategy": "Write a pytest test asserting the correct LIS length: `assert lis([1,2,3,4,0,5]) == 5`. The buggy implementation will fail this test, while the fixed version will pass.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2565,
+  "completion_tokens_total": 7731,
+  "duration_seconds": 49.43,
+  "timestamp": "2026-05-25T21:09:52Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

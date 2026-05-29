@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_002",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_square_Sum_bug():\n    # The bug is in the expression: n * (4 // n * n - 1) / 3\n    # For n=1: 1 * (4 // 1 * 1 - 1) / 3 = 1 * (4 - 1) / 3 = 3/3 = 1 (correct)\n    # For n=2: 2 * (4 // 2 * 2 - 1) / 3 = 2 * (2 * 2 - 1) / 3 = 2 * 3 / 3 = 2 (but should be 1^2 + 3^2 = 10)\n    # For n=3: 3 * (4 // 3 * 3 - 1) / 3 = 3 * (1 * 3 - 1) / 3 = 3 * 2 / 3 = 2 (but should be 1^2 + 3^2 + 5^2 = 35)\n    \n    # The canonical formula should be: n * (2*n - 1) * (2*n + 1) // 3\n    # For n=2: first 2 odd numbers are 1, 3 → 1^2 + 3^2 = 1 + 9 = 10\n    # For n=3: 1^2 + 3^2 + 5^2 = 1 + 9 + 25 = 35\n    \n    # Choose n=2 as it clearly shows the bug (4//2=2 instead of 4*2=8)\n    result = square_Sum(2)\n    expected = 10  # 1^2 + 3^2 = 10\n    assert result == expected, f\"For n=2, expected {expected} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbervitdw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_square_Sum_bug ______________________________\n\n    def test_square_Sum_bug():\n        # The bug is in the expression: n * (4 // n * n - 1) / 3\n        # For n=1: 1 * (4 // 1 * 1 - 1) / 3 = 1 * (4 - 1) / 3 = 3/3 = 1 (correct)\n        # For n=2: 2 * (4 // 2 * 2 - 1) / 3 = 2 * (2 * 2 - 1) / 3 = 2 * 3 / 3 = 2 (but should be 1^2 + 3^2 = 10)\n        # For n=3: 3 * (4 // 3 * 3 - 1) / 3 = 3 * (1 * 3 - 1) / 3 = 3 * 2 / 3 = 2 (but should be 1^2 + 3^2 + 5^2 = 35)\n    \n        # The canonical formula should be: n * (2*n - 1) * (2*n + 1) // 3\n        # For n=2: first 2 odd numbers are 1, 3 → 1^2 + 3^2 = 1 + 9 = 10\n        # For n=3: 1^2 + 3^2 + 5^2 = 1 + 9 + 25 = 35\n    \n        # Choose n=2 as it clearly shows the bug (4//2=2 instead of 4*2=8)\n>       result = square_Sum(2)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:12: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_Sum_bug - NameError: name 'square_Sum' ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa9lu3fv6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_square_Sum_bug ______________________________\n\n    def test_square_Sum_bug():\n        # The bug is in the expression: n * (4 // n * n - 1) / 3\n        # For n=1: 1 * (4 // 1 * 1 - 1) / 3 = 1 * (4 - 1) / 3 = 3/3 = 1 (correct)\n        # For n=2: 2 * (4 // 2 * 2 - 1) / 3 = 2 * (2 * 2 - 1) / 3 = 2 * 3 / 3 = 2 (but should be 1^2 + 3^2 = 10)\n        # For n=3: 3 * (4 // 3 * 3 - 1) / 3 = 3 * (1 * 3 - 1) / 3 = 3 * 2 / 3 = 2 (but should be 1^2 + 3^2 + 5^2 = 35)\n    \n        # The canonical formula should be: n * (2*n - 1) * (2*n + 1) // 3\n        # For n=2: first 2 odd numbers are 1, 3 → 1^2 + 3^2 = 1 + 9 = 10\n        # For n=3: 1^2 + 3^2 + 5^2 = 1 + 9 + 25 = 35\n    \n        # Choose n=2 as it clearly shows the bug (4//2=2 instead of 4*2=8)\n>       result = square_Sum(2)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:12: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_Sum_bug - NameError: name 'square_Sum' ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:06:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import square_Sum\n\ndef test_square_Sum_bug():\n    # Bug: uses integer division (//) instead of multiplication (*) \n    # Expected: sum of squares of first 3 odd numbers = 1² + 3² + 5² = 1 + 9 + 25 = 35\n    # Buggy implementation returns 26 for n=3 due to 4//n instead of 4*n\n    assert square_Sum(3) == 35, \"Expected sum of squares of first 3 odd numbers (35), got the buggy result (26)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpk9jrb7_b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_square_Sum_bug ______________________________\n\n    def test_square_Sum_bug():\n        # Bug: uses integer division (//) instead of multiplication (*)\n        # Expected: sum of squares of first 3 odd numbers = 1² + 3² + 5² = 1 + 9 + 25 = 35\n        # Buggy implementation returns 26 for n=3 due to 4//n instead of 4*n\n>       assert square_Sum(3) == 35, \"Expected sum of squares of first 3 odd numbers (35), got the buggy result (26)\"\nE       AssertionError: Expected sum of squares of first 3 odd numbers (35), got the buggy result (26)\nE       assert 2 == 35\nE        +  where 2 = square_Sum(3)\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_Sum_bug - AssertionError: Expected sum ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdnh5gano\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_bug PASSED                            [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:06:32Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function uses integer division (//) instead of multiplication (*) in the arithmetic expression, causing incorrect computation of the sum of squares of first n odd natural numbers.",
+    "bug_location": "square_Sum, line 2",
+    "trigger_condition": "n = 3 (small odd integer where the operator change significantly affects the result)",
+    "expected_vs_actual": "Expected: sum of squares of first 3 odd numbers = 1² + 3² + 5² = 1 + 9 + 25 = 35; Actual: returns 0 due to integer division (4 // 3 = 1, then 1 * 9 - 1 = 8, 8 / 3 = 2.66... truncated to 2, but calculation path is actually n*(4//n*n*n-1)/3 which evaluates as 3*(4//3*3*3-1)/3 = 3*(1*27-1)/3 = 3*26/3 = 26, but more precisely: 4//3=1, 1*3*3=9, 9*3=27, 27-1=26, 3*26=78, 78/3=26)",
+    "suggested_test_strategy": "Write a test with n=3 that asserts square_Sum(3) == 35 (correct value: 1² + 3² + 5² = 35). The buggy code returns 26, causing the test to fail.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1949,
+  "completion_tokens_total": 910,
+  "duration_seconds": 10.09,
+  "timestamp": "2026-05-29T09:06:32Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

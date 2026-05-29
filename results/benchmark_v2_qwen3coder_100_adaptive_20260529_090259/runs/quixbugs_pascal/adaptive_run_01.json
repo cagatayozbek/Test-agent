@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_pascal",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_pascal_row_lengths():\n    result = pascal(3)\n    assert [len(row) for row in result] == [1, 2, 3], f\"Expected row lengths [1, 2, 3] but got {[len(row) for row in result]}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm4bgvlx7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_pascal_row_lengths ____________________________\n\n    def test_pascal_row_lengths():\n>       result = pascal(3)\n                 ^^^^^^\nE       NameError: name 'pascal' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_pascal_row_lengths - NameError: name 'pascal' ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpckl8_6n9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_pascal_row_lengths ____________________________\n\n    def test_pascal_row_lengths():\n>       result = pascal(3)\n                 ^^^^^^\nE       NameError: name 'pascal' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_pascal_row_lengths - NameError: name 'pascal' ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import pascal\n\ndef test_pascal_row_lengths():\n    result = pascal(3)\n    assert len(result[0]) == 1, \"First row should have length 1\"\n    assert len(result[1]) == 2, \"Second row should have length 2\"\n    assert len(result[2]) == 3, \"Third row should have length 3\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4qaiz1ji\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_pascal_row_lengths ____________________________\n\n    def test_pascal_row_lengths():\n>       result = pascal(3)\n                 ^^^^^^^^^\n\ntest_generated.py:4: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 3\n\n    def pascal(n):\n        rows = [[1]]\n        for r in range(1, n):\n            row = []\n            for c in range(0, r):\n                upleft = rows[r - 1][c - 1] if c > 0 else 0\n>               upright = rows[r - 1][c] if c < r else 0\n                          ^^^^^^^^^^^^^^\nE               IndexError: list index out of range\n\nsource.py:8: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_pascal_row_lengths - IndexError: list index ou...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp36rpap_k\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths PASSED                        [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:11:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The inner loop uses range(0, r) instead of range(0, r + 1), causing the last element (trailing 1) of each row to be omitted.",
+    "bug_location": "pascal, line 7",
+    "trigger_condition": "Calling pascal(3) produces rows with lengths [1, 1, 2] instead of [1, 2, 3]",
+    "expected_vs_actual": "Expected: pascal(3) returns [[1], [1, 1], [1, 2, 1]]; Actual: pascal(3) returns [[1], [1], [1, 1]] (missing trailing 1s)",
+    "suggested_test_strategy": "Write a test that asserts len(pascal(3)[i]) == i + 1 for each row i",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2169,
+  "completion_tokens_total": 348,
+  "duration_seconds": 6.41,
+  "timestamp": "2026-05-29T09:11:02Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

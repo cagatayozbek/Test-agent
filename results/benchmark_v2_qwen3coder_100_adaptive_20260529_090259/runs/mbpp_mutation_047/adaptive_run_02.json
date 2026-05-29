@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_buggy_comparison():\n    # The bug is using '==' instead of '!=' in the condition check\n    # The canonical solution should use 'num != sum_fact' to avoid counting perfect numbers\n    # as amicable pairs (since amicable pairs require two distinct numbers).\n    # The smallest amicable pair is (220, 284), but the bug affects smaller inputs too.\n    # Specifically, for limit=6, the buggy code incorrectly includes 6 (a perfect number)\n    # because it checks 'num == sum_fact2 and num == sum_fact' but doesn't exclude cases\n    # where num == sum_fact (which would be perfect numbers, not amicable pairs).\n    # However, looking more carefully at the code logic:\n    # For num=6: proper divisors sum = 1+2+3 = 6, so sum_fact = 6\n    # Then sum_fact2 = sum of proper divisors of 6 = 6 again\n    # Condition: num == sum_fact2 (6 == 6) and num == sum_fact (6 == 6) → True\n    # But 6 is a perfect number, not part of an amicable pair (needs two different numbers).\n    # The correct condition should check that num != sum_fact (to avoid perfect numbers).\n    \n    # The smallest input where this bug manifests is 6\n    # Canonical correct sum up to 6 should be 0 (no amicable pairs)\n    # Buggy code returns 6 (incorrectly includes 6)\n    \n    # Another good test is limit=284 to catch the (220, 284) pair\n    # But the bug affects smaller inputs first\n    \n    # Let's use limit=6: the buggy code will return 6, but correct answer is 0\n    result_buggy = amicable_numbers_sum(6)\n    # The correct sum should be 0 since there are no amicable pairs ≤ 6\n    assert result_buggy == 0, f\"Expected 0 for limit=6 (no amicable pairs), got {result_buggy}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp73ykl8th\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_buggy_comparison FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_amicable_numbers_sum_buggy_comparison __________________\n\n    def test_amicable_numbers_sum_buggy_comparison():\n        # The bug is using '==' instead of '!=' in the condition check\n        # The canonical solution should use 'num != sum_fact' to avoid counting perfect numbers\n        # as amicable pairs (since amicable pairs require two distinct numbers).\n        # The smallest amicable pair is (220, 284), but the bug affects smaller inputs too.\n        # Specifically, for limit=6, the buggy code incorrectly includes 6 (a perfect number)\n        # because it checks 'num == sum_fact2 and num == sum_fact' but doesn't exclude cases\n        # where num == sum_fact (which would be perfect numbers, not amicable pairs).\n        # However, looking more carefully at the code logic:\n        # For num=6: proper divisors sum = 1+2+3 = 6, so sum_fact = 6\n        # Then sum_fact2 = sum of proper divisors of 6 = 6 again\n        # Condition: num == sum_fact2 (6 == 6) and num == sum_fact (6 == 6) → True\n        # But 6 is a perfect number, not part of an amicable pair (needs two different numbers).\n        # The correct condition should check that num != sum_fact (to avoid perfect numbers).\n    \n        # The smallest input where this bug manifests is 6\n        # Canonical correct sum up to 6 should be 0 (no amicable pairs)\n        # Buggy code returns 6 (incorrectly includes 6)\n    \n        # Another good test is limit=284 to catch the (220, 284) pair\n        # But the bug affects smaller inputs first\n    \n        # Let's use limit=6: the buggy code will return 6, but correct answer is 0\n        result_buggy = amicable_numbers_sum(6)\n        # The correct sum should be 0 since there are no amicable pairs ≤ 6\n>       assert result_buggy == 0, f\"Expected 0 for limit=6 (no amicable pairs), got {result_buggy}\"\nE       AssertionError: Expected 0 for limit=6 (no amicable pairs), got 6\nE       assert 6 == 0\n\ntest_generated.py:29: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_buggy_comparison - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp73s708dc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_buggy_comparison PASSED     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:18Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 576,
+  "completion_tokens_total": 470,
+  "duration_seconds": 12.13,
+  "timestamp": "2026-05-29T09:08:18Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

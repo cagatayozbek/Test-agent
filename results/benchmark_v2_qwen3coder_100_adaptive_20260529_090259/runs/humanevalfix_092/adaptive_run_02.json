@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_092",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_any_int_missing_clause():\n    # Test case where x + z == y should be True, but buggy code misses this clause\n    # Example: x=2, y=5, z=3 -> 2 + 3 = 5, so should return True\n    result = any_int(2, 5, 3)\n    assert result == True, f\"Expected True for any_int(2, 5, 3) since 2 + 3 = 5, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpal9r63nr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_missing_clause FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_any_int_missing_clause __________________________\n\n    def test_any_int_missing_clause():\n        # Test case where x + z == y should be True, but buggy code misses this clause\n        # Example: x=2, y=5, z=3 -> 2 + 3 = 5, so should return True\n>       result = any_int(2, 5, 3)\n                 ^^^^^^^\nE       NameError: name 'any_int' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_any_int_missing_clause - NameError: name 'any_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqbyyom3s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_missing_clause FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_any_int_missing_clause __________________________\n\n    def test_any_int_missing_clause():\n        # Test case where x + z == y should be True, but buggy code misses this clause\n        # Example: x=2, y=5, z=3 -> 2 + 3 = 5, so should return True\n>       result = any_int(2, 5, 3)\n                 ^^^^^^^\nE       NameError: name 'any_int' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_any_int_missing_clause - NameError: name 'any_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import any_int\n\ndef test_any_int_missing_clause():\n    # Test case where x + z == y (2 + 3 == 5), but x + y != z and y + z != x\n    # This should return True per the docstring, but buggy code misses the x+z==y condition\n    result = any_int(2, 5, 3)\n    assert result == True, f\"Expected True for any_int(2, 5, 3) since 2+3=5, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr76zrcl1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_missing_clause FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_any_int_missing_clause __________________________\n\n    def test_any_int_missing_clause():\n        # Test case where x + z == y (2 + 3 == 5), but x + y != z and y + z != x\n        # This should return True per the docstring, but buggy code misses the x+z==y condition\n        result = any_int(2, 5, 3)\n>       assert result == True, f\"Expected True for any_int(2, 5, 3) since 2+3=5, but got {result}\"\nE       AssertionError: Expected True for any_int(2, 5, 3) since 2+3=5, but got False\nE       assert False == True\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_any_int_missing_clause - AssertionError: Expec...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpogxq5y0u\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_missing_clause PASSED                    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The condition in the buggy code is missing the check for (x+z==y), causing it to incorrectly return False when x+z equals y but neither x+y==z nor y+z==x holds.",
+    "bug_location": "any_int, line 18",
+    "trigger_condition": "Input where x+z == y but x+y != z and y+z != x, e.g., x=2, y=5, z=3 (since 2+3=5)",
+    "expected_vs_actual": "Expected: True (because 2+3=5); Actual: False (due to missing condition x+z==y)",
+    "suggested_test_strategy": "Run any_int(2, 5, 3) and assert it returns True; this will fail on the buggy version but pass on the fixed version.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2187,
+  "completion_tokens_total": 426,
+  "duration_seconds": 8.08,
+  "timestamp": "2026-05-29T09:05:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_thefuck_fix_file_28",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import os\nimport pytest\nfrom source import get_new_command\n\ndef test_fix_file_uses_column_command_when_available(monkeypatch):\n    # Ensure a known editor is used\n    monkeypatch.setenv(\"EDITOR\", \"nano\")\n    # Provide settings with both line and column commands\n    settings = {\n        \"fixlinecmd\": \"{editor} {file} +{line}\",\n        \"fixcolcmd\": \"{editor} {file} +{line}:{col}\",\n    }\n    # Stack trace line that includes column information\n    stderr = \"example.py:15:8\"\n    result = get_new_command(stderr, settings)\n    expected = \"nano example.py +15:8\"\n    assert result == expected, (\n        f\"Expected column‑aware command '{expected}' but got '{result}'. \"\n        \"The fix_file rule should prioritize 'fixcolcmd' when column info is present.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpbq1of0g_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_uses_column_command_when_available FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_fix_file_uses_column_command_when_available _______________\n\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10a8e1ba0>\n\n    def test_fix_file_uses_column_command_when_available(monkeypatch):\n        # Ensure a known editor is used\n        monkeypatch.setenv(\"EDITOR\", \"nano\")\n        # Provide settings with both line and column commands\n        settings = {\n            \"fixlinecmd\": \"{editor} {file} +{line}\",\n            \"fixcolcmd\": \"{editor} {file} +{line}:{col}\",\n        }\n        # Stack trace line that includes column information\n        stderr = \"example.py:15:8\"\n        result = get_new_command(stderr, settings)\n        expected = \"nano example.py +15:8\"\n>       assert result == expected, (\n            f\"Expected column‑aware command '{expected}' but got '{result}'. \"\n            \"The fix_file rule should prioritize 'fixcolcmd' when column info is present.\"\n        )\nE       AssertionError: Expected column‑aware command 'nano example.py +15:8' but got 'nano example.py +15'. The fix_file rule should prioritize 'fixcolcmd' when column info is present.\nE       assert 'nano example.py +15' == 'nano example.py +15:8'\nE         \nE         - nano example.py +15:8\nE         ?                    --\nE         + nano example.py +15\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fix_file_uses_column_command_when_available - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpjaf1gjgl\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_uses_column_command_when_available PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:17:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 870,
+  "completion_tokens_total": 717,
+  "duration_seconds": 5.25,
+  "timestamp": "2026-05-25T20:17:33Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

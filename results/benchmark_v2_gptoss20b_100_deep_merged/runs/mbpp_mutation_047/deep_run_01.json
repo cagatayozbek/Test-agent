@@ -1,0 +1,49 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\nfrom source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum():\n    \"\"\"Test that the function returns the correct sum of amicable numbers up to a limit.\n\n    For limit 300 the only amicable pair is (220, 284) whose sum is 504.\n    A buggy implementation that incorrectly checks for perfect numbers would return 34.\n    \"\"\"\n    assert amicable_numbers_sum(300) == 504\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpi5yat1f0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_amicable_numbers_sum FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_amicable_numbers_sum ___________________________\n\n    def test_amicable_numbers_sum():\n        \"\"\"Test that the function returns the correct sum of amicable numbers up to a limit.\n    \n        For limit 300 the only amicable pair is (220, 284) whose sum is 504.\n        A buggy implementation that incorrectly checks for perfect numbers would return 34.\n        \"\"\"\n>       assert amicable_numbers_sum(300) == 504\nE       assert 34 == 504\nE        +  where 34 = amicable_numbers_sum(300)\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum - assert 34 == 504\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpnq9gkt09\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_amicable_numbers_sum PASSED                      [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-28T23:00:52Z",
+      "tool_call_count": 7,
+      "tool_failure_mode_count": {
+        "revert_collection": 1
+      },
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 20491,
+  "completion_tokens_total": 27249,
+  "duration_seconds": 217.9,
+  "timestamp": "2026-05-28T23:00:52Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

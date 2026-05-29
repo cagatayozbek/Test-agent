@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_012",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_longest_bug_reveal():\n    # Test case that exposes the bug: \n    # In buggy version, condition `len(s) > maxlen` is always false since maxlen is the max length\n    # So it never returns any string and falls through to return None instead of the first longest string\n    result = longest(['a', 'b', 'c'])\n    # All strings have length 1, so maxlen = 1\n    # The buggy condition `len(s) > maxlen` (i.e., 1 > 1) is always False\n    # So the loop never returns and the function incorrectly returns None\n    # The correct behavior should return 'a' (the first string of max length)\n    assert result == 'a', f\"Expected 'a' but got {result} for longest(['a', 'b', 'c'])\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpchya9ihx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_bug_reveal FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_longest_bug_reveal ____________________________\n\n    def test_longest_bug_reveal():\n        # Test case that exposes the bug:\n        # In buggy version, condition `len(s) > maxlen` is always false since maxlen is the max length\n        # So it never returns any string and falls through to return None instead of the first longest string\n>       result = longest(['a', 'b', 'c'])\n                 ^^^^^^^\nE       NameError: name 'longest' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_bug_reveal - NameError: name 'longest'...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpo5rnhuyu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_bug_reveal FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_longest_bug_reveal ____________________________\n\n    def test_longest_bug_reveal():\n        # Test case that exposes the bug:\n        # In buggy version, condition `len(s) > maxlen` is always false since maxlen is the max length\n        # So it never returns any string and falls through to return None instead of the first longest string\n>       result = longest(['a', 'b', 'c'])\n                 ^^^^^^^\nE       NameError: name 'longest' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_bug_reveal - NameError: name 'longest'...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:03:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import longest\n\ndef test_longest_bug_reveal():\n    # Test the specific bug: returns None instead of first string when all have equal length\n    result = longest(['a', 'b', 'c'])\n    assert result == 'a', f\"Expected 'a' (first string of max length 1), got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8zp60jbu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_bug_reveal FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_longest_bug_reveal ____________________________\n\n    def test_longest_bug_reveal():\n        # Test the specific bug: returns None instead of first string when all have equal length\n        result = longest(['a', 'b', 'c'])\n>       assert result == 'a', f\"Expected 'a' (first string of max length 1), got {result}\"\nE       AssertionError: Expected 'a' (first string of max length 1), got None\nE       assert None == 'a'\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_bug_reveal - AssertionError: Expected ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa9wb9nad\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_bug_reveal PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The loop incorrectly returns the first string whose length is greater than max length (impossible condition), instead of returning the first string whose length equals max length.",
+    "bug_location": "longest, line 17",
+    "trigger_condition": "Calling longest(['a', 'b', 'c']) where all strings have equal length (1); the condition `len(s) > maxlen` is never true, so no string is returned, and the function falls through to implicitly return None instead of the expected 'a'.",
+    "expected_vs_actual": "Expected: return 'a' (first string of max length 1). Actual: return None (since no string satisfies `len(s) > maxlen`).",
+    "suggested_test_strategy": "Run pytest on a test function containing the docstring examples, especially `longest(['a', 'b', 'c']) == 'a'`, which fails on the buggy version but passes on the fixed version.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2037,
+  "completion_tokens_total": 475,
+  "duration_seconds": 13.15,
+  "timestamp": "2026-05-29T09:04:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

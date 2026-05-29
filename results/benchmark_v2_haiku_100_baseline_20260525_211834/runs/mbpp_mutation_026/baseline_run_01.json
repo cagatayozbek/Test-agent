@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_026",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import sequence\n\ndef test_sequence_newman_conway_base_case_n3():\n    \"\"\"Newman Conway sequence: n=3 should be 2, not 1. Tests the mutated comparison operator.\"\"\"\n    assert sequence(3) == 2, \"sequence(3) should equal 2 in Newman Conway sequence\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmppcgmjzgg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_newman_conway_base_case_n3 FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_sequence_newman_conway_base_case_n3 ___________________\n\n    def test_sequence_newman_conway_base_case_n3():\n        \"\"\"Newman Conway sequence: n=3 should be 2, not 1. Tests the mutated comparison operator.\"\"\"\n>       assert sequence(3) == 2, \"sequence(3) should equal 2 in Newman Conway sequence\"\nE       AssertionError: sequence(3) should equal 2 in Newman Conway sequence\nE       assert 1 == 2\nE        +  where 1 = sequence(3)\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sequence_newman_conway_base_case_n3 - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp3flctqmw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_newman_conway_base_case_n3 PASSED       [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T22:16:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 31139,
+  "completion_tokens_total": 2083,
+  "duration_seconds": 14.93,
+  "timestamp": "2026-05-25T22:16:23Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

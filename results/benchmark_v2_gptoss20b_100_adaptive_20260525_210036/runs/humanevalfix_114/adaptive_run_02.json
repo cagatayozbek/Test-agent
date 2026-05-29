@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_114",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import minSubArraySum\n\ndef test_minSubArraySum_negative_case():\n    \"\"\"The function should return the lowest possible sum of a non‑empty sub‑array.\"\"\"\n    nums = [-1, -2, -3]\n    expected_min_sum = -6  # sum of the whole array\n    assert minSubArraySum(nums) == expected_min_sum, (\n        f\"Expected {expected_min_sum} for input {nums}, \"\n        f\"but received {minSubArraySum(nums)}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpgdquyhjz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_negative_case FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_minSubArraySum_negative_case _______________________\n\n    def test_minSubArraySum_negative_case():\n        \"\"\"The function should return the lowest possible sum of a non‑empty sub‑array.\"\"\"\n        nums = [-1, -2, -3]\n        expected_min_sum = -6  # sum of the whole array\n>       assert minSubArraySum(nums) == expected_min_sum, (\n            f\"Expected {expected_min_sum} for input {nums}, \"\n            f\"but received {minSubArraySum(nums)}\"\n        )\nE       AssertionError: Expected -6 for input [-1, -2, -3], but received 1\nE       assert 1 == -6\nE        +  where 1 = minSubArraySum([-1, -2, -3])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_negative_case - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpdz_fmyoa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_negative_case PASSED              [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:03:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 624,
+  "completion_tokens_total": 1022,
+  "duration_seconds": 7.35,
+  "timestamp": "2026-05-25T21:03:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

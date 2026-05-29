@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_digit_distance_nums():\n    \"\"\"Test the digit distance calculation between two integers.\"\"\"\n    assert hasattr(source, \"digit_distance_nums\")\n    assert callable(source.digit_distance_nums)\n    # Correct per-digit absolute differences: |1-4| + |2-5| + |3-6| = 3 + 3 + 3 = 9\n    assert source.digit_distance_nums(123, 456) == 9\n    # Another simple case: |1-3| + |2-4| = 2 + 2 = 4\n    assert source.digit_distance_nums(12, 34) == 4\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpiqtb94al\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_digit_distance_nums FAILED                       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_digit_distance_nums ___________________________\n\n    def test_digit_distance_nums():\n        \"\"\"Test the digit distance calculation between two integers.\"\"\"\n        assert hasattr(source, \"digit_distance_nums\")\n        assert callable(source.digit_distance_nums)\n        # Correct per-digit absolute differences: |1-4| + |2-5| + |3-6| = 3 + 3 + 3 = 9\n>       assert source.digit_distance_nums(123, 456) == 9\nE       assert 21 == 9\nE        +  where 21 = <function digit_distance_nums at 0x1085de5c0>(123, 456)\nE        +    where <function digit_distance_nums at 0x1085de5c0> = source.digit_distance_nums\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums - assert 21 == 9\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpmknm8spe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_digit_distance_nums PASSED                       [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-28T22:40:56Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 8873,
+  "completion_tokens_total": 11497,
+  "duration_seconds": 101.31,
+  "timestamp": "2026-05-28T22:40:56Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

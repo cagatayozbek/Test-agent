@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_039",
+  "mode": "deep",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp8l55cxws\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_source_module_imports PASSED                     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpwj70u49g\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_source_module_imports PASSED                     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-28T22:51:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 4323,
+  "completion_tokens_total": 8927,
+  "duration_seconds": 147.85,
+  "timestamp": "2026-05-28T22:51:36Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

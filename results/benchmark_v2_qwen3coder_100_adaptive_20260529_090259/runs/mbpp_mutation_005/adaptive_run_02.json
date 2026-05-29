@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_005",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import average_tuple\n\ndef test_average_tuple_division_bug():\n    # The bug: uses multiplication instead of division to compute average\n    # Canonical fix: should divide sum by length for each tuple\n    # Test with input where sum * len != sum / len (e.g., non-identity values)\n    nums = ((1, 2), (3, 4))\n    # For first tuple (1,2): sum=3, len=2 → correct avg = 3/2 = 1.5\n    # For second tuple (3,4): sum=7, len=2 → correct avg = 7/2 = 3.5\n    expected = [1.5, 3.5]\n    \n    result = average_tuple(nums)\n    \n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp62f_d_44\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_division_bug FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_average_tuple_division_bug ________________________\n\n    def test_average_tuple_division_bug():\n        # The bug: uses multiplication instead of division to compute average\n        # Canonical fix: should divide sum by length for each tuple\n        # Test with input where sum * len != sum / len (e.g., non-identity values)\n        nums = ((1, 2), (3, 4))\n        # For first tuple (1,2): sum=3, len=2 → correct avg = 3/2 = 1.5\n        # For second tuple (3,4): sum=7, len=2 → correct avg = 7/2 = 3.5\n        expected = [1.5, 3.5]\n    \n        result = average_tuple(nums)\n    \n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected [1.5, 3.5], got [8, 12]\nE       assert [8, 12] == [1.5, 3.5]\nE         \nE         At index 0 diff: 8 != 1.5\nE         \nE         Full diff:\nE           [\nE         +     8,\nE         -     1.5,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_division_bug - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppq1z7olt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_division_bug FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_average_tuple_division_bug ________________________\n\n    def test_average_tuple_division_bug():\n        # The bug: uses multiplication instead of division to compute average\n        # Canonical fix: should divide sum by length for each tuple\n        # Test with input where sum * len != sum / len (e.g., non-identity values)\n        nums = ((1, 2), (3, 4))\n        # For first tuple (1,2): sum=3, len=2 → correct avg = 3/2 = 1.5\n        # For second tuple (3,4): sum=7, len=2 → correct avg = 7/2 = 3.5\n        expected = [1.5, 3.5]\n    \n        result = average_tuple(nums)\n    \n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected [1.5, 3.5], got [2.0, 3.0]\nE       assert [2.0, 3.0] == [1.5, 3.5]\nE         \nE         At index 0 diff: 2.0 != 1.5\nE         \nE         Full diff:\nE           [\nE         -     1.5,\nE         ?     ^ ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_division_bug - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:06:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_average_tuple_division_bug():\n    # Test with input ((1, 2), (3, 4))\n    # zip(*((1, 2), (3, 4))) gives [(1, 3), (2, 4)]\n    # Averages should be (1+3)/2 = 2.0 and (2+4)/2 = 3.0\n    input_data = ((1, 2), (3, 4))\n    expected = [2.0, 3.0]\n    from source import average_tuple\n    result = average_tuple(input_data)\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphojsjg_4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_division_bug FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_average_tuple_division_bug ________________________\n\n    def test_average_tuple_division_bug():\n        # Test with input ((1, 2), (3, 4))\n        # zip(*((1, 2), (3, 4))) gives [(1, 3), (2, 4)]\n        # Averages should be (1+3)/2 = 2.0 and (2+4)/2 = 3.0\n        input_data = ((1, 2), (3, 4))\n        expected = [2.0, 3.0]\n        from source import average_tuple\n        result = average_tuple(input_data)\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected [2.0, 3.0], got [8, 12]\nE       assert [8, 12] == [2.0, 3.0]\nE         \nE         At index 0 diff: 8 != 2.0\nE         \nE         Full diff:\nE           [\nE         +     8,\nE         -     2.0,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_division_bug - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa9hzztch\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_division_bug PASSED                [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:06:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function incorrectly multiplies sum(x) by len(x) instead of dividing sum(x) by len(x) to compute the average.",
+    "bug_location": "average_tuple, line 2",
+    "trigger_condition": "A tuple of tuples where the average values are non-zero, such as ((1, 2), (3, 4))",
+    "expected_vs_actual": "Expected: [2.0, 3.0] (average of (1,2) is 1.5→2.0? Wait, let's recalculate: zip(*((1,2),(3,4))) gives [(1,3), (2,4)], averages are (1+3)/2=2.0 and (2+4)/2=3.0. Actual buggy output: sum(x)*len(x) = (1+3)*2=8 and (2+4)*2=12 → [8,12]",
+    "suggested_test_strategy": "Write a test with input ((1, 2), (3, 4)) and assert the result equals [2.0, 3.0]",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1811,
+  "completion_tokens_total": 593,
+  "duration_seconds": 8.94,
+  "timestamp": "2026-05-29T09:06:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

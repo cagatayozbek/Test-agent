@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_snake_to_camel_empty_string():\n    from source import snake_to_camel\n    # The bug: when word.split('_') produces an empty string (e.g., input is '_'),\n    # the generator yields '' for the empty segment, and ''.capitalize() is ''.\n    # The buggy expression uses 'and' which short-circuits: '' and '_' evaluates to ''.\n    # The fixed version should use 'or' so '' or '_' yields '_'.\n    # However, looking at the code: the bug is actually in the use of 'and' vs 'or'.\n    # The canonical fix should produce '_' for input '_' but the buggy version produces ''.\n    # But wait: the actual bug description says the mutation is 'or' -> 'and', meaning the original (fixed) code uses 'or'\n    # and the mutated (buggy) code uses 'and'. So we need an input where 'or' vs 'and' matters.\n    \n    # Let's re-analyze: \n    # Fixed code (with 'or'): ''.capitalize() or '_' → '' or '_' → '_'\n    # Buggy code (with 'and'): ''.capitalize() and '_' → '' and '_' → ''\n    \n    # Test with input that has an empty segment: leading/trailing underscore or double underscore\n    # Input '_' splits into ['', ''] → two empty strings\n    # For each empty string x: x.capitalize() is '' → '' and '_' is '' (buggy), '' or '_' is '_' (fixed)\n    # So ''.join(...) for buggy: '' + '' = ''; for fixed: '_' + '_' = '__'\n    \n    # But the test should be more precise: let's use input 'a_' which splits into ['a', ''] \n    # - 'a'.capitalize() = 'A' → 'A' and '_' = '_' (both versions agree)\n    # - ''.capitalize() = '' → '' and '_' = '' (buggy), '' or '_' = '_' (fixed)\n    # So output for 'a_' should be 'A_' but buggy returns 'A'\n    \n    # However, the most straightforward is input '_' which should become '__' (each segment becomes '_')\n    # but the buggy code produces ''\n    assert snake_to_camel('_') == '__'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsesqc3oy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_empty_string FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_snake_to_camel_empty_string _______________________\n\n    def test_snake_to_camel_empty_string():\n        from source import snake_to_camel\n        # The bug: when word.split('_') produces an empty string (e.g., input is '_'),\n        # the generator yields '' for the empty segment, and ''.capitalize() is ''.\n        # The buggy expression uses 'and' which short-circuits: '' and '_' evaluates to ''.\n        # The fixed version should use 'or' so '' or '_' yields '_'.\n        # However, looking at the code: the bug is actually in the use of 'and' vs 'or'.\n        # The canonical fix should produce '_' for input '_' but the buggy version produces ''.\n        # But wait: the actual bug description says the mutation is 'or' -> 'and', meaning the original (fixed) code uses 'or'\n        # and the mutated (buggy) code uses 'and'. So we need an input where 'or' vs 'and' matters.\n    \n        # Let's re-analyze:\n        # Fixed code (with 'or'): ''.capitalize() or '_' → '' or '_' → '_'\n        # Buggy code (with 'and'): ''.capitalize() and '_' → '' and '_' → ''\n    \n        # Test with input that has an empty segment: leading/trailing underscore or double underscore\n        # Input '_' splits into ['', ''] → two empty strings\n        # For each empty string x: x.capitalize() is '' → '' and '_' is '' (buggy), '' or '_' is '_' (fixed)\n        # So ''.join(...) for buggy: '' + '' = ''; for fixed: '_' + '_' = '__'\n    \n        # But the test should be more precise: let's use input 'a_' which splits into ['a', '']\n        # - 'a'.capitalize() = 'A' → 'A' and '_' = '_' (both versions agree)\n        # - ''.capitalize() = '' → '' and '_' = '' (buggy), '' or '_' = '_' (fixed)\n        # So output for 'a_' should be 'A_' but buggy returns 'A'\n    \n        # However, the most straightforward is input '_' which should become '__' (each segment becomes '_')\n        # but the buggy code produces ''\n>       assert snake_to_camel('_') == '__'\nE       AssertionError: assert '' == '__'\nE         \nE         - __\n\ntest_generated.py:28: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_empty_string - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpfkdbqjy8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_empty_string PASSED               [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:57:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 442,
+  "completion_tokens_total": 483,
+  "duration_seconds": 4.27,
+  "timestamp": "2026-05-29T08:57:45Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

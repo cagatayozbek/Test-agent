@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_141",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_file_name_check_missing_suf_validation():\n    # Test with a valid format but invalid suffix - should return 'No'\n    # The buggy code doesn't check if the suffix is in ['txt', 'exe', 'dll']\n    result = file_name_check(\"file.pdf\")\n    assert result == 'No', \"File with invalid suffix 'pdf' should return 'No'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1qy8khpu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_file_name_check_missing_suf_validation FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_file_name_check_missing_suf_validation __________________\n\n    def test_file_name_check_missing_suf_validation():\n        # Test with a valid format but invalid suffix - should return 'No'\n        # The buggy code doesn't check if the suffix is in ['txt', 'exe', 'dll']\n>       result = file_name_check(\"file.pdf\")\n                 ^^^^^^^^^^^^^^^\nE       NameError: name 'file_name_check' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_file_name_check_missing_suf_validation - NameE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi_55ked1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_file_name_check_missing_suf_validation FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_file_name_check_missing_suf_validation __________________\n\n    def test_file_name_check_missing_suf_validation():\n        # Test with a valid format but invalid suffix - should return 'No'\n        # The buggy code doesn't check if the suffix is in ['txt', 'exe', 'dll']\n>       result = file_name_check(\"file.pdf\")\n                 ^^^^^^^^^^^^^^^\nE       NameError: name 'file_name_check' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_file_name_check_missing_suf_validation - NameE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import file_name_check\n\ndef test_file_name_check_missing_suf_validation():\n    # Test with an invalid extension (pdf) that should return 'No'\n    # The buggy version returns 'Yes' because it omits the suffix check\n    result = file_name_check(\"file.pdf\")\n    assert result == 'No', f\"Expected 'No' for invalid extension 'pdf', but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp90015x8v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_file_name_check_missing_suf_validation FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_file_name_check_missing_suf_validation __________________\n\n    def test_file_name_check_missing_suf_validation():\n        # Test with an invalid extension (pdf) that should return 'No'\n        # The buggy version returns 'Yes' because it omits the suffix check\n        result = file_name_check(\"file.pdf\")\n>       assert result == 'No', f\"Expected 'No' for invalid extension 'pdf', but got '{result}'\"\nE       AssertionError: Expected 'No' for invalid extension 'pdf', but got 'Yes'\nE       assert 'Yes' == 'No'\nE         \nE         - No\nE         + Yes\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_file_name_check_missing_suf_validation - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxtq3wkgf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_file_name_check_missing_suf_validation PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:06:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The buggy function omits the check that the file extension (suffix) must be one of the allowed values ['txt', 'exe', 'dll']. As a result, it incorrectly validates files with invalid extensions like 'pdf', 'docx', etc.",
+    "bug_location": "file_name_check, line 22 (end of function)",
+    "trigger_condition": "Input file name with an invalid extension (not in ['txt', 'exe', 'dll']), such as 'test.pdf'",
+    "expected_vs_actual": "Expected: return 'No' for invalid extensions like 'pdf'; Actual: returns 'Yes' because the suffix check is missing",
+    "suggested_test_strategy": "Test with 'test.pdf' — this should return 'No' but the buggy version returns 'Yes'",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2506,
+  "completion_tokens_total": 354,
+  "duration_seconds": 5.17,
+  "timestamp": "2026-05-29T09:06:01Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

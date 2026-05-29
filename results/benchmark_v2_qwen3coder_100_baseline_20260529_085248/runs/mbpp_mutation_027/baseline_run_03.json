@@ -1,0 +1,52 @@
+{
+  "task_id": "mbpp_mutation_027",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_all_unique_with_duplicates():\n    # Test with a list containing duplicates - should return False\n    # The buggy code uses >= instead of >, so it incorrectly returns False for [1, 1]\n    # because len([1, 1]) = 2 >= len(set([1, 1])) = 1, which is true, so it returns False (correct for this case)\n    # But for [1, 2] (all unique), the buggy code: len([1, 2]) = 2 >= len(set([1, 2])) = 2 → True, returns False (WRONG!)\n    \n    # Use [1, 2] - all unique elements, should return True\n    # Buggy code: len([1, 2]) >= len(set([1, 2])) → 2 >= 2 → True → returns False (incorrect)\n    # Fixed code: len([1, 2]) > len(set([1, 2])) → 2 > 2 → False → returns True (correct)\n    \n    assert all_unique([1, 2]) == True, \"List with unique elements [1, 2] should return True\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4erhsglx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_duplicates FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_all_unique_with_duplicates ________________________\n\n    def test_all_unique_with_duplicates():\n        # Test with a list containing duplicates - should return False\n        # The buggy code uses >= instead of >, so it incorrectly returns False for [1, 1]\n        # because len([1, 1]) = 2 >= len(set([1, 1])) = 1, which is true, so it returns False (correct for this case)\n        # But for [1, 2] (all unique), the buggy code: len([1, 2]) = 2 >= len(set([1, 2])) = 2 → True, returns False (WRONG!)\n    \n        # Use [1, 2] - all unique elements, should return True\n        # Buggy code: len([1, 2]) >= len(set([1, 2])) → 2 >= 2 → True → returns False (incorrect)\n        # Fixed code: len([1, 2]) > len(set([1, 2])) → 2 > 2 → False → returns True (correct)\n    \n>       assert all_unique([1, 2]) == True, \"List with unique elements [1, 2] should return True\"\n               ^^^^^^^^^^\nE       NameError: name 'all_unique' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_with_duplicates - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe2q5it32\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_duplicates FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_all_unique_with_duplicates ________________________\n\n    def test_all_unique_with_duplicates():\n        # Test with a list containing duplicates - should return False\n        # The buggy code uses >= instead of >, so it incorrectly returns False for [1, 1]\n        # because len([1, 1]) = 2 >= len(set([1, 1])) = 1, which is true, so it returns False (correct for this case)\n        # But for [1, 2] (all unique), the buggy code: len([1, 2]) = 2 >= len(set([1, 2])) = 2 → True, returns False (WRONG!)\n    \n        # Use [1, 2] - all unique elements, should return True\n        # Buggy code: len([1, 2]) >= len(set([1, 2])) → 2 >= 2 → True → returns False (incorrect)\n        # Fixed code: len([1, 2]) > len(set([1, 2])) → 2 > 2 → False → returns True (correct)\n    \n>       assert all_unique([1, 2]) == True, \"List with unique elements [1, 2] should return True\"\n               ^^^^^^^^^^\nE       NameError: name 'all_unique' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_with_duplicates - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:57:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import all_unique\n\ndef test_all_unique_with_duplicates():\n    # The buggy code uses >=, which incorrectly returns False for a list with duplicates\n    # when len(list) == len(set(list)) is False (i.e., duplicates exist)\n    # Test with [1, 1]: len([1,1]) = 2, len(set([1,1])) = 1 → 2 >= 1 is True → returns False (correct)\n    # But we need a case where the >= vs > actually flips the result\n    \n    # The bug is in the condition: it returns False when len(test_list) >= len(set(test_list))\n    # This should be > (not >=) because if len == len(set), then all elements are unique\n    # So the buggy code returns False for unique lists (incorrectly)\n    \n    # Test with a unique list: [1, 2]\n    # len([1,2]) = 2, len(set([1,2])) = 2 → 2 >= 2 is True → returns False (buggy behavior)\n    # Fixed version should return True for unique lists\n    \n    # This is the critical test: unique list where len == len(set)\n    assert all_unique([1, 2]) == True, \"Unique list [1, 2] should return True\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpoywq1ctu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_duplicates FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_all_unique_with_duplicates ________________________\n\n    def test_all_unique_with_duplicates():\n        # The buggy code uses >=, which incorrectly returns False for a list with duplicates\n        # when len(list) == len(set(list)) is False (i.e., duplicates exist)\n        # Test with [1, 1]: len([1,1]) = 2, len(set([1,1])) = 1 → 2 >= 1 is True → returns False (correct)\n        # But we need a case where the >= vs > actually flips the result\n    \n        # The bug is in the condition: it returns False when len(test_list) >= len(set(test_list))\n        # This should be > (not >=) because if len == len(set), then all elements are unique\n        # So the buggy code returns False for unique lists (incorrectly)\n    \n        # Test with a unique list: [1, 2]\n        # len([1,2]) = 2, len(set([1,2])) = 2 → 2 >= 2 is True → returns False (buggy behavior)\n        # Fixed version should return True for unique lists\n    \n        # This is the critical test: unique list where len == len(set)\n>       assert all_unique([1, 2]) == True, \"Unique list [1, 2] should return True\"\nE       AssertionError: Unique list [1, 2] should return True\nE       assert False == True\nE        +  where False = all_unique([1, 2])\n\ntest_generated.py:18: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_with_duplicates - AssertionError: U...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1z5gpoxf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_duplicates PASSED                [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:57:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1171,
+  "completion_tokens_total": 540,
+  "duration_seconds": 12.29,
+  "timestamp": "2026-05-29T08:57:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

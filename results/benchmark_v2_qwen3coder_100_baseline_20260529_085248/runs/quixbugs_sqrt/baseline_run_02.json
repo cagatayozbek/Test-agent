@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import sqrt\n\ndef test_sqrt_convergence_bug():\n    # The bug: convergence check uses abs(x - approx) instead of abs(x - approx**2)\n    # This causes premature termination before reaching the correct square root\n    # sqrt(2) ≈ 1.4142..., so with epsilon=0.01, result should be within [1.4042, 1.4242]\n    # The buggy code returns ~1.5 which is outside this range\n    result = sqrt(2, 0.01)\n    # Assert the result is approximately 1.41 (within 0.01 tolerance of sqrt(2))\n    assert abs(result - 1.41) < 0.01, f\"sqrt(2, 0.01) = {result}, expected ~1.41\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmie0sbzm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_convergence_bug PASSED                      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:02:54Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 529,
+  "completion_tokens_total": 195,
+  "duration_seconds": 34.35,
+  "timestamp": "2026-05-29T09:02:54Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

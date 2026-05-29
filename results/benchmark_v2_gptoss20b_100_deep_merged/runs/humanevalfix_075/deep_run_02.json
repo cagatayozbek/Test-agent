@@ -1,0 +1,47 @@
+{
+  "task_id": "humanevalfix_075",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_is_multiply_prime_30():\n    \"\"\"Test that 30 is correctly identified as a product of 3 primes.\n    The buggy implementation raises ZeroDivisionError due to the is_prime\n    helper starting its loop at 0.\n    \"\"\"\n    from source import is_multiply_prime\n    assert is_multiply_prime(30) is True\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpf9c8ysgj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_is_multiply_prime_30 FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_is_multiply_prime_30 ___________________________\n\n    def test_is_multiply_prime_30():\n        \"\"\"Test that 30 is correctly identified as a product of 3 primes.\n        The buggy implementation raises ZeroDivisionError due to the is_prime\n        helper starting its loop at 0.\n        \"\"\"\n        from source import is_multiply_prime\n>       assert is_multiply_prime(30) is True\n               ^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:14: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:17: in is_multiply_prime\n    if not is_prime(i): continue\n           ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 2\n\n    def is_prime(n):\n        for j in range(0,n):\n>           if n%j == 0:\n               ^^^\nE           ZeroDivisionError: integer modulo by zero\n\nsource.py:12: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_multiply_prime_30 - ZeroDivisionError: inte...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpvwfztn07\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_is_multiply_prime_30 PASSED                      [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-28T21:45:16Z",
+      "tool_call_count": 2,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 12178,
+  "completion_tokens_total": 8810,
+  "duration_seconds": 81.73,
+  "timestamp": "2026-05-28T21:45:16Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

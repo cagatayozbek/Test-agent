@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import sqrt\n\ndef test_sqrt_newton_raphson_residual_convergence():\n    result = sqrt(2, 0.01)\n    # With correct Newton-Raphson convergence, |x - result^2| <= epsilon\n    # Buggy code checks |x - result| instead, which never converges for this case\n    assert abs(result ** 2 - 2) < 0.011",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp15n27vdb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_newton_raphson_residual_convergence PASSED  [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T23:15:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 31222,
+  "completion_tokens_total": 11090,
+  "duration_seconds": 101.37,
+  "timestamp": "2026-05-25T23:15:05Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

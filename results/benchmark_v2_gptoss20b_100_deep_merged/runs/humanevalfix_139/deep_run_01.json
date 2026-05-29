@@ -1,0 +1,47 @@
+{
+  "task_id": "humanevalfix_139",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\n\ndef test_special_factorial_value():\n    \"\"\"Ensure special_factorial computes the correct product of factorials.\n    The correct result for n=4 is 288 (1!*2!*3!*4!).\n    This test will fail on the buggy implementation that multiplies the loop\n    index by n before accumulating the factorial.\n    \"\"\"\n    assert source.special_factorial(4) == 288\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmphv6p1d3g\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_special_factorial_value FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_special_factorial_value _________________________\n\n    def test_special_factorial_value():\n        \"\"\"Ensure special_factorial computes the correct product of factorials.\n        The correct result for n=4 is 288 (1!*2!*3!*4!).\n        This test will fail on the buggy implementation that multiplies the loop\n        index by n before accumulating the factorial.\n        \"\"\"\n>       assert source.special_factorial(4) == 288\nE       assert 301989888 == 288\nE        +  where 301989888 = <function special_factorial at 0x108ad23e0>(4)\nE        +    where <function special_factorial at 0x108ad23e0> = source.special_factorial\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_special_factorial_value - assert 301989888 == 288\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpppo9ynl5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_special_factorial_value PASSED                   [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-28T22:07:03Z",
+      "tool_call_count": 2,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 14755,
+  "completion_tokens_total": 10147,
+  "duration_seconds": 150.7,
+  "timestamp": "2026-05-28T22:07:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

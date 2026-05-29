@@ -1,0 +1,47 @@
+{
+  "task_id": "quixbugs_flatten",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\nimport pytest\nfrom source import flatten\n\n\ndef test_flatten_bug_reveals_generator_issue():\n    \"\"\"Test that flatten correctly handles non-list elements.\n\n    The buggy implementation yields a generator for non-list items\n    instead of the item itself, resulting in a list containing\n    generator objects.\n    \"\"\"\n    nested = [1, [2, 3], [[4]]]\n    result = list(flatten(nested))\n    assert result == [1, 2, 3, 4]\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp5jltf044\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_flatten_bug_reveals_generator_issue FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_flatten_bug_reveals_generator_issue ___________________\n\n    def test_flatten_bug_reveals_generator_issue():\n        \"\"\"Test that flatten correctly handles non-list elements.\n    \n        The buggy implementation yields a generator for non-list items\n        instead of the item itself, resulting in a list containing\n        generator objects.\n        \"\"\"\n        nested = [1, [2, 3], [[4]]]\n        result = list(flatten(nested))\n>       assert result == [1, 2, 3, 4]\nE       AssertionError: assert [<generator o... 0x108db11c0>] == [1, 2, 3, 4]\nE         \nE         At index 0 diff: <generator object flatten at 0x108db0d60> != 1\nE         \nE         Full diff:\nE           [\nE         -     1,\nE         -     2,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flatten_bug_reveals_generator_issue - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpy2mzxz76\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_flatten_bug_reveals_generator_issue PASSED       [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-28T23:15:52Z",
+      "tool_call_count": 1,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 4541,
+  "completion_tokens_total": 5271,
+  "duration_seconds": 58.37,
+  "timestamp": "2026-05-28T23:15:52Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

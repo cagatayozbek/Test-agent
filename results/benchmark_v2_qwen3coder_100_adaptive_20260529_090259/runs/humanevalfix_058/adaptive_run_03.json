@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_058",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_common_with_non_matching_elements():\n    # The bug: ret.add(e1) is added unconditionally inside the nested loop,\n    # so every element from l1 gets added regardless of whether it's in l2.\n    # The fix: only add e1 when e1 == e2.\n    \n    # Test case 1: from docstring\n    result1 = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    assert result1 == [1, 5, 653], f\"Expected [1, 5, 653] but got {result1}\"\n    \n    # Test case 2: from docstring\n    result2 = common([5, 3, 2, 8], [3, 2])\n    assert result2 == [2, 3], f\"Expected [2, 3] but got {result2}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpft9shaqq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_with_non_matching_elements FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_common_with_non_matching_elements ____________________\n\n    def test_common_with_non_matching_elements():\n        # The bug: ret.add(e1) is added unconditionally inside the nested loop,\n        # so every element from l1 gets added regardless of whether it's in l2.\n        # The fix: only add e1 when e1 == e2.\n    \n        # Test case 1: from docstring\n>       result1 = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n                  ^^^^^^\nE       NameError: name 'common' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_with_non_matching_elements - NameError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqdvegx3e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_with_non_matching_elements FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_common_with_non_matching_elements ____________________\n\n    def test_common_with_non_matching_elements():\n        # The bug: ret.add(e1) is added unconditionally inside the nested loop,\n        # so every element from l1 gets added regardless of whether it's in l2.\n        # The fix: only add e1 when e1 == e2.\n    \n        # Test case 1: from docstring\n>       result1 = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n                  ^^^^^^\nE       NameError: name 'common' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_with_non_matching_elements - NameError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import common\n\ndef test_common_excludes_non_matching_elements():\n    # First docstring example: buggy version returns [1, 2, 3, 4, 5, 34, 653]\n    # but correct version should return [1, 5, 653]\n    result1 = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    assert result1 == [1, 5, 653], f\"Expected [1, 5, 653] but got {result1}\"\n    \n    # Second docstring example: buggy version returns [2, 3, 5, 8]\n    # but correct version should return [2, 3]\n    result2 = common([5, 3, 2, 8], [3, 2])\n    assert result2 == [2, 3], f\"Expected [2, 3] but got {result2}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpu0ira0id\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_excludes_non_matching_elements FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_common_excludes_non_matching_elements __________________\n\n    def test_common_excludes_non_matching_elements():\n        # First docstring example: buggy version returns [1, 2, 3, 4, 5, 34, 653]\n        # but correct version should return [1, 5, 653]\n        result1 = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n>       assert result1 == [1, 5, 653], f\"Expected [1, 5, 653] but got {result1}\"\nE       AssertionError: Expected [1, 5, 653] but got [1, 2, 3, 4, 5, 34, 653]\nE       assert [1, 2, 3, 4, 5, 34, ...] == [1, 5, 653]\nE         \nE         At index 1 diff: 2 != 5\nE         Left contains 4 more items, first extra item: 4\nE         \nE         Full diff:\nE           [\nE               1,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_excludes_non_matching_elements - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp71rb0i90\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_excludes_non_matching_elements PASSED     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The inner loop unconditionally adds every element e1 from l1 to the result set, ignoring whether it actually appears in l2. The correct implementation should only add e1 when it equals some e2 in l2.",
+    "bug_location": "common, line 11",
+    "trigger_condition": "Any input where l1 contains elements not present in l2, causing those extraneous elements to be included in the result.",
+    "expected_vs_actual": "Expected: only elements present in both lists (intersection). Actual: all elements from l1 are included regardless of presence in l2, leading to incorrect output.",
+    "suggested_test_strategy": "Run the provided docstring examples: common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121]) should return [1, 5, 653] (but buggy version returns [1, 2, 3, 4, 5, 34, 653]); common([5, 3, 2, 8], [3, 2]) should return [2, 3] (but buggy version returns [2, 3, 5, 8]).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2450,
+  "completion_tokens_total": 774,
+  "duration_seconds": 8.45,
+  "timestamp": "2026-05-29T09:04:58Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

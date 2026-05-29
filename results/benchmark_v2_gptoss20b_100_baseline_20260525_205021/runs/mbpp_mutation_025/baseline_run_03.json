@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import digit_distance_nums\n\ndef test_digit_distance_nums_per_digit_difference():\n    n1 = 123\n    n2 = 45\n    expected = 5\n    result = digit_distance_nums(n1, n2)\n    assert result == expected, f\"Expected {expected} for digit differences between {n1} and {n2}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpjkk_zhfe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_per_digit_difference FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_digit_distance_nums_per_digit_difference _________________\n\n    def test_digit_distance_nums_per_digit_difference():\n        n1 = 123\n        n2 = 45\n        expected = 5\n        result = digit_distance_nums(n1, n2)\n>       assert result == expected, f\"Expected {expected} for digit differences between {n1} and {n2}, got {result}\"\nE       AssertionError: Expected 5 for digit differences between 123 and 45, got 15\nE       assert 15 == 5\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_per_digit_difference - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpw6x1mnub\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_per_digit_difference FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_digit_distance_nums_per_digit_difference _________________\n\n    def test_digit_distance_nums_per_digit_difference():\n        n1 = 123\n        n2 = 45\n        expected = 5\n        result = digit_distance_nums(n1, n2)\n>       assert result == expected, f\"Expected {expected} for digit differences between {n1} and {n2}, got {result}\"\nE       AssertionError: Expected 5 for digit differences between 123 and 45, got 15\nE       assert 15 == 5\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_per_digit_difference - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:54:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import digit_distance_nums\n\ndef test_digit_distance_nums_per_digit_difference():\n    \"\"\"\n    The function should compute the sum of per-digit absolute differences between two integers.\n    For 123 and 45 the expected result is 5:\n        123\n      + 045\n        ----\n        1 2 2  (differences: |1-0|, |2-4|, |3-5|)\n        Sum = 1 + 2 + 2 = 5\n    The buggy implementation incorrectly sums the digits of the sum of the numbers,\n    which would produce 15 for this input. This test confirms the correct behavior.\n    \"\"\"\n    result = digit_distance_nums(123, 45)\n    assert result == 5, (\n        f\"Expected digit distance between 123 and 45 to be 5, \"\n        f\"but got {result}.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpbs0ycmn0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_per_digit_difference FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_digit_distance_nums_per_digit_difference _________________\n\n    def test_digit_distance_nums_per_digit_difference():\n        \"\"\"\n        The function should compute the sum of per-digit absolute differences between two integers.\n        For 123 and 45 the expected result is 5:\n            123\n          + 045\n            ----\n            1 2 2  (differences: |1-0|, |2-4|, |3-5|)\n            Sum = 1 + 2 + 2 = 5\n        The buggy implementation incorrectly sums the digits of the sum of the numbers,\n        which would produce 15 for this input. This test confirms the correct behavior.\n        \"\"\"\n        result = digit_distance_nums(123, 45)\n>       assert result == 5, (\n            f\"Expected digit distance between 123 and 45 to be 5, \"\n            f\"but got {result}.\"\n        )\nE       AssertionError: Expected digit distance between 123 and 45 to be 5, but got 15.\nE       assert 15 == 5\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_per_digit_difference - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp_mbszbmx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_per_digit_difference FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_digit_distance_nums_per_digit_difference _________________\n\n    def test_digit_distance_nums_per_digit_difference():\n        \"\"\"\n        The function should compute the sum of per-digit absolute differences between two integers.\n        For 123 and 45 the expected result is 5:\n            123\n          + 045\n            ----\n            1 2 2  (differences: |1-0|, |2-4|, |3-5|)\n            Sum = 1 + 2 + 2 = 5\n        The buggy implementation incorrectly sums the digits of the sum of the numbers,\n        which would produce 15 for this input. This test confirms the correct behavior.\n        \"\"\"\n        result = digit_distance_nums(123, 45)\n>       assert result == 5, (\n            f\"Expected digit distance between 123 and 45 to be 5, \"\n            f\"but got {result}.\"\n        )\nE       AssertionError: Expected digit distance between 123 and 45 to be 5, but got 15.\nE       assert 15 == 5\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_per_digit_difference - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:54:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_nums_per_digit_difference():\n    \"\"\"The function should compute the sum of per‑digit absolute differences, \n    not the sum of the digits of the arithmetic sum.\"\"\"\n    n1, n2 = 123, 456\n    expected = 9  # |1-4| + |2-5| + |3-6| = 3 + 3 + 3\n    result = digit_distance_nums(n1, n2)\n    assert result == expected, (\n        f\"Expected digit distance between {n1} and {n2} to be {expected}, \"\n        f\"but got {result}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpiw4xgm4v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_per_digit_difference FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_digit_distance_nums_per_digit_difference _________________\n\n    def test_digit_distance_nums_per_digit_difference():\n        \"\"\"The function should compute the sum of per‑digit absolute differences,\n        not the sum of the digits of the arithmetic sum.\"\"\"\n        n1, n2 = 123, 456\n        expected = 9  # |1-4| + |2-5| + |3-6| = 3 + 3 + 3\n        result = digit_distance_nums(n1, n2)\n>       assert result == expected, (\n            f\"Expected digit distance between {n1} and {n2} to be {expected}, \"\n            f\"but got {result}\"\n        )\nE       AssertionError: Expected digit distance between 123 and 456 to be 9, but got 21\nE       assert 21 == 9\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_per_digit_difference - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpsferkm6x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_per_digit_difference PASSED  [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:54:50Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2311,
+  "completion_tokens_total": 1698,
+  "duration_seconds": 11.82,
+  "timestamp": "2026-05-25T20:54:50Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

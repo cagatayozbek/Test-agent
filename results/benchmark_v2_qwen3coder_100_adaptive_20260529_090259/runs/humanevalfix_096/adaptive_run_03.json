@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_096",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_count_up_to_bug():\n    # The bug is in the inner loop condition: j % i == 0 should be i % j == 0\n    # Using n=5 as the test case since the docstring specifies count_up_to(5) => [2,3]\n    # With the buggy code, the condition j % i == 0 will never be true (since j < i in the loop),\n    # so all numbers will be considered prime, resulting in [2,3,4] instead of [2,3]\n    result = count_up_to(5)\n    assert result == [2, 3], f\"Expected [2, 3] but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpk6qapqud\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_count_up_to_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_count_up_to_bug _____________________________\n\n    def test_count_up_to_bug():\n        # The bug is in the inner loop condition: j % i == 0 should be i % j == 0\n        # Using n=5 as the test case since the docstring specifies count_up_to(5) => [2,3]\n        # With the buggy code, the condition j % i == 0 will never be true (since j < i in the loop),\n        # so all numbers will be considered prime, resulting in [2,3,4] instead of [2,3]\n>       result = count_up_to(5)\n                 ^^^^^^^^^^^\nE       NameError: name 'count_up_to' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_count_up_to_bug - NameError: name 'count_up_to...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxzem616h\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_count_up_to_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_count_up_to_bug _____________________________\n\n    def test_count_up_to_bug():\n        # The bug is in the inner loop condition: j % i == 0 should be i % j == 0\n        # Using n=5 as the test case since the docstring specifies count_up_to(5) => [2,3]\n        # With the buggy code, the condition j % i == 0 will never be true (since j < i in the loop),\n        # so all numbers will be considered prime, resulting in [2,3,4] instead of [2,3]\n>       result = count_up_to(5)\n                 ^^^^^^^^^^^\nE       NameError: name 'count_up_to' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_count_up_to_bug - NameError: name 'count_up_to...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import count_up_to\n\ndef test_count_up_to_bug():\n    # Bug: inner loop uses `j % i == 0` instead of `i % j == 0`\n    # For n=5, should return primes less than 5: [2, 3]\n    # Buggy code incorrectly includes 4 because the divisibility check is inverted\n    result = count_up_to(5)\n    assert result == [2, 3], f\"Expected [2, 3] but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa1np_01s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_count_up_to_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_count_up_to_bug _____________________________\n\n    def test_count_up_to_bug():\n        # Bug: inner loop uses `j % i == 0` instead of `i % j == 0`\n        # For n=5, should return primes less than 5: [2, 3]\n        # Buggy code incorrectly includes 4 because the divisibility check is inverted\n        result = count_up_to(5)\n>       assert result == [2, 3], f\"Expected [2, 3] but got {result}\"\nE       AssertionError: Expected [2, 3] but got [2, 3, 4]\nE       assert [2, 3, 4] == [2, 3]\nE         \nE         Left contains one more item: 4\nE         \nE         Full diff:\nE           [\nE               2,\nE               3,\nE         +     4,\nE           ]\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_count_up_to_bug - AssertionError: Expected [2,...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqfxcz_ll\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_count_up_to_bug PASSED                           [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The inner loop condition `j % i == 0` incorrectly checks if j is divisible by i, when it should check if i is divisible by j to determine if i is prime.",
+    "bug_location": "count_up_to, line 13",
+    "trigger_condition": "Call count_up_to(5), which should return [2, 3] but will return an incorrect result due to the faulty divisibility check.",
+    "expected_vs_actual": "Expected: [2, 3]; Actual: likely [2, 3, 4] or similar incorrect list because the divisibility test is inverted.",
+    "suggested_test_strategy": "Write a test that calls count_up_to(5) and asserts the result equals [2, 3], which will expose the bug by failing on the buggy version.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2236,
+  "completion_tokens_total": 455,
+  "duration_seconds": 6.89,
+  "timestamp": "2026-05-29T09:05:38Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

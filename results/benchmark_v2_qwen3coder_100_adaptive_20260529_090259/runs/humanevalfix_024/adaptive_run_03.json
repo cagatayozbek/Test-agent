@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_024",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_largest_divisor_example():\n    assert largest_divisor(15) == 5, \"largest_divisor(15) should return 5\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpckwsonyl\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor_example FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_largest_divisor_example _________________________\n\n    def test_largest_divisor_example():\n>       assert largest_divisor(15) == 5, \"largest_divisor(15) should return 5\"\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'largest_divisor' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor_example - NameError: name 'lar...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8_7a1hd3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor_example FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_largest_divisor_example _________________________\n\n    def test_largest_divisor_example():\n>       assert largest_divisor(15) == 5, \"largest_divisor(15) should return 5\"\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'largest_divisor' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor_example - NameError: name 'lar...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import largest_divisor\n\ndef test_largest_divisor_15():\n    \"\"\"Test that largest_divisor(15) returns 5, the largest proper divisor of 15.\"\"\"\n    assert largest_divisor(15) == 5, \"largest_divisor(15) should return 5, not n-1=14 or None\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphe94l5uy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor_15 FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_largest_divisor_15 ____________________________\n\n    def test_largest_divisor_15():\n        \"\"\"Test that largest_divisor(15) returns 5, the largest proper divisor of 15.\"\"\"\n>       assert largest_divisor(15) == 5, \"largest_divisor(15) should return 5, not n-1=14 or None\"\nE       AssertionError: largest_divisor(15) should return 5, not n-1=14 or None\nE       assert None == 5\nE        +  where None = largest_divisor(15)\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor_15 - AssertionError: largest_d...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2odp8fnv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor_15 PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The code incorrectly uses subtraction (`n - i == 0`) instead of the modulo operator (`n % i == 0`) to check for divisibility. This causes the function to return `n-1` for any `n > 1`, since `n - (n-1) == 1`, and only returns `0` when `i == n`, which never happens in the loop since `range(n)` excludes `n`.",
+    "bug_location": "largest_divisor, line 7",
+    "trigger_condition": "Any input `n > 1` where the largest proper divisor is not `n-1`, e.g., `n = 15` (largest proper divisor is `5`, not `14`).",
+    "expected_vs_actual": "Expected: `largest_divisor(15)` returns `5`. Actual: returns `14` (since `15 - 14 == 1`, and the loop starts from `i = 14`, but the condition `15 - 14 == 0` is false, so it continues; actually, wait — correction: the loop goes in reverse from `n-1` down to `0`. The first `i` where `n - i == 0` would be `i = n`, but `i` only goes up to `n-1`, so the condition `n - i == 0` is never true. So the loop completes without returning, and the function implicitly returns `None`. But wait — the docstring says it should return `5`. Let's re-analyze carefully.",
+    "suggested_test_strategy": "Run `pytest` with `test_largest_divisor_15()` defined below. This test fails on the buggy version (which returns `None` or crashes) and passes on the fixed version.",
+    "confidence": "medium"
+  },
+  "prompt_tokens_total": 2014,
+  "completion_tokens_total": 529,
+  "duration_seconds": 6.49,
+  "timestamp": "2026-05-29T09:04:13Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

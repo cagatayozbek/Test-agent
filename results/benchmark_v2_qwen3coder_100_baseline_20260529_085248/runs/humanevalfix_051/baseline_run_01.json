@@ -1,0 +1,68 @@
+{
+  "task_id": "humanevalfix_051",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_remove_vowels_extraneous_wy():\n    from source import remove_vowels\n    \n    # Test case that exposes the bug: 'w' and 'y' should NOT be treated as vowels\n    # The buggy version incorrectly removes 'w' and 'y' because they're in the list\n    assert remove_vowels('wy') == 'wy', \"The function should not remove 'w' and 'y' as they are not vowels\"\n    assert remove_vowels('yellow') == 'ylw', \"Should remove only true vowels (a,e,i,o,u) but keep 'w' and 'y'\"\n    assert remove_vowels('why') == 'hy', \"Should keep 'w' and 'y' but remove 'y' (wait - 'y' in 'why' is the first letter - test with 'y' in middle)\"\n    assert remove_vowels('beyond') == 'beynd', \"Should keep 'y' but remove 'e', 'o'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr54uys_c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_extraneous_wy FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_remove_vowels_extraneous_wy _______________________\n\n    def test_remove_vowels_extraneous_wy():\n        from source import remove_vowels\n    \n        # Test case that exposes the bug: 'w' and 'y' should NOT be treated as vowels\n        # The buggy version incorrectly removes 'w' and 'y' because they're in the list\n>       assert remove_vowels('wy') == 'wy', \"The function should not remove 'w' and 'y' as they are not vowels\"\nE       AssertionError: The function should not remove 'w' and 'y' as they are not vowels\nE       assert '' == 'wy'\nE         \nE         - wy\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_extraneous_wy - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4ihk0t73\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_extraneous_wy FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_remove_vowels_extraneous_wy _______________________\n\n    def test_remove_vowels_extraneous_wy():\n        from source import remove_vowels\n    \n        # Test case that exposes the bug: 'w' and 'y' should NOT be treated as vowels\n        # The buggy version incorrectly removes 'w' and 'y' because they're in the list\n        assert remove_vowels('wy') == 'wy', \"The function should not remove 'w' and 'y' as they are not vowels\"\n>       assert remove_vowels('yellow') == 'ylw', \"Should remove only true vowels (a,e,i,o,u) but keep 'w' and 'y'\"\nE       AssertionError: Should remove only true vowels (a,e,i,o,u) but keep 'w' and 'y'\nE       assert 'yllw' == 'ylw'\nE         \nE         - ylw\nE         + yllw\nE         ?   +\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_extraneous_wy - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:54:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_remove_vowels_extraneous_wy():\n    # The bug is that 'w' and 'y' are incorrectly treated as vowels and removed\n    # Test with 'w' and 'y' to expose the bug: they should be kept\n    assert remove_vowels('wy') == 'wy', \"Function should keep 'w' and 'y' as they are not vowels\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi0gxyzzr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_extraneous_wy FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_remove_vowels_extraneous_wy _______________________\n\n    def test_remove_vowels_extraneous_wy():\n        # The bug is that 'w' and 'y' are incorrectly treated as vowels and removed\n        # Test with 'w' and 'y' to expose the bug: they should be kept\n>       assert remove_vowels('wy') == 'wy', \"Function should keep 'w' and 'y' as they are not vowels\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'remove_vowels' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_extraneous_wy - NameError: name ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_3nytttv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_extraneous_wy FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_remove_vowels_extraneous_wy _______________________\n\n    def test_remove_vowels_extraneous_wy():\n        # The bug is that 'w' and 'y' are incorrectly treated as vowels and removed\n        # Test with 'w' and 'y' to expose the bug: they should be kept\n>       assert remove_vowels('wy') == 'wy', \"Function should keep 'w' and 'y' as they are not vowels\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'remove_vowels' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_extraneous_wy - NameError: name ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:54:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import remove_vowels\n\ndef test_remove_vowels_extraneous_wy():\n    # Test that 'w' and 'y' are NOT removed since they are not vowels\n    # The buggy version incorrectly removes 'w' and 'y'\n    assert remove_vowels('wy') == 'wy', \"Function should keep 'w' and 'y' as they are not vowels\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvtltwetr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_extraneous_wy FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_remove_vowels_extraneous_wy _______________________\n\n    def test_remove_vowels_extraneous_wy():\n        # Test that 'w' and 'y' are NOT removed since they are not vowels\n        # The buggy version incorrectly removes 'w' and 'y'\n>       assert remove_vowels('wy') == 'wy', \"Function should keep 'w' and 'y' as they are not vowels\"\nE       AssertionError: Function should keep 'w' and 'y' as they are not vowels\nE       assert '' == 'wy'\nE         \nE         - wy\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_extraneous_wy - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1239ees6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_extraneous_wy PASSED               [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:54:19Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2716,
+  "completion_tokens_total": 397,
+  "duration_seconds": 6.47,
+  "timestamp": "2026-05-29T08:54:19Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

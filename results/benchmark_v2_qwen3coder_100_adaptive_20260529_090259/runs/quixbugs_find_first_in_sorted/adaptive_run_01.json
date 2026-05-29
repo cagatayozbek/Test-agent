@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_find_first_in_sorted",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_first_in_sorted\n\ndef test_find_first_in_sorted_infinite_loop_bug():\n    # Test case that triggers infinite loop due to mid not advancing\n    # when lo=2, hi=3, mid=2, and arr[mid]==5, but arr[mid-1]==5 also\n    # causing hi=mid=2 repeatedly without progress\n    arr = [3, 4, 5, 5, 5, 6]\n    target = 5\n    expected = 2  # First occurrence of 5 should be at index 2\n    \n    result = find_first_in_sorted(arr, target)\n    \n    # The buggy version will hang or return incorrect result\n    # Fixed version should return 2\n    assert result == expected, f\"Expected first occurrence of {target} at index {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz3218gzw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_infinite_loop_bug PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjwricgig\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_infinite_loop_bug PASSED    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:09:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nimport signal\nfrom source import find_first_in_sorted\n\ndef timeout_handler(signum, frame):\n    raise TimeoutError(\"Function timed out - likely infinite loop\")\n\ndef test_find_first_in_sorted_infinite_loop_bug():\n    # Set a timeout to catch infinite loops\n    signal.signal(signal.SIGALRM, timeout_handler)\n    signal.alarm(2)  # 2 second timeout\n    \n    try:\n        result = find_first_in_sorted([3, 4, 5, 5, 5, 6], 5)\n        signal.alarm(0)  # Cancel the alarm\n        \n        # The bug causes infinite loop, so we should never reach this assertion\n        # But if we do, verify the result is correct (first occurrence at index 2)\n        assert result == 2, f\"Expected first occurrence of 5 at index 2, but got {result}\"\n    except TimeoutError:\n        # This is the expected behavior for the buggy code\n        pytest.fail(\"Function timed out - infinite loop detected in buggy implementation\")",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl4ecb69m\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_infinite_loop_bug PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp40xi362i\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_infinite_loop_bug PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:09:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nimport signal\nimport sys\nfrom source import find_first_in_sorted\n\nclass TimeoutError(Exception):\n    pass\n\ndef timeout_handler(signum, frame):\n    raise TimeoutError(\"Function timed out - likely infinite loop\")\n\ndef test_find_first_in_sorted_infinite_loop_bug():\n    # Set alarm to catch infinite loops (2 seconds timeout)\n    signal.signal(signal.SIGALRM, timeout_handler)\n    signal.alarm(2)\n    \n    try:\n        # This input triggers the infinite loop bug in the original code\n        result = find_first_in_sorted([3, 4, 5, 5, 5, 6], 5)\n        \n        # Cancel the alarm if function completes\n        signal.alarm(0)\n        \n        # The expected result should be 2 (first occurrence of 5)\n        assert result == 2, f\"Expected first occurrence of 5 at index 2, but got {result}\"\n    except TimeoutError:\n        # If we hit a timeout, that confirms the infinite loop bug\n        pytest.fail(\"Function timed out - infinite loop detected in buggy implementation\")\n    finally:\n        signal.alarm(0)  # Ensure alarm is cleared",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp13x8vmk3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_infinite_loop_bug PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuu3020kj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_infinite_loop_bug PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:09:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The loop condition 'lo <= hi' combined with 'hi = mid' (instead of 'hi = mid - 1') can cause infinite loops when there are duplicates and the target value appears multiple times consecutively, because mid may not advance when lo and hi are adjacent.",
+    "bug_location": "find_first_in_sorted, line 6-14",
+    "trigger_condition": "Input array with consecutive duplicate values where target appears multiple times (e.g., [3, 4, 5, 5, 5, 6], target=5)",
+    "expected_vs_actual": "Expected: returns 2 (first occurrence index of 5). Actual: infinite loop due to mid not advancing when lo=2, hi=3 (mid=2), then hi=mid=2, then lo=2, hi=2, mid=2, and the condition never changes to break the loop.",
+    "suggested_test_strategy": "Create a pytest test with the example from the bug description: assert find_first_in_sorted([3, 4, 5, 5, 5, 6], 5) == 2. Add a timeout or use a controlled execution to catch infinite loops.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3930,
+  "completion_tokens_total": 930,
+  "duration_seconds": 10.73,
+  "timestamp": "2026-05-29T09:09:13Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

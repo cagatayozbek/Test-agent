@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_wrap",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import wrap\n\ndef test_wrap_includes_trailing_word():\n    result = wrap('aaa bbb ccc', 4)\n    expected = ['aaa', 'bbb', 'ccc']\n    assert result == expected, f\"Expected wrap to return {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpnmyc3gvb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_trailing_word FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_wrap_includes_trailing_word _______________________\n\n    def test_wrap_includes_trailing_word():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected wrap to return {expected}, got {result}\"\nE       AssertionError: Expected wrap to return ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_trailing_word - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpagziqh5f\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_trailing_word FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_wrap_includes_trailing_word _______________________\n\n    def test_wrap_includes_trailing_word():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected wrap to return {expected}, got {result}\"\nE       AssertionError: Expected wrap to return ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_trailing_word - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:39:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import wrap\n\ndef test_wrap_includes_trailing_segment():\n    result = wrap('aaa bbb ccc', 4)\n    assert result == ['aaa', ' bbb', ' ccc'], f\"Expected trailing segment to be included, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpoml3bdnz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_trailing_segment FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_wrap_includes_trailing_segment ______________________\n\n    def test_wrap_includes_trailing_segment():\n        result = wrap('aaa bbb ccc', 4)\n>       assert result == ['aaa', ' bbb', ' ccc'], f\"Expected trailing segment to be included, got {result}\"\nE       AssertionError: Expected trailing segment to be included, got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', ' bbb', ' ccc']\nE         \nE         Right contains one more item: ' ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE               ' bbb',\nE         -     ' ccc',\nE           ]\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_trailing_segment - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpvo7px6_m\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_trailing_segment PASSED            [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:39:51Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function `wrap` does not add the remaining `text` after the while loop exits, causing the trailing words to be omitted from the result list.",
+    "bug_location": "wrap function, missing `lines.append(text)` after the loop (end of function)",
+    "trigger_condition": "Calling `wrap` with a string where the final segment length is <= cols, e.g., `wrap('aaa bbb ccc', 4)`",
+    "expected_vs_actual": "Expected: `['aaa', 'bbb', 'ccc']` (all words wrapped). Actual: `['aaa', 'bbb']` (last word lost).",
+    "suggested_test_strategy": "Create a pytest test that calls `wrap('aaa bbb ccc', 4)` and asserts the result equals `['aaa', 'bbb', 'ccc']`. The test will fail on the buggy implementation and pass once the missing append is added.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2365,
+  "completion_tokens_total": 1475,
+  "duration_seconds": 14.57,
+  "timestamp": "2026-05-25T20:39:51Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

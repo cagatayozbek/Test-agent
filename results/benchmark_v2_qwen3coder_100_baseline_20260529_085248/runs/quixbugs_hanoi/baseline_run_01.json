@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_hanoi",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import hanoi\n\ndef test_hanoi_two_disks_correct_moves():\n    # Test hanoi(2, start=1, end=3) returns exactly [(1,2),(1,3),(2,3)]\n    # The bug causes the first move to be (1,3) instead of (1,2) and the second move to be (1,2) instead of (1,3)\n    # due to incorrectly appending (start, helper) instead of (start, end) in the base case handling\n    expected = [(1, 2), (1, 3), (2, 3)]\n    result = hanoi(2, start=1, end=3)\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzfg_38zf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_hanoi_two_disks_correct_moves FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_hanoi_two_disks_correct_moves ______________________\n\n    def test_hanoi_two_disks_correct_moves():\n        # Test hanoi(2, start=1, end=3) returns exactly [(1,2),(1,3),(2,3)]\n        # The bug causes the first move to be (1,3) instead of (1,2) and the second move to be (1,2) instead of (1,3)\n        # due to incorrectly appending (start, helper) instead of (start, end) in the base case handling\n        expected = [(1, 2), (1, 3), (2, 3)]\n        result = hanoi(2, start=1, end=3)\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected [(1, 2), (1, 3), (2, 3)], got [(1, 3), (1, 2), (2, 1)]\nE       assert [(1, 3), (1, 2), (2, 1)] == [(1, 2), (1, 3), (2, 3)]\nE         \nE         At index 0 diff: (1, 3) != (1, 2)\nE         \nE         Full diff:\nE           [\nE         +     (\nE         +         1,...\nE         \nE         ...Full output truncated (16 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_hanoi_two_disks_correct_moves - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpk6wmqcat\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_hanoi_two_disks_correct_moves PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:59:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 693,
+  "completion_tokens_total": 169,
+  "duration_seconds": 2.36,
+  "timestamp": "2026-05-29T08:59:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

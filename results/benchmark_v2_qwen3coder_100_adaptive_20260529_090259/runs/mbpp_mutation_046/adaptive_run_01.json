@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_046",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_nonagonal_number_calculation():\n    # The correct formula for the nth nonagonal number is n*(7*n - 5)//2\n    # The buggy code uses n // (7*n - 5) / 2 which is completely wrong\n    # For n=1: correct result is 1*(7*1-5)//2 = 2//2 = 1\n    # Buggy code: 1 // (7*1 - 5) / 2 = 1 // 2 / 2 = 0 / 2 = 0\n    # For n=2: correct result is 2*(7*2-5)//2 = 2*9//2 = 18//2 = 9\n    # Buggy code: 2 // (7*2 - 5) / 2 = 2 // 9 / 2 = 0 / 2 = 0\n    # Use n=1 as it's the smallest input where the bug is obvious\n    \n    from source import is_nonagonal\n    \n    # Canonical first nonagonal number is 1\n    assert is_nonagonal(1) == 1, f\"Expected first nonagonal number to be 1, got {is_nonagonal(1)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9x4t18lj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_nonagonal_number_calculation FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_nonagonal_number_calculation _______________________\n\n    def test_nonagonal_number_calculation():\n        # The correct formula for the nth nonagonal number is n*(7*n - 5)//2\n        # The buggy code uses n // (7*n - 5) / 2 which is completely wrong\n        # For n=1: correct result is 1*(7*1-5)//2 = 2//2 = 1\n        # Buggy code: 1 // (7*1 - 5) / 2 = 1 // 2 / 2 = 0 / 2 = 0\n        # For n=2: correct result is 2*(7*2-5)//2 = 2*9//2 = 18//2 = 9\n        # Buggy code: 2 // (7*2 - 5) / 2 = 2 // 9 / 2 = 0 / 2 = 0\n        # Use n=1 as it's the smallest input where the bug is obvious\n    \n        from source import is_nonagonal\n    \n        # Canonical first nonagonal number is 1\n>       assert is_nonagonal(1) == 1, f\"Expected first nonagonal number to be 1, got {is_nonagonal(1)}\"\nE       AssertionError: Expected first nonagonal number to be 1, got 0\nE       assert 0 == 1\nE        +  where 0 = <function is_nonagonal at 0x10c56a840>(1)\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_nonagonal_number_calculation - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6z4nec0m\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_nonagonal_number_calculation PASSED              [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:04Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 434,
+  "completion_tokens_total": 271,
+  "duration_seconds": 4.21,
+  "timestamp": "2026-05-29T09:08:04Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

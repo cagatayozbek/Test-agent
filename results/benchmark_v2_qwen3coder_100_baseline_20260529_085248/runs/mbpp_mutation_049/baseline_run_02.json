@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_empty_string():\n    # Empty string case: split('_') on \"\" gives [\"\"] \n    # For x = \"\", x.capitalize() is \"\" (falsy), so the bug manifests\n    # Original buggy code: ''.join((x.capitalize() and '_' for x in word.split('_')))\n    # For x = \"\", \"\" and '_' = \"\" (falsy short-circuit), so empty string contributes nothing\n    # Fixed code should produce \"\" (empty string), but buggy version may behave differently\n    # However, let's pick a case where the boolean operator 'and' vs 'or' matters clearly\n    \n    # Better test: single underscore string \"_\"\n    # split('_') on \"_\" gives [\"\", \"\"]\n    # For each x in [\"\", \"\"]:\n    #   Buggy: x.capitalize() and '_' -> \"\" and '_' -> \"\" (falsy)\n    #   Fixed: x.capitalize() or '_' -> \"\" or '_' -> \"_\"\n    # So buggy code produces \"\" + \"\" = \"\", but should produce \"_\" + \"_\" = \"__\"\n    \n    # Even clearer: test with input \"__\" (two underscores)\n    # split('_') gives [\"\", \"\", \"\"]\n    # Buggy: each \"\" -> \"\" (falsy), so join gives \"\"\n    # Fixed: each \"\" -> \"_\" (since \"\" or '_' = '_'), so join gives \"___\"\n    \n    # But let's use the most minimal case that clearly shows the bug:\n    # Input \"_\" -> split gives [\"\", \"\"]\n    # Expected: each empty part becomes \"_\" (capitalized empty string is empty, so use '_' via 'or')\n    # So expected output is \"__\"\n    \n    input_str = \"_\"\n    expected = \"__\"\n    assert snake_to_camel(input_str) == expected, f\"Expected '__' for input '_', got '{snake_to_camel(input_str)}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8oh4i1k0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_empty_string FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_snake_to_camel_empty_string _______________________\n\n    def test_snake_to_camel_empty_string():\n        # Empty string case: split('_') on \"\" gives [\"\"]\n        # For x = \"\", x.capitalize() is \"\" (falsy), so the bug manifests\n        # Original buggy code: ''.join((x.capitalize() and '_' for x in word.split('_')))\n        # For x = \"\", \"\" and '_' = \"\" (falsy short-circuit), so empty string contributes nothing\n        # Fixed code should produce \"\" (empty string), but buggy version may behave differently\n        # However, let's pick a case where the boolean operator 'and' vs 'or' matters clearly\n    \n        # Better test: single underscore string \"_\"\n        # split('_') on \"_\" gives [\"\", \"\"]\n        # For each x in [\"\", \"\"]:\n        #   Buggy: x.capitalize() and '_' -> \"\" and '_' -> \"\" (falsy)\n        #   Fixed: x.capitalize() or '_' -> \"\" or '_' -> \"_\"\n        # So buggy code produces \"\" + \"\" = \"\", but should produce \"_\" + \"_\" = \"__\"\n    \n        # Even clearer: test with input \"__\" (two underscores)\n        # split('_') gives [\"\", \"\", \"\"]\n        # Buggy: each \"\" -> \"\" (falsy), so join gives \"\"\n        # Fixed: each \"\" -> \"_\" (since \"\" or '_' = '_'), so join gives \"___\"\n    \n        # But let's use the most minimal case that clearly shows the bug:\n        # Input \"_\" -> split gives [\"\", \"\"]\n        # Expected: each empty part becomes \"_\" (capitalized empty string is empty, so use '_' via 'or')\n        # So expected output is \"__\"\n    \n        input_str = \"_\"\n        expected = \"__\"\n>       assert snake_to_camel(input_str) == expected, f\"Expected '__' for input '_', got '{snake_to_camel(input_str)}'\"\nE       AssertionError: Expected '__' for input '_', got ''\nE       assert '' == '__'\nE         \nE         - __\n\ntest_generated.py:31: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_empty_string - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn9jq_7n5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_empty_string PASSED               [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:58:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 442,
+  "completion_tokens_total": 404,
+  "duration_seconds": 4.35,
+  "timestamp": "2026-05-29T08:58:17Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

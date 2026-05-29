@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_051",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import remove_vowels\n\ndef test_remove_vowels_excludes_nonvowel_consonants():\n    assert remove_vowels('w') == 'w', \"remove_vowels should preserve lowercase 'w' as a consonant\"\n    assert remove_vowels('W') == 'W', \"remove_vowels should preserve uppercase 'W' as a consonant\"\n    assert remove_vowels('y') == 'y', \"remove_vowels should preserve lowercase 'y' as a consonant\"\n    assert remove_vowels('Y') == 'Y', \"remove_vowels should preserve uppercase 'Y' as a consonant\"\n    assert remove_vowels('water') == 'ttr', \"remove_vowels should preserve 'w' in the word 'water'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp8sz1hfra\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_excludes_nonvowel_consonants FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_remove_vowels_excludes_nonvowel_consonants ________________\n\n    def test_remove_vowels_excludes_nonvowel_consonants():\n>       assert remove_vowels('w') == 'w', \"remove_vowels should preserve lowercase 'w' as a consonant\"\nE       AssertionError: remove_vowels should preserve lowercase 'w' as a consonant\nE       assert '' == 'w'\nE         \nE         - w\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_excludes_nonvowel_consonants - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpmabm70qf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_excludes_nonvowel_consonants FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_remove_vowels_excludes_nonvowel_consonants ________________\n\n    def test_remove_vowels_excludes_nonvowel_consonants():\n        assert remove_vowels('w') == 'w', \"remove_vowels should preserve lowercase 'w' as a consonant\"\n        assert remove_vowels('W') == 'W', \"remove_vowels should preserve uppercase 'W' as a consonant\"\n        assert remove_vowels('y') == 'y', \"remove_vowels should preserve lowercase 'y' as a consonant\"\n        assert remove_vowels('Y') == 'Y', \"remove_vowels should preserve uppercase 'Y' as a consonant\"\n>       assert remove_vowels('water') == 'ttr', \"remove_vowels should preserve 'w' in the word 'water'\"\nE       AssertionError: remove_vowels should preserve 'w' in the word 'water'\nE       assert 'wtr' == 'ttr'\nE         \nE         - ttr\nE         + wtr\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_excludes_nonvowel_consonants - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:52:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import remove_vowels\n\ndef test_remove_vowels_preserves_nonvowel_consonants():\n    # The vowel-removing function should not strip the consonants 'w' and 'y'.\n    # Example 1: 'world' contains a 'w' that is not a vowel.\n    assert remove_vowels('world') == 'wrld', (\n        \"remove_vowels incorrectly removed 'w' from 'world' \"\n        f\"got {remove_vowels('world')} instead of 'wrld'\"\n    )\n    # Example 2: a string composed solely of the characters that should remain.\n    assert remove_vowels('wWyY') == 'wWyY', (\n        \"remove_vowels incorrectly removed 'w' or 'y' from 'wWyY' \"\n        f\"got {remove_vowels('wWyY')} instead of 'wWyY'\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp8ycs9ekb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_preserves_nonvowel_consonants FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_remove_vowels_preserves_nonvowel_consonants _______________\n\n    def test_remove_vowels_preserves_nonvowel_consonants():\n        # The vowel-removing function should not strip the consonants 'w' and 'y'.\n        # Example 1: 'world' contains a 'w' that is not a vowel.\n>       assert remove_vowels('world') == 'wrld', (\n            \"remove_vowels incorrectly removed 'w' from 'world' \"\n            f\"got {remove_vowels('world')} instead of 'wrld'\"\n        )\nE       AssertionError: remove_vowels incorrectly removed 'w' from 'world' got rld instead of 'wrld'\nE       assert 'rld' == 'wrld'\nE         \nE         - wrld\nE         ? -\nE         + rld\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_preserves_nonvowel_consonants - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp5yys5419\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_preserves_nonvowel_consonants PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:52:14Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1630,
+  "completion_tokens_total": 1596,
+  "duration_seconds": 10.52,
+  "timestamp": "2026-05-25T20:52:14Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import os\nimport io\nimport pytest\nfrom source import Tracer\n\ndef test_tracer_utf8_without_coding_header(tmp_path):\n    # UTF-8 text containing a non‑ASCII character, without a coding header.\n    original_text = \"π = 3.14\\n\"\n    source_bytes = [original_text.encode(\"utf-8\")]\n\n    tracer_path = tmp_path / \"trace.log\"\n    tracer = Tracer(str(tracer_path), overwrite=True)\n\n    rendered = tracer.dump_source(source_bytes)\n\n    # The rendered output should exactly match the original Unicode text.\n    assert rendered == original_text, (\n        \"Tracer should preserve non‑ASCII characters when no coding header is present; \"\n        f\"expected {original_text!r}, got {rendered!r}\"\n    )\n\n    # Verify that the file on disk contains the same Unicode content.\n    with open(tracer_path, \"r\", encoding=\"utf-8\") as fh:\n        file_content = fh.read()\n    assert file_content == original_text, (\n        \"File written by Tracer should be UTF‑8 encoded and retain the original characters; \"\n        f\"expected {original_text!r}, got {file_content!r}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpcg3r7uhy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_utf8_without_coding_header FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_tracer_utf8_without_coding_header ____________________\n\ntmp_path = PosixPath('/private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/pytest-of-cagatayozbek/pytest-8/test_tracer_utf8_without_codin0')\n\n    def test_tracer_utf8_without_coding_header(tmp_path):\n        # UTF-8 text containing a non‑ASCII character, without a coding header.\n        original_text = \"π = 3.14\\n\"\n        source_bytes = [original_text.encode(\"utf-8\")]\n    \n        tracer_path = tmp_path / \"trace.log\"\n        tracer = Tracer(str(tracer_path), overwrite=True)\n    \n        rendered = tracer.dump_source(source_bytes)\n    \n        # The rendered output should exactly match the original Unicode text.\n>       assert rendered == original_text, (\n            \"Tracer should preserve non‑ASCII characters when no coding header is present; \"\n            f\"expected {original_text!r}, got {rendered!r}\"\n        )\nE       AssertionError: Tracer should preserve non‑ASCII characters when no coding header is present; expected 'π = 3.14\\n', got '�� = 3.14\\n'\nE       assert '�� = 3.14\\n' == 'π = 3.14\\n'\nE         \nE         - π = 3.14\nE         ? ^\nE         + �� = 3.14\nE         ? ^^\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tracer_utf8_without_coding_header - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmph7i0lcvx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_utf8_without_coding_header PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:29:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 768,
+  "completion_tokens_total": 864,
+  "duration_seconds": 6.29,
+  "timestamp": "2026-05-25T20:29:00Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

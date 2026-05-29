@@ -1,0 +1,75 @@
+{
+  "task_id": "null_handling_profile",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_get_user_display_name_with_none_profile():\n    user_data = {'profile': None}\n    result = get_user_display_name(user_data)\n    assert result == \"Unknown\", f\"Expected 'Unknown' when profile is None, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_4c3o1a9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_get_user_display_name_with_none_profile _________________\n\n    def test_get_user_display_name_with_none_profile():\n        user_data = {'profile': None}\n>       result = get_user_display_name(user_data)\n                 ^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'get_user_display_name' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_with_none_profile - Name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7cfv4z7a\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_get_user_display_name_with_none_profile _________________\n\n    def test_get_user_display_name_with_none_profile():\n        user_data = {'profile': None}\n>       result = get_user_display_name(user_data)\n                 ^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'get_user_display_name' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_with_none_profile - Name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:41Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import get_user_display_name\n\ndef test_get_user_display_name_with_none_profile():\n    user_data = {'profile': None}\n    try:\n        result = get_user_display_name(user_data)\n        # If no exception is raised, ensure it returns a sensible value (None or default)\n        assert result is None, f\"Expected None or default display name when profile is None, got {result}\"\n    except TypeError:\n        # The buggy version raises TypeError when trying to index None\n        assert False, \"Function should handle None profile gracefully without raising TypeError\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi9z7jkt0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_get_user_display_name_with_none_profile _________________\n\n    def test_get_user_display_name_with_none_profile():\n        user_data = {'profile': None}\n        try:\n>           result = get_user_display_name(user_data)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nuser_data = {'profile': None}\n\n    def get_user_display_name(user_data):\n        \"\"\"\n        Returns the display name from user data.\n        Expected structure: {'profile': {'display_name': '...', ...}, ...}\n        However, the 'profile' key can sometimes be None.\n        \"\"\"\n        # BUG: If user_data.get('profile') returns None,\n        # accessing ['display_name'] on None raises TypeError.\n        profile = user_data.get('profile')\n    \n        # The developer assumed profile is always present or forgot to check for None.\n>       return profile['display_name']\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: 'NoneType' object is not subscriptable\n\nsource.py:12: TypeError\n\nDuring handling of the above exception, another exception occurred:\n\n    def test_get_user_display_name_with_none_profile():\n        user_data = {'profile': None}\n        try:\n            result = get_user_display_name(user_data)\n            # If no exception is raised, ensure it returns a sensible value (None or default)\n            assert result is None, f\"Expected None or default display name when profile is None, got {result}\"\n        except TypeError:\n            # The buggy version raises TypeError when trying to index None\n>           assert False, \"Function should handle None profile gracefully without raising TypeError\"\nE           AssertionError: Function should handle None profile gracefully without raising TypeError\nE           assert False\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_with_none_profile - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcz7iktom\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_get_user_display_name_with_none_profile _________________\n\n    def test_get_user_display_name_with_none_profile():\n        user_data = {'profile': None}\n        try:\n            result = get_user_display_name(user_data)\n            # If no exception is raised, ensure it returns a sensible value (None or default)\n>           assert result is None, f\"Expected None or default display name when profile is None, got {result}\"\nE           AssertionError: Expected None or default display name when profile is None, got Anonymous\nE           assert 'Anonymous' is None\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_with_none_profile - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import get_user_display_name\n\ndef test_get_user_display_name_with_none_profile_returns_default():\n    user_data = {'profile': None}\n    # The fixed version should handle None profile gracefully, e.g., return None or a default\n    result = get_user_display_name(user_data)\n    # Assert that the function returns a safe value (None or a default string) instead of raising TypeError\n    assert result is None or result == \"Anonymous\", f\"Expected None or 'Anonymous', got {result!r}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz57627do\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile_returns_default FAILED [100%]\n\n=================================== FAILURES ===================================\n_________ test_get_user_display_name_with_none_profile_returns_default _________\n\n    def test_get_user_display_name_with_none_profile_returns_default():\n        user_data = {'profile': None}\n        # The fixed version should handle None profile gracefully, e.g., return None or a default\n>       result = get_user_display_name(user_data)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nuser_data = {'profile': None}\n\n    def get_user_display_name(user_data):\n        \"\"\"\n        Returns the display name from user data.\n        Expected structure: {'profile': {'display_name': '...', ...}, ...}\n        However, the 'profile' key can sometimes be None.\n        \"\"\"\n        # BUG: If user_data.get('profile') returns None,\n        # accessing ['display_name'] on None raises TypeError.\n        profile = user_data.get('profile')\n    \n        # The developer assumed profile is always present or forgot to check for None.\n>       return profile['display_name']\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: 'NoneType' object is not subscriptable\n\nsource.py:12: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_with_none_profile_returns_default\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvasj_h05\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_get_user_display_name_with_none_profile_returns_default PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The function fails when user_data['profile'] is None because it attempts to index into None with ['display_name'], causing a TypeError.",
+    "bug_location": "get_user_display_name, line 10",
+    "trigger_condition": "user_data is a dictionary where the value for key 'profile' is explicitly None",
+    "expected_vs_actual": "Expected: Function should handle None profile gracefully (e.g., return None or a default display name). Actual: Function raises TypeError: 'NoneType' object is not subscriptable.",
+    "suggested_test_strategy": "Write a test that passes user_data = {'profile': None} to get_user_display_name and assert that the function either returns None or a default value instead of raising an exception.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2914,
+  "completion_tokens_total": 460,
+  "duration_seconds": 8.41,
+  "timestamp": "2026-05-29T09:08:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

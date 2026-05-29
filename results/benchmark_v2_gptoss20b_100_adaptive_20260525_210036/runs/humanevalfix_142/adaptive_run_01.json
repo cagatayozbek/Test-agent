@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_142",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import sum_squares\n\ndef test_sum_squares_index_not_multiple_of_3_or_4():\n    \"\"\"\n    Verify that indices which are not multiples of 3 or 4 are left unchanged.\n    The buggy implementation incorrectly cubes all non‑multiples of 3,\n    causing a wrong total.  For lst = [2, 3, 4] the correct sum is 11.\n    \"\"\"\n    lst = [2, 3, 4]  # indices 0,1,2\n    expected_total = 11  # 0->2^2=4, 1->3, 2->4\n    assert sum_squares(lst) == expected_total, (\n        f\"sum_squares({lst}) should be {expected_total} but returned {sum_squares(lst)}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpa3s1kmx5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_index_not_multiple_of_3_or_4 FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_sum_squares_index_not_multiple_of_3_or_4 _________________\n\n    def test_sum_squares_index_not_multiple_of_3_or_4():\n        \"\"\"\n        Verify that indices which are not multiples of 3 or 4 are left unchanged.\n        The buggy implementation incorrectly cubes all non‑multiples of 3,\n        causing a wrong total.  For lst = [2, 3, 4] the correct sum is 11.\n        \"\"\"\n        lst = [2, 3, 4]  # indices 0,1,2\n        expected_total = 11  # 0->2^2=4, 1->3, 2->4\n>       assert sum_squares(lst) == expected_total, (\n            f\"sum_squares({lst}) should be {expected_total} but returned {sum_squares(lst)}\"\n        )\nE       AssertionError: sum_squares([2, 3, 4]) should be 11 but returned 95\nE       assert 95 == 11\nE        +  where 95 = sum_squares([2, 3, 4])\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_squares_index_not_multiple_of_3_or_4 - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp3etlopxr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_index_not_multiple_of_3_or_4 PASSED  [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:04:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 686,
+  "completion_tokens_total": 1125,
+  "duration_seconds": 10.66,
+  "timestamp": "2026-05-25T21:04:07Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

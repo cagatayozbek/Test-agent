@@ -1,0 +1,52 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_snake_to_camel_with_empty_string():\n    from source import snake_to_camel\n    # The bug: using 'and' instead of 'or' causes empty string segments to become '_' instead of ''\n    # When word.split('_') produces empty strings (e.g., from leading/trailing underscores or consecutive underscores),\n    # the buggy expression `x.capitalize() and '_'` evaluates to '_' for empty string x (since ''.capitalize() == '' which is falsy)\n    # The correct behavior should produce '' for empty segments (since ''.capitalize() == '' and we want to keep it)\n    assert snake_to_camel(\"_hello_world_\") == \"HelloWorld\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplf81dib4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_empty_string FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_snake_to_camel_with_empty_string _____________________\n\n    def test_snake_to_camel_with_empty_string():\n        from source import snake_to_camel\n        # The bug: using 'and' instead of 'or' causes empty string segments to become '_' instead of ''\n        # When word.split('_') produces empty strings (e.g., from leading/trailing underscores or consecutive underscores),\n        # the buggy expression `x.capitalize() and '_'` evaluates to '_' for empty string x (since ''.capitalize() == '' which is falsy)\n        # The correct behavior should produce '' for empty segments (since ''.capitalize() == '' and we want to keep it)\n>       assert snake_to_camel(\"_hello_world_\") == \"HelloWorld\"\nE       AssertionError: assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_with_empty_string - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpygtu5zc6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_empty_string FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_snake_to_camel_with_empty_string _____________________\n\n    def test_snake_to_camel_with_empty_string():\n        from source import snake_to_camel\n        # The bug: using 'and' instead of 'or' causes empty string segments to become '_' instead of ''\n        # When word.split('_') produces empty strings (e.g., from leading/trailing underscores or consecutive underscores),\n        # the buggy expression `x.capitalize() and '_'` evaluates to '_' for empty string x (since ''.capitalize() == '' which is falsy)\n        # The correct behavior should produce '' for empty segments (since ''.capitalize() == '' and we want to keep it)\n>       assert snake_to_camel(\"_hello_world_\") == \"HelloWorld\"\nE       AssertionError: assert '_HelloWorld_' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + _HelloWorld_\nE         ? +          +\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_with_empty_string - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:58:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_snake_to_camel_single_underscore():\n    # Bug: 'or' -> 'and' in the expression (x.capitalize() and '_')\n    # For non-empty x, x.capitalize() returns a non-empty string (truthy), so:\n    #   - Buggy: 'and' causes '_'.join() to include '_' for each part, producing \"__\"\n    #   - Fixed: 'or' causes non-empty strings to be used directly, producing correct camelCase\n    # Use \"hello_world\" which splits into ['hello', 'world'] (both non-empty, truthy after capitalize)\n    from source import snake_to_camel\n    \n    result = snake_to_camel(\"hello_world\")\n    # Canonical expected value: \"HelloWorld\" (no underscores in output)\n    assert result == \"HelloWorld\", f\"Expected 'HelloWorld', got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpilr57e9m\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_single_underscore FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_snake_to_camel_single_underscore _____________________\n\n    def test_snake_to_camel_single_underscore():\n        # Bug: 'or' -> 'and' in the expression (x.capitalize() and '_')\n        # For non-empty x, x.capitalize() returns a non-empty string (truthy), so:\n        #   - Buggy: 'and' causes '_'.join() to include '_' for each part, producing \"__\"\n        #   - Fixed: 'or' causes non-empty strings to be used directly, producing correct camelCase\n        # Use \"hello_world\" which splits into ['hello', 'world'] (both non-empty, truthy after capitalize)\n        from source import snake_to_camel\n    \n        result = snake_to_camel(\"hello_world\")\n        # Canonical expected value: \"HelloWorld\" (no underscores in output)\n>       assert result == \"HelloWorld\", f\"Expected 'HelloWorld', got '{result}'\"\nE       AssertionError: Expected 'HelloWorld', got '__'\nE       assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_single_underscore - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjt774l7x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_single_underscore PASSED          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:58:18Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1159,
+  "completion_tokens_total": 332,
+  "duration_seconds": 6.1,
+  "timestamp": "2026-05-29T08:58:18Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

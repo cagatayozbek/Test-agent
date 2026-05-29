@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_026",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_newman_conway_sequence_bug():\n    # The buggy code has: if n == 1 or n != 2:\n    # This means for n=2, the condition evaluates to True (since n != 2 is False, but n == 1 is False, wait no)\n    # Let's trace: for n=2: n == 1 is False, n != 2 is False, so condition is False -> goes to else branch\n    # But the correct condition should be: if n == 1 or n == 2:\n    # So for n=2, it should return 1 (canonical value)\n    # \n    # Actually, let's compute the first few terms of Newman-Conway sequence:\n    # P(1) = 1, P(2) = 1, P(3) = P(P(2)) + P(3-P(2)) = P(1) + P(2) = 1+1 = 2\n    # P(4) = P(P(3)) + P(4-P(3)) = P(2) + P(2) = 1+1 = 2\n    # P(5) = P(P(4)) + P(5-P(4)) = P(2) + P(3) = 1+2 = 3\n    # \n    # The bug: condition \"n == 1 or n != 2\" is True for all n except n==2\n    # So for n=2, it returns 1 (correct), but for n=1 it returns 1 (correct), for n=3 it goes to else (correct behavior)\n    # Wait, let me re-check: for n=1: n==1 is True -> returns 1 (correct)\n    # for n=2: n==1 is False, n!=2 is False -> condition False -> goes to else branch\n    # But the canonical solution should return 1 for n=2 as base case.\n    # \n    # Actually, the issue is that the condition should be \"n == 1 or n == 2\" (both base cases)\n    # The buggy condition \"n == 1 or n != 2\" is equivalent to \"True\" for all n except n==2, but for n=2 it's False.\n    # So for n=2, it goes to else and computes sequence(sequence(1)) + sequence(2-sequence(1)) = sequence(1) + sequence(1) = 1+1=2\n    # But the correct value for P(2) is 1.\n    # \n    # So test n=2: buggy code returns 2, fixed code returns 1\n    \n    from source import sequence\n    \n    # Canonical Newman-Conway sequence: P(1)=1, P(2)=1, P(3)=2, P(4)=2, P(5)=3\n    # The bug causes P(2) to be computed as 2 instead of 1\n    assert sequence(2) == 1, \"Newman-Conway sequence P(2) should be 1, but buggy code returns 2\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdvlieka4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_conway_sequence_bug FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_newman_conway_sequence_bug ________________________\n\n    def test_newman_conway_sequence_bug():\n        # The buggy code has: if n == 1 or n != 2:\n        # This means for n=2, the condition evaluates to True (since n != 2 is False, but n == 1 is False, wait no)\n        # Let's trace: for n=2: n == 1 is False, n != 2 is False, so condition is False -> goes to else branch\n        # But the correct condition should be: if n == 1 or n == 2:\n        # So for n=2, it should return 1 (canonical value)\n        #\n        # Actually, let's compute the first few terms of Newman-Conway sequence:\n        # P(1) = 1, P(2) = 1, P(3) = P(P(2)) + P(3-P(2)) = P(1) + P(2) = 1+1 = 2\n        # P(4) = P(P(3)) + P(4-P(3)) = P(2) + P(2) = 1+1 = 2\n        # P(5) = P(P(4)) + P(5-P(4)) = P(2) + P(3) = 1+2 = 3\n        #\n        # The bug: condition \"n == 1 or n != 2\" is True for all n except n==2\n        # So for n=2, it returns 1 (correct), but for n=1 it returns 1 (correct), for n=3 it goes to else (correct behavior)\n        # Wait, let me re-check: for n=1: n==1 is True -> returns 1 (correct)\n        # for n=2: n==1 is False, n!=2 is False -> condition False -> goes to else branch\n        # But the canonical solution should return 1 for n=2 as base case.\n        #\n        # Actually, the issue is that the condition should be \"n == 1 or n == 2\" (both base cases)\n        # The buggy condition \"n == 1 or n != 2\" is equivalent to \"True\" for all n except n==2, but for n=2 it's False.\n        # So for n=2, it goes to else and computes sequence(sequence(1)) + sequence(2-sequence(1)) = sequence(1) + sequence(1) = 1+1=2\n        # But the correct value for P(2) is 1.\n        #\n        # So test n=2: buggy code returns 2, fixed code returns 1\n    \n        from source import sequence\n    \n        # Canonical Newman-Conway sequence: P(1)=1, P(2)=1, P(3)=2, P(4)=2, P(5)=3\n        # The bug causes P(2) to be computed as 2 instead of 1\n>       assert sequence(2) == 1, \"Newman-Conway sequence P(2) should be 1, but buggy code returns 2\"\nE       AssertionError: Newman-Conway sequence P(2) should be 1, but buggy code returns 2\nE       assert 2 == 1\nE        +  where 2 = <function sequence at 0x10c51e840>(2)\n\ntest_generated.py:30: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_newman_conway_sequence_bug - AssertionError: N...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8nl0bk7n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_conway_sequence_bug PASSED                [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:57:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 457,
+  "completion_tokens_total": 681,
+  "duration_seconds": 5.54,
+  "timestamp": "2026-05-29T08:57:20Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

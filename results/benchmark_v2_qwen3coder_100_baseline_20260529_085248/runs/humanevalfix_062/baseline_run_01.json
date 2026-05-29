@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_062",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_derivative_bug():\n    # Test the specific bug: the derivative function should skip the first element (constant term)\n    # The buggy version includes i=0 (0 * xs[0] = 0) at the beginning, but the derivative\n    # should start from the x^1 term's coefficient (which becomes the constant term after differentiation)\n    \n    # Test case 1: from docstring\n    result1 = derivative([3, 1, 2, 4, 5])\n    expected1 = [1, 4, 12, 20]  # Should NOT include 0 (which would be 0*3)\n    \n    # Test case 2: from docstring  \n    result2 = derivative([1, 2, 3])\n    expected2 = [2, 6]  # Should NOT include 0 (which would be 0*1)\n    \n    assert result1 == expected1, f\"derivative([3, 1, 2, 4, 5]) should return {expected1}, got {result1}\"\n    assert result2 == expected2, f\"derivative([1, 2, 3]) should return {expected2}, got {result2}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa97_xwrn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_derivative_bug ______________________________\n\n    def test_derivative_bug():\n        # Test the specific bug: the derivative function should skip the first element (constant term)\n        # The buggy version includes i=0 (0 * xs[0] = 0) at the beginning, but the derivative\n        # should start from the x^1 term's coefficient (which becomes the constant term after differentiation)\n    \n        # Test case 1: from docstring\n>       result1 = derivative([3, 1, 2, 4, 5])\n                  ^^^^^^^^^^\nE       NameError: name 'derivative' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_derivative_bug - NameError: name 'derivative' ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4gdc7o_r\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_derivative_bug ______________________________\n\n    def test_derivative_bug():\n        # Test the specific bug: the derivative function should skip the first element (constant term)\n        # The buggy version includes i=0 (0 * xs[0] = 0) at the beginning, but the derivative\n        # should start from the x^1 term's coefficient (which becomes the constant term after differentiation)\n    \n        # Test case 1: from docstring\n>       result1 = derivative([3, 1, 2, 4, 5])\n                  ^^^^^^^^^^\nE       NameError: name 'derivative' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_derivative_bug - NameError: name 'derivative' ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:54:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import derivative\n\ndef test_derivative_bug():\n    # Test case from docstring: derivative([3, 1, 2, 4, 5]) should return [1, 4, 12, 20]\n    result1 = derivative([3, 1, 2, 4, 5])\n    assert result1 == [1, 4, 12, 20], f\"Expected [1, 4, 12, 20], got {result1}\"\n    \n    # Test case from docstring: derivative([1, 2, 3]) should return [2, 6]\n    result2 = derivative([1, 2, 3])\n    assert result2 == [2, 6], f\"Expected [2, 6], got {result2}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcfp6hrmd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_derivative_bug ______________________________\n\n    def test_derivative_bug():\n        # Test case from docstring: derivative([3, 1, 2, 4, 5]) should return [1, 4, 12, 20]\n        result1 = derivative([3, 1, 2, 4, 5])\n>       assert result1 == [1, 4, 12, 20], f\"Expected [1, 4, 12, 20], got {result1}\"\nE       AssertionError: Expected [1, 4, 12, 20], got [0, 1, 4, 12, 20]\nE       assert [0, 1, 4, 12, 20] == [1, 4, 12, 20]\nE         \nE         At index 0 diff: 0 != 1\nE         Left contains one more item: 20\nE         \nE         Full diff:\nE           [\nE         +     0,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_derivative_bug - AssertionError: Expected [1, ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxrclh5a5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative_bug PASSED                            [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:54:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1439,
+  "completion_tokens_total": 449,
+  "duration_seconds": 5.09,
+  "timestamp": "2026-05-29T08:54:33Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_quicksort",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_quicksort_preserves_duplicates():\n    # Test with duplicates that will be dropped due to the bug\n    input_list = [3, 1, 3, 2]\n    result = quicksort(input_list)\n    \n    # The buggy version will drop the duplicate '3' since it uses 'x > pivot'\n    # for the greater partition, so only the first '3' (pivot) remains\n    # and the second '3' is excluded from both partitions\n    \n    # The correct behavior should preserve all elements\n    assert len(result) == len(input_list), \\\n        f\"Length mismatch: expected {len(input_list)}, got {len(result)}\"\n    \n    # Also verify the result is sorted\n    assert result == sorted(input_list), \\\n        f\"Result not sorted: {result} != {sorted(input_list)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptr7_4wt0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quicksort_preserves_duplicates FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_quicksort_preserves_duplicates ______________________\n\n    def test_quicksort_preserves_duplicates():\n        # Test with duplicates that will be dropped due to the bug\n        input_list = [3, 1, 3, 2]\n>       result = quicksort(input_list)\n                 ^^^^^^^^^\nE       NameError: name 'quicksort' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quicksort_preserves_duplicates - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp18v39tew\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quicksort_preserves_duplicates FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_quicksort_preserves_duplicates ______________________\n\n    def test_quicksort_preserves_duplicates():\n        # Test with duplicates that will be dropped due to the bug\n        input_list = [3, 1, 3, 2]\n>       result = quicksort(input_list)\n                 ^^^^^^^^^\nE       NameError: name 'quicksort' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quicksort_preserves_duplicates - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:11:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import quicksort\n\ndef test_quicksort_preserves_duplicates():\n    input_list = [3, 1, 3, 2]\n    result = quicksort(input_list)\n    assert len(result) == len(input_list), f\"Lost elements: expected {len(input_list)} elements, got {len(result)}\"\n    assert result == sorted(input_list), f\"Result {result} does not match sorted input {sorted(input_list)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8q8aqzk4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quicksort_preserves_duplicates FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_quicksort_preserves_duplicates ______________________\n\n    def test_quicksort_preserves_duplicates():\n        input_list = [3, 1, 3, 2]\n        result = quicksort(input_list)\n>       assert len(result) == len(input_list), f\"Lost elements: expected {len(input_list)} elements, got {len(result)}\"\nE       AssertionError: Lost elements: expected 4 elements, got 3\nE       assert 3 == 4\nE        +  where 3 = len([1, 2, 3])\nE        +  and   4 = len([3, 1, 3, 2])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quicksort_preserves_duplicates - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppo0z2vmx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quicksort_preserves_duplicates PASSED            [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:11:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The greater partition excludes equal elements by using `x > pivot` instead of `x >= pivot`, causing duplicates of the pivot to be lost during recursion.",
+    "bug_location": "quicksort, line 7",
+    "trigger_condition": "Input list containing duplicate values equal to any pivot selected (e.g., [3, 1, 3, 2] where 3 appears twice and is chosen as pivot first)",
+    "expected_vs_actual": "Expected: sorted output preserves all elements (e.g., [1, 2, 3, 3]); Actual: output loses duplicates (e.g., [1, 2, 3])",
+    "suggested_test_strategy": "Create a pytest test with input [3, 1, 3, 2] and assert that len(output) == len(input) and output == sorted(input)",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1882,
+  "completion_tokens_total": 473,
+  "duration_seconds": 12.12,
+  "timestamp": "2026-05-29T09:11:29Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

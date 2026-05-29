@@ -1,0 +1,52 @@
+{
+  "task_id": "swallowed_exception",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import process_transaction\n\n\ndef test_process_transaction_returns_total_for_valid_input():\n    \"\"\"Process a valid transaction string and ensure a non‑None total\n    that is greater than the original amount (i.e. tax was applied).\"\"\"\n    transaction = \"item123:100\"\n    result = process_transaction(transaction)\n    assert isinstance(result, int) and result > 100, (\n        f\"Expected an integer total greater than 100, got {result!r}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpl4fumgaq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_returns_total_for_valid_input FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_process_transaction_returns_total_for_valid_input ____________\n\n    def test_process_transaction_returns_total_for_valid_input():\n        \"\"\"Process a valid transaction string and ensure a non‑None total\n        that is greater than the original amount (i.e. tax was applied).\"\"\"\n        transaction = \"item123:100\"\n        result = process_transaction(transaction)\n>       assert isinstance(result, int) and result > 100, (\n            f\"Expected an integer total greater than 100, got {result!r}\"\n        )\nE       AssertionError: Expected an integer total greater than 100, got None\nE       assert (False)\nE        +  where False = isinstance(None, int)\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_returns_total_for_valid_input\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpysls25sm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_returns_total_for_valid_input FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_process_transaction_returns_total_for_valid_input ____________\n\n    def test_process_transaction_returns_total_for_valid_input():\n        \"\"\"Process a valid transaction string and ensure a non‑None total\n        that is greater than the original amount (i.e. tax was applied).\"\"\"\n        transaction = \"item123:100\"\n        result = process_transaction(transaction)\n>       assert isinstance(result, int) and result > 100, (\n            f\"Expected an integer total greater than 100, got {result!r}\"\n        )\nE       AssertionError: Expected an integer total greater than 100, got 118.0\nE       assert (False)\nE        +  where False = isinstance(118.0, int)\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_returns_total_for_valid_input\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:00:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import process_transaction\n\ndef test_process_transaction_returns_valid_total_for_correct_input():\n    \"\"\"\n    Verify that a properly formatted transaction string yields a numeric total\n    greater than the base amount, indicating that the tax calculation was\n    performed and not silently swallowed.\n    \"\"\"\n    transaction = \"item123:100\"\n    result = process_transaction(transaction)\n\n    assert result is not None, (\n        \"process_transaction returned None for a valid input; \"\n        \"the exception handling is silently swallowing errors.\"\n    )\n    assert isinstance(result, (int, float)), (\n        f\"Expected result to be a number, got {type(result).__name__}.\"\n    )\n    assert result > 100, (\n        f\"Total ({result}) should be greater than the base amount 100 \"\n        \"after tax calculation.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpypiiimof\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_returns_valid_total_for_correct_input FAILED [100%]\n\n=================================== FAILURES ===================================\n________ test_process_transaction_returns_valid_total_for_correct_input ________\n\n    def test_process_transaction_returns_valid_total_for_correct_input():\n        \"\"\"\n        Verify that a properly formatted transaction string yields a numeric total\n        greater than the base amount, indicating that the tax calculation was\n        performed and not silently swallowed.\n        \"\"\"\n        transaction = \"item123:100\"\n        result = process_transaction(transaction)\n    \n>       assert result is not None, (\n            \"process_transaction returned None for a valid input; \"\n            \"the exception handling is silently swallowing errors.\"\n        )\nE       AssertionError: process_transaction returned None for a valid input; the exception handling is silently swallowing errors.\nE       assert None is not None\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_returns_valid_total_for_correct_input\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmptu96pj3m\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_returns_valid_total_for_correct_input PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:00:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1547,
+  "completion_tokens_total": 1275,
+  "duration_seconds": 8.86,
+  "timestamp": "2026-05-25T21:00:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

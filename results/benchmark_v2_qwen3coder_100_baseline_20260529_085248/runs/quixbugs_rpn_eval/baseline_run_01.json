@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_rpn_eval",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import rpn_eval\n\ndef test_rpn_subtraction_order():\n    # Test that subtraction is performed as (b - a), not (a - b)\n    # For ['5', '1', '-'], the correct result is 5 - 1 = 4, not 1 - 5 = -4\n    result = rpn_eval([5.0, 1.0, '-'])\n    assert result == 4.0, f\"Expected 4.0 (5 - 1), got {result}\"\n\ndef test_rpn_division_order():\n    # Test that division is performed as (b / a), not (a / b)\n    # For ['10', '2', '/'], the correct result is 10 / 2 = 5.0, not 2 / 10 = 0.2\n    result = rpn_eval([10.0, 2.0, '/'])\n    assert result == 5.0, f\"Expected 5.0 (10 / 2), got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp33wu4zec\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_rpn_subtraction_order FAILED                     [ 50%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_subtraction_order __________________________\n\n    def test_rpn_subtraction_order():\n        # Test that subtraction is performed as (b - a), not (a - b)\n        # For ['5', '1', '-'], the correct result is 5 - 1 = 4, not 1 - 5 = -4\n        result = rpn_eval([5.0, 1.0, '-'])\n>       assert result == 4.0, f\"Expected 4.0 (5 - 1), got {result}\"\nE       AssertionError: Expected 4.0 (5 - 1), got -4.0\nE       assert -4.0 == 4.0\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_subtraction_order - AssertionError: Expect...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3poaum4d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_rpn_subtraction_order PASSED                     [ 50%]\ntest_generated.py::test_rpn_division_order PASSED                        [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:02:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 629,
+  "completion_tokens_total": 234,
+  "duration_seconds": 2.76,
+  "timestamp": "2026-05-29T09:02:08Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

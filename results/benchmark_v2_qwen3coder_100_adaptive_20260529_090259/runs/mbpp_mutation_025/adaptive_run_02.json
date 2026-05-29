@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_digit_distance_nums_bug():\n    # The bug uses n1 + n2 instead of |n1 - n2| (absolute difference)\n    # Choose small numbers where the sum differs significantly from the absolute difference\n    # e.g., n1=12, n2=3: \n    #   Correct: |12 - 3| = 9 → digits sum = 9\n    #   Buggy: 12 + 3 = 15 → digits sum = 1 + 5 = 6\n    result = digit_distance_nums(12, 3)\n    assert result == 9, f\"Expected digit distance of |12-3|=9 to be 9, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp19g52rj2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_digit_distance_nums_bug _________________________\n\n    def test_digit_distance_nums_bug():\n        # The bug uses n1 + n2 instead of |n1 - n2| (absolute difference)\n        # Choose small numbers where the sum differs significantly from the absolute difference\n        # e.g., n1=12, n2=3:\n        #   Correct: |12 - 3| = 9 → digits sum = 9\n        #   Buggy: 12 + 3 = 15 → digits sum = 1 + 5 = 6\n>       result = digit_distance_nums(12, 3)\n                 ^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'digit_distance_nums' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug - NameError: name 'dig...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp05tammgf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_digit_distance_nums_bug _________________________\n\n    def test_digit_distance_nums_bug():\n        # The bug uses n1 + n2 instead of |n1 - n2| (absolute difference)\n        # Choose small numbers where the sum differs significantly from the absolute difference\n        # e.g., n1=12, n2=3:\n        #   Correct: |12 - 3| = 9 → digits sum = 9\n        #   Buggy: 12 + 3 = 15 → digits sum = 1 + 5 = 6\n>       result = digit_distance_nums(12, 3)\n                 ^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'digit_distance_nums' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug - NameError: name 'dig...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_nums_bug():\n    # Bug: uses n1 + n2 instead of per-digit absolute differences\n    # For n1=12, n2=34: buggy code computes digits of |12+34|=46 → 4+6=10\n    # Correct: |1-3| + |2-4| = 2 + 2 = 4\n    assert digit_distance_nums(12, 34) == 4, \"Should compute sum of per-digit absolute differences, not digit sum of sum\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqr7ugzgn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_digit_distance_nums_bug _________________________\n\n    def test_digit_distance_nums_bug():\n        # Bug: uses n1 + n2 instead of per-digit absolute differences\n        # For n1=12, n2=34: buggy code computes digits of |12+34|=46 → 4+6=10\n        # Correct: |1-3| + |2-4| = 2 + 2 = 4\n>       assert digit_distance_nums(12, 34) == 4, \"Should compute sum of per-digit absolute differences, not digit sum of sum\"\nE       AssertionError: Should compute sum of per-digit absolute differences, not digit sum of sum\nE       assert 10 == 4\nE        +  where 10 = digit_distance_nums(12, 34)\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug - AssertionError: Shou...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_yybw9km\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:16Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function incorrectly uses addition (`+`) instead of subtraction (`-`) to compute the per-digit difference between two integers. This causes it to sum digits of the sum of the numbers instead of the absolute differences of corresponding digits.",
+    "bug_location": "digit_distance_nums, line 2",
+    "trigger_condition": "Input integers with different digits in the same positions, e.g., n1=12, n2=34, where the per-digit differences are non-zero and the sum of digits of (n1+n2) differs from the sum of absolute per-digit differences.",
+    "expected_vs_actual": "Expected: For n1=12, n2=34, should compute |1-3| + |2-4| = 2 + 2 = 4. Actual: computes digits of |12+34|=|46| → 4+6=10, so returns 10.",
+    "suggested_test_strategy": "Write a pytest test with inputs where per-digit differences are small but the sum of the numbers has larger digit sum, e.g., assert digit_distance_nums(12, 34) == 4.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1805,
+  "completion_tokens_total": 557,
+  "duration_seconds": 6.2,
+  "timestamp": "2026-05-29T09:07:16Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

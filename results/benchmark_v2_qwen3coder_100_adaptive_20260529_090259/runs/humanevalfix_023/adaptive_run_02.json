@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_023",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_strlen_bug():\n    assert strlen('') == 0, \"Empty string should have length 0\"\n    assert strlen('abc') == 3, \"String 'abc' should have length 3\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0mrdjmwe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_strlen_bug FAILED                                [100%]\n\n=================================== FAILURES ===================================\n_______________________________ test_strlen_bug ________________________________\n\n    def test_strlen_bug():\n>       assert strlen('') == 0, \"Empty string should have length 0\"\n               ^^^^^^\nE       NameError: name 'strlen' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_strlen_bug - NameError: name 'strlen' is not d...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzxsaq_c_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_strlen_bug FAILED                                [100%]\n\n=================================== FAILURES ===================================\n_______________________________ test_strlen_bug ________________________________\n\n    def test_strlen_bug():\n>       assert strlen('') == 0, \"Empty string should have length 0\"\n               ^^^^^^\nE       NameError: name 'strlen' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_strlen_bug - NameError: name 'strlen' is not d...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import strlen\n\ndef test_strlen_empty_string():\n    assert strlen('') == 0, \"Empty string should have length 0\"\n\ndef test_strlen_nonempty_string():\n    assert strlen('abc') == 3, \"String 'abc' should have length 3\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeaq5vapv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_strlen_empty_string FAILED                       [ 50%]\n\n=================================== FAILURES ===================================\n___________________________ test_strlen_empty_string ___________________________\n\n    def test_strlen_empty_string():\n>       assert strlen('') == 0, \"Empty string should have length 0\"\nE       AssertionError: Empty string should have length 0\nE       assert -1 == 0\nE        +  where -1 = strlen('')\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_strlen_empty_string - AssertionError: Empty st...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzsf3tmn2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_strlen_empty_string PASSED                       [ 50%]\ntest_generated.py::test_strlen_nonempty_string PASSED                    [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function subtracts 1 from the actual string length, likely due to off-by-one error or misunderstanding of what len() returns.",
+    "bug_location": "strlen, line 9",
+    "trigger_condition": "Any non-empty string; empty string triggers the most obvious failure (returns -1 instead of 0)",
+    "expected_vs_actual": "Expected: strlen('') = 0, strlen('abc') = 3; Actual: strlen('') = -1, strlen('abc') = 2",
+    "suggested_test_strategy": "Write a pytest test checking both docstring examples: test_strlen_empty() and test_strlen_nonempty(). Use assert strlen('') == 0 and assert strlen('abc') == 3.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1711,
+  "completion_tokens_total": 282,
+  "duration_seconds": 9.85,
+  "timestamp": "2026-05-29T09:04:12Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

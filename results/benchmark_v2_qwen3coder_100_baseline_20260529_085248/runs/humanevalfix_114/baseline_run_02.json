@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_114",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_minSubArraySum_bug():\n    # The bug is in the line: min_sum = min(-i for i in nums)\n    # It should be: min_sum = -max_sum\n    # The correct logic is to find minimum subarray sum using modified Kadane's algorithm\n    # For input [1, -2, 3], the minimum subarray sum should be -2 (subarray [-2])\n    # But the buggy code returns min(-i for i in [1, -2, 3]) = -3\n    \n    # Let's use [1, -2, 3] as test case:\n    # - Subarrays: [1]=1, [1,-2]=-1, [1,-2,3]=2, [-2]=-2, [-2,3]=1, [3]=3\n    # - Minimum sum is -2\n    \n    from source import minSubArraySum\n    \n    result = minSubArraySum([1, -2, 3])\n    assert result == -2, f\"Expected -2 but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjg0m3wg1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_bug FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_minSubArraySum_bug ____________________________\n\n    def test_minSubArraySum_bug():\n        # The bug is in the line: min_sum = min(-i for i in nums)\n        # It should be: min_sum = -max_sum\n        # The correct logic is to find minimum subarray sum using modified Kadane's algorithm\n        # For input [1, -2, 3], the minimum subarray sum should be -2 (subarray [-2])\n        # But the buggy code returns min(-i for i in [1, -2, 3]) = -3\n    \n        # Let's use [1, -2, 3] as test case:\n        # - Subarrays: [1]=1, [1,-2]=-1, [1,-2,3]=2, [-2]=-2, [-2,3]=1, [3]=3\n        # - Minimum sum is -2\n    \n        from source import minSubArraySum\n    \n        result = minSubArraySum([1, -2, 3])\n>       assert result == -2, f\"Expected -2 but got {result}\"\nE       AssertionError: Expected -2 but got -3\nE       assert -3 == -2\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_bug - AssertionError: Expected ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi8ewtogp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_bug PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:55:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 564,
+  "completion_tokens_total": 232,
+  "duration_seconds": 6.62,
+  "timestamp": "2026-05-29T08:55:36Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

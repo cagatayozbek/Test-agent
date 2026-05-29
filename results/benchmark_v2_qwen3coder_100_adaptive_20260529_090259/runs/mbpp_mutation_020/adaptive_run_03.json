@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_020",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_newman_prime_bug():\n    # The bug: constant literal '2' should be '3' in the recurrence relation\n    # Canonical formula: NSW(n) = 2 * NSW(n-1) + NSW(n-2), but the buggy code uses\n    # NSW(n) = 2 * NSW(n-1) + NSW(n-1) = 3 * NSW(n-1)\n    # This gives wrong values for n >= 2\n    # Known values: NSW(0)=1, NSW(1)=1, NSW(2)=3, NSW(3)=7, NSW(4)=17, ...\n    \n    # Test with n=2: should return 3 (correct canonical value)\n    # Buggy code returns 3 * newman_prime(1) = 3 * 1 = 3 (accidentally correct)\n    # Test with n=3: should return 7 (canonical)\n    # Buggy code: 3 * newman_prime(2) = 3 * 3 = 9 ≠ 7\n    \n    # But wait - let's check n=2 more carefully:\n    # Canonical: NSW(2) = 2*NSW(1) + NSW(0) = 2*1 + 1 = 3\n    # Buggy: 2*NSW(1) + NSW(1) = 2*1 + 1 = 3 (same result!)\n    # Try n=3:\n    # Canonical: NSW(3) = 2*NSW(2) + NSW(1) = 2*3 + 1 = 7\n    # Buggy: 2*NSW(2) + NSW(2) = 3*3 = 9 ≠ 7\n    \n    # So n=3 is a good test case\n    from source import newman_prime\n    \n    # Canonical value for n=3 is 7\n    assert newman_prime(3) == 7, \"newman_prime(3) should be 7, but buggy code returns 9\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpf_66vz7y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_bug FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_newman_prime_bug _____________________________\n\n    def test_newman_prime_bug():\n        # The bug: constant literal '2' should be '3' in the recurrence relation\n        # Canonical formula: NSW(n) = 2 * NSW(n-1) + NSW(n-2), but the buggy code uses\n        # NSW(n) = 2 * NSW(n-1) + NSW(n-1) = 3 * NSW(n-1)\n        # This gives wrong values for n >= 2\n        # Known values: NSW(0)=1, NSW(1)=1, NSW(2)=3, NSW(3)=7, NSW(4)=17, ...\n    \n        # Test with n=2: should return 3 (correct canonical value)\n        # Buggy code returns 3 * newman_prime(1) = 3 * 1 = 3 (accidentally correct)\n        # Test with n=3: should return 7 (canonical)\n        # Buggy code: 3 * newman_prime(2) = 3 * 3 = 9 ≠ 7\n    \n        # But wait - let's check n=2 more carefully:\n        # Canonical: NSW(2) = 2*NSW(1) + NSW(0) = 2*1 + 1 = 3\n        # Buggy: 2*NSW(1) + NSW(1) = 2*1 + 1 = 3 (same result!)\n        # Try n=3:\n        # Canonical: NSW(3) = 2*NSW(2) + NSW(1) = 2*3 + 1 = 7\n        # Buggy: 2*NSW(2) + NSW(2) = 3*3 = 9 ≠ 7\n    \n        # So n=3 is a good test case\n        from source import newman_prime\n    \n        # Canonical value for n=3 is 7\n>       assert newman_prime(3) == 7, \"newman_prime(3) should be 7, but buggy code returns 9\"\nE       AssertionError: newman_prime(3) should be 7, but buggy code returns 9\nE       assert 9 == 7\nE        +  where 9 = <function newman_prime at 0x109f36840>(3)\n\ntest_generated.py:24: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_newman_prime_bug - AssertionError: newman_prim...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl65v_e36\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_bug PASSED                          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 462,
+  "completion_tokens_total": 445,
+  "duration_seconds": 4.06,
+  "timestamp": "2026-05-29T09:07:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

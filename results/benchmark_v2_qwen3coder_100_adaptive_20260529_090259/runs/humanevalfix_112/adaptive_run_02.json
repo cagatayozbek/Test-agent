@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_112",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_reverse_delete_palindrome_check():\n    # Test case where after deletion the string IS a palindrome\n    # s = \"abcdedcba\", c = \"ab\" -> after deletion: \"cdedc\" which IS a palindrome\n    # Expected: ('cdedc', True)\n    result = reverse_delete(\"abcdedcba\", \"ab\")\n    assert result == ('cdedc', True), f\"Expected ('cdedc', True), got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp05sdq2m0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_reverse_delete_palindrome_check FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_reverse_delete_palindrome_check _____________________\n\n    def test_reverse_delete_palindrome_check():\n        # Test case where after deletion the string IS a palindrome\n        # s = \"abcdedcba\", c = \"ab\" -> after deletion: \"cdedc\" which IS a palindrome\n        # Expected: ('cdedc', True)\n>       result = reverse_delete(\"abcdedcba\", \"ab\")\n                 ^^^^^^^^^^^^^^\nE       NameError: name 'reverse_delete' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_reverse_delete_palindrome_check - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphl96iaho\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_reverse_delete_palindrome_check FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_reverse_delete_palindrome_check _____________________\n\n    def test_reverse_delete_palindrome_check():\n        # Test case where after deletion the string IS a palindrome\n        # s = \"abcdedcba\", c = \"ab\" -> after deletion: \"cdedc\" which IS a palindrome\n        # Expected: ('cdedc', True)\n>       result = reverse_delete(\"abcdedcba\", \"ab\")\n                 ^^^^^^^^^^^^^^\nE       NameError: name 'reverse_delete' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_reverse_delete_palindrome_check - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import reverse_delete\n\ndef test_reverse_delete_palindrome_check():\n    # Test case where filtered string is a palindrome\n    # s='abcdedcba', c='ab' -> filtered string = 'cdedc' (palindrome)\n    # Expected: ('cdedc', True)\n    # Buggy code returns: ('cdedc', False) due to != instead of ==\n    result = reverse_delete(\"abcdedcba\", \"ab\")\n    assert result == (\"cdedc\", True), f\"Expected ('cdedc', True) but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3t5d1l31\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_reverse_delete_palindrome_check FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_reverse_delete_palindrome_check _____________________\n\n    def test_reverse_delete_palindrome_check():\n        # Test case where filtered string is a palindrome\n        # s='abcdedcba', c='ab' -> filtered string = 'cdedc' (palindrome)\n        # Expected: ('cdedc', True)\n        # Buggy code returns: ('cdedc', False) due to != instead of ==\n        result = reverse_delete(\"abcdedcba\", \"ab\")\n>       assert result == (\"cdedc\", True), f\"Expected ('cdedc', True) but got {result}\"\nE       AssertionError: Expected ('cdedc', True) but got ('cdedc', False)\nE       assert ('cdedc', False) == ('cdedc', True)\nE         \nE         At index 1 diff: False != True\nE         \nE         Full diff:\nE           (\nE               'cdedc',\nE         -     True,\nE         +     False,\nE           )\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_reverse_delete_palindrome_check - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy2egwb97\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_reverse_delete_palindrome_check PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:50Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The buggy code uses != instead of == when checking if the filtered string is a palindrome, causing it to return the opposite boolean value.",
+    "bug_location": "reverse_delete, line 13",
+    "trigger_condition": "Input where the filtered string is a palindrome (e.g., s='abcdedcba', c='ab' results in 'cdedc' which is a palindrome)",
+    "expected_vs_actual": "Expected: ('cdedc', True); Actual: ('cdedc', False) because the inequality operator returns the opposite of the intended palindrome check",
+    "suggested_test_strategy": "Test with s='abcdedcba', c='ab' and assert the return value is ('cdedc', True)",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2120,
+  "completion_tokens_total": 398,
+  "duration_seconds": 8.61,
+  "timestamp": "2026-05-29T09:05:50Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

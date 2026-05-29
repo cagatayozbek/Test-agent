@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_100",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_make_a_pile_correct_output():\n    # Test with n=3 as per docstring example\n    # Expected: [3, 5, 7] (3 + 2*0, 3 + 2*1, 3 + 2*2)\n    # Buggy code produces: [3+0+0, 3+2+1, 3+4+2] = [3, 6, 9]\n    assert make_a_pile(3) == [3, 5, 7], f\"Expected [3, 5, 7] but got {make_a_pile(3)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp3fkoz5x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_make_a_pile_correct_output FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_make_a_pile_correct_output ________________________\n\n    def test_make_a_pile_correct_output():\n        # Test with n=3 as per docstring example\n        # Expected: [3, 5, 7] (3 + 2*0, 3 + 2*1, 3 + 2*2)\n        # Buggy code produces: [3+0+0, 3+2+1, 3+4+2] = [3, 6, 9]\n>       assert make_a_pile(3) == [3, 5, 7], f\"Expected [3, 5, 7] but got {make_a_pile(3)}\"\n               ^^^^^^^^^^^\nE       NameError: name 'make_a_pile' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_make_a_pile_correct_output - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe72dsbwz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_make_a_pile_correct_output FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_make_a_pile_correct_output ________________________\n\n    def test_make_a_pile_correct_output():\n        # Test with n=3 as per docstring example\n        # Expected: [3, 5, 7] (3 + 2*0, 3 + 2*1, 3 + 2*2)\n        # Buggy code produces: [3+0+0, 3+2+1, 3+4+2] = [3, 6, 9]\n>       assert make_a_pile(3) == [3, 5, 7], f\"Expected [3, 5, 7] but got {make_a_pile(3)}\"\n               ^^^^^^^^^^^\nE       NameError: name 'make_a_pile' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_make_a_pile_correct_output - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:55:19Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import make_a_pile\n\ndef test_make_a_pile_correct_output():\n    # Test the docstring example: make_a_pile(3) should return [3, 5, 7]\n    # Buggy version: [n + 2*i + i for i in range(n)] = [3+0, 3+2+1, 3+4+2] = [3, 6, 9]\n    # Fixed version: [n + 2*i for i in range(n)] = [3+0, 3+2, 3+4] = [3, 5, 7]\n    assert make_a_pile(3) == [3, 5, 7], f\"Expected [3, 5, 7] but got {make_a_pile(3)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp48aoomq6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_make_a_pile_correct_output FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_make_a_pile_correct_output ________________________\n\n    def test_make_a_pile_correct_output():\n        # Test the docstring example: make_a_pile(3) should return [3, 5, 7]\n        # Buggy version: [n + 2*i + i for i in range(n)] = [3+0, 3+2+1, 3+4+2] = [3, 6, 9]\n        # Fixed version: [n + 2*i for i in range(n)] = [3+0, 3+2, 3+4] = [3, 5, 7]\n>       assert make_a_pile(3) == [3, 5, 7], f\"Expected [3, 5, 7] but got {make_a_pile(3)}\"\nE       AssertionError: Expected [3, 5, 7] but got [3, 6, 9]\nE       assert [3, 6, 9] == [3, 5, 7]\nE         \nE         At index 1 diff: 6 != 5\nE         \nE         Full diff:\nE           [\nE               3,\nE         -     5,...\nE         \nE         ...Full output truncated (8 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_make_a_pile_correct_output - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpozycm2s8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_make_a_pile_correct_output PASSED                [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:55:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1423,
+  "completion_tokens_total": 325,
+  "duration_seconds": 4.96,
+  "timestamp": "2026-05-29T08:55:22Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

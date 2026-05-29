@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_057",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import monotonic\n\ndef test_monotonic_increasing_sequence_returns_true():\n    \"\"\"Test that monotonic returns True for monotonically increasing sequences.\"\"\"\n    assert monotonic([1, 2, 4, 20]) is True, \"Monotonically increasing sequence should return True\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp9h6023pz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_increasing_sequence_returns_true FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_monotonic_increasing_sequence_returns_true ________________\n\n    def test_monotonic_increasing_sequence_returns_true():\n        \"\"\"Test that monotonic returns True for monotonically increasing sequences.\"\"\"\n>       assert monotonic([1, 2, 4, 20]) is True, \"Monotonically increasing sequence should return True\"\nE       AssertionError: Monotonically increasing sequence should return True\nE       assert False is True\nE        +  where False = monotonic([1, 2, 4, 20])\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_increasing_sequence_returns_true - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpgdmr9vji\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_increasing_sequence_returns_true PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:39:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 31198,
+  "completion_tokens_total": 2456,
+  "duration_seconds": 16.77,
+  "timestamp": "2026-05-25T21:39:29Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

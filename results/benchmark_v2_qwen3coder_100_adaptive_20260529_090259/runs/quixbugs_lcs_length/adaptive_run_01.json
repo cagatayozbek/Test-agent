@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_lcs_length",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_lcs_length_character_match_bug():\n    # The bug: on character match, uses dp[i-1, j] + 1 instead of dp[i-1, j-1] + 1\n    # This causes incorrect inflation when the same character appears consecutively in t\n    # Test with the example from the docstring: lcs_length('ABCBDAB', 'BDCAB') should be 4\n    from source import lcs_length\n    \n    # Expected LCS is \"BCAB\" or \"BDAB\" with length 4\n    assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxt9lxjt3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_character_match_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_lcs_length_character_match_bug ______________________\n\n    def test_lcs_length_character_match_bug():\n        # The bug: on character match, uses dp[i-1, j] + 1 instead of dp[i-1, j-1] + 1\n        # This causes incorrect inflation when the same character appears consecutively in t\n        # Test with the example from the docstring: lcs_length('ABCBDAB', 'BDCAB') should be 4\n        from source import lcs_length\n    \n        # Expected LCS is \"BCAB\" or \"BDAB\" with length 4\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\"\nE       AssertionError: LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\nE       assert 1 == 4\nE        +  where 1 = <function lcs_length at 0x10ccd2840>('ABCBDAB', 'BDCAB')\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_character_match_bug - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm5nuuhpc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_character_match_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_lcs_length_character_match_bug ______________________\n\n    def test_lcs_length_character_match_bug():\n        # The bug: on character match, uses dp[i-1, j] + 1 instead of dp[i-1, j-1] + 1\n        # This causes incorrect inflation when the same character appears consecutively in t\n        # Test with the example from the docstring: lcs_length('ABCBDAB', 'BDCAB') should be 4\n        from source import lcs_length\n    \n        # Expected LCS is \"BCAB\" or \"BDAB\" with length 4\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\"\nE       AssertionError: LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\nE       assert 2 == 4\nE        +  where 2 = <function lcs_length at 0x1082b2840>('ABCBDAB', 'BDCAB')\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_character_match_bug - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import lcs_length\n\ndef test_lcs_length_character_match_bug():\n    # This test targets the bug where dp[i-1, j] + 1 is used instead of dp[i-1, j-1] + 1\n    # for matching characters, causing inflated LCS length for certain inputs.\n    # Expected LCS length for 'ABCBDAB' and 'BDCAB' is 4 (e.g., 'BCAB' or 'BDAB')\n    assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqh2k4vdr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_character_match_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_lcs_length_character_match_bug ______________________\n\n    def test_lcs_length_character_match_bug():\n        # This test targets the bug where dp[i-1, j] + 1 is used instead of dp[i-1, j-1] + 1\n        # for matching characters, causing inflated LCS length for certain inputs.\n        # Expected LCS length for 'ABCBDAB' and 'BDCAB' is 4 (e.g., 'BCAB' or 'BDAB')\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\"\nE       AssertionError: LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\nE       assert 1 == 4\nE        +  where 1 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_character_match_bug - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7bvtbu13\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_character_match_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_lcs_length_character_match_bug ______________________\n\n    def test_lcs_length_character_match_bug():\n        # This test targets the bug where dp[i-1, j] + 1 is used instead of dp[i-1, j-1] + 1\n        # for matching characters, causing inflated LCS length for certain inputs.\n        # Expected LCS length for 'ABCBDAB' and 'BDCAB' is 4 (e.g., 'BCAB' or 'BDAB')\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\"\nE       AssertionError: LCS length should be 4 for 'ABCBDAB' and 'BDCAB'\nE       assert 2 == 4\nE        +  where 2 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_character_match_bug - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:19Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_lcs_length_character_match_bug():\n    from source import lcs_length\n    # The bug causes vertical inflation: when s[i] == t[j], it uses dp[i-1, j] + 1 \n    # instead of dp[i-1, j-1] + 1, leading to incorrect LCS length of 5 instead of 4\n    assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB' (e.g., 'BCAB' or 'BDAB')\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxg8ig_ac\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_character_match_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_lcs_length_character_match_bug ______________________\n\n    def test_lcs_length_character_match_bug():\n        from source import lcs_length\n        # The bug causes vertical inflation: when s[i] == t[j], it uses dp[i-1, j] + 1\n        # instead of dp[i-1, j-1] + 1, leading to incorrect LCS length of 5 instead of 4\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB' (e.g., 'BCAB' or 'BDAB')\"\nE       AssertionError: LCS length should be 4 for 'ABCBDAB' and 'BDCAB' (e.g., 'BCAB' or 'BDAB')\nE       assert 1 == 4\nE        +  where 1 = <function lcs_length at 0x10abd2840>('ABCBDAB', 'BDCAB')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_character_match_bug - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0di2t9rd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_character_match_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_lcs_length_character_match_bug ______________________\n\n    def test_lcs_length_character_match_bug():\n        from source import lcs_length\n        # The bug causes vertical inflation: when s[i] == t[j], it uses dp[i-1, j] + 1\n        # instead of dp[i-1, j-1] + 1, leading to incorrect LCS length of 5 instead of 4\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"LCS length should be 4 for 'ABCBDAB' and 'BDCAB' (e.g., 'BCAB' or 'BDAB')\"\nE       AssertionError: LCS length should be 4 for 'ABCBDAB' and 'BDCAB' (e.g., 'BCAB' or 'BDAB')\nE       assert 2 == 4\nE        +  where 2 = <function lcs_length at 0x108056840>('ABCBDAB', 'BDCAB')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_character_match_bug - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The DP update for matching characters incorrectly uses `dp[i-1, j] + 1` instead of `dp[i-1, j-1] + 1`, causing vertical inflation of LCS lengths when characters match but are not diagonally adjacent.",
+    "bug_location": "lcs_length, line 10",
+    "trigger_condition": "Input strings where a matching character occurs in the same column (j) as a previous match, causing incorrect chain inflation; specifically when s[i] == t[j] but the match should rely on diagonal predecessor dp[i-1, j-1] rather than vertical predecessor dp[i-1, j]",
+    "expected_vs_actual": "Expected: lcs_length('ABCBDAB', 'BDCAB') == 4 (actual LCS is 'BCAB' or 'BDAB'); Actual: returns 5 due to inflated chain counting the same column match multiple times",
+    "suggested_test_strategy": "Write a pytest test asserting lcs_length('ABCBDAB', 'BDCAB') == 4, which will fail on the buggy code (returns 5) but pass on the fixed version",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3579,
+  "completion_tokens_total": 695,
+  "duration_seconds": 12.88,
+  "timestamp": "2026-05-29T09:10:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

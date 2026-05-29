@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_knapsack",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_knapsack_exact_capacity_fills_capacity():\n    from source import knapsack\n    # Capacity is exactly equal to the weight of the first item.\n    # The optimal solution should pick that item (value 10) rather than a subset that doesn't fill the knapsack.\n    capacity = 3\n    items = [(3, 10), (1, 5)]\n    expected_value = 10\n    result = knapsack(capacity, items)\n    assert result == expected_value, (\n        f\"Knapsack should return {expected_value} for capacity {capacity} \"\n        f\"with items {items}, but returned {result}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp7qlwyemi\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity_fills_capacity FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_knapsack_exact_capacity_fills_capacity __________________\n\n    def test_knapsack_exact_capacity_fills_capacity():\n        from source import knapsack\n        # Capacity is exactly equal to the weight of the first item.\n        # The optimal solution should pick that item (value 10) rather than a subset that doesn't fill the knapsack.\n        capacity = 3\n        items = [(3, 10), (1, 5)]\n        expected_value = 10\n        result = knapsack(capacity, items)\n>       assert result == expected_value, (\n            f\"Knapsack should return {expected_value} for capacity {capacity} \"\n            f\"with items {items}, but returned {result}\"\n        )\nE       AssertionError: Knapsack should return 10 for capacity 3 with items [(3, 10), (1, 5)], but returned 5\nE       assert 5 == 10\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_knapsack_exact_capacity_fills_capacity - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpmgrw1g_9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity_fills_capacity PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T21:08:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 739,
+  "completion_tokens_total": 870,
+  "duration_seconds": 4.63,
+  "timestamp": "2026-05-25T21:08:42Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

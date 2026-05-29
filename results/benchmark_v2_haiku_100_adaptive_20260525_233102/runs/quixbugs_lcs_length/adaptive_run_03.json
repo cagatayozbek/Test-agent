@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_lcs_length",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import lcs_length\n\n\ndef test_lcs_length_abcbdab_bdcab():\n    assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"Expected LCS length of 4 for 'ABCBDAB' and 'BDCAB'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpx8zhkf_8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_abcbdab_bdcab FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_abcbdab_bdcab _________________________\n\n    def test_lcs_length_abcbdab_bdcab():\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"Expected LCS length of 4 for 'ABCBDAB' and 'BDCAB'\"\nE       AssertionError: Expected LCS length of 4 for 'ABCBDAB' and 'BDCAB'\nE       assert 1 == 4\nE        +  where 1 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_abcbdab_bdcab - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp5wk975sk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_abcbdab_bdcab FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_abcbdab_bdcab _________________________\n\n    def test_lcs_length_abcbdab_bdcab():\n>       assert lcs_length('ABCBDAB', 'BDCAB') == 4, \"Expected LCS length of 4 for 'ABCBDAB' and 'BDCAB'\"\nE       AssertionError: Expected LCS length of 4 for 'ABCBDAB' and 'BDCAB'\nE       assert 2 == 4\nE        +  where 2 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_abcbdab_bdcab - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-26T01:08:49Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import lcs_length\n\ndef test_lcs_length_meow_homeowner():\n    assert lcs_length('meow', 'homeowner') == 4, \"Expected LCS length 4 for 'meow' and 'homeowner'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp8xqixw6_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_meow_homeowner FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_meow_homeowner ________________________\n\n    def test_lcs_length_meow_homeowner():\n>       assert lcs_length('meow', 'homeowner') == 4, \"Expected LCS length 4 for 'meow' and 'homeowner'\"\nE       AssertionError: Expected LCS length 4 for 'meow' and 'homeowner'\nE       assert 1 == 4\nE        +  where 1 = lcs_length('meow', 'homeowner')\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_meow_homeowner - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpn8gk4omp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_meow_homeowner PASSED                 [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-26T01:11:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "Using dp[i-1, j] instead of dp[i-1, j-1] causes the algorithm to chain character matches vertically down the same column rather than following the diagonal predecessor. This breaks the longest common subsequence recurrence relation, as the algorithm fails to properly extend matching sequences across non-adjacent positions in both strings.",
+    "bug_location": "lcs_length, line 8",
+    "trigger_condition": "Any input where the optimal LCS spans non-adjacent indices in both strings, such as 'ABCBDAB' and 'BDCAB' where 'BDAB' is a common subsequence of length 4 formed from positions (3,0)→(4,1)→(5,3)→(6,4).",
+    "expected_vs_actual": "For lcs_length('ABCBDAB', 'BDCAB'), the expected result is 4 (longest common subsequence 'BDAB'). The buggy code using dp[i-1, j] returns 1, as it only counts individual character matches in isolated columns without propagating subsequence lengths diagonally.",
+    "suggested_test_strategy": "Assert the known result on the provided instance: lcs_length('ABCBDAB', 'BDCAB') == 4. This exposes the bug because the buggy vertical chaining cannot reconstruct multi-position subsequences; add additional tests with chains of matching characters ('AAA', 'A') to verify non-diagonal matching doesn't accumulate.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 94531,
+  "completion_tokens_total": 40210,
+  "duration_seconds": 236.06,
+  "timestamp": "2026-05-26T01:11:02Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

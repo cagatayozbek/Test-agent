@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_035",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_max_element_bug():\n    # Test with the second docstring example which clearly shows the bug\n    result = max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n    assert result == 123, f\"Expected 123 but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6u0kqzsy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_max_element_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_max_element_bug _____________________________\n\n    def test_max_element_bug():\n        # Test with the second docstring example which clearly shows the bug\n>       result = max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n                 ^^^^^^^^^^^\nE       NameError: name 'max_element' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_max_element_bug - NameError: name 'max_element...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnimp2xkd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_max_element_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_max_element_bug _____________________________\n\n    def test_max_element_bug():\n        # Test with the second docstring example which clearly shows the bug\n>       result = max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10])\n                 ^^^^^^^^^^^\nE       NameError: name 'max_element' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_max_element_bug - NameError: name 'max_element...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import max_element\n\ndef test_max_element_bug():\n    # Test case 1: simple list where first element is not max\n    assert max_element([1, 2, 3]) == 3, \"Expected maximum of [1, 2, 3] to be 3\"\n    # Test case 2: list with negative numbers and large positive max\n    assert max_element([5, 3, -5, 2, -3, 3, 9, 0, 123, 1, -10]) == 123, \"Expected maximum to be 123\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7sltayxw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_max_element_bug FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_max_element_bug _____________________________\n\n    def test_max_element_bug():\n        # Test case 1: simple list where first element is not max\n>       assert max_element([1, 2, 3]) == 3, \"Expected maximum of [1, 2, 3] to be 3\"\nE       AssertionError: Expected maximum of [1, 2, 3] to be 3\nE       assert 1 == 3\nE        +  where 1 = max_element([1, 2, 3])\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_max_element_bug - AssertionError: Expected max...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuq76ndhd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_max_element_bug PASSED                           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function uses '<' instead of '>' when comparing elements, causing it to return the minimum instead of maximum.",
+    "bug_location": "max_element, line 8",
+    "trigger_condition": "Any list where the first element is not the maximum value",
+    "expected_vs_actual": "Expected: returns the largest element (e.g., 3 for [1,2,3], 123 for the second example). Actual: returns the smallest element (1 for [1,2,3], -10 for the second example).",
+    "suggested_test_strategy": "Run the docstring examples as tests to expose the bug.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2041,
+  "completion_tokens_total": 380,
+  "duration_seconds": 5.19,
+  "timestamp": "2026-05-29T09:04:26Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

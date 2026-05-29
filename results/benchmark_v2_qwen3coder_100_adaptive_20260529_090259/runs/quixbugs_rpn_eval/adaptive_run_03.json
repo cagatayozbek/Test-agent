@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_rpn_eval",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import rpn_eval\n\ndef test_rpn_subtraction_order():\n    # Test subtraction where order matters: 5 - 1 = 4\n    # Buggy code does op(token, a, b) where a=1, b=5 → computes 1 - 5 = -4\n    # Fixed code should do op(token, b, a) → computes 5 - 1 = 4\n    tokens = ['5', '1', '-']\n    result = rpn_eval(tokens)\n    assert result == 4.0, f\"Expected 5 - 1 = 4.0, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzonp6ckx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_rpn_subtraction_order FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_subtraction_order __________________________\n\n    def test_rpn_subtraction_order():\n        # Test subtraction where order matters: 5 - 1 = 4\n        # Buggy code does op(token, a, b) where a=1, b=5 → computes 1 - 5 = -4\n        # Fixed code should do op(token, b, a) → computes 5 - 1 = 4\n        tokens = ['5', '1', '-']\n>       result = rpn_eval(tokens)\n                 ^^^^^^^^^^^^^^^^\n\ntest_generated.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_subtraction_order - IndexError: pop from e...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqui34j55\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_rpn_subtraction_order FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_subtraction_order __________________________\n\n    def test_rpn_subtraction_order():\n        # Test subtraction where order matters: 5 - 1 = 4\n        # Buggy code does op(token, a, b) where a=1, b=5 → computes 1 - 5 = -4\n        # Fixed code should do op(token, b, a) → computes 5 - 1 = 4\n        tokens = ['5', '1', '-']\n>       result = rpn_eval(tokens)\n                 ^^^^^^^^^^^^^^^^\n\ntest_generated.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_subtraction_order - IndexError: pop from e...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:11:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import rpn_eval\n\ndef test_rpn_subtraction_order():\n    # Test subtraction: ['5', '1', '-'] should evaluate to 5 - 1 = 4\n    # Buggy code does 1 - 5 = -4\n    result = rpn_eval([5.0, 1.0, '-'])\n    assert result == 4.0, f\"Expected 5 - 1 = 4.0, but got {result}\"\n\ndef test_rpn_division_order():\n    # Test division: ['8', '2', '/'] should evaluate to 8 / 2 = 4.0\n    # Buggy code does 2 / 8 = 0.25\n    result = rpn_eval([8.0, 2.0, '/'])\n    assert result == 4.0, f\"Expected 8 / 2 = 4.0, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmu9fg1e9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_rpn_subtraction_order FAILED                     [ 50%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_subtraction_order __________________________\n\n    def test_rpn_subtraction_order():\n        # Test subtraction: ['5', '1', '-'] should evaluate to 5 - 1 = 4\n        # Buggy code does 1 - 5 = -4\n        result = rpn_eval([5.0, 1.0, '-'])\n>       assert result == 4.0, f\"Expected 5 - 1 = 4.0, but got {result}\"\nE       AssertionError: Expected 5 - 1 = 4.0, but got -4.0\nE       assert -4.0 == 4.0\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_subtraction_order - AssertionError: Expect...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8chislcc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_rpn_subtraction_order PASSED                     [ 50%]\ntest_generated.py::test_rpn_division_order PASSED                        [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:11:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The operands a and b are passed to the operator function in the wrong order (a, b instead of b, a), causing non-commutative operations like subtraction and division to produce incorrect results.",
+    "bug_location": "rpn_eval, line 8",
+    "trigger_condition": "Input tokens containing subtraction or division operations, e.g., ['5', '1', '-'] or ['8', '2', '/']",
+    "expected_vs_actual": "Expected: '5 - 1' = 4, but actual: '1 - 5' = -4; Expected: '8 / 2' = 4.0, but actual: '2 / 8' = 0.25",
+    "suggested_test_strategy": "Write a pytest test using RPN expressions with subtraction or division and assert the correct mathematical result (e.g., test(['5', '1', '-']) == 4 and test(['8', '2', '/']) == 4.0)",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2310,
+  "completion_tokens_total": 578,
+  "duration_seconds": 8.34,
+  "timestamp": "2026-05-29T09:11:44Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

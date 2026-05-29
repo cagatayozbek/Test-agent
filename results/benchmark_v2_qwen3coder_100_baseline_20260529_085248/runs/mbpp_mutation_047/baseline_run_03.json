@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_buggy_comparison():\n    # Using limit=220: the smallest amicable pair is (220, 284)\n    # For num=220: sum of proper divisors = 284\n    # For num=284: sum of proper divisors = 220\n    # So both should be included in the sum for limit >= 284\n    # But for limit=220, only 220 should be processed and added if it forms a pair within range\n    \n    # The canonical correct sum for limit=220 should be 0 (since 284 > 220, so 220's pair is out of range)\n    # However, the buggy code uses == in the condition where it should use !=\n    # The original condition checks: if num == sum_fact2 and num == sum_fact\n    # This is wrong because amicable pairs require num != sum_fact (they are distinct)\n    # The correct condition should be: if num != sum_fact and num == sum_fact2\n    \n    # For limit=220, the buggy code will incorrectly add nothing (correct by accident)\n    # For limit=284, the buggy code will incorrectly NOT add the pair (220, 284)\n    # because the condition 'num == sum_fact' is false (220 != 284 and 284 != 220)\n    # But the bug is in the original code which checks 'num == sum_fact' instead of 'num != sum_fact'\n    \n    # Let's pick limit=284: the correct sum should be 220 + 284 = 504\n    # The buggy code will not add them because it requires num == sum_fact (which is false for amicable pairs)\n    \n    # Actually, let's verify the canonical behavior:\n    # The original code has: if num == sum_fact2 and num == sum_fact:\n    # For amicable numbers, we need num != sum_fact (they're distinct), so this condition will NEVER be true\n    # Therefore, the buggy code will always return 0 for any limit (except edge cases)\n    \n    # The correct condition should be: if num != sum_fact and num == sum_fact2:\n    # For limit=284, the correct sum is 504 (220 + 284)\n    \n    # Test with limit=284: expected sum is 504\n    result = amicable_numbers_sum(284)\n    assert result == 504, f\"Expected 504 for limit=284, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwa72qv8o\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_buggy_comparison FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_amicable_numbers_sum_buggy_comparison __________________\n\n    def test_amicable_numbers_sum_buggy_comparison():\n        # Using limit=220: the smallest amicable pair is (220, 284)\n        # For num=220: sum of proper divisors = 284\n        # For num=284: sum of proper divisors = 220\n        # So both should be included in the sum for limit >= 284\n        # But for limit=220, only 220 should be processed and added if it forms a pair within range\n    \n        # The canonical correct sum for limit=220 should be 0 (since 284 > 220, so 220's pair is out of range)\n        # However, the buggy code uses == in the condition where it should use !=\n        # The original condition checks: if num == sum_fact2 and num == sum_fact\n        # This is wrong because amicable pairs require num != sum_fact (they are distinct)\n        # The correct condition should be: if num != sum_fact and num == sum_fact2\n    \n        # For limit=220, the buggy code will incorrectly add nothing (correct by accident)\n        # For limit=284, the buggy code will incorrectly NOT add the pair (220, 284)\n        # because the condition 'num == sum_fact' is false (220 != 284 and 284 != 220)\n        # But the bug is in the original code which checks 'num == sum_fact' instead of 'num != sum_fact'\n    \n        # Let's pick limit=284: the correct sum should be 220 + 284 = 504\n        # The buggy code will not add them because it requires num == sum_fact (which is false for amicable pairs)\n    \n        # Actually, let's verify the canonical behavior:\n        # The original code has: if num == sum_fact2 and num == sum_fact:\n        # For amicable numbers, we need num != sum_fact (they're distinct), so this condition will NEVER be true\n        # Therefore, the buggy code will always return 0 for any limit (except edge cases)\n    \n        # The correct condition should be: if num != sum_fact and num == sum_fact2:\n        # For limit=284, the correct sum is 504 (220 + 284)\n    \n        # Test with limit=284: expected sum is 504\n        result = amicable_numbers_sum(284)\n>       assert result == 504, f\"Expected 504 for limit=284, but got {result}\"\nE       AssertionError: Expected 504 for limit=284, but got 34\nE       assert 34 == 504\n\ntest_generated.py:35: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_buggy_comparison - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0akbl6dw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_buggy_comparison PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:58:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 576,
+  "completion_tokens_total": 602,
+  "duration_seconds": 8.79,
+  "timestamp": "2026-05-29T08:58:07Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

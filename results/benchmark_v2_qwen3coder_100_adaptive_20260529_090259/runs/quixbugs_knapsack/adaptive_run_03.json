@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_knapsack",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_knapsack_exact_capacity_fill():\n    # Test case where optimal solution exactly fills capacity\n    # capacity=3, items=[(3, 10), (1, 5)]\n    # Optimal: take item with weight 3, value 10 (exactly fills capacity)\n    # Buggy code: weight < j condition excludes items that exactly fill remaining capacity\n    # For j=3 and weight=3: 3 < 3 is False, so the item is never considered\n    # Result: buggy code returns 0 instead of 10\n    assert knapsack(3, [(3, 10), (1, 5)]) == 10, \"Should include item that exactly fills remaining capacity\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsrsc94tj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity_fill FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_knapsack_exact_capacity_fill _______________________\n\n    def test_knapsack_exact_capacity_fill():\n        # Test case where optimal solution exactly fills capacity\n        # capacity=3, items=[(3, 10), (1, 5)]\n        # Optimal: take item with weight 3, value 10 (exactly fills capacity)\n        # Buggy code: weight < j condition excludes items that exactly fill remaining capacity\n        # For j=3 and weight=3: 3 < 3 is False, so the item is never considered\n        # Result: buggy code returns 0 instead of 10\n>       assert knapsack(3, [(3, 10), (1, 5)]) == 10, \"Should include item that exactly fills remaining capacity\"\n               ^^^^^^^^\nE       NameError: name 'knapsack' is not defined\n\ntest_generated.py:8: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_knapsack_exact_capacity_fill - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpov794a75\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity_fill FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_knapsack_exact_capacity_fill _______________________\n\n    def test_knapsack_exact_capacity_fill():\n        # Test case where optimal solution exactly fills capacity\n        # capacity=3, items=[(3, 10), (1, 5)]\n        # Optimal: take item with weight 3, value 10 (exactly fills capacity)\n        # Buggy code: weight < j condition excludes items that exactly fill remaining capacity\n        # For j=3 and weight=3: 3 < 3 is False, so the item is never considered\n        # Result: buggy code returns 0 instead of 10\n>       assert knapsack(3, [(3, 10), (1, 5)]) == 10, \"Should include item that exactly fills remaining capacity\"\n               ^^^^^^^^\nE       NameError: name 'knapsack' is not defined\n\ntest_generated.py:8: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_knapsack_exact_capacity_fill - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import knapsack\n\ndef test_knapsack_exact_capacity_fill():\n    # Bug: condition 'weight < j' excludes items that exactly fill remaining capacity\n    # Expected: knapsack(3, [(3,10), (1,5)]) should return 10 (take the first item)\n    # Buggy code returns 5 (only takes the second item) because 3 < 3 is False\n    assert knapsack(3, [(3, 10), (1, 5)]) == 10, \"Should include item that exactly fills remaining capacity\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmposp183xf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity_fill FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_knapsack_exact_capacity_fill _______________________\n\n    def test_knapsack_exact_capacity_fill():\n        # Bug: condition 'weight < j' excludes items that exactly fill remaining capacity\n        # Expected: knapsack(3, [(3,10), (1,5)]) should return 10 (take the first item)\n        # Buggy code returns 5 (only takes the second item) because 3 < 3 is False\n>       assert knapsack(3, [(3, 10), (1, 5)]) == 10, \"Should include item that exactly fills remaining capacity\"\nE       AssertionError: Should include item that exactly fills remaining capacity\nE       assert 5 == 10\nE        +  where 5 = knapsack(3, [(3, 10), (1, 5)])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_knapsack_exact_capacity_fill - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcikelbpb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity_fill PASSED              [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The condition `weight < j` incorrectly excludes items that exactly fill the remaining capacity; it should be `weight <= j` to allow items that fit perfectly.",
+    "bug_location": "knapsack, line 11",
+    "trigger_condition": "An input where the optimal solution includes an item whose weight exactly equals the remaining capacity at some step (e.g., capacity=3, items=[(3,10), (1,5)]); the buggy code skips the (3,10) item because 3 < 3 is false.",
+    "expected_vs_actual": "Expected: knapsack(3, [(3,10), (1,5)]) returns 10 (by taking the first item). Actual: returns 5 (by taking only the second item) due to the buggy condition excluding the exact-fit item.",
+    "suggested_test_strategy": "Write a pytest test with capacity=3 and items=[(3,10), (1,5)], asserting that the result is 10.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2538,
+  "completion_tokens_total": 529,
+  "duration_seconds": 9.85,
+  "timestamp": "2026-05-29T09:10:15Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

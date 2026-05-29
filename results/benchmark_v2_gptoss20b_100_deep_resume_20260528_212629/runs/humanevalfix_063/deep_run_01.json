@@ -1,0 +1,47 @@
+{
+  "task_id": "humanevalfix_063",
+  "mode": "deep",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\n\nimport pytest\n\nfrom source import fibfib\n\n# Test that fibfib correctly counts Fibonacci numbers less than n\n# The buggy implementation incorrectly handles n == 2, returning 0 instead of 2.\n# This test will reveal that bug.\n\ndef test_fibfib_counts():\n    assert fibfib(1) == 0\n    assert fibfib(2) == 2\n    assert fibfib(5) == 4\n",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpzqfsfreh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_fibfib_counts FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_fibfib_counts ______________________________\n\n    def test_fibfib_counts():\n>       assert fibfib(1) == 0\nE       assert 1 == 0\nE        +  where 1 = fibfib(1)\n\ntest_generated.py:16: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fibfib_counts - assert 1 == 0\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmph84tbgea\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_fibfib_counts FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_fibfib_counts ______________________________\n\n    def test_fibfib_counts():\n        assert fibfib(1) == 0\n>       assert fibfib(2) == 2\nE       assert 1 == 2\nE        +  where 1 = fibfib(2)\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fibfib_counts - assert 1 == 2\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-28T21:42:38Z",
+      "tool_call_count": 1,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 12227,
+  "completion_tokens_total": 14209,
+  "duration_seconds": 167.24,
+  "timestamp": "2026-05-28T21:42:38Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

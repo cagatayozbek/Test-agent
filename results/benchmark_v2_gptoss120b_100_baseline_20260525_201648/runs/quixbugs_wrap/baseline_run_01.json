@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_wrap",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import wrap\n\ndef test_wrap_trailing_word_preserved():\n    result = wrap('aaa bbb ccc', 4)\n    assert result == ['aaa', 'bbb', 'ccc'], f\"Expected all words to be wrapped, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpp_mf7i3l\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_trailing_word_preserved FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_wrap_trailing_word_preserved _______________________\n\n    def test_wrap_trailing_word_preserved():\n        result = wrap('aaa bbb ccc', 4)\n>       assert result == ['aaa', 'bbb', 'ccc'], f\"Expected all words to be wrapped, got {result}\"\nE       AssertionError: Expected all words to be wrapped, got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_trailing_word_preserved - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp3020xpr1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_trailing_word_preserved FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_wrap_trailing_word_preserved _______________________\n\n    def test_wrap_trailing_word_preserved():\n        result = wrap('aaa bbb ccc', 4)\n>       assert result == ['aaa', 'bbb', 'ccc'], f\"Expected all words to be wrapped, got {result}\"\nE       AssertionError: Expected all words to be wrapped, got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_trailing_word_preserved - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:28:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import wrap\n\ndef test_wrap_trailing_word_preserved():\n    result = wrap('aaa bbb ccc', 4)\n    expected = ['aaa', 'bbb', 'ccc']\n    assert result == expected, f\"Expected wrap to return all words preserving the trailing word: {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmptxp580zo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_trailing_word_preserved FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_wrap_trailing_word_preserved _______________________\n\n    def test_wrap_trailing_word_preserved():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected wrap to return all words preserving the trailing word: {expected}, got {result}\"\nE       AssertionError: Expected wrap to return all words preserving the trailing word: ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_trailing_word_preserved - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp9u2__k3r\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_trailing_word_preserved FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_wrap_trailing_word_preserved _______________________\n\n    def test_wrap_trailing_word_preserved():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected wrap to return all words preserving the trailing word: {expected}, got {result}\"\nE       AssertionError: Expected wrap to return all words preserving the trailing word: ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_trailing_word_preserved - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:28:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import wrap\n\ndef test_wrap_trailing_text_preserved():\n    result = wrap('abcde', 3)\n    assert result == ['abc', 'de'], f\"Expected trailing text to be preserved as ['abc', 'de'], got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp2iiu5afh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_trailing_text_preserved FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_wrap_trailing_text_preserved _______________________\n\n    def test_wrap_trailing_text_preserved():\n        result = wrap('abcde', 3)\n>       assert result == ['abc', 'de'], f\"Expected trailing text to be preserved as ['abc', 'de'], got {result}\"\nE       AssertionError: Expected trailing text to be preserved as ['abc', 'de'], got ['abc']\nE       assert ['abc'] == ['abc', 'de']\nE         \nE         Right contains one more item: 'de'\nE         \nE         Full diff:\nE           [\nE               'abc',\nE         -     'de',\nE           ]\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_trailing_text_preserved - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp5j7w1mmc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_trailing_text_preserved PASSED              [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:28:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2727,
+  "completion_tokens_total": 3125,
+  "duration_seconds": 43.31,
+  "timestamp": "2026-05-25T20:28:44Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

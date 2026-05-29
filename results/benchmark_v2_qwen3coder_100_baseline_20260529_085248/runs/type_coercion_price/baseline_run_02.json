@@ -1,0 +1,36 @@
+{
+  "task_id": "type_coercion_price",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import filter_expensive_items\n\ndef test_type_coercion_price():\n    items = [\n        {'name': 'A', 'price': 100},\n        {'name': 'B', 'price': '200'},\n        {'name': 'C', 'price': 150},\n        {'name': 'D', 'price': '150'}\n    ]\n    threshold = 150\n    \n    # The function should handle string prices by converting them to int\n    # Expected behavior: filter items where price > 150\n    # Should include 'B' (price 200) but not others\n    expected = [{'name': 'B', 'price': '200'}]\n    \n    result = filter_expensive_items(items, threshold)\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_60rd861\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_type_coercion_price FAILED                       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_type_coercion_price ___________________________\n\n    def test_type_coercion_price():\n        items = [\n            {'name': 'A', 'price': 100},\n            {'name': 'B', 'price': '200'},\n            {'name': 'C', 'price': 150},\n            {'name': 'D', 'price': '150'}\n        ]\n        threshold = 150\n    \n        # The function should handle string prices by converting them to int\n        # Expected behavior: filter items where price > 150\n        # Should include 'B' (price 200) but not others\n        expected = [{'name': 'B', 'price': '200'}]\n    \n>       result = filter_expensive_items(items, threshold)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:18: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nitems = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}, {'name': 'D', 'price': '150'}]\nthreshold = 150\n\n    def filter_expensive_items(items, threshold):\n        \"\"\"\n        Filters items above a certain price.\n        items: [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n        \"\"\"\n        result = []\n        for item in items:\n            # BUG: If item['price'] is a string (\"200\"),\n            # \"200\" > 150 raises TypeError in Python 3.\n>           if item['price'] > threshold:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nE           TypeError: '>' not supported between instances of 'str' and 'int'\n\nsource.py:10: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_type_coercion_price - TypeError: '>' not suppo...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqz58ps95\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_type_coercion_price PASSED                       [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:02:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 488,
+  "completion_tokens_total": 191,
+  "duration_seconds": 3.0,
+  "timestamp": "2026-05-29T09:02:58Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_071",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import triangle_area\n\ndef test_triangle_area_missing_division():\n    # Using sides (3, 4, 5) - a valid right triangle\n    # Semi-perimeter should be (3+4+5)/2 = 6, but buggy version uses s = 12\n    # Correct area: sqrt(6*(6-3)*(6-4)*(6-5)) = sqrt(6*3*2*1) = sqrt(36) = 6.00\n    # Buggy version: sqrt(12*(12-3)*(12-4)*(12-5)) = sqrt(12*9*8*7) = sqrt(6048) ≈ 77.77\n    result = triangle_area(3, 4, 5)\n    assert result == 6.00, f\"Expected 6.00 for triangle_area(3, 4, 5), but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxxp8bwm4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_triangle_area_missing_division FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_triangle_area_missing_division ______________________\n\n    def test_triangle_area_missing_division():\n        # Using sides (3, 4, 5) - a valid right triangle\n        # Semi-perimeter should be (3+4+5)/2 = 6, but buggy version uses s = 12\n        # Correct area: sqrt(6*(6-3)*(6-4)*(6-5)) = sqrt(6*3*2*1) = sqrt(36) = 6.00\n        # Buggy version: sqrt(12*(12-3)*(12-4)*(12-5)) = sqrt(12*9*8*7) = sqrt(6048) ≈ 77.77\n        result = triangle_area(3, 4, 5)\n>       assert result == 6.00, f\"Expected 6.00 for triangle_area(3, 4, 5), but got {result}\"\nE       AssertionError: Expected 6.00 for triangle_area(3, 4, 5), but got 77.77\nE       assert 77.77 == 6.0\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_triangle_area_missing_division - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1kur55jv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_triangle_area_missing_division PASSED            [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:05:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 591,
+  "completion_tokens_total": 216,
+  "duration_seconds": 2.46,
+  "timestamp": "2026-05-29T09:05:07Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

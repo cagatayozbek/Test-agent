@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_min_k_with_k_zero():\n    # The bug is that the function returns sorted list[:0] = [] when K=0,\n    # but the expected behavior should be to return an empty list only when K=0 is valid.\n    # However, the hint says the mutation is '1' -> '0', suggesting the original code had a '1' somewhere.\n    # Looking at the source: sorted(...)[:K] - if the original had [:1] instead of [:K], that would be the bug.\n    # But the provided source shows [:K], so the mutation must be elsewhere.\n    # Given the hint about \"1 -> 0\" affecting 1/3 of test assertions, and typical MBPP problems,\n    # the likely bug is that K=0 should return [] (which it does), but perhaps the original had a hardcoded 1.\n    \n    # To expose a bug where the original had [:1] instead of [:K], we test with K=2.\n    # On buggy version (with hardcoded 1): returns only 1 element even when K=2\n    # On fixed version (with K): returns 2 elements as expected\n    \n    test_list = [(1, 'a'), (2, 'b'), (3, 'c')]\n    K = 2\n    \n    # The canonical correct behavior: return the 2 smallest tuples by first element\n    expected = [(1, 'a'), (2, 'b')]\n    \n    # If the bug is hardcoded 1 (e.g., [:1] instead of [:K]), then:\n    # - buggy code returns [(1, 'a')] (only 1 element)\n    # - fixed code returns [(1, 'a'), (2, 'b')] (2 elements)\n    \n    from source import min_k\n    result = min_k(test_list, K)\n    \n    assert result == expected, f\"Expected {expected} but got {result} for K={K}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5rwa0jlg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_k_zero PASSED                         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpohrac4eo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_k_zero PASSED                         [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:56:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import min_k\n\ndef test_min_k_with_k_one():\n    # Bug: The buggy code uses `[:K]` where K=1, but the mutation changed `1` to `0` somewhere\n    # However, looking at the source, the code is correct: `[:K]`\n    # The mutation `1 -> 0` likely affects the default value in the original problem\n    # Since the provided source code is correct, the bug must be in how the function is used\n    # The hint says: \"Mutation: `1` -> `0` (constant literal)\" and \"flips 1/3 of the MBPP test assertions\"\n    # For K=0, the buggy behavior would return an empty list, but the correct behavior for K=0 should also be empty\n    # Let's try a case where K=1 is critical - the function should return exactly 1 record\n    \n    test_list = [(2, 'a'), (1, 'b'), (3, 'c')]\n    K = 1\n    expected = [(1, 'b')]  # The record with minimum first element\n    \n    result = min_k(test_list, K)\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3zsteop8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_k_one PASSED                          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpar69ead_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_k_one FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_min_k_with_k_one _____________________________\n\n    def test_min_k_with_k_one():\n        # Bug: The buggy code uses `[:K]` where K=1, but the mutation changed `1` to `0` somewhere\n        # However, looking at the source, the code is correct: `[:K]`\n        # The mutation `1 -> 0` likely affects the default value in the original problem\n        # Since the provided source code is correct, the bug must be in how the function is used\n        # The hint says: \"Mutation: `1` -> `0` (constant literal)\" and \"flips 1/3 of the MBPP test assertions\"\n        # For K=0, the buggy behavior would return an empty list, but the correct behavior for K=0 should also be empty\n        # Let's try a case where K=1 is critical - the function should return exactly 1 record\n    \n        test_list = [(2, 'a'), (1, 'b'), (3, 'c')]\n        K = 1\n        expected = [(1, 'b')]  # The record with minimum first element\n    \n        result = min_k(test_list, K)\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected [(1, 'b')], got [(2, 'a')]\nE       assert [(2, 'a')] == [(1, 'b')]\nE         \nE         At index 0 diff: (2, 'a') != (1, 'b')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         1,...\nE         \nE         ...Full output truncated (9 lines hidden), use '-vv' to show\n\ntest_generated.py:18: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_k_one - AssertionError: Expected [(...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:56:27Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import min_k\n\ndef test_min_k_with_k_one():\n    test_list = [(1, 'a'), (0, 'b'), (2, 'c')]\n    K = 1\n    result = min_k(test_list, K)\n    # The canonical solution should return [(0, 'b')] (smallest first element)\n    # The buggy version with K=0 would return [] (empty list) regardless of input\n    # But the mutation is '1' -> '0', so likely the bug is in the slice [:K] where K=1 becomes K=0\n    # We need a test where the bug manifests - if K is used incorrectly as 0 instead of 1\n    # The test should use K=1 and expect 1 record, but if the bug makes it use 0, it returns empty list\n    \n    # Let's try with K=2 - if the bug flips 1->0 somewhere in the logic that affects boundary cases\n    # Actually, the hint says the mutation flips 1/3 of MBPP test assertions\n    # Let's test with K=1 to catch the case where K=1 might be incorrectly treated as 0\n    \n    # The key insight: if the bug changes something like range(1, N) to range(0, N) or similar,\n    # but looking at the code it's [:K] - so if K was hardcoded to 0 instead of 1 in some version\n    # Let's test with K=1 and assert we get 1 element\n    \n    expected = [(0, 'b')]\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_9h_ksj8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_k_one PASSED                          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpim8slvyg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_k_one FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_min_k_with_k_one _____________________________\n\n    def test_min_k_with_k_one():\n        test_list = [(1, 'a'), (0, 'b'), (2, 'c')]\n        K = 1\n        result = min_k(test_list, K)\n        # The canonical solution should return [(0, 'b')] (smallest first element)\n        # The buggy version with K=0 would return [] (empty list) regardless of input\n        # But the mutation is '1' -> '0', so likely the bug is in the slice [:K] where K=1 becomes K=0\n        # We need a test where the bug manifests - if K is used incorrectly as 0 instead of 1\n        # The test should use K=1 and expect 1 record, but if the bug makes it use 0, it returns empty list\n    \n        # Let's try with K=2 - if the bug flips 1->0 somewhere in the logic that affects boundary cases\n        # Actually, the hint says the mutation flips 1/3 of MBPP test assertions\n        # Let's test with K=1 to catch the case where K=1 might be incorrectly treated as 0\n    \n        # The key insight: if the bug changes something like range(1, N) to range(0, N) or similar,\n        # but looking at the code it's [:K] - so if K was hardcoded to 0 instead of 1 in some version\n        # Let's test with K=1 and assert we get 1 element\n    \n        expected = [(0, 'b')]\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected [(0, 'b')], got [(1, 'a')]\nE       assert [(1, 'a')] == [(0, 'b')]\nE         \nE         At index 0 diff: (1, 'a') != (0, 'b')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         0,...\nE         \nE         ...Full output truncated (9 lines hidden), use '-vv' to show\n\ntest_generated.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_k_one - AssertionError: Expected [(...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T08:56:32Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2472,
+  "completion_tokens_total": 1044,
+  "duration_seconds": 15.39,
+  "timestamp": "2026-05-29T08:56:32Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

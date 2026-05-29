@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_039",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\n\ndef test_volume_cube_small_input():\n    # Using l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3\n    # Fixed code should compute 3 * 3 * 3 = 27\n    result = volume_cube(3)\n    assert result == 27, f\"Expected volume of 3x3x3 cube to be 27, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8be7erpx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_small_input FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_volume_cube_small_input _________________________\n\n    def test_volume_cube_small_input():\n        # Using l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3\n        # Fixed code should compute 3 * 3 * 3 = 27\n>       result = volume_cube(3)\n                 ^^^^^^^^^^^\nE       NameError: name 'volume_cube' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cube_small_input - NameError: name 'vol...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsepu5_da\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_small_input FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_volume_cube_small_input _________________________\n\n    def test_volume_cube_small_input():\n        # Using l=3: buggy code computes 3 // 3 * 3 = 1 * 3 = 3\n        # Fixed code should compute 3 * 3 * 3 = 27\n>       result = volume_cube(3)\n                 ^^^^^^^^^^^\nE       NameError: name 'volume_cube' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cube_small_input - NameError: name 'vol...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_volume_cube_small_input():\n    from source import volume_cube\n    assert volume_cube(2) == 8, \"Volume of cube with side length 2 should be 8, but buggy code returns 2\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz9fni5n6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_small_input FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_volume_cube_small_input _________________________\n\n    def test_volume_cube_small_input():\n        from source import volume_cube\n>       assert volume_cube(2) == 8, \"Volume of cube with side length 2 should be 8, but buggy code returns 2\"\nE       AssertionError: Volume of cube with side length 2 should be 8, but buggy code returns 2\nE       assert 2 == 8\nE        +  where 2 = <function volume_cube at 0x10cd4a840>(2)\n\ntest_generated.py:3: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cube_small_input - AssertionError: Volu...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph0vq62c3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cube_small_input PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:08:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The buggy code uses integer division `//` instead of multiplication `*`, causing incorrect volume calculation for inputs where `l // l` yields 1 (e.g., l=1) but fails for other values due to truncation.",
+    "bug_location": "volume_cube, line 2",
+    "trigger_condition": "Input where l > 1, e.g., l=2, because l // l = 1, then 1 * l = l, giving volume=2 instead of 8.",
+    "expected_vs_actual": "Expected: volume = l * l * l (e.g., 8 for l=2). Actual: volume = (l // l) * l = l (e.g., 2 for l=2).",
+    "suggested_test_strategy": "Write pytest test with l=2: assert volume_cube(2) == 8, which fails on buggy version but passes on fixed version (using `*`).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1745,
+  "completion_tokens_total": 369,
+  "duration_seconds": 7.25,
+  "timestamp": "2026-05-29T09:08:00Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

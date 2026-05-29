@@ -1,0 +1,75 @@
+{
+  "task_id": "bugsinpy_thefuck_fish_version_3",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import fish_info\n\n\ndef test_fish_info_extracts_numeric_version_from_prefixed_output():\n    \"\"\"Test that fish_info extracts only the numeric version, not the full prefixed string.\"\"\"\n    \n    def mock_runner(cmd):\n        # Simulates the actual fish command output with prefix\n        return \"fish, version 3.1.2\\n\"\n    \n    result = fish_info(run_command=mock_runner)\n    \n    # Should extract ONLY the numeric version\n    assert result == \"3.1.2\", f\"Expected '3.1.2' but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp9vbqk_0t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_extracts_numeric_version_from_prefixed_output FAILED [100%]\n\n=================================== FAILURES ===================================\n_________ test_fish_info_extracts_numeric_version_from_prefixed_output _________\n\n    def test_fish_info_extracts_numeric_version_from_prefixed_output():\n        \"\"\"Test that fish_info extracts only the numeric version, not the full prefixed string.\"\"\"\n    \n        def mock_runner(cmd):\n            # Simulates the actual fish command output with prefix\n            return \"fish, version 3.1.2\\n\"\n    \n        result = fish_info(run_command=mock_runner)\n    \n        # Should extract ONLY the numeric version\n>       assert result == \"3.1.2\", f\"Expected '3.1.2' but got '{result}'\"\nE       AssertionError: Expected '3.1.2' but got 'Fish Shell fish, version 3.1.2'\nE       assert 'Fish Shell f...version 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_extracts_numeric_version_from_prefixed_output\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpu7th08x1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_extracts_numeric_version_from_prefixed_output FAILED [100%]\n\n=================================== FAILURES ===================================\n_________ test_fish_info_extracts_numeric_version_from_prefixed_output _________\n\n    def test_fish_info_extracts_numeric_version_from_prefixed_output():\n        \"\"\"Test that fish_info extracts only the numeric version, not the full prefixed string.\"\"\"\n    \n        def mock_runner(cmd):\n            # Simulates the actual fish command output with prefix\n            return \"fish, version 3.1.2\\n\"\n    \n        result = fish_info(run_command=mock_runner)\n    \n        # Should extract ONLY the numeric version\n>       assert result == \"3.1.2\", f\"Expected '3.1.2' but got '{result}'\"\nE       AssertionError: Expected '3.1.2' but got 'Fish Shell 3.1.2'\nE       assert 'Fish Shell 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell 3.1.2\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_extracts_numeric_version_from_prefixed_output\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T23:35:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import fish_info\n\ndef test_fish_info_extracts_numeric_version():\n    mock_runner = lambda cmd: \"fish, version 3.1.2\\n\"\n    result = fish_info(mock_runner)\n    assert result == \"3.1.2\", f\"Expected only version number '3.1.2' but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpg1hspuhd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_extracts_numeric_version FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_fish_info_extracts_numeric_version ____________________\n\n    def test_fish_info_extracts_numeric_version():\n        mock_runner = lambda cmd: \"fish, version 3.1.2\\n\"\n        result = fish_info(mock_runner)\n>       assert result == \"3.1.2\", f\"Expected only version number '3.1.2' but got '{result}'\"\nE       AssertionError: Expected only version number '3.1.2' but got 'Fish Shell fish, version 3.1.2'\nE       assert 'Fish Shell f...version 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_extracts_numeric_version - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpo7m4dwib\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_extracts_numeric_version FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_fish_info_extracts_numeric_version ____________________\n\n    def test_fish_info_extracts_numeric_version():\n        mock_runner = lambda cmd: \"fish, version 3.1.2\\n\"\n        result = fish_info(mock_runner)\n>       assert result == \"3.1.2\", f\"Expected only version number '3.1.2' but got '{result}'\"\nE       AssertionError: Expected only version number '3.1.2' but got 'Fish Shell 3.1.2'\nE       assert 'Fish Shell 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell 3.1.2\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_extracts_numeric_version - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-25T23:37:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import fish_info\n\ndef test_fish_info_parses_version_from_prefixed_output():\n    mock_runner = lambda cmd: \"fish, version 3.1.2\\n\"\n    result = fish_info(mock_runner)\n    assert result == 'Fish Shell 3.1.2', f\"Expected 'Fish Shell 3.1.2' but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpwpeyxkoj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_parses_version_from_prefixed_output FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_fish_info_parses_version_from_prefixed_output ______________\n\n    def test_fish_info_parses_version_from_prefixed_output():\n        mock_runner = lambda cmd: \"fish, version 3.1.2\\n\"\n        result = fish_info(mock_runner)\n>       assert result == 'Fish Shell 3.1.2', f\"Expected 'Fish Shell 3.1.2' but got '{result}'\"\nE       AssertionError: Expected 'Fish Shell 3.1.2' but got 'Fish Shell fish, version 3.1.2'\nE       assert 'Fish Shell f...version 3.1.2' == 'Fish Shell 3.1.2'\nE         \nE         - Fish Shell 3.1.2\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_parses_version_from_prefixed_output\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp_v3fqqn_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_parses_version_from_prefixed_output PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T23:38:16Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The fish_info function calls strip() to remove whitespace but fails to extract just the version token from the prefixed output. It returns the entire runner output (with prefix) wrapped in 'Fish Shell {output}' instead of parsing and returning only the numeric version number.",
+    "bug_location": "fish_info function, line 24",
+    "trigger_condition": "When the runner returns a string with a prefix like 'fish, version 3.1.2\\n' instead of just the version number",
+    "expected_vs_actual": "Expected: fish_info returns only '3.1.2' (the version token). Actual: fish_info returns 'Fish Shell fish, version 3.1.2' (the full prefixed string wrapped with 'Fish Shell ')",
+    "suggested_test_strategy": "Create a mock runner that returns 'fish, version 3.1.2\\n'. Call fish_info with this mock. Assert the result equals exactly '3.1.2'. On buggy code this fails (gets 'Fish Shell fish, version 3.1.2'). On fixed code it passes (extracts only the version token).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 126673,
+  "completion_tokens_total": 22862,
+  "duration_seconds": 163.43,
+  "timestamp": "2026-05-25T23:38:16Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_061",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import correct_bracketing\n\ndef test_correct_bracketing_opening_only():\n    \"\"\"Test that a single opening bracket returns False, not True.\"\"\"\n    assert correct_bracketing(\"(\") == False, \"Single opening bracket should return False\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl85eecut\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_opening_only PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp02s554m3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_opening_only PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_correct_bracketing_unmatched_closing():\n    \"\"\"Test that unmatched closing brackets return False, not True.\"\"\"\n    # This input causes depth to go negative (depth becomes -1 after first ')')\n    # The buggy code returns True when depth < 0, but should return False\n    assert correct_bracketing(\")(\") == False, \"Unmatched closing bracket should return False\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpobt0_yuf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unmatched_closing FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_correct_bracketing_unmatched_closing ___________________\n\n    def test_correct_bracketing_unmatched_closing():\n        \"\"\"Test that unmatched closing brackets return False, not True.\"\"\"\n        # This input causes depth to go negative (depth becomes -1 after first ')')\n        # The buggy code returns True when depth < 0, but should return False\n>       assert correct_bracketing(\")(\") == False, \"Unmatched closing bracket should return False\"\n               ^^^^^^^^^^^^^^^^^^\nE       NameError: name 'correct_bracketing' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_correct_bracketing_unmatched_closing - NameErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph6lt7jmy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unmatched_closing FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_correct_bracketing_unmatched_closing ___________________\n\n    def test_correct_bracketing_unmatched_closing():\n        \"\"\"Test that unmatched closing brackets return False, not True.\"\"\"\n        # This input causes depth to go negative (depth becomes -1 after first ')')\n        # The buggy code returns True when depth < 0, but should return False\n>       assert correct_bracketing(\")(\") == False, \"Unmatched closing bracket should return False\"\n               ^^^^^^^^^^^^^^^^^^\nE       NameError: name 'correct_bracketing' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_correct_bracketing_unmatched_closing - NameErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import correct_bracketing\n\ndef test_correct_bracketing_unmatched_closing_bracket():\n    # Test case where closing bracket appears before matching opening bracket\n    # This causes depth to go negative, and the buggy code incorrectly returns True\n    assert correct_bracketing(\")(\") == False, \"Unmatched closing bracket at start should return False\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7flk75i3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unmatched_closing_bracket FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_correct_bracketing_unmatched_closing_bracket _______________\n\n    def test_correct_bracketing_unmatched_closing_bracket():\n        # Test case where closing bracket appears before matching opening bracket\n        # This causes depth to go negative, and the buggy code incorrectly returns True\n>       assert correct_bracketing(\")(\") == False, \"Unmatched closing bracket at start should return False\"\nE       AssertionError: Unmatched closing bracket at start should return False\nE       assert True == False\nE        +  where True = correct_bracketing(')(')\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_correct_bracketing_unmatched_closing_bracket\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_z7x8jju\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unmatched_closing_bracket PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:04:59Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The function returns True when depth goes negative (indicating a closing bracket without a matching opening bracket), but it should return False in this case.",
+    "bug_location": "correct_bracketing, line 15",
+    "trigger_condition": "Input string where a closing bracket ')' appears before a matching opening bracket '(', causing depth to become negative (e.g., ')(' or ')()')",
+    "expected_vs_actual": "Expected: return False when depth < 0 (unmatched closing bracket). Actual: returns True when depth < 0, which is incorrect.",
+    "suggested_test_strategy": "Test with inputs like ')(', ')(()', or ')' to verify the function correctly returns False when there are unmatched closing brackets.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3381,
+  "completion_tokens_total": 390,
+  "duration_seconds": 8.46,
+  "timestamp": "2026-05-29T09:04:59Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

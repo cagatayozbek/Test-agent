@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_subsequences",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import subsequences\nimport math\n\ndef test_subsequences_k0_base_case():\n    # Test that subsequences with k=0 returns [[]] (one subsequence: the empty list)\n    # This exposes the bug where k=0 returns [] instead of [[]]\n    result = subsequences(1, 5, 0)\n    assert result == [[]], f\"Expected [[]] for k=0, got {result}\"\n\ndef test_subsequences_combinatorial_count():\n    # Test that subsequences(a=1, b=5, k=2) has length C(4, 2) = 6\n    # Since range(1, 5) includes [1, 2, 3, 4, 5] (5 numbers), but the example shows range(a, b) \n    # Actually, looking at the code, the range is inclusive: range(a, b+1-k) and subsequences(i+1, b, k-1)\n    # So for a=1, b=5, k=2, we're choosing 2 elements from [1,2,3,4,5] which is C(5,2)=10\n    # But the hint says C(4,2)=6, suggesting the range is actually [1,2,3,4] (4 elements)\n    # Looking more carefully: the loop is for i in range(a, b + 1 - k)\n    # For a=1, b=5, k=2: range(1, 5+1-2) = range(1,4) = [1,2,3]\n    # So the last element can't be 5 because then we'd need k=2 elements but only 1 spot left\n    # This means the effective range is [1,2,3,4], so C(4,2)=6\n    result = subsequences(1, 5, 2)\n    expected_length = math.comb(4, 2)  # = 6\n    assert len(result) == expected_length, f\"Expected length {expected_length}, got {len(result)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbbntqum5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_subsequences_k0_base_case FAILED                 [ 50%]\n\n=================================== FAILURES ===================================\n________________________ test_subsequences_k0_base_case ________________________\n\n    def test_subsequences_k0_base_case():\n        # Test that subsequences with k=0 returns [[]] (one subsequence: the empty list)\n        # This exposes the bug where k=0 returns [] instead of [[]]\n        result = subsequences(1, 5, 0)\n>       assert result == [[]], f\"Expected [[]] for k=0, got {result}\"\nE       AssertionError: Expected [[]] for k=0, got []\nE       assert [] == [[]]\nE         \nE         Right contains one more item: []\nE         \nE         Full diff:\nE         + []\nE         - [\nE         -     [],\nE         - ]\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_subsequences_k0_base_case - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpq6ncpplh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_subsequences_k0_base_case PASSED                 [ 50%]\ntest_generated.py::test_subsequences_combinatorial_count PASSED          [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:02:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 566,
+  "completion_tokens_total": 458,
+  "duration_seconds": 4.15,
+  "timestamp": "2026-05-29T09:02:29Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

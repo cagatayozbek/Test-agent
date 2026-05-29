@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_013",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import math\nimport pytest\nfrom source import volume_cone\n\n\ndef test_volume_cone_floor_division_bug():\n    \"\"\"Test that exposes floor division bug in cone volume calculation.\n    \n    With r=2, h=3: buggy code does (1/3 * pi) // 2 = 0, making volume 0.\n    Fixed code does (1/3 * pi * r * r * h) = 4*pi ≈ 12.566.\n    \"\"\"\n    r, h = 2, 3\n    result = volume_cone(r, h)\n    expected = (1.0 / 3) * math.pi * r * r * h\n    assert result == pytest.approx(expected), (\n        f\"Expected volume {expected:.6f}, got {result:.6f} - \"\n        \"likely due to floor division instead of multiplication\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp88z5qcy_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cone_floor_division_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_volume_cone_floor_division_bug ______________________\n\n    def test_volume_cone_floor_division_bug():\n        \"\"\"Test that exposes floor division bug in cone volume calculation.\n    \n        With r=2, h=3: buggy code does (1/3 * pi) // 2 = 0, making volume 0.\n        Fixed code does (1/3 * pi * r * r * h) = 4*pi ≈ 12.566.\n        \"\"\"\n        r, h = 2, 3\n        result = volume_cone(r, h)\n        expected = (1.0 / 3) * math.pi * r * r * h\n>       assert result == pytest.approx(expected), (\n            f\"Expected volume {expected:.6f}, got {result:.6f} - \"\n            \"likely due to floor division instead of multiplication\"\n        )\nE       AssertionError: Expected volume 12.566371, got 0.000000 - likely due to floor division instead of multiplication\nE       assert 0.0 == 12.566370614359172 ± 1.3e-05\nE         \nE         comparison failed\nE         Obtained: 0.0\nE         Expected: 12.566370614359172 ± 1.3e-05\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cone_floor_division_bug - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp88vu0f5a\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_cone_floor_division_bug PASSED            [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T22:09:49Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 31122,
+  "completion_tokens_total": 1455,
+  "duration_seconds": 12.14,
+  "timestamp": "2026-05-25T22:09:49Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

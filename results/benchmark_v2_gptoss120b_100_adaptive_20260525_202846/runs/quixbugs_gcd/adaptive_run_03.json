@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_gcd",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import gcd\n\ndef test_gcd_returns_correct_value_for_35_and_21():\n    assert gcd(35, 21) == 7, \"gcd(35, 21) should return 7, not cause infinite recursion or incorrect result\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmpd80zjaob\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_returns_correct_value_for_35_and_21 FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_gcd_returns_correct_value_for_35_and_21 _________________\n\n    def test_gcd_returns_correct_value_for_35_and_21():\n>       assert gcd(35, 21) == 7, \"gcd(35, 21) should return 7, not cause infinite recursion or incorrect result\"\n               ^^^^^^^^^^^\n\ntest_generated.py:4: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nE   RecursionError: maximum recursion depth exceeded\n!!! Recursion detected (same locals & position)\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_returns_correct_value_for_35_and_21 - Recu...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/var/folders/0y/j7hdryn144gdrwmp68kyv9fc0000gn/T/tmp43_qkxth\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_returns_correct_value_for_35_and_21 PASSED   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-25T20:36:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 558,
+  "completion_tokens_total": 504,
+  "duration_seconds": 5.52,
+  "timestamp": "2026-05-25T20:36:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

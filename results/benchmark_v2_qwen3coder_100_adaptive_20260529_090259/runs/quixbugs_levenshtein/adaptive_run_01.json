@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_levenshtein",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_levenshtein_equal_first_chars():\n    # When first characters are equal, they should NOT add 1 to the distance\n    # levenshtein('abc', 'abd') should be 1 (only last char differs)\n    # But buggy code returns 1 + levenshtein('bc', 'bd') = 1 + 1 = 2\n    assert levenshtein('abc', 'abd') == 1",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjfepsyok\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_levenshtein_equal_first_chars FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_levenshtein_equal_first_chars ______________________\n\n    def test_levenshtein_equal_first_chars():\n        # When first characters are equal, they should NOT add 1 to the distance\n        # levenshtein('abc', 'abd') should be 1 (only last char differs)\n        # But buggy code returns 1 + levenshtein('bc', 'bd') = 1 + 1 = 2\n>       assert levenshtein('abc', 'abd') == 1\n               ^^^^^^^^^^^\nE       NameError: name 'levenshtein' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_levenshtein_equal_first_chars - NameError: nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8l6_m050\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_levenshtein_equal_first_chars FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_levenshtein_equal_first_chars ______________________\n\n    def test_levenshtein_equal_first_chars():\n        # When first characters are equal, they should NOT add 1 to the distance\n        # levenshtein('abc', 'abd') should be 1 (only last char differs)\n        # But buggy code returns 1 + levenshtein('bc', 'bd') = 1 + 1 = 2\n>       assert levenshtein('abc', 'abd') == 1\n               ^^^^^^^^^^^\nE       NameError: name 'levenshtein' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_levenshtein_equal_first_chars - NameError: nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:18Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import levenshtein\n\ndef test_levenshtein_equal_first_chars():\n    # Bug: when first characters match, buggy code adds 1 unnecessarily\n    # Expected: levenshtein('abc', 'abd') == 1 (only 1 edit: 'c'->'d')\n    # Actual (buggy): returns 2 (adds 1 for matching 'a' + recursive result)\n    assert levenshtein('abc', 'abd') == 1, \"Equal first characters should not increment distance\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7ty_3o9n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_levenshtein_equal_first_chars FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_levenshtein_equal_first_chars ______________________\n\n    def test_levenshtein_equal_first_chars():\n        # Bug: when first characters match, buggy code adds 1 unnecessarily\n        # Expected: levenshtein('abc', 'abd') == 1 (only 1 edit: 'c'->'d')\n        # Actual (buggy): returns 2 (adds 1 for matching 'a' + recursive result)\n>       assert levenshtein('abc', 'abd') == 1, \"Equal first characters should not increment distance\"\nE       AssertionError: Equal first characters should not increment distance\nE       assert 3 == 1\nE        +  where 3 = levenshtein('abc', 'abd')\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_levenshtein_equal_first_chars - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmo7viux_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_levenshtein_equal_first_chars PASSED             [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:10:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function incorrectly adds 1 to the recursive call when the first characters match, inflating the distance when characters are equal.",
+    "bug_location": "levenshtein, line 7",
+    "trigger_condition": "Two strings where the first characters are equal (e.g., 'abc' and 'abd')",
+    "expected_vs_actual": "Expected: levenshtein('abc', 'abd') == 1; Actual: returns 2 due to unnecessary +1 when first characters match",
+    "suggested_test_strategy": "Run pytest on a test case like test_levenshtein_equal_first_chars() using inputs where first characters match and only differ later (e.g., 'abc' vs 'abd', 'cat' vs 'car')",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2367,
+  "completion_tokens_total": 395,
+  "duration_seconds": 6.84,
+  "timestamp": "2026-05-29T09:10:22Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

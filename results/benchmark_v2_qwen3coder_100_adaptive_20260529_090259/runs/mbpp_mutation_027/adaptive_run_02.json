@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_027",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import all_unique\n\ndef test_all_unique_duplicates_at_boundary():\n    # Test with a list that has exactly one duplicate (length = 3, unique elements = 2)\n    # Canonical solution: len([1,1,2]) = 3, len(set([1,1,2])) = 2\n    # Buggy code (>=): 3 >= 2 → True → returns False (wrong)\n    # Fixed code (>): 3 > 2 → True → returns False (wrong), but wait...\n    # Let's reconsider: The canonical solution is incorrect as written.\n    \n    # Actually, the bug description says the mutation is '>' -> '>='.\n    # The canonical (fixed) code should be: if len(test_list) > len(set(test_list))\n    # But the source.py shows: if len(test_list) >= len(set(test_list)): return False\n    \n    # Let's analyze:\n    # - All unique list [1,2,3]: len=3, set_len=3\n    #   - Canonical (fixed): 3 > 3 → False → return True ✓\n    #   - Buggy: 3 >= 3 → True → return False ✗\n    \n    # So test with all unique list to expose the bug\n    assert all_unique([1, 2, 3]) == True, \"All unique list should return True\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz5fzb_j9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_duplicates_at_boundary FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_all_unique_duplicates_at_boundary ____________________\n\n    def test_all_unique_duplicates_at_boundary():\n        # Test with a list that has exactly one duplicate (length = 3, unique elements = 2)\n        # Canonical solution: len([1,1,2]) = 3, len(set([1,1,2])) = 2\n        # Buggy code (>=): 3 >= 2 → True → returns False (wrong)\n        # Fixed code (>): 3 > 2 → True → returns False (wrong), but wait...\n        # Let's reconsider: The canonical solution is incorrect as written.\n    \n        # Actually, the bug description says the mutation is '>' -> '>='.\n        # The canonical (fixed) code should be: if len(test_list) > len(set(test_list))\n        # But the source.py shows: if len(test_list) >= len(set(test_list)): return False\n    \n        # Let's analyze:\n        # - All unique list [1,2,3]: len=3, set_len=3\n        #   - Canonical (fixed): 3 > 3 → False → return True ✓\n        #   - Buggy: 3 >= 3 → True → return False ✗\n    \n        # So test with all unique list to expose the bug\n>       assert all_unique([1, 2, 3]) == True, \"All unique list should return True\"\nE       AssertionError: All unique list should return True\nE       assert False == True\nE        +  where False = all_unique([1, 2, 3])\n\ntest_generated.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_duplicates_at_boundary - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9hhhz0wv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_duplicates_at_boundary PASSED         [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-29T09:07:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 442,
+  "completion_tokens_total": 296,
+  "duration_seconds": 2.93,
+  "timestamp": "2026-05-29T09:07:30Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
