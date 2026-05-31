@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_005",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import average_tuple\n\ndef test_mbpp_mutation_005():\n    nums = ((1, 2), (3, 4), (5, 6))\n    expected = [6.0, 14.0, 21.0]\n    assert average_tuple(nums) == expected\n\ndef test_mbpp_mutation_005_fixed():\n    nums = ((1, 2), (3, 4), (5, 6))\n    expected = [3.0, 7.0, 11.0]\n    assert average_tuple(nums) == expected",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphykioeaa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_mbpp_mutation_005 FAILED                         [ 50%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_005 ____________________________\n\n    def test_mbpp_mutation_005():\n        nums = ((1, 2), (3, 4), (5, 6))\n        expected = [6.0, 14.0, 21.0]\n>       assert average_tuple(nums) == expected\nE       AssertionError: assert [27, 36] == [6.0, 14.0, 21.0]\nE         \nE         At index 0 diff: 27 != 6.0\nE         Right contains one more item: 21.0\nE         \nE         Full diff:\nE           [\nE         +     27,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_005 - AssertionError: assert [27...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1pl5c6hs\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_mbpp_mutation_005 FAILED                         [ 50%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_005 ____________________________\n\n    def test_mbpp_mutation_005():\n        nums = ((1, 2), (3, 4), (5, 6))\n        expected = [6.0, 14.0, 21.0]\n>       assert average_tuple(nums) == expected\nE       AssertionError: assert [3.0, 4.0] == [6.0, 14.0, 21.0]\nE         \nE         At index 0 diff: 3.0 != 6.0\nE         Right contains one more item: 21.0\nE         \nE         Full diff:\nE           [\nE         -     6.0,...\nE         \nE         ...Full output truncated (8 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_005 - AssertionError: assert [3....\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:21:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import average_tuple\n\ndef test_mbpp_mutation_005():\n    # Test with small input where arithmetic operator affects the output\n    nums = [[1, 2, 3], [4, 5, 6]]\n    # Correct average calculation\n    expected_result = [4.25, 4.25]\n    # Buggy result (due to incorrect / -> * operator)\n    actual_result = average_tuple(nums)\n    assert actual_result == expected_result, f\"Expected {expected_result} but got {actual_result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6y0_vpr6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_005 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_005 ____________________________\n\n    def test_mbpp_mutation_005():\n        # Test with small input where arithmetic operator affects the output\n        nums = [[1, 2, 3], [4, 5, 6]]\n        # Correct average calculation\n        expected_result = [4.25, 4.25]\n        # Buggy result (due to incorrect / -> * operator)\n        actual_result = average_tuple(nums)\n>       assert actual_result == expected_result, f\"Expected {expected_result} but got {actual_result}\"\nE       AssertionError: Expected [4.25, 4.25] but got [10, 14, 18]\nE       assert [10, 14, 18] == [4.25, 4.25]\nE         \nE         At index 0 diff: 10 != 4.25\nE         Left contains one more item: 18\nE         \nE         Full diff:\nE           [\nE         +     10,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_005 - AssertionError: Expected [...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkmuniaac\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_005 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_005 ____________________________\n\n    def test_mbpp_mutation_005():\n        # Test with small input where arithmetic operator affects the output\n        nums = [[1, 2, 3], [4, 5, 6]]\n        # Correct average calculation\n        expected_result = [4.25, 4.25]\n        # Buggy result (due to incorrect / -> * operator)\n        actual_result = average_tuple(nums)\n>       assert actual_result == expected_result, f\"Expected {expected_result} but got {actual_result}\"\nE       AssertionError: Expected [4.25, 4.25] but got [2.5, 3.5, 4.5]\nE       assert [2.5, 3.5, 4.5] == [4.25, 4.25]\nE         \nE         At index 0 diff: 2.5 != 4.25\nE         Left contains one more item: 4.5\nE         \nE         Full diff:\nE           [\nE         +     2.5,...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_005 - AssertionError: Expected [...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:21:54Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import average_tuple\n\ndef test_mbpp_mutation_005():\n    nums = [(1, 2, 3), (4, 5, 6)]\n    expected = [2.5, 4.5]\n    assert average_tuple(nums) == expected",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwcuuub6_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_005 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_005 ____________________________\n\n    def test_mbpp_mutation_005():\n        nums = [(1, 2, 3), (4, 5, 6)]\n        expected = [2.5, 4.5]\n>       assert average_tuple(nums) == expected\nE       AssertionError: assert [10, 14, 18] == [2.5, 4.5]\nE         \nE         At index 0 diff: 10 != 2.5\nE         Left contains one more item: 18\nE         \nE         Full diff:\nE           [\nE         -     2.5,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_005 - AssertionError: assert [10...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuxs5640y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_005 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_005 ____________________________\n\n    def test_mbpp_mutation_005():\n        nums = [(1, 2, 3), (4, 5, 6)]\n        expected = [2.5, 4.5]\n>       assert average_tuple(nums) == expected\nE       AssertionError: assert [2.5, 3.5, 4.5] == [2.5, 4.5]\nE         \nE         At index 1 diff: 3.5 != 4.5\nE         Left contains one more item: 4.5\nE         \nE         Full diff:\nE           [\nE               2.5,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_005 - AssertionError: assert [2....\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:21:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "Incorrect arithmetic operation used to calculate average",
+    "bug_location": "result = [sum(x) * len(x) for x in zip(*nums)]",
+    "trigger_condition": "input [(1, 2, 3), (4, 5, 6)]",
+    "expected_vs_actual": "Average value for each tuple is 4.33, but expected 4.25",
+    "suggested_test_strategy": "Test the function with inputs [[1, 2, 3], [4, 5, 6]] and [[1, 2], [3, 4]] to verify the average calculation is correct",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2799,
+  "completion_tokens_total": 465,
+  "duration_seconds": 12.82,
+  "timestamp": "2026-05-31T20:21:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

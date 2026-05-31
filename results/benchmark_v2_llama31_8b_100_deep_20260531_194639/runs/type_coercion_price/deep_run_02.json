@@ -1,0 +1,47 @@
+{
+  "task_id": "type_coercion_price",
+  "mode": "deep",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_type_coercion_price(benchmark):\n    items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n    result = filter_expensive_items(items, 150)\n    expected_result = [{'name': 'B', 'price': '200'}]\n    assert result == expected_result\n    # Use deterministic input from the hint when one is provided.\n    # Pass a list of items where some prices are strings (e.g., '200')\n    # and assert the function filters them correctly without crashing.\n    bug_revealed = False\n    why_this_action = 'Test type coercion in prices.'\n    hypothesis = 'Test type coercion in prices.'\n    expected_outcome = 'Test passes on fixed code.'\n    allow_bug_revealing = True\n    new_content = ''\n    old_string = ''\n    new_string = ''\n    allow_bug_revealing = True\n    expected_outcome = 'Test passes on fixed code.'\n    hypothesis = 'Test type coercion in prices.'\n    why_this_action = 'Test type coercion in prices.'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgf51wppx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_type_coercion_price ERROR                        [100%]\n\n==================================== ERRORS ====================================\n__________________ ERROR at setup of test_type_coercion_price __________________\nfile /private/tmp/claude-501/tmpgf51wppx/test_generated.py, line 6\n  def test_type_coercion_price(benchmark):\nE       fixture 'benchmark' not found\n>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, cov, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory\n>       use 'pytest --fixtures [testpath]' for help on them.\n\n/private/tmp/claude-501/tmpgf51wppx/test_generated.py:6\n=========================== short test summary info ============================\nERROR test_generated.py::test_type_coercion_price\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================== 1 passed, 1 error in 0.01s ==========================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsyhwbuux\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_type_coercion_price ERROR                        [100%]\n\n==================================== ERRORS ====================================\n__________________ ERROR at setup of test_type_coercion_price __________________\nfile /private/tmp/claude-501/tmpsyhwbuux/test_generated.py, line 6\n  def test_type_coercion_price(benchmark):\nE       fixture 'benchmark' not found\n>       available fixtures: _class_scoped_runner, _function_scoped_runner, _module_scoped_runner, _package_scoped_runner, _session_scoped_runner, anyio_backend, anyio_backend_name, anyio_backend_options, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, cov, doctest_namespace, event_loop_policy, free_tcp_port, free_tcp_port_factory, free_udp_port, free_udp_port_factory, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory\n>       use 'pytest --fixtures [testpath]' for help on them.\n\n/private/tmp/claude-501/tmpsyhwbuux/test_generated.py:6\n=========================== short test summary info ============================\nERROR test_generated.py::test_type_coercion_price\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================== 1 passed, 1 error in 0.01s ==========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T21:02:39Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 17373,
+  "completion_tokens_total": 1263,
+  "duration_seconds": 51.67,
+  "timestamp": "2026-05-31T21:02:39Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

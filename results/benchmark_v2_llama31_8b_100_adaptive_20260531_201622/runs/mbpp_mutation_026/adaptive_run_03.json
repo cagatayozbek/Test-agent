@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_026",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import sequence\n\ndef test_mbpp_mutation_026():\n    # Test case that triggers the bug\n    n = 3\n    expected_result = 3\n    result = sequence(n)\n    assert result == expected_result, f\"Expected sequence({n}) to return {expected_result}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwjn3wdgg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_026 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_026 ____________________________\n\n    def test_mbpp_mutation_026():\n        # Test case that triggers the bug\n        n = 3\n        expected_result = 3\n        result = sequence(n)\n>       assert result == expected_result, f\"Expected sequence({n}) to return {expected_result}, but got {result}\"\nE       AssertionError: Expected sequence(3) to return 3, but got 1\nE       assert 1 == 3\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_026 - AssertionError: Expected s...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppeeqvmfj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_026 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_026 ____________________________\n\n    def test_mbpp_mutation_026():\n        # Test case that triggers the bug\n        n = 3\n        expected_result = 3\n        result = sequence(n)\n>       assert result == expected_result, f\"Expected sequence({n}) to return {expected_result}, but got {result}\"\nE       AssertionError: Expected sequence(3) to return 3, but got 2\nE       assert 2 == 3\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_026 - AssertionError: Expected s...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:23:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import sequence\n\ndef test_sequence_buggy():\n    with pytest.raises(RecursionError):\n        sequence(2)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1v3qyzux\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_buggy FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_sequence_buggy ______________________________\n\n    def test_sequence_buggy():\n>       with pytest.raises(RecursionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'RecursionError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sequence_buggy - Failed: DID NOT RAISE <class ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjyk6w_tc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_buggy FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_sequence_buggy ______________________________\n\n    def test_sequence_buggy():\n>       with pytest.raises(RecursionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'RecursionError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sequence_buggy - Failed: DID NOT RAISE <class ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:23:14Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import sequence\n\ndef test_sequence_buggy():\n    with pytest.raises(RecursionError):\n        sequence(2)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmc_qawpp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_buggy FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_sequence_buggy ______________________________\n\n    def test_sequence_buggy():\n>       with pytest.raises(RecursionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'RecursionError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sequence_buggy - Failed: DID NOT RAISE <class ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7ey2efi5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_buggy FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_sequence_buggy ______________________________\n\n    def test_sequence_buggy():\n>       with pytest.raises(RecursionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'RecursionError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sequence_buggy - Failed: DID NOT RAISE <class ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:23:16Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "Incorrect recursive call in sequence function",
+    "bug_location": "sequence(n), line 4",
+    "trigger_condition": "n = 2",
+    "expected_vs_actual": "Expected sequence(2) to return 1, but it returns 2",
+    "suggested_test_strategy": "Test case: def test_sequence_buggy(): assert sequence(2) == 1, 'sequence(2) should be 1'",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2776,
+  "completion_tokens_total": 246,
+  "duration_seconds": 13.2,
+  "timestamp": "2026-05-31T20:23:16Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

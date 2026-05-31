@@ -1404,19 +1404,34 @@ is **excluded** from the matrix:
   `completion_tokens_total = 0`, and emit the identical degenerate fallback
   test `import source\nassert source is not None` — which PASSes on both
   buggy and fixed code, hence BRTR 0.
-- Direct probe confirms the cause: OpenRouter returns
-  `404 "No endpoints found that support tool use"` for `microsoft/phi-4`.
-  Both providers serving it (NextBit, DeepInfra) lack function/tool-calling.
-- Deep mode's core mechanic is the `read_file` tool loop; with tools
-  unavailable the pipeline gets a 404, swallows it, and degrades to the stub
-  for every run.
+- **Two compounding causes** (the second discovered later, during the
+  llama-3.1-8b deep work of §16):
+  1. **Deep-path routing bug.** `bugtest/agents/deep_agent.py:_resolve_deep_model_name`
+     ignores the YAML `base_url`/`api_key_env` for any model id containing
+     `/` and silently routes it to **Together.ai** if `TOGETHER_API_KEY` is
+     present in the environment (the OpenAI-compat deep client reads
+     `OPENAI_API_KEY` + `DEEPTEST_OPENAI_BASE_URL` env vars, not the config).
+     `microsoft/phi-4` is not a Together model id → 404 → the agent's first
+     `chat()` errors, no tokens are recorded, and the workspace's seed test
+     (`import source\nassert source is not None`) is what the validator sees.
+  2. **No OpenRouter tool endpoint.** Even with correct routing, OpenRouter
+     returns `404 "No endpoints found that support tool use"` for
+     `microsoft/phi-4` — both providers serving it (NextBit, DeepInfra) lack
+     function/tool-calling, which deep mode's `read_file` loop requires.
 
-This is categorically different from the gpt-oss-20b deep collapse (§14.4),
-where all 236 failures were **real** test FAILs with recorded attempts and
-tokens — a genuine reasoning collapse under forced analysis. phi-4 deep
-measures nothing about phi-4; it measures the absence of a provider feature.
-To measure phi-4 deep one would need a tool-calling-capable endpoint (e.g. a
-local vLLM/Ollama serve, or an Azure OpenAI phi-4 deployment).
+So phi-4 deep is unmeasurable on the available infrastructure for **two**
+independent reasons. The recorded 0.0% is a harness artefact (`tool_call_count=0`,
+zero tokens, identical stub on all 300 runs), categorically different from the
+gpt-oss-20b deep collapse (§14.4) where all 236 failures were **real** test
+FAILs with recorded attempts and tokens. phi-4 deep measures nothing about
+phi-4. To measure it one would need a tool-calling-capable endpoint (local
+vLLM/Ollama, or Azure OpenAI phi-4).
+
+> The routing bug (cause 1) is general: it affects **any** `/`-containing
+> model id run in deep mode while `TOGETHER_API_KEY` is set. The fix used for
+> llama-3.1-8b deep (§16) is to export `OPENAI_API_KEY=$OPENROUTER_API_KEY`
+> and `DEEPTEST_OPENAI_BASE_URL=https://openrouter.ai/api/v1` before the run,
+> which `setdefault` then leaves intact, pinning the deep client to OpenRouter.
 
 ### 15.4 Updated spectrum (baseline BRTR)
 
@@ -1430,3 +1445,88 @@ qwen3-coder 0.890 · **phi-4 0.667** ← new low end.
 - `results/benchmark_v2_phi4_100_deep_20260531_142054/` (300 runs, all
   404→stub; retained as evidence, scored N/A)
 - Configs: `benchmark_v2_phi4_100_{baseline,adaptive,deep}.yaml`.
+
+
+## 16. Second weak model with tool-calling — llama-3.1-8b fills the deep cell (2026-05-31)
+
+§15 added phi-4 to break the BRTR ceiling but left its **deep** cell N/A:
+phi-4 has no tool-calling endpoint, and (discovered here) the deep path also
+mis-routes `/`-containing model ids to Together.ai. To get a *real* weak-model
+deep measurement we added a seventh model, **meta-llama/llama-3.1-8b-instruct**,
+chosen because it is genuinely weak (8B, not coder-tuned) **and** has
+tool-calling endpoints on OpenRouter (DeepInfra, Groq).
+
+### 16.1 Configuration / provenance
+
+- Model id `meta-llama/llama-3.1-8b-instruct`, served via OpenRouter.
+- baseline / adaptive: normal OpenAI-compat client, config
+  `api_key_env: OPENROUTER_API_KEY`, `base_url: https://openrouter.ai/api/v1`.
+- **deep: required the routing fix from §15.3.** Before the run we exported
+  `OPENAI_API_KEY=$OPENROUTER_API_KEY` and
+  `DEEPTEST_OPENAI_BASE_URL=https://openrouter.ai/api/v1`; `setdefault` in
+  `_resolve_deep_model_name` then leaves them intact, pinning the deep client
+  to OpenRouter instead of Together. Verified: tool-calling works end to end
+  (probe + 289/300 runs made real tool calls).
+- 100 tasks × 3 runs = 300 runs per mode; concurrency 4; `max_attempts 3`.
+
+### 16.2 Results — a genuine three-mode weak-model row
+
+| Mode | BRTR | 95% CI | Successful | Avg dur | Avg c-tok |
+|---|---:|---|---:|---:|---:|
+| baseline | 64.3% | [58.8, 69.5] | 193/300 | 9.0s | 191 |
+| adaptive | 68.7% | [63.2, 73.7] | 206/300 | 9.8s | 224 |
+| **deep** | **17.3%** | [13.5, 22.0] | 52/300 | 54.4s | 1076 |
+
+All three cells are real (deep: 300/300 complete, 289/300 made tool calls).
+8 of the 300 deep runs are zero-token casualties of the brief network outage
+(§16.5); counted as failures, so 17.3% is conservative — on the 292 clean
+runs it is ≈17.8%, a negligible difference. This is the first **complete**
+baseline/adaptive/deep trio for a genuinely weak model — the cell phi-4
+could not provide.
+
+### 16.3 Headline — deep collapses a weak model; gpt-oss-20b confirmed
+
+- **baseline 0.643** sits at the bottom of the spectrum with phi-4 (0.667) —
+  the ceiling-break holds with two independent weak models.
+- **adaptive +4.4 pp** over baseline (0.643 → 0.687). Directionally positive
+  but the CIs overlap ([58.8, 69.5] vs [63.2, 73.7]); call it weak/neutral,
+  consistent with phi-4's +1 pp. Analysis-on-retry does not reliably help a
+  weak model.
+- **deep collapses to 0.173** — ~3.7× worse than baseline. The model *does*
+  engage the tool loop (289/300 runs call tools) but cannot drive the agentic
+  protocol: it fumbles workspace/import structure, mis-fixes its own edits,
+  and lands non-bug-revealing tests. This **independently reproduces the
+  gpt-oss-20b deep collapse (0.213, §14.4)** — now with a *second* weak model
+  and, unlike phi-4, a *real* measurement. Forced agentic analysis (deep) is
+  actively harmful to weak models.
+
+### 16.4 Updated capability spectrum (baseline BRTR)
+
+haiku 0.980 · gpt-oss-120b 0.977 · gpt-oss-20b 0.940 · sonnet 0.943† ·
+qwen3-coder 0.890 · **phi-4 0.667 · llama-3.1-8b 0.643** ← weak end.
+
+Deep-mode contrast across the capability axis is now sharp:
+strong (sonnet 1.000, +5.7 pp) → ceiling (haiku ≈ baseline) → mild harm
+(gpt-oss-120b −8 pp) → monotone harm (qwen) → **collapse on weak models**
+(gpt-oss-20b 0.213, llama-3.1-8b 0.173). Model capability is the dominant
+variable; the analysis step perfects a strong model and destroys a weak one.
+
+### 16.5 Operational note — network-drop fragility
+
+During the runs a brief internet outage **wedged the adaptive run** (its
+normal OpenAI-compat client has no per-request timeout, so all four worker
+threads parked on dead TLS sockets and never recovered). The **deep run
+survived** the same outage because its client sets an explicit
+`request_timeout = max(timeout, 60)` and retries. Fix for future runs: give
+the baseline/adaptive client the same explicit request timeout. The wedged
+adaptive run was discarded and re-run cleanly; the numbers above are from the
+clean re-run.
+
+### 16.6 Raw data
+
+- `results/benchmark_v2_llama31_8b_100_baseline_20260531_194231/`
+- `results/benchmark_v2_llama31_8b_100_adaptive_20260531_201622/`
+- `results/benchmark_v2_llama31_8b_100_deep_20260531_194639/` (300 runs,
+  OpenRouter via the §15.3 routing override; 289/300 made tool calls,
+  8 zero-token network-outage casualties)
+- Configs: `benchmark_v2_llama31_8b_100_{baseline,adaptive,deep}.yaml`.

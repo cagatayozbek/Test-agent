@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_flatten",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import flatten\n\ndef test_quixbugs_flatten():\n    arr = [1, [2, 3], [[4]]]\n    with pytest.raises(TypeError):\n        list(flatten(arr))\n    # Expected output: [1, 2, 3, 4]\n    # The bug causes flatten(arr) to yield a generator instead of a list,\n    # so we can't directly assert the output. Instead, we catch the TypeError\n    # that's raised when we try to convert the generator to a list.",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppr2xti7v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_quixbugs_flatten _____________________________\n\n    def test_quixbugs_flatten():\n        arr = [1, [2, 3], [[4]]]\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\n\ntest_generated.py:6: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_flatten - Failed: DID NOT RAISE <clas...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpq86nj2tu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_quixbugs_flatten _____________________________\n\n    def test_quixbugs_flatten():\n        arr = [1, [2, 3], [[4]]]\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\n\ntest_generated.py:6: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_flatten - Failed: DID NOT RAISE <clas...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:25:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import flatten\n\ndef test_quixbugs_flatten():\n    with pytest.raises(TypeError):\n        list(flatten([1, [2, 3], [[4]]]))",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpf20iv7jr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_quixbugs_flatten _____________________________\n\n    def test_quixbugs_flatten():\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_flatten - Failed: DID NOT RAISE <clas...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprb3s4nwu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_quixbugs_flatten _____________________________\n\n    def test_quixbugs_flatten():\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_flatten - Failed: DID NOT RAISE <clas...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:25:40Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import flatten\n\ndef test_quixbugs_flatten():\n    # Test with a small nested list\n    input_list = [1, [2, 3], [[4]]]\n    expected_output = [1, 2, 3, 4]\n    \n    # Call the function and assert the output\n    with pytest.raises(TypeError):\n        # The buggy code will yield a generator instead of a scalar value\n        # when x is not a list, so we need to convert it to a list first\n        assert list(flatten(input_list)) == expected_output",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpu60mg_nr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_quixbugs_flatten _____________________________\n\n    def test_quixbugs_flatten():\n        # Test with a small nested list\n        input_list = [1, [2, 3], [[4]]]\n        expected_output = [1, 2, 3, 4]\n    \n        # Call the function and assert the output\n        with pytest.raises(TypeError):\n            # The buggy code will yield a generator instead of a scalar value\n            # when x is not a list, so we need to convert it to a list first\n>           assert list(flatten(input_list)) == expected_output\nE           AssertionError: assert [<generator o... 0x10c9f0f20>] == [1, 2, 3, 4]\nE             \nE             At index 0 diff: <generator object flatten at 0x10c9f0740> != 1\nE             \nE             Full diff:\nE               [\nE             -     1,\nE             -     2,...\nE             \nE             ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_flatten - AssertionError: assert [<ge...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4clpnhpp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_quixbugs_flatten _____________________________\n\n    def test_quixbugs_flatten():\n        # Test with a small nested list\n        input_list = [1, [2, 3], [[4]]]\n        expected_output = [1, 2, 3, 4]\n    \n        # Call the function and assert the output\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\n\ntest_generated.py:10: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_flatten - Failed: DID NOT RAISE <clas...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:25:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The function yields a generator instead of a scalar value when x is not a list",
+    "bug_location": "flatten(arr), line 6",
+    "trigger_condition": "when x is not a list",
+    "expected_vs_actual": "The function should return a scalar value instead of a generator object",
+    "suggested_test_strategy": "Test with a non-list input and assert that the output is a scalar value: `def test_flatten_non_list(capsys): flatten([1]); captured = capsys.readouterr(); assert captured.out == '1'`",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3159,
+  "completion_tokens_total": 425,
+  "duration_seconds": 18.89,
+  "timestamp": "2026-05-31T20:25:45Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

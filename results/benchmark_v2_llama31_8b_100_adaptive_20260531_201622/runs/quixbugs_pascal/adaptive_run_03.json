@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_pascal",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import pascal\n\ndef test_pascal_row_lengths():\n    rows = pascal(3)\n    assert [len(row) for row in rows] == [1, 2, 3], \"Row lengths do not match Pascal's Triangle\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm9abh5tg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_pascal_row_lengths ____________________________\n\n    def test_pascal_row_lengths():\n>       rows = pascal(3)\n               ^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 3\n\n    def pascal(n):\n        rows = [[1]]\n        for r in range(1, n):\n            row = []\n            for c in range(0, r):\n                upleft = rows[r - 1][c - 1] if c > 0 else 0\n>               upright = rows[r - 1][c] if c < r else 0\n                          ^^^^^^^^^^^^^^\nE               IndexError: list index out of range\n\nsource.py:8: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_pascal_row_lengths - IndexError: list index ou...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpq37s6z2c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:27:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 586,
+  "completion_tokens_total": 60,
+  "duration_seconds": 2.55,
+  "timestamp": "2026-05-31T20:27:02Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

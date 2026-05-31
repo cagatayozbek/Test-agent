@@ -1,4 +1,4 @@
-# 100-Task BRTR Matrix — baseline × adaptive × deep (6 models)
+# 100-Task BRTR Matrix — baseline × adaptive × deep (7 models)
 
 Özet matris. Tüm sayılar ilgili `results/benchmark_v2_*_100*/summary.json`
 dosyalarından okunmuştur. Detaylı analiz için bkz. `EXPERIMENT_REPORT.md`
@@ -19,6 +19,7 @@ fixed kodda PASS edecek. Birincil metrik. Her hücre = 100 task × 3 run =
 | **qwen3-coder-next** | 89.0% (267/300) | 87.0% (261/300) | 82.3% (247/300) | §11.1 |
 | **gpt-oss-20b** | 94.0% (282/300) | 95.0% (285/300) | **21.3%** (64/300) | merged |
 | **phi-4 (14B)** | **66.7%** (200/300) | **67.7%** (203/300) | N/A ‡ | — |
+| **llama-3.1-8b** | **64.3%** (193/300) | **68.7%** (206/300) | **17.3%** (52/300) | OpenRouter ◇ |
 
 **† Sonnet baseline/adaptive timeout-bozulmuş:** bu iki moddaki
 başarısızlıkların ~%80'i gerçek test FAIL'i değil, 120s `claude -p`
@@ -33,6 +34,26 @@ sıfır token, hepsi aynı trivial `import source; assert source is not None`
 fallback stub'ı (buggy ve fixed'de PASS → BRTR 0). Bu bir sağlayıcı
 kısıtıdır, modelin akıl yürütme çöküşü **değildir** (gpt-oss-20b deep'in
 236 gerçek FAIL'inden farklı), bu yüzden N/A olarak işaretlenmiştir.
+Ek olarak deep path, model id'de "/" görünce config'i yok sayıp
+`TOGETHER_API_KEY`'e yönleniyor (bkz. ◇); phi-4 Together'da da yok, yani
+çift sebeple ölçülemez (bkz. §15.3).
+
+**◇ Deep mode routing düzeltmesi:** `_resolve_deep_model_name`, model id'de
+"/" görünce config'in `base_url`/`api_key_env`'ini **yok sayıp** ortamdaki
+`TOGETHER_API_KEY`'e yönlendiriyor (OpenAI-compat deep client `OPENAI_API_KEY`
++ `DEEPTEST_OPENAI_BASE_URL` env'lerini okur, config'i değil). OpenRouter
+modellerini deep'te koşmak için run'dan önce
+`OPENAI_API_KEY=$OPENROUTER_API_KEY` ve
+`DEEPTEST_OPENAI_BASE_URL=https://openrouter.ai/api/v1` set edilir; aksi
+halde Together'a yanlış slug gider → 404 → 0-token stub. llama-3.1-8b deep
+bu override ile koşuldu (300/300 run, 289'u tool çağırdı; 8'i network
+kopması nedeniyle 0-token).
+
+**llama-3.1-8b okunuşu:** baseline/adaptive zayıf bantta (64–69%, tavanı
+kırar), adaptive +4.4pp (CI'lar örtüşür, kesin değil); **deep çöküyor
+(17.3%)** — model tool çağırıyor (289/300) ama agentic protokolü
+beceremiyor. gpt-oss-20b deep çöküşünü (0.213) **ikinci zayıf modelle ve
+gerçek ölçümle** bağımsız doğrular.
 
 ## Wilson %95 güven aralıkları
 
@@ -44,6 +65,7 @@ kısıtıdır, modelin akıl yürütme çöküşü **değildir** (gpt-oss-20b de
 | qwen3-coder-next | [85.0, 92.1] | [82.7, 90.3] | [77.6, 86.2] |
 | gpt-oss-20b | [90.7, 96.2] | [91.9, 97.0] | [17.1, 26.3] |
 | phi-4 (14B) | [61.2, 71.8] | [62.2, 72.7] | N/A ‡ |
+| llama-3.1-8b | [58.8, 69.5] | [63.2, 73.7] | [13.5, 22.0] |
 
 ## Okunuş — analizin değeri model gücüne göre dereceli
 
@@ -60,11 +82,21 @@ kısıtıdır, modelin akıl yürütme çöküşü **değildir** (gpt-oss-20b de
   kırar. adaptive 0.677 **nötr** (+1pp, CI'lar tamamen örtüşür) ama ctok
   254→377 (+%48). Analiz, en zayıf modeli bile yukarı taşıyamıyor — token
   harcayıp sıfır BRTR kazandırıyor. (deep ölçülemedi, bkz. ‡)
+- **En zayıf (llama-3.1-8b):** baseline 0.643 — phi-4 ile birlikte alt uç.
+  adaptive 0.687 (+4.4pp, CI'lar örtüşür → kesin değil ama hafif pozitif).
+  **deep çöküyor (0.173)** — model tool çağırıyor (289/300) ama agentic
+  protokolü beceremiyor. gpt-oss-20b deep çöküşünü (0.213) **ikinci zayıf
+  modelle ve gerçek ölçümle** bağımsız doğrular: zorunlu tool döngüsü
+  (deep), zayıf modeli baseline'a göre ~3.7× kötüleştiriyor. (300 run'ın
+  8'i network kopması artefaktı = 0-token; gerçek payda ~292, BRTR≈0.178 —
+  fark ihmal edilebilir.)
 
 **Tek satır sonuç:** Analiz adımının işareti modele bağlıdır — yalnızca en
 güçlü modelde net fayda (+5.7pp deep), orta/zayıf modellerde sıfır ya da
-büyük zarar, en zayıf modelde nötr. Model kapasitesi baskın değişkendir:
-analiz adımı güçlü modeli mükemmelleştirir ama zayıf modeli kurtaramaz.
+büyük zarar. Zayıf modellerde **hafif/nötr adaptive** ama **deep felaket**
+(iki bağımsız zayıf model: gpt-oss-20b 0.213, llama-3.1-8b 0.173). Model
+kapasitesi baskın değişkendir: analiz güçlü modeli mükemmelleştirir, zayıf
+modeli kurtaramaz, zorunlu agentic döngü (deep) zayıf modeli çökertir.
 
 ## Ham veri dizinleri
 
@@ -84,4 +116,7 @@ analiz adımı güçlü modeli mükemmelleştirir ama zayıf modeli kurtaramaz.
 | phi-4 baseline | `results/benchmark_v2_phi4_100_baseline_20260531_132254/` |
 | phi-4 adaptive | `results/benchmark_v2_phi4_100_adaptive_20260531_133215/` |
 | phi-4 deep (artefakt) | `results/benchmark_v2_phi4_100_deep_20260531_142054/` (300 run, hepsi 404→stub; N/A) |
+| llama-3.1-8b baseline | `results/benchmark_v2_llama31_8b_100_baseline_20260531_194231/` |
+| llama-3.1-8b adaptive | `results/benchmark_v2_llama31_8b_100_adaptive_20260531_201622/` |
+| llama-3.1-8b deep | `results/benchmark_v2_llama31_8b_100_deep_20260531_194639/` (300 run, OpenRouter override; 289/300 tool çağırdı) |
 | deep (sonnet/haiku/120b/qwen) | §11.1 deep-mode leaderboard run'ları |

@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_wrap",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import wrap\n\ndef test_quixbugs_wrap():\n    text = 'aaa bbb ccc'\n    cols = 4\n    result = wrap(text, cols)\n    assert result == ['aaa', 'bbb', 'ccc'], f\"Expected ['aaa', 'bbb', 'ccc'] but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6kffsnmo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_wrap FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_quixbugs_wrap ______________________________\n\n    def test_quixbugs_wrap():\n        text = 'aaa bbb ccc'\n        cols = 4\n        result = wrap(text, cols)\n>       assert result == ['aaa', 'bbb', 'ccc'], f\"Expected ['aaa', 'bbb', 'ccc'] but got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'] but got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_wrap - AssertionError: Expected ['aaa...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwc6myx4u\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_wrap FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_quixbugs_wrap ______________________________\n\n    def test_quixbugs_wrap():\n        text = 'aaa bbb ccc'\n        cols = 4\n        result = wrap(text, cols)\n>       assert result == ['aaa', 'bbb', 'ccc'], f\"Expected ['aaa', 'bbb', 'ccc'] but got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'] but got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_wrap - AssertionError: Expected ['aaa...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:52:59Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import wrap\n\ndef test_quixbugs_wrap():\n    text = 'aaa bbb ccc'\n    cols = 4\n    expected_output = ['aaa', 'bbb', 'ccc']\n    result = wrap(text, cols)\n    assert result == expected_output, f\"Expected {expected_output} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn7henm0h\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_wrap FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_quixbugs_wrap ______________________________\n\n    def test_quixbugs_wrap():\n        text = 'aaa bbb ccc'\n        cols = 4\n        expected_output = ['aaa', 'bbb', 'ccc']\n        result = wrap(text, cols)\n>       assert result == expected_output, f\"Expected {expected_output} but got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'] but got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_wrap - AssertionError: Expected ['aaa...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4sop8ixv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_wrap FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_quixbugs_wrap ______________________________\n\n    def test_quixbugs_wrap():\n        text = 'aaa bbb ccc'\n        cols = 4\n        expected_output = ['aaa', 'bbb', 'ccc']\n        result = wrap(text, cols)\n>       assert result == expected_output, f\"Expected {expected_output} but got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'] but got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_wrap - AssertionError: Expected ['aaa...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:53:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import wrap\n\ndef test_quixbugs_wrap():\n    lines = wrap('aaa bbb ccc', 4)\n    assert lines == ['aaa', 'bbb ccc']",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7cofqa7b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_wrap FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_quixbugs_wrap ______________________________\n\n    def test_quixbugs_wrap():\n        lines = wrap('aaa bbb ccc', 4)\n>       assert lines == ['aaa', 'bbb ccc']\nE       AssertionError: assert ['aaa', ' bbb'] == ['aaa', 'bbb ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb ccc',...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_wrap - AssertionError: assert ['aaa',...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3gkqcz3b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_wrap FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_quixbugs_wrap ______________________________\n\n    def test_quixbugs_wrap():\n        lines = wrap('aaa bbb ccc', 4)\n>       assert lines == ['aaa', 'bbb ccc']\nE       AssertionError: assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb ccc'\nE         Left contains one more item: ' ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_wrap - AssertionError: assert ['aaa',...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:53:04Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2573,
+  "completion_tokens_total": 193,
+  "duration_seconds": 11.3,
+  "timestamp": "2026-05-31T19:53:04Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_091",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import is_bored\n\ndef test_is_bored_buggy():\n    assert is_bored(\"Hello world\") == 0, \"Expected 0, but got incorrect value\"\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 0, \"Expected 1, but got incorrect value\"\n\ndef test_is_bored_fixed():\n    assert is_bored(\"Hello world\") == 0, \"Expected 0, but got incorrect value\"\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Expected 1, but got incorrect value\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpafvw5xgn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_is_bored_buggy PASSED                            [ 50%]\ntest_generated.py::test_is_bored_fixed FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_is_bored_fixed ______________________________\n\n    def test_is_bored_fixed():\n        assert is_bored(\"Hello world\") == 0, \"Expected 0, but got incorrect value\"\n>       assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Expected 1, but got incorrect value\"\nE       AssertionError: Expected 1, but got incorrect value\nE       assert 0 == 1\nE        +  where 0 = is_bored('The sky is blue. The sun is shining. I love this weather')\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_fixed - AssertionError: Expected 1, b...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2ykejlli\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_is_bored_buggy FAILED                            [ 50%]\n\n=================================== FAILURES ===================================\n_____________________________ test_is_bored_buggy ______________________________\n\n    def test_is_bored_buggy():\n        assert is_bored(\"Hello world\") == 0, \"Expected 0, but got incorrect value\"\n>       assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 0, \"Expected 1, but got incorrect value\"\nE       AssertionError: Expected 1, but got incorrect value\nE       assert 1 == 0\nE        +  where 1 = is_bored('The sky is blue. The sun is shining. I love this weather')\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_buggy - AssertionError: Expected 1, b...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:19:54Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import is_bored\n\ndef test_is_bored_buggy():\n    # Test the buggy code\n    assert is_bored(\"I love this\") == 1  # Expected 1, but got 0 due to missing whitespace\n\ndef test_is_bored_fixed():\n    # Test the fixed code\n    assert is_bored(\"I love this \") == 1  # Expected 1, got 1 (correct)\n    assert is_bored(\"Hello world\") == 0  # Expected 0, got 0 (correct)\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1  # Expected 1, got 1 (correct)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp54_79snt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_is_bored_buggy FAILED                            [ 50%]\n\n=================================== FAILURES ===================================\n_____________________________ test_is_bored_buggy ______________________________\n\n    def test_is_bored_buggy():\n        # Test the buggy code\n>       assert is_bored(\"I love this\") == 1  # Expected 1, but got 0 due to missing whitespace\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: assert 0 == 1\nE        +  where 0 = is_bored('I love this')\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_buggy - AssertionError: assert 0 == 1\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8uhmeeyc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_is_bored_buggy PASSED                            [ 50%]\ntest_generated.py::test_is_bored_fixed PASSED                            [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:20:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "Incorrect string comparison due to missing whitespace",
+    "bug_location": "is_bored(S), line 13",
+    "trigger_condition": "sentences starting with ' I' without a following whitespace",
+    "expected_vs_actual": "Expected 0, but got incorrect count due to misidentification of boredom sentences",
+    "suggested_test_strategy": "Test the is_bored function with input strings containing sentences starting with ' I' with and without a following whitespace, e.g., 'I love this' and 'I love this '",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2067,
+  "completion_tokens_total": 431,
+  "duration_seconds": 20.09,
+  "timestamp": "2026-05-31T20:20:08Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

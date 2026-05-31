@@ -1,0 +1,75 @@
+{
+  "task_id": "swallowed_exception",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import process_transaction\n\ndef test_process_transaction_swallows_exception():\n    transaction_str = \"item_id:10\"\n    result = process_transaction(transaction_str)\n    assert result is None, \"Expected process_transaction to swallow exception\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_g2ecm6f\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_swallows_exception PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5agxe351\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_swallows_exception FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_process_transaction_swallows_exception __________________\n\n    def test_process_transaction_swallows_exception():\n        transaction_str = \"item_id:10\"\n        result = process_transaction(transaction_str)\n>       assert result is None, \"Expected process_transaction to swallow exception\"\nE       AssertionError: Expected process_transaction to swallow exception\nE       assert 11.8 is None\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_swallows_exception - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:28:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import process_transaction, calculate_tax\n\ndef test_process_transaction_raises_nameerror():\n    transaction_str = \"item_id:9.8\"\n    with pytest.raises(NameError):\n        process_transaction(transaction_str)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl4qi6tee\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_raises_nameerror FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_process_transaction_raises_nameerror ___________________\n\n    def test_process_transaction_raises_nameerror():\n        transaction_str = \"item_id:9.8\"\n>       with pytest.raises(NameError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'NameError'>\n\ntest_generated.py:6: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_raises_nameerror - Failed:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6uj2zip5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_raises_nameerror FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_process_transaction_raises_nameerror ___________________\n\n    def test_process_transaction_raises_nameerror():\n        transaction_str = \"item_id:9.8\"\n>       with pytest.raises(NameError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'NameError'>\n\ntest_generated.py:6: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_raises_nameerror - Failed:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:28:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import process_transaction\n\ndef test_process_transaction_swallowing_exception():\n    # Test that process_transaction swallows the NameError and returns None\n    transaction_str = \"item_id:9.8\"\n    expected_output = None\n    \n    # Intentionally define 'calculate_tax' to avoid the NameError\n    def calculate_tax(amount):\n        return amount\n    \n    # Call the function with the buggy 'calculate_tax'\n    actual_output = process_transaction(transaction_str)\n    \n    # Test that the function returns None\n    assert actual_output == expected_output, \"process_transaction should swallow the exception\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxm7cuz70\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_swallowing_exception PASSED  [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpka09nlfe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_swallowing_exception PASSED  [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:28:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "A bare 'except:' block swallows a NameError, hiding the crash.",
+    "bug_location": "process_transaction, line 7",
+    "trigger_condition": "Calling process_transaction with a valid transaction string, where 'calculate_tax' is not defined.",
+    "expected_vs_actual": "The function should raise a NameError, but instead returns None.",
+    "suggested_test_strategy": "Test the function with a valid transaction string, and assert that it raises a NameError.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3371,
+  "completion_tokens_total": 424,
+  "duration_seconds": 9.25,
+  "timestamp": "2026-05-31T20:28:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

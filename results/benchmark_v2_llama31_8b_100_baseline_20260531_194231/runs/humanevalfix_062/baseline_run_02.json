@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_062",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import derivative\n\ndef test_derivative():\n    # Test with example 1: derivative([3, 1, 2, 4, 5]) should return [1, 4, 12, 20]\n    expected_output = [1, 4, 12, 20]\n    actual_output = derivative([3, 1, 2, 4, 5])\n    assert expected_output == actual_output, f\"Expected {expected_output} but got {actual_output}\"\n\n    # Test with example 2: derivative([1, 2, 3]) should return [2, 6]\n    expected_output = [2, 6]\n    actual_output = derivative([1, 2, 3])\n    assert expected_output == actual_output, f\"Expected {expected_output} but got {actual_output}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqz5654f_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative FAILED                                [100%]\n\n=================================== FAILURES ===================================\n_______________________________ test_derivative ________________________________\n\n    def test_derivative():\n        # Test with example 1: derivative([3, 1, 2, 4, 5]) should return [1, 4, 12, 20]\n        expected_output = [1, 4, 12, 20]\n        actual_output = derivative([3, 1, 2, 4, 5])\n>       assert expected_output == actual_output, f\"Expected {expected_output} but got {actual_output}\"\nE       AssertionError: Expected [1, 4, 12, 20] but got [0, 1, 4, 12, 20]\nE       assert [1, 4, 12, 20] == [0, 1, 4, 12, 20]\nE         \nE         At index 0 diff: 1 != 0\nE         Right contains one more item: 20\nE         \nE         Full diff:\nE           [\nE         -     0,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_derivative - AssertionError: Expected [1, 4, 1...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe9krs79y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative PASSED                                [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:45:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 564,
+  "completion_tokens_total": 183,
+  "duration_seconds": 6.03,
+  "timestamp": "2026-05-31T19:45:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

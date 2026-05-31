@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_050",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import encode_shift, decode_shift\n\ndef test_decode_shift_bug():\n    encoded = encode_shift(\"abc\")\n    expected = \"xyz\"\n    assert decode_shift(encoded) == expected, f\"Expected decode_shift('abc') to return '{expected}', but got {decode_shift(encoded)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2vh5axmj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_bug FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_decode_shift_bug _____________________________\n\n    def test_decode_shift_bug():\n        encoded = encode_shift(\"abc\")\n        expected = \"xyz\"\n>       assert decode_shift(encoded) == expected, f\"Expected decode_shift('abc') to return '{expected}', but got {decode_shift(encoded)}\"\nE       AssertionError: Expected decode_shift('abc') to return 'xyz', but got fhj\nE       assert 'fhj' == 'xyz'\nE         \nE         - xyz\nE         + fhj\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_bug - AssertionError: Expected de...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpna7j1so7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_bug FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_decode_shift_bug _____________________________\n\n    def test_decode_shift_bug():\n        encoded = encode_shift(\"abc\")\n        expected = \"xyz\"\n>       assert decode_shift(encoded) == expected, f\"Expected decode_shift('abc') to return '{expected}', but got {decode_shift(encoded)}\"\nE       AssertionError: Expected decode_shift('abc') to return 'xyz', but got abc\nE       assert 'abc' == 'xyz'\nE         \nE         - xyz\nE         + abc\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_bug - AssertionError: Expected de...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:18:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import encode_shift, decode_shift\n\ndef test_decode_shift_bug():\n    encoded_str = encode_shift('abc')\n    expected_output = 'abc'  # This is the expected output based on the docstring\n    actual_output = decode_shift(encoded_str)\n    assert expected_output == actual_output, f\"Expected decode_shift('abc') to return 'abc', but got {actual_output}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmk_mea8c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_bug FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_decode_shift_bug _____________________________\n\n    def test_decode_shift_bug():\n        encoded_str = encode_shift('abc')\n        expected_output = 'abc'  # This is the expected output based on the docstring\n        actual_output = decode_shift(encoded_str)\n>       assert expected_output == actual_output, f\"Expected decode_shift('abc') to return 'abc', but got {actual_output}\"\nE       AssertionError: Expected decode_shift('abc') to return 'abc', but got fhj\nE       assert 'abc' == 'fhj'\nE         \nE         - fhj\nE         + abc\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_bug - AssertionError: Expected de...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeu6f5yf7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_bug PASSED                          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:18:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "Incorrect variable reference in the decode_shift function",
+    "bug_location": "decode_shift function, line 10",
+    "trigger_condition": "decode_shift function called with an encoded string where every character is shifted by 5 in the alphabet",
+    "expected_vs_actual": "The function should return the original string, but it returns a string with incorrect characters",
+    "suggested_test_strategy": "Test the decode_shift function with a string that is known to be encoded with encode_shift, and assert that the returned string is the original string",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1991,
+  "completion_tokens_total": 279,
+  "duration_seconds": 8.34,
+  "timestamp": "2026-05-31T20:18:48Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

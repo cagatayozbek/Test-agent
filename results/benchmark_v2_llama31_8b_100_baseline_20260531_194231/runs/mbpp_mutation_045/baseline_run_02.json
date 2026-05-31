@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_or_and_mutated():\n    \"\"\"Test the camel case conversion function with mutated boolean operator\"\"\"\n    input_str = \"test_snake_case\"\n    expected_output = \"testSnakeCase\"\n    \n    # Test the buggy code\n    actual_output = snake_to_camel(input_str)\n    assert actual_output == expected_output, f\"Expected {expected_output}, but got {actual_output}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_igb53dk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_or_and_mutated FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_snake_to_camel_or_and_mutated ______________________\n\n    def test_snake_to_camel_or_and_mutated():\n        \"\"\"Test the camel case conversion function with mutated boolean operator\"\"\"\n        input_str = \"test_snake_case\"\n        expected_output = \"testSnakeCase\"\n    \n        # Test the buggy code\n        actual_output = snake_to_camel(input_str)\n>       assert actual_output == expected_output, f\"Expected {expected_output}, but got {actual_output}\"\nE       AssertionError: Expected testSnakeCase, but got ___\nE       assert '___' == 'testSnakeCase'\nE         \nE         - testSnakeCase\nE         + ___\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_or_and_mutated - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr6z4mep3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_or_and_mutated FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_snake_to_camel_or_and_mutated ______________________\n\n    def test_snake_to_camel_or_and_mutated():\n        \"\"\"Test the camel case conversion function with mutated boolean operator\"\"\"\n        input_str = \"test_snake_case\"\n        expected_output = \"testSnakeCase\"\n    \n        # Test the buggy code\n        actual_output = snake_to_camel(input_str)\n>       assert actual_output == expected_output, f\"Expected {expected_output}, but got {actual_output}\"\nE       AssertionError: Expected testSnakeCase, but got TestSnakeCase\nE       assert 'TestSnakeCase' == 'testSnakeCase'\nE         \nE         - testSnakeCase\nE         ? ^\nE         + TestSnakeCase\nE         ? ^\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_or_and_mutated - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:48:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_or_and_mutated():\n    # Test case that triggers the bug: snake case string with two underscores\n    input_string = \"test__snake_case\"\n    expected_output = \"Test__SnakeCase\"\n    \n    # The bug causes the function to incorrectly capitalize the second underscore\n    output = snake_to_camel(input_string)\n    \n    assert output == expected_output, f\"Expected {expected_output} but got {output}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp7x2acpf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_or_and_mutated FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_snake_to_camel_or_and_mutated ______________________\n\n    def test_snake_to_camel_or_and_mutated():\n        # Test case that triggers the bug: snake case string with two underscores\n        input_string = \"test__snake_case\"\n        expected_output = \"Test__SnakeCase\"\n    \n        # The bug causes the function to incorrectly capitalize the second underscore\n        output = snake_to_camel(input_string)\n    \n>       assert output == expected_output, f\"Expected {expected_output} but got {output}\"\nE       AssertionError: Expected Test__SnakeCase but got ___\nE       assert '___' == 'Test__SnakeCase'\nE         \nE         - Test__SnakeCase\nE         + ___\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_or_and_mutated - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnq2qtour\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_or_and_mutated FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_snake_to_camel_or_and_mutated ______________________\n\n    def test_snake_to_camel_or_and_mutated():\n        # Test case that triggers the bug: snake case string with two underscores\n        input_string = \"test__snake_case\"\n        expected_output = \"Test__SnakeCase\"\n    \n        # The bug causes the function to incorrectly capitalize the second underscore\n        output = snake_to_camel(input_string)\n    \n>       assert output == expected_output, f\"Expected {expected_output} but got {output}\"\nE       AssertionError: Expected Test__SnakeCase but got Test_SnakeCase\nE       assert 'Test_SnakeCase' == 'Test__SnakeCase'\nE         \nE         - Test__SnakeCase\nE         ?     -\nE         + Test_SnakeCase\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_or_and_mutated - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:48:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_and_mutated():\n    word = \"snake_case\"\n    expected = \"SnakeCase\"\n    result = snake_to_camel(word)\n    assert result == expected, f\"Expected {expected} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplqlep_1c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_and_mutated FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_snake_to_camel_and_mutated ________________________\n\n    def test_snake_to_camel_and_mutated():\n        word = \"snake_case\"\n        expected = \"SnakeCase\"\n        result = snake_to_camel(word)\n>       assert result == expected, f\"Expected {expected} but got {result}\"\nE       AssertionError: Expected SnakeCase but got __\nE       assert '__' == 'SnakeCase'\nE         \nE         - SnakeCase\nE         + __\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_and_mutated - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9uvz4jc3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_and_mutated PASSED                [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:48:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2125,
+  "completion_tokens_total": 270,
+  "duration_seconds": 11.66,
+  "timestamp": "2026-05-31T19:48:42Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

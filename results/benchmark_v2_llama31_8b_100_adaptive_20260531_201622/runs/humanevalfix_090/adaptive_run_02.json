@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_090",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import next_smallest\n\ndef test_next_smallest_buggy():\n    with pytest.raises(IndexError):\n        assert next_smallest([1, 2, 1, 3]) == 2",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9o4wf6_n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_buggy FAILED                       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_next_smallest_buggy ___________________________\n\n    def test_next_smallest_buggy():\n>       with pytest.raises(IndexError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'IndexError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_buggy - Failed: DID NOT RAISE <c...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpewq_66h5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_buggy FAILED                       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_next_smallest_buggy ___________________________\n\n    def test_next_smallest_buggy():\n>       with pytest.raises(IndexError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'IndexError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_buggy - Failed: DID NOT RAISE <c...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:19:41Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import next_smallest\n\n@pytest.mark.parametrize('lst, expected', [\n    ([1, 2, 3, 4, 5], 2),\n    ([5, 1, 4, 3, 2], 2),\n    ([1, 1], None),\n    ([1, 2, 2], 2),\n    ([1, 2], 2),\n])\ndef test_next_smallest(lst, expected):\n    assert next_smallest(lst) == expected",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpca6c551x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 5 items\n\ntest_generated.py::test_next_smallest[lst0-2] PASSED                     [ 20%]\ntest_generated.py::test_next_smallest[lst1-2] PASSED                     [ 40%]\ntest_generated.py::test_next_smallest[lst2-None] PASSED                  [ 60%]\ntest_generated.py::test_next_smallest[lst3-2] FAILED                     [ 80%]\n\n=================================== FAILURES ===================================\n__________________________ test_next_smallest[lst3-2] __________________________\n\nlst = [1, 2, 2], expected = 2\n\n    @pytest.mark.parametrize('lst, expected', [\n        ([1, 2, 3, 4, 5], 2),\n        ([5, 1, 4, 3, 2], 2),\n        ([1, 1], None),\n        ([1, 2, 2], 2),\n        ([1, 2], 2),\n    ])\n    def test_next_smallest(lst, expected):\n>       assert next_smallest(lst) == expected\nE       assert None == 2\nE        +  where None = next_smallest([1, 2, 2])\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest[lst3-2] - assert None == 2\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 3 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpctfvwvdg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 5 items\n\ntest_generated.py::test_next_smallest[lst0-2] PASSED                     [ 20%]\ntest_generated.py::test_next_smallest[lst1-2] PASSED                     [ 40%]\ntest_generated.py::test_next_smallest[lst2-None] PASSED                  [ 60%]\ntest_generated.py::test_next_smallest[lst3-2] PASSED                     [ 80%]\ntest_generated.py::test_next_smallest[lst4-2] PASSED                     [100%]\n\n============================== 5 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:19:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is that the function returns None when the list has exactly 2 elements",
+    "bug_location": "next_smallest, line 7",
+    "trigger_condition": "calling next_smallest with a list of exactly 2 elements",
+    "expected_vs_actual": "returns None instead of the second smallest element",
+    "suggested_test_strategy": "Test with pytest: @pytest.mark.parametrize('test_next_smallest', [[1, 2], [5, 3]], indirect=['lst']) def test_next_smallest(lst): assert next_smallest(lst) == min(lst[1:])",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1992,
+  "completion_tokens_total": 307,
+  "duration_seconds": 9.73,
+  "timestamp": "2026-05-31T20:19:48Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

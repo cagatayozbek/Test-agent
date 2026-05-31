@@ -1,0 +1,75 @@
+{
+  "task_id": "bugsinpy_thefuck_fish_version_3",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import fish_info\n\ndef test_fish_info_returns_version_number():\n    expected_version = \"3.1.2\"\n    actual_version = fish_info()\n    assert actual_version == expected_version",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmcwfzmvo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_version_number FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_version_number _____________________\n\n    def test_fish_info_returns_version_number():\n        expected_version = \"3.1.2\"\n        actual_version = fish_info()\n>       assert actual_version == expected_version\nE       AssertionError: assert 'Fish Shell f...version 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_version_number - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpu4aq_rbt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_version_number FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_version_number _____________________\n\n    def test_fish_info_returns_version_number():\n        expected_version = \"3.1.2\"\n        actual_version = fish_info()\n>       assert actual_version == expected_version\nE       AssertionError: assert 'Fish Shell 3.1.2' == '3.1.2'\nE         \nE         - 3.1.2\nE         + Fish Shell 3.1.2\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_version_number - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:16:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import fish_info, _default_runner\n\ndef test_fish_info_returns_version_number():\n    # Given the buggy code, this test should fail\n    output = _default_runner([\"fish\", \"-c\", \"echo $FISH_VERSION\"])\n    # The buggy code keeps the full output, including the prefix/newline\n    expected_output = f\"Fish Shell {output}\"\n    assert fish_info() == expected_output, f\"Expected {expected_output}, but got something else\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp49o8zbue\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_version_number FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_version_number _____________________\n\n    def test_fish_info_returns_version_number():\n        # Given the buggy code, this test should fail\n        output = _default_runner([\"fish\", \"-c\", \"echo $FISH_VERSION\"])\n        # The buggy code keeps the full output, including the prefix/newline\n        expected_output = f\"Fish Shell {output}\"\n>       assert fish_info() == expected_output, f\"Expected {expected_output}, but got something else\"\nE       AssertionError: Expected Fish Shell fish, version 3.1.2\nE         , but got something else\nE       assert 'Fish Shell f...version 3.1.2' == 'Fish Shell f...rsion 3.1.2\\n'\nE         \nE         - Fish Shell fish, version 3.1.2\nE         ?                               -\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_version_number - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpt9xuzg3r\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_version_number FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_version_number _____________________\n\n    def test_fish_info_returns_version_number():\n        # Given the buggy code, this test should fail\n        output = _default_runner([\"fish\", \"-c\", \"echo $FISH_VERSION\"])\n        # The buggy code keeps the full output, including the prefix/newline\n        expected_output = f\"Fish Shell {output}\"\n>       assert fish_info() == expected_output, f\"Expected {expected_output}, but got something else\"\nE       AssertionError: Expected Fish Shell fish, version 3.1.2\nE         , but got something else\nE       assert 'Fish Shell 3.1.2' == 'Fish Shell f...rsion 3.1.2\\n'\nE         \nE         - Fish Shell fish, version 3.1.2\nE         + Fish Shell 3.1.2\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_version_number - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import fish_info, _default_runner\n\ndef test_fish_info_returns_version_number():\n    # Test that fish_info returns the correct version number even if the runner yields a prefixed string\n    prefixed_version = \"Fish Shell fish, version 3.1.2\"\n    assert fish_info(run_command=_default_runner) == f\"Fish Shell {prefixed_version.strip()}\"\n    # Expected version should not contain prefix or trailing newline\n    assert \"Fish Shell \" not in prefixed_version\n    assert \"\\n\" not in prefixed_version",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpajufechq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_version_number FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_version_number _____________________\n\n    def test_fish_info_returns_version_number():\n        # Test that fish_info returns the correct version number even if the runner yields a prefixed string\n        prefixed_version = \"Fish Shell fish, version 3.1.2\"\n>       assert fish_info(run_command=_default_runner) == f\"Fish Shell {prefixed_version.strip()}\"\nE       AssertionError: assert 'Fish Shell f...version 3.1.2' == 'Fish Shell F...version 3.1.2'\nE         \nE         - Fish Shell Fish Shell fish, version 3.1.2\nE         ?            -----------\nE         + Fish Shell fish, version 3.1.2\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_version_number - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.03s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps4cl4y00\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fish_info_returns_version_number FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_fish_info_returns_version_number _____________________\n\n    def test_fish_info_returns_version_number():\n        # Test that fish_info returns the correct version number even if the runner yields a prefixed string\n        prefixed_version = \"Fish Shell fish, version 3.1.2\"\n>       assert fish_info(run_command=_default_runner) == f\"Fish Shell {prefixed_version.strip()}\"\nE       AssertionError: assert 'Fish Shell 3.1.2' == 'Fish Shell F...version 3.1.2'\nE         \nE         - Fish Shell Fish Shell fish, version 3.1.2\nE         + Fish Shell 3.1.2\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_version_number - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The fish_info function incorrectly returns the full output of the fish command, including the prefix and trailing newline.",
+    "bug_location": "fish_info, line 13",
+    "trigger_condition": "When the fish command output contains a trailing newline or other non-version information",
+    "expected_vs_actual": "Expected: only the numeric version string, Actual: the full output string, including prefix and trailing newline",
+    "suggested_test_strategy": "Test that fish_info returns only the numeric version even when the runner yields a prefixed string, e.g., assert fish_info() == 'Fish Shell 3.1.2'",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3237,
+  "completion_tokens_total": 619,
+  "duration_seconds": 27.46,
+  "timestamp": "2026-05-31T20:17:13Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

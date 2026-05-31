@@ -1,0 +1,68 @@
+{
+  "task_id": "humanevalfix_041",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import car_race_collision\n\ndef test_car_race_collision():\n    # According to the docstring, for n=2, the expected return value is 1\n    assert car_race_collision(2) == 1",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpq7u1i6ey\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_car_race_collision ____________________________\n\n    def test_car_race_collision():\n        # According to the docstring, for n=2, the expected return value is 1\n>       assert car_race_collision(2) == 1\nE       assert 8 == 1\nE        +  where 8 = car_race_collision(2)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_car_race_collision - assert 8 == 1\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe1g371_y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_car_race_collision ____________________________\n\n    def test_car_race_collision():\n        # According to the docstring, for n=2, the expected return value is 1\n>       assert car_race_collision(2) == 1\nE       assert 4 == 1\nE        +  where 4 = car_race_collision(2)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_car_race_collision - assert 4 == 1\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:44:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import car_race_collision\n\ndef test_car_race_collision():\n    # Test with n=2, as per docstring\n    # Expected return value based on the docstring is 1\n    n = 2\n    expected_collisions = 1  # Correctly calculated collisions for n=2\n    actual_collisions = car_race_collision(n)\n    assert actual_collisions == expected_collisions, f\"Expected {expected_collisions} collisions for n={n}, but got {actual_collisions}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcn_yythx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_car_race_collision ____________________________\n\n    def test_car_race_collision():\n        # Test with n=2, as per docstring\n        # Expected return value based on the docstring is 1\n        n = 2\n        expected_collisions = 1  # Correctly calculated collisions for n=2\n        actual_collisions = car_race_collision(n)\n>       assert actual_collisions == expected_collisions, f\"Expected {expected_collisions} collisions for n={n}, but got {actual_collisions}\"\nE       AssertionError: Expected 1 collisions for n=2, but got 8\nE       assert 8 == 1\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_car_race_collision - AssertionError: Expected ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm41twh5_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_car_race_collision ____________________________\n\n    def test_car_race_collision():\n        # Test with n=2, as per docstring\n        # Expected return value based on the docstring is 1\n        n = 2\n        expected_collisions = 1  # Correctly calculated collisions for n=2\n        actual_collisions = car_race_collision(n)\n>       assert actual_collisions == expected_collisions, f\"Expected {expected_collisions} collisions for n={n}, but got {actual_collisions}\"\nE       AssertionError: Expected 1 collisions for n=2, but got 4\nE       assert 4 == 1\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_car_race_collision - AssertionError: Expected ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:44:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import car_race_collision\n\ndef test_car_race_collision():\n    n = 2\n    expected_collisions = n * n  # as per docstring, number of collisions is n^2\n    actual_collisions = car_race_collision(n)\n    assert actual_collisions == expected_collisions, f\"Expected {expected_collisions} collisions for n={n}, but got {actual_collisions}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1482klbn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_car_race_collision ____________________________\n\n    def test_car_race_collision():\n        n = 2\n        expected_collisions = n * n  # as per docstring, number of collisions is n^2\n        actual_collisions = car_race_collision(n)\n>       assert actual_collisions == expected_collisions, f\"Expected {expected_collisions} collisions for n={n}, but got {actual_collisions}\"\nE       AssertionError: Expected 4 collisions for n=2, but got 8\nE       assert 8 == 4\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_car_race_collision - AssertionError: Expected ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa_z0fkdr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:44:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2453,
+  "completion_tokens_total": 258,
+  "duration_seconds": 22.35,
+  "timestamp": "2026-05-31T19:44:34Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

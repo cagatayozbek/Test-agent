@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_042",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import incr_list\n\ndef test_incr_list_bug():\n    # Test with a simple list\n    result = incr_list([1, 2, 3])\n    assert result == [2, 3, 4], f\"Expected [2, 3, 4] but got {result}\"\n\n    # Test with a list from the docstring example\n    result = incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n    assert result == [7, 4, 7, 3, 4, 4, 11, 1, 125], f\"Expected [7, 4, 7, 3, 4, 4, 11, 1, 125] but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpws2s275d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_bug FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_incr_list_bug ______________________________\n\n    def test_incr_list_bug():\n        # Test with a simple list\n        result = incr_list([1, 2, 3])\n>       assert result == [2, 3, 4], f\"Expected [2, 3, 4] but got {result}\"\nE       AssertionError: Expected [2, 3, 4] but got [3, 4, 5]\nE       assert [3, 4, 5] == [2, 3, 4]\nE         \nE         At index 0 diff: 3 != 2\nE         \nE         Full diff:\nE           [\nE         -     2,\nE               3,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_incr_list_bug - AssertionError: Expected [2, 3...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp476q2566\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_bug FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_incr_list_bug ______________________________\n\n    def test_incr_list_bug():\n        # Test with a simple list\n        result = incr_list([1, 2, 3])\n        assert result == [2, 3, 4], f\"Expected [2, 3, 4] but got {result}\"\n    \n        # Test with a list from the docstring example\n        result = incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123])\n>       assert result == [7, 4, 7, 3, 4, 4, 11, 1, 125], f\"Expected [7, 4, 7, 3, 4, 4, 11, 1, 125] but got {result}\"\nE       AssertionError: Expected [7, 4, 7, 3, 4, 4, 11, 1, 125] but got [6, 4, 6, 3, 4, 4, 10, 1, 124]\nE       assert [6, 4, 6, 3, 4, 4, ...] == [7, 4, 7, 3, 4, 4, ...]\nE         \nE         At index 0 diff: 6 != 7\nE         \nE         Full diff:\nE           [\nE         -     7,\nE         ?     ^...\nE         \nE         ...Full output truncated (20 lines hidden), use '-vv' to show\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_incr_list_bug - AssertionError: Expected [7, 4...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:18:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import incr_list\n\ndef test_incr_list_bug():\n    # Test the buggy function with a list containing various types of elements\n    input_list = [1, 2, 3, 4, 5]\n    expected_output = [3, 4, 5, 6, 7]  # Correct output when incrementing by 1\n    actual_output = incr_list(input_list)\n\n    # Assert that the actual output is not equal to the expected output when incrementing by 1\n    assert actual_output!= expected_output, \"Expected output is different from actual output\"\n\n    # Also test the buggy function with a list containing various types of elements\n    input_list = [5, 3, 5, 2, 3, 3, 9, 0, 123]\n    expected_output = [7, 4, 7, 3, 4, 4, 11, 1, 125]  # Correct output when incrementing by 1\n    actual_output = incr_list(input_list)\n\n    # Assert that the actual output is not equal to the expected output when incrementing by 1\n    assert actual_output!= expected_output, \"Expected output is different from actual output\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1jrcrusb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_bug FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_incr_list_bug ______________________________\n\n    def test_incr_list_bug():\n        # Test the buggy function with a list containing various types of elements\n        input_list = [1, 2, 3, 4, 5]\n        expected_output = [3, 4, 5, 6, 7]  # Correct output when incrementing by 1\n        actual_output = incr_list(input_list)\n    \n        # Assert that the actual output is not equal to the expected output when incrementing by 1\n>       assert actual_output!= expected_output, \"Expected output is different from actual output\"\nE       AssertionError: Expected output is different from actual output\nE       assert [3, 4, 5, 6, 7] != [3, 4, 5, 6, 7]\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_incr_list_bug - AssertionError: Expected outpu...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpik3c3k82\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_bug PASSED                             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:18:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function increments the list elements by the wrong amount.",
+    "bug_location": "incr_list function, line 6",
+    "trigger_condition": "Input list with any elements",
+    "expected_vs_actual": "Expected the function to return a list with elements incremented by 1, but it returns elements incremented by 2.",
+    "suggested_test_strategy": "Test the function with lists containing various types of elements, such as integers and floats, and verify that the output is correct.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2087,
+  "completion_tokens_total": 622,
+  "duration_seconds": 18.11,
+  "timestamp": "2026-05-31T20:18:42Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

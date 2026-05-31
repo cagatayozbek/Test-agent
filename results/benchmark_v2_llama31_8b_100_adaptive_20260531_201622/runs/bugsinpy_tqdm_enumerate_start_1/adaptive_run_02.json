@@ -1,0 +1,52 @@
+{
+  "task_id": "bugsinpy_tqdm_enumerate_start_1",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import tenumerate, _noop_tqdm\n\ndef test_tenumerate_start_ignored():\n    # Test that tenumerate ignores the start value when passed to tqdm_class\n    iterable = [1, 2, 3]\n    start = 5\n    result = list(tenumerate(iterable, start=start))\n    assert result == [(0, 1), (1, 2), (2, 3)]\n    # The start value should be ignored, so the indices should start from 0.\n    # The values should be the same as the original iterable.",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7q55omhv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_ignored PASSED                  [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg89a64nc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_ignored FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_tenumerate_start_ignored _________________________\n\n    def test_tenumerate_start_ignored():\n        # Test that tenumerate ignores the start value when passed to tqdm_class\n        iterable = [1, 2, 3]\n        start = 5\n        result = list(tenumerate(iterable, start=start))\n>       assert result == [(0, 1), (1, 2), (2, 3)]\nE       AssertionError: assert [(5, 1), (6, 2), (7, 3)] == [(0, 1), (1, 2), (2, 3)]\nE         \nE         At index 0 diff: (5, 1) != (0, 1)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         0,...\nE         \nE         ...Full output truncated (20 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_start_ignored - AssertionError: ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import tenumerate, _noop_tqdm\n\ndef test_tenumerate_start_ignored():\n    def check_start(index, expected):\n        result = tenumerate(range(5), start=index)\n        indices = [i for i, _ in result]\n        assert indices == list(range(index, index + len(indices)))\n\n    # Test with start != 0\n    check_start(2, [2, 3, 4, 5])\n    # Test with start == 0 (no change if bug fixed)\n    check_start(0, [0, 1, 2, 3, 4])",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplecqd61k\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_ignored FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_tenumerate_start_ignored _________________________\n\n    def test_tenumerate_start_ignored():\n        def check_start(index, expected):\n            result = tenumerate(range(5), start=index)\n            indices = [i for i, _ in result]\n            assert indices == list(range(index, index + len(indices)))\n    \n        # Test with start != 0\n>       check_start(2, [2, 3, 4, 5])\n\ntest_generated.py:10: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nindex = 2, expected = [2, 3, 4, 5]\n\n    def check_start(index, expected):\n        result = tenumerate(range(5), start=index)\n        indices = [i for i, _ in result]\n>       assert indices == list(range(index, index + len(indices)))\nE       AssertionError: assert [0, 1, 2, 3, 4] == [2, 3, 4, 5, 6]\nE         \nE         At index 0 diff: 0 != 2\nE         \nE         Full diff:\nE           [\nE         +     0,\nE         +     1,...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_start_ignored - AssertionError: ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptj5nfjy1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_ignored PASSED                  [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1375,
+  "completion_tokens_total": 268,
+  "duration_seconds": 19.96,
+  "timestamp": "2026-05-31T20:17:38Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import sqrt\n\ndef test_sqrt_convergence():\n    # Test sqrt(2, 0.01) which should converge to approximately 1.41\n    result = sqrt(2, 0.01)\n    assert pytest.approx(1.41) == result, \"sqrt(2, 0.01) should be approximately 1.41\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphp8yuq4d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_convergence FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_sqrt_convergence _____________________________\n\n    def test_sqrt_convergence():\n        # Test sqrt(2, 0.01) which should converge to approximately 1.41\n        result = sqrt(2, 0.01)\n>       assert pytest.approx(1.41) == result, \"sqrt(2, 0.01) should be approximately 1.41\"\nE       AssertionError: sqrt(2, 0.01) should be approximately 1.41\nE       assert 1.41 ± 1.4e-06 == 1.4166666666666665\nE         \nE         comparison failed\nE         Obtained: 1.4166666666666665\nE         Expected: 1.41 ± 1.4e-06\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sqrt_convergence - AssertionError: sqrt(2, 0.0...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:52:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import sqrt\n\ndef test_sqrt_convergence():\n    x = 2.0\n    epsilon = 0.01\n    actual = sqrt(x, epsilon)\n    expected = 1.4142135623730951  # Exact square root of 2\n    assert abs(actual - expected) > epsilon / 2, f\"Expected sqrt({x}) to be at least {epsilon / 2} away from {actual}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp36_5_sq7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_convergence FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_sqrt_convergence _____________________________\n\n    def test_sqrt_convergence():\n        x = 2.0\n        epsilon = 0.01\n        actual = sqrt(x, epsilon)\n        expected = 1.4142135623730951  # Exact square root of 2\n>       assert abs(actual - expected) > epsilon / 2, f\"Expected sqrt({x}) to be at least {epsilon / 2} away from {actual}\"\nE       AssertionError: Expected sqrt(2.0) to be at least 0.005 away from 1.4166666666666665\nE       assert 0.002453104293571373 > (0.01 / 2)\nE        +  where 0.002453104293571373 = abs((1.4166666666666665 - 1.4142135623730951))\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sqrt_convergence - AssertionError: Expected sq...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:53:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import sqrt\n\ndef test_sqrt_convergence():\n    result = sqrt(2, 0.01)\n    assert abs(result - 1.4142135623730951) > 0.01 / 2",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpd81_xla8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_convergence FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_sqrt_convergence _____________________________\n\n    def test_sqrt_convergence():\n        result = sqrt(2, 0.01)\n>       assert abs(result - 1.4142135623730951) > 0.01 / 2\nE       assert 0.002453104293571373 > (0.01 / 2)\nE        +  where 0.002453104293571373 = abs((1.4166666666666665 - 1.4142135623730951))\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sqrt_convergence - assert 0.002453104293571373...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:54:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2132,
+  "completion_tokens_total": 235,
+  "duration_seconds": 100.76,
+  "timestamp": "2026-05-31T19:54:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

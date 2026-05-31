@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_flatten",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import flatten\n\ndef test_quixbugs_flatten():\n    # Call the function with a small nested list\n    result = flatten([1, [2, 3], [[4]]])\n    # Convert the generator to a list for comparison\n    result_list = list(result)\n    # Check that the result is as expected\n    assert result_list == [1, 2, 3, 4]",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphm3fmj9x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_quixbugs_flatten _____________________________\n\n    def test_quixbugs_flatten():\n        # Call the function with a small nested list\n        result = flatten([1, [2, 3], [[4]]])\n        # Convert the generator to a list for comparison\n        result_list = list(result)\n        # Check that the result is as expected\n>       assert result_list == [1, 2, 3, 4]\nE       AssertionError: assert [<generator o... 0x10a2f0f20>] == [1, 2, 3, 4]\nE         \nE         At index 0 diff: <generator object flatten at 0x10a2f0740> != 1\nE         \nE         Full diff:\nE           [\nE         -     1,\nE         -     2,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_quixbugs_flatten - AssertionError: assert [<ge...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi1zxra76\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_quixbugs_flatten PASSED                          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:25:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 530,
+  "completion_tokens_total": 94,
+  "duration_seconds": 4.24,
+  "timestamp": "2026-05-31T20:25:30Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

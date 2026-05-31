@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_048",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import big_diff\n\ndef test_mbpp_mutation_048():\n    nums = [-10, -5, 0, 5, 10]\n    # The bug flips the expected result from -15 to 15 when the canonical solution is mutated\n    # The arithmetic operator in the buggy code changes the expected result\n    assert big_diff(nums) == 15",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp78qg855_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_048 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_048 ____________________________\n\n    def test_mbpp_mutation_048():\n        nums = [-10, -5, 0, 5, 10]\n        # The bug flips the expected result from -15 to 15 when the canonical solution is mutated\n        # The arithmetic operator in the buggy code changes the expected result\n>       assert big_diff(nums) == 15\nE       assert 0 == 15\nE        +  where 0 = big_diff([-10, -5, 0, 5, 10])\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_048 - assert 0 == 15\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr_o2s6s_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_048 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_048 ____________________________\n\n    def test_mbpp_mutation_048():\n        nums = [-10, -5, 0, 5, 10]\n        # The bug flips the expected result from -15 to 15 when the canonical solution is mutated\n        # The arithmetic operator in the buggy code changes the expected result\n>       assert big_diff(nums) == 15\nE       assert 20 == 15\nE        +  where 20 = big_diff([-10, -5, 0, 5, 10])\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_048 - assert 20 == 15\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:49:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import big_diff\n\ndef test_mbpp_mutation_048():\n    nums = [-10, -5, 0, 5, 10]\n    # The bug changes the expected result from 15 to 20\n    # The correct result is 15 (max - min), not 20 (max + min)\n    assert big_diff(nums) == 15, \"Incorrect difference calculation\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0eo5mswc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_048 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_048 ____________________________\n\n    def test_mbpp_mutation_048():\n        nums = [-10, -5, 0, 5, 10]\n        # The bug changes the expected result from 15 to 20\n        # The correct result is 15 (max - min), not 20 (max + min)\n>       assert big_diff(nums) == 15, \"Incorrect difference calculation\"\nE       AssertionError: Incorrect difference calculation\nE       assert 0 == 15\nE        +  where 0 = big_diff([-10, -5, 0, 5, 10])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_048 - AssertionError: Incorrect ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppsfq7x8f\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_048 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_048 ____________________________\n\n    def test_mbpp_mutation_048():\n        nums = [-10, -5, 0, 5, 10]\n        # The bug changes the expected result from 15 to 20\n        # The correct result is 15 (max - min), not 20 (max + min)\n>       assert big_diff(nums) == 15, \"Incorrect difference calculation\"\nE       AssertionError: Incorrect difference calculation\nE       assert 20 == 15\nE        +  where 20 = big_diff([-10, -5, 0, 5, 10])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_048 - AssertionError: Incorrect ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:49:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import big_diff\n\ndef test_mbpp_mutation_048():\n    nums = [-10, -5, 0, 5, 10]\n    assert big_diff(nums) == 20",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxjd73nxe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_048 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_048 ____________________________\n\n    def test_mbpp_mutation_048():\n        nums = [-10, -5, 0, 5, 10]\n>       assert big_diff(nums) == 20\nE       assert 0 == 20\nE        +  where 0 = big_diff([-10, -5, 0, 5, 10])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_048 - assert 0 == 20\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpev6c4mcn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_048 PASSED                         [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:49:06Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2179,
+  "completion_tokens_total": 226,
+  "duration_seconds": 11.13,
+  "timestamp": "2026-05-31T19:49:06Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_020",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_closest_elements\n\ndef test_find_closest_elements_buggy():\n    numbers = [1.0, 2.0, 3.0, 4.0, 5.0, 2.2]\n    expected_result = (2.0, 2.2)\n    result = find_closest_elements(numbers)\n    assert result == expected_result, f\"Expected {expected_result} but got {result}\"\n\ndef test_find_closest_elements_buggy_edge_case():\n    numbers = [1.0, 2.0, 3.0, 4.0, 5.0, 2.0]\n    expected_result = (2.0, 2.0)\n    result = find_closest_elements(numbers)\n    assert result == expected_result, f\"Expected {expected_result} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgyu_0fof\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_find_closest_elements_buggy FAILED               [ 50%]\n\n=================================== FAILURES ===================================\n_______________________ test_find_closest_elements_buggy _______________________\n\n    def test_find_closest_elements_buggy():\n        numbers = [1.0, 2.0, 3.0, 4.0, 5.0, 2.2]\n        expected_result = (2.0, 2.2)\n        result = find_closest_elements(numbers)\n>       assert result == expected_result, f\"Expected {expected_result} but got {result}\"\nE       AssertionError: Expected (2.0, 2.2) but got (1.0, 5.0)\nE       assert (1.0, 5.0) == (2.0, 2.2)\nE         \nE         At index 0 diff: 1.0 != 2.0\nE         \nE         Full diff:\nE           (\nE         -     2.0,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_closest_elements_buggy - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp07ik0_1u\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_find_closest_elements_buggy PASSED               [ 50%]\ntest_generated.py::test_find_closest_elements_buggy_edge_case PASSED     [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:43:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 736,
+  "completion_tokens_total": 186,
+  "duration_seconds": 6.01,
+  "timestamp": "2026-05-31T19:43:45Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

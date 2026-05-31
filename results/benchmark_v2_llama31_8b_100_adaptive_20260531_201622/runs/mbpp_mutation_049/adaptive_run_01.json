@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_mbpp_mutation_049():\n    # Test case that fails on the buggy code\n    input_string = \"snake_case_string\"\n    expected_output = \"snakeCaseString\"\n    actual_output = snake_to_camel(input_string)\n    assert actual_output == expected_output, f\"Expected '{expected_output}' but got '{actual_output}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsmvwu7rb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_049 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_049 ____________________________\n\n    def test_mbpp_mutation_049():\n        # Test case that fails on the buggy code\n        input_string = \"snake_case_string\"\n        expected_output = \"snakeCaseString\"\n        actual_output = snake_to_camel(input_string)\n>       assert actual_output == expected_output, f\"Expected '{expected_output}' but got '{actual_output}'\"\nE       AssertionError: Expected 'snakeCaseString' but got '___'\nE       assert '___' == 'snakeCaseString'\nE         \nE         - snakeCaseString\nE         + ___\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_049 - AssertionError: Expected '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkf38_6zl\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_mbpp_mutation_049 FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_mbpp_mutation_049 ____________________________\n\n    def test_mbpp_mutation_049():\n        # Test case that fails on the buggy code\n        input_string = \"snake_case_string\"\n        expected_output = \"snakeCaseString\"\n        actual_output = snake_to_camel(input_string)\n>       assert actual_output == expected_output, f\"Expected '{expected_output}' but got '{actual_output}'\"\nE       AssertionError: Expected 'snakeCaseString' but got 'SnakeCaseString'\nE       assert 'SnakeCaseString' == 'snakeCaseString'\nE         \nE         - snakeCaseString\nE         ? ^\nE         + SnakeCaseString\nE         ? ^\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mbpp_mutation_049 - AssertionError: Expected '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:24:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\n@pytest.mark.parametrize('input_string', ['hello_world'])\ndef test_snake_to_camel_buggy():\n    assert snake_to_camel('hello_world')!= 'helloWorld'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpumbki65s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\nIn test_snake_to_camel_buggy: function uses no argument 'input_string'\n=========================== short test summary info ============================\nERROR test_generated.py - Failed: In test_snake_to_camel_buggy: function uses...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.05s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzr3c94kx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\nIn test_snake_to_camel_buggy: function uses no argument 'input_string'\n=========================== short test summary info ============================\nERROR test_generated.py - Failed: In test_snake_to_camel_buggy: function uses...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.05s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:24:18Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_buggy():\n    # Test fails on buggy code because it incorrectly capitalizes the first letter\n    # and adds an underscore before it\n    assert snake_to_camel('hello_world') == 'Hello_World'\n    assert snake_to_camel('hello_world')!= 'helloWorld'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeivnvbcz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_buggy FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_buggy ___________________________\n\n    def test_snake_to_camel_buggy():\n        # Test fails on buggy code because it incorrectly capitalizes the first letter\n        # and adds an underscore before it\n>       assert snake_to_camel('hello_world') == 'Hello_World'\nE       AssertionError: assert '__' == 'Hello_World'\nE         \nE         - Hello_World\nE         + __\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_buggy - AssertionError: assert ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpths00dis\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_buggy FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_buggy ___________________________\n\n    def test_snake_to_camel_buggy():\n        # Test fails on buggy code because it incorrectly capitalizes the first letter\n        # and adds an underscore before it\n>       assert snake_to_camel('hello_world') == 'Hello_World'\nE       AssertionError: assert 'HelloWorld' == 'Hello_World'\nE         \nE         - Hello_World\nE         ?      -\nE         + HelloWorld\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_buggy - AssertionError: assert ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:24:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is caused by an incorrect boolean operator in the snake_to_camel function.",
+    "bug_location": "snake_to_camel, line 3",
+    "trigger_condition": "Input with underscores, e.g., 'hello_world'",
+    "expected_vs_actual": "Expected: 'helloWorld', Actual: 'Hello_World'",
+    "suggested_test_strategy": "Test with a string containing underscores, e.g., @pytest.mark.parametrize('input_string', ['hello_world'])\ndef test_snake_to_camel_buggy():\n    assert snake_to_camel('hello_world') == 'Hello_World'\n    assert snake_to_camel('hello_world')!= 'helloWorld'",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2789,
+  "completion_tokens_total": 383,
+  "duration_seconds": 15.65,
+  "timestamp": "2026-05-31T20:24:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

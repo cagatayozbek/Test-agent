@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_longest_common_subsequence",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import longest_common_subsequence\n\ndef test_longest_common_subsequence():\n    lcs = longest_common_subsequence('AGCAT', 'GAC')\n    assert lcs == 'AGC'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi064r7z3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_longest_common_subsequence ________________________\n\n    def test_longest_common_subsequence():\n        lcs = longest_common_subsequence('AGCAT', 'GAC')\n>       assert lcs == 'AGC'\nE       AssertionError: assert 'AC' == 'AGC'\nE         \nE         - AGC\nE         ?  -\nE         + AC\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence - AssertionError: a...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpas19z_m0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_longest_common_subsequence ________________________\n\n    def test_longest_common_subsequence():\n        lcs = longest_common_subsequence('AGCAT', 'GAC')\n>       assert lcs == 'AGC'\nE       AssertionError: assert 'AC' == 'AGC'\nE         \nE         - AGC\nE         ?  -\nE         + AC\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence - AssertionError: a...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:51:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import longest_common_subsequence\n\ndef test_longest_common_subsequence():\n    a = 'AGCAT'\n    b = 'GAC'\n    expected_lcs = 'AGC'\n    lcs = longest_common_subsequence(a, b)\n    assert lcs == expected_lcs, f\"Expected longest common subsequence of '{a}' and '{b}' to be '{expected_lcs}', but got '{lcs}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl0c23a0j\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_longest_common_subsequence ________________________\n\n    def test_longest_common_subsequence():\n        a = 'AGCAT'\n        b = 'GAC'\n        expected_lcs = 'AGC'\n        lcs = longest_common_subsequence(a, b)\n>       assert lcs == expected_lcs, f\"Expected longest common subsequence of '{a}' and '{b}' to be '{expected_lcs}', but got '{lcs}'\"\nE       AssertionError: Expected longest common subsequence of 'AGCAT' and 'GAC' to be 'AGC', but got 'AC'\nE       assert 'AC' == 'AGC'\nE         \nE         - AGC\nE         ?  -\nE         + AC\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptoc0egq7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_longest_common_subsequence ________________________\n\n    def test_longest_common_subsequence():\n        a = 'AGCAT'\n        b = 'GAC'\n        expected_lcs = 'AGC'\n        lcs = longest_common_subsequence(a, b)\n>       assert lcs == expected_lcs, f\"Expected longest common subsequence of '{a}' and '{b}' to be '{expected_lcs}', but got '{lcs}'\"\nE       AssertionError: Expected longest common subsequence of 'AGCAT' and 'GAC' to be 'AGC', but got 'AC'\nE       assert 'AC' == 'AGC'\nE         \nE         - AGC\nE         ?  -\nE         + AC\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:51:18Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import longest_common_subsequence\n\ndef test_longest_common_subsequence():\n    a = 'AGCAT'\n    b = 'GAC'\n    lcs = longest_common_subsequence(a, b)\n    assert lcs == 'AGC'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9lk7j03z\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_longest_common_subsequence ________________________\n\n    def test_longest_common_subsequence():\n        a = 'AGCAT'\n        b = 'GAC'\n        lcs = longest_common_subsequence(a, b)\n>       assert lcs == 'AGC'\nE       AssertionError: assert 'AC' == 'AGC'\nE         \nE         - AGC\nE         ?  -\nE         + AC\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence - AssertionError: a...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpf_lavdom\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_longest_common_subsequence ________________________\n\n    def test_longest_common_subsequence():\n        a = 'AGCAT'\n        b = 'GAC'\n        lcs = longest_common_subsequence(a, b)\n>       assert lcs == 'AGC'\nE       AssertionError: assert 'AC' == 'AGC'\nE         \nE         - AGC\nE         ?  -\nE         + AC\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence - AssertionError: a...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:51:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2647,
+  "completion_tokens_total": 199,
+  "duration_seconds": 12.11,
+  "timestamp": "2026-05-31T19:51:22Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

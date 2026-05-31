@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_155",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import even_odd_count\n\ndef test_even_odd_count():\n    # Test case that triggers the bug\n    result = even_odd_count(-12)\n    # Expected return value based on the docstring and fixed code\n    expected = (2, 0)\n    # Assert that the fixed code returns the correct value\n    assert result == expected, f\"Expected even_odd_count(-12) to return (2, 0) but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr9eyv31t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_even_odd_count FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_even_odd_count ______________________________\n\n    def test_even_odd_count():\n        # Test case that triggers the bug\n        result = even_odd_count(-12)\n        # Expected return value based on the docstring and fixed code\n        expected = (2, 0)\n        # Assert that the fixed code returns the correct value\n>       assert result == expected, f\"Expected even_odd_count(-12) to return (2, 0) but got {result}\"\nE       AssertionError: Expected even_odd_count(-12) to return (2, 0) but got (1, 0)\nE       assert (1, 0) == (2, 0)\nE         \nE         At index 0 diff: 1 != 2\nE         \nE         Full diff:\nE           (\nE         -     2,\nE         ?     ^...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_even_odd_count - AssertionError: Expected even...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbxp0yz7v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_even_odd_count FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_even_odd_count ______________________________\n\n    def test_even_odd_count():\n        # Test case that triggers the bug\n        result = even_odd_count(-12)\n        # Expected return value based on the docstring and fixed code\n        expected = (2, 0)\n        # Assert that the fixed code returns the correct value\n>       assert result == expected, f\"Expected even_odd_count(-12) to return (2, 0) but got {result}\"\nE       AssertionError: Expected even_odd_count(-12) to return (2, 0) but got (1, 1)\nE       assert (1, 1) == (2, 0)\nE         \nE         At index 0 diff: 1 != 2\nE         \nE         Full diff:\nE           (\nE         -     2,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_even_odd_count - AssertionError: Expected even...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:21:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import even_odd_count\n\ndef test_even_odd_count():\n    num = 123\n    expected_even_count = 1  # only one even digit: 2\n    expected_odd_count = 2  # two odd digits: 1, 3\n    result = even_odd_count(num)\n    assert result == (expected_even_count, expected_odd_count), f\"Expected even_odd_count({num}) to return ({expected_even_count}, {expected_odd_count}), but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy0xx92xv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_even_odd_count FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_even_odd_count ______________________________\n\n    def test_even_odd_count():\n        num = 123\n        expected_even_count = 1  # only one even digit: 2\n        expected_odd_count = 2  # two odd digits: 1, 3\n        result = even_odd_count(num)\n>       assert result == (expected_even_count, expected_odd_count), f\"Expected even_odd_count({num}) to return ({expected_even_count}, {expected_odd_count}), but got {result}\"\nE       AssertionError: Expected even_odd_count(123) to return (1, 2), but got (1, 0)\nE       assert (1, 0) == (1, 2)\nE         \nE         At index 1 diff: 0 != 2\nE         \nE         Full diff:\nE           (\nE               1,\nE         -     2,...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_even_odd_count - AssertionError: Expected even...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9ibb1abu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_even_odd_count PASSED                            [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:21:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The count of odd digits is not being incremented when it encounters an odd digit in the input number.",
+    "bug_location": "even_odd_count function, line 10",
+    "trigger_condition": "calling even_odd_count with a number containing an odd digit",
+    "expected_vs_actual": "the function should return a tuple with the correct count of even and odd digits, but it returns the correct count of even digits and 0 as the count of odd digits",
+    "suggested_test_strategy": "test even_odd_count with a number like 123, assert (even_odd_count(123)) == (1, 2)",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1824,
+  "completion_tokens_total": 363,
+  "duration_seconds": 12.87,
+  "timestamp": "2026-05-31T20:21:29Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

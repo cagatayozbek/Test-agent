@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_012",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import longest\n\ndef test_longest_empty_list():\n    assert longest([]) is None\n\ndef test_longest_single_element():\n    assert longest(['a']) == 'a'\n\ndef test_longest_multiple_elements():\n    # Test the bug by providing a list where one string is longer than the others\n    assert longest(['a', 'bb', 'ccc']) == 'ccc'\n\ndef test_longest_multiple_elements_equal_length():\n    # Test the bug by providing a list where multiple strings are equal in length\n    assert longest(['a', 'bb', 'b']) == 'a'\n\ndef test_longest_multiple_elements_all_equal_length():\n    # Test the bug by providing a list where all strings are equal in length\n    assert longest(['a', 'bb', 'bba']) == 'a'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplgxu0uyz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 5 items\n\ntest_generated.py::test_longest_empty_list PASSED                        [ 20%]\ntest_generated.py::test_longest_single_element FAILED                    [ 40%]\n\n=================================== FAILURES ===================================\n_________________________ test_longest_single_element __________________________\n\n    def test_longest_single_element():\n>       assert longest(['a']) == 'a'\nE       AssertionError: assert None == 'a'\nE        +  where None = longest(['a'])\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_single_element - AssertionError: asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkhln_a_0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 5 items\n\ntest_generated.py::test_longest_empty_list PASSED                        [ 20%]\ntest_generated.py::test_longest_single_element PASSED                    [ 40%]\ntest_generated.py::test_longest_multiple_elements PASSED                 [ 60%]\ntest_generated.py::test_longest_multiple_elements_equal_length FAILED    [ 80%]\n\n=================================== FAILURES ===================================\n_________________ test_longest_multiple_elements_equal_length __________________\n\n    def test_longest_multiple_elements_equal_length():\n        # Test the bug by providing a list where multiple strings are equal in length\n>       assert longest(['a', 'bb', 'b']) == 'a'\nE       AssertionError: assert 'bb' == 'a'\nE         \nE         - a\nE         + bb\n\ntest_generated.py:16: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_multiple_elements_equal_length - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 3 passed in 0.02s ==========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import longest\n\ndef test_longest_multiple_max_length():\n    # Test case where multiple strings have the same maximum length\n    # The buggy code will return the first string it encounters with the maximum length\n    # which is 'bb', but the fixed code will return the last one which is 'ccc'\n    assert longest(['bb', 'ccc', 'aa']) == 'ccc'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcwqghppw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_multiple_max_length FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_longest_multiple_max_length _______________________\n\n    def test_longest_multiple_max_length():\n        # Test case where multiple strings have the same maximum length\n        # The buggy code will return the first string it encounters with the maximum length\n        # which is 'bb', but the fixed code will return the last one which is 'ccc'\n>       assert longest(['bb', 'ccc', 'aa']) == 'ccc'\nE       AssertionError: assert None == 'ccc'\nE        +  where None = longest(['bb', 'ccc', 'aa'])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_multiple_max_length - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp27zwzdk7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_multiple_max_length PASSED               [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function does not correctly return the longest string when there are multiple strings with the same maximum length.",
+    "bug_location": "line 10, function longest",
+    "trigger_condition": "Input list contains multiple strings of the same maximum length",
+    "expected_vs_actual": "Returns the first string it encounters with the maximum length, not the last one.",
+    "suggested_test_strategy": "Test case test_longest_multiple_max_length() should fail with the buggy code and pass with the fixed code.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1938,
+  "completion_tokens_total": 378,
+  "duration_seconds": 12.43,
+  "timestamp": "2026-05-31T20:17:44Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

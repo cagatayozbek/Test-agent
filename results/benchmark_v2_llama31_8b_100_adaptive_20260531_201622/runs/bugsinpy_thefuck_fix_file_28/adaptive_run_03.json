@@ -1,0 +1,68 @@
+{
+  "task_id": "bugsinpy_thefuck_fix_file_28",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import PATTERNS, DEFAULT_SETTINGS, get_new_command\n\ndef test_fix_file_ignores_column_aware_settings():\n    # Simulate stderr with column-aware formatting\n    stderr = \"file.py (line 3):\"\n\n    # Buggy behavior: fix_file rule ignores column-aware settings\n    settings = DEFAULT_SETTINGS.copy()\n    settings[\"fixcolcmd\"] = None\n    assert get_new_command(stderr, settings) is None\n\n    # Correct behavior: fix_file rule uses column-aware formatting\n    settings = DEFAULT_SETTINGS.copy()\n    assert get_new_command(stderr, settings) == \"vim file.py +3\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplblhwvg1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_ignores_column_aware_settings FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_fix_file_ignores_column_aware_settings __________________\n\n    def test_fix_file_ignores_column_aware_settings():\n        # Simulate stderr with column-aware formatting\n        stderr = \"file.py (line 3):\"\n    \n        # Buggy behavior: fix_file rule ignores column-aware settings\n        settings = DEFAULT_SETTINGS.copy()\n        settings[\"fixcolcmd\"] = None\n>       assert get_new_command(stderr, settings) is None\nE       AssertionError: assert 'vim file.py +3' is None\nE        +  where 'vim file.py +3' = get_new_command('file.py (line 3):', {'fixcolcmd': None, 'fixlinecmd': '{editor} {file} +{line}'})\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fix_file_ignores_column_aware_settings - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpslzm62ae\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_ignores_column_aware_settings FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_fix_file_ignores_column_aware_settings __________________\n\n    def test_fix_file_ignores_column_aware_settings():\n        # Simulate stderr with column-aware formatting\n        stderr = \"file.py (line 3):\"\n    \n        # Buggy behavior: fix_file rule ignores column-aware settings\n        settings = DEFAULT_SETTINGS.copy()\n        settings[\"fixcolcmd\"] = None\n>       assert get_new_command(stderr, settings) is None\nE       AssertionError: assert 'vim file.py +3' is None\nE        +  where 'vim file.py +3' = get_new_command('file.py (line 3):', {'fixcolcmd': None, 'fixlinecmd': '{editor} {file} +{line}'})\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fix_file_ignores_column_aware_settings - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:11Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import get_new_command, DEFAULT_SETTINGS\n\ndef test_fix_file_ignores_column_aware_settings_buggy():\n    # Test that the buggy code fails to use column-aware settings\n    stderr = \"file.py (line 3):\"\n    settings = DEFAULT_SETTINGS.copy()\n    settings[\"fixcolcmd\"] = \"{editor} {file} +{line}:{col}\"\n    cmd = get_new_command(stderr, settings)\n    assert cmd == \"vim file.py +3\"  # Should fail because column-aware settings are ignored",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_aa0a81i\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_ignores_column_aware_settings_buggy PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp455myebq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_ignores_column_aware_settings_buggy PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import get_new_command\n\ndef test_fix_file_ignores_column_aware_settings():\n    stderr_with_line = \"file.py (line 3):\"\n    stderr_with_col = \"file.py:3:4\"\n\n    # Buggy code should ignore column-aware settings and fail to escape parentheses\n    assert get_new_command(stderr_with_line) is None\n    assert get_new_command(stderr_with_col) is None\n\n    # Fixed code should use column-aware command with precise column info\n    assert get_new_command(stderr_with_col, {\"fixcolcmd\": \"{editor} {file}:{line}:{col}\"}) == \"vim file.py:3:4\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpj72gp277\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_ignores_column_aware_settings FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_fix_file_ignores_column_aware_settings __________________\n\n    def test_fix_file_ignores_column_aware_settings():\n        stderr_with_line = \"file.py (line 3):\"\n        stderr_with_col = \"file.py:3:4\"\n    \n        # Buggy code should ignore column-aware settings and fail to escape parentheses\n>       assert get_new_command(stderr_with_line) is None\nE       AssertionError: assert 'vim file.py +3' is None\nE        +  where 'vim file.py +3' = get_new_command('file.py (line 3):')\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fix_file_ignores_column_aware_settings - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6y29te66\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_fix_file_ignores_column_aware_settings FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_fix_file_ignores_column_aware_settings __________________\n\n    def test_fix_file_ignores_column_aware_settings():\n        stderr_with_line = \"file.py (line 3):\"\n        stderr_with_col = \"file.py:3:4\"\n    \n        # Buggy code should ignore column-aware settings and fail to escape parentheses\n>       assert get_new_command(stderr_with_line) is None\nE       AssertionError: assert 'vim file.py +3' is None\nE        +  where 'vim file.py +3' = get_new_command('file.py (line 3):')\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fix_file_ignores_column_aware_settings - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:17:32Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 3371,
+  "completion_tokens_total": 396,
+  "duration_seconds": 28.06,
+  "timestamp": "2026-05-31T20:17:32Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

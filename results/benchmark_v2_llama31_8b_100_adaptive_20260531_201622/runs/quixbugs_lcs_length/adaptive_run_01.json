@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_lcs_length",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import lcs_length\n\ndef test_lcs_length_bug():\n    s = 'ABCBDAB'\n    t = 'BDCAB'\n    expected_length = 4\n    actual_length = lcs_length(s, t)\n    assert expected_length == actual_length, f\"Expected lcs_length('{s}', '{t}') to return {expected_length}, but got {actual_length}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5xgmbsvx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_lcs_length_bug ______________________________\n\n    def test_lcs_length_bug():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        expected_length = 4\n        actual_length = lcs_length(s, t)\n>       assert expected_length == actual_length, f\"Expected lcs_length('{s}', '{t}') to return {expected_length}, but got {actual_length}\"\nE       AssertionError: Expected lcs_length('ABCBDAB', 'BDCAB') to return 4, but got 1\nE       assert 4 == 1\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_bug - AssertionError: Expected lcs_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphwwbvdpx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_lcs_length_bug ______________________________\n\n    def test_lcs_length_bug():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        expected_length = 4\n        actual_length = lcs_length(s, t)\n>       assert expected_length == actual_length, f\"Expected lcs_length('{s}', '{t}') to return {expected_length}, but got {actual_length}\"\nE       AssertionError: Expected lcs_length('ABCBDAB', 'BDCAB') to return 4, but got 2\nE       assert 4 == 2\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_bug - AssertionError: Expected lcs_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:26:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import lcs_length\n\ndef test_lcs_length_bug():\n    # Test with a small instance where the bug is triggered\n    s = 'ABCBDAB'\n    t = 'BDCAB'\n    expected_length = 4  # Correct length of the LCS\n    actual_length = lcs_length(s, t)\n    assert actual_length == expected_length, f\"Expected lcs_length('{s}', '{t}') to return {expected_length}, but got {actual_length}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1rsf03nj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_lcs_length_bug ______________________________\n\n    def test_lcs_length_bug():\n        # Test with a small instance where the bug is triggered\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        expected_length = 4  # Correct length of the LCS\n        actual_length = lcs_length(s, t)\n>       assert actual_length == expected_length, f\"Expected lcs_length('{s}', '{t}') to return {expected_length}, but got {actual_length}\"\nE       AssertionError: Expected lcs_length('ABCBDAB', 'BDCAB') to return 4, but got 1\nE       assert 1 == 4\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_bug - AssertionError: Expected lcs_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr0rtyn25\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_lcs_length_bug ______________________________\n\n    def test_lcs_length_bug():\n        # Test with a small instance where the bug is triggered\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        expected_length = 4  # Correct length of the LCS\n        actual_length = lcs_length(s, t)\n>       assert actual_length == expected_length, f\"Expected lcs_length('{s}', '{t}') to return {expected_length}, but got {actual_length}\"\nE       AssertionError: Expected lcs_length('ABCBDAB', 'BDCAB') to return 4, but got 2\nE       assert 2 == 4\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_bug - AssertionError: Expected lcs_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:26:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import lcs_length\n\ndef test_lcs_length_bug():\n    s = 'ABCBDAB'\n    t = 'BDCAB'\n    assert lcs_length(s, t) == 3  # expected length is 3, not 4",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxuqc8dyn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_lcs_length_bug ______________________________\n\n    def test_lcs_length_bug():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n>       assert lcs_length(s, t) == 3  # expected length is 3, not 4\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: assert 1 == 3\nE        +  where 1 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_bug - AssertionError: assert 1 == 3\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwn78y2h8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_bug FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_lcs_length_bug ______________________________\n\n    def test_lcs_length_bug():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n>       assert lcs_length(s, t) == 3  # expected length is 3, not 4\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: assert 2 == 3\nE        +  where 2 = lcs_length('ABCBDAB', 'BDCAB')\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_bug - AssertionError: assert 2 == 3\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T20:26:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is in the update rule for matching characters in the dynamic programming table, which reads `dp[i-1, j] + 1` instead of `dp[i-1, j-1] + 1`.",
+    "bug_location": "lcs_length, line 6",
+    "trigger_condition": "When two strings have a common substring with a length greater than 1, where the last character of the LCS is the same as the last character of the first string.",
+    "expected_vs_actual": "The function should return the correct length of the LCS, but instead returns an inflated value due to the incorrect update rule.",
+    "suggested_test_strategy": "Test the function with two strings that have a common substring with a length greater than 1, and verify that the returned value is correct.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3387,
+  "completion_tokens_total": 444,
+  "duration_seconds": 18.22,
+  "timestamp": "2026-05-31T20:26:20Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

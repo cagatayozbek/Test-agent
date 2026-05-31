@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_032",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import poly, find_zero\n\ndef test_find_zero_bug():\n    # Test case that triggers the bug: an odd number of coefficients\n    xs = [1, 2, 3]  # coefficients of x^2 + 2x + 3\n    result = find_zero(xs)\n    assert result == pytest.approx(-1.5, rel=1e-2), \"Expected find_zero([1, 2, 3]) to return -1.5, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw21flh7a\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bug FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_find_zero_bug ______________________________\n\n    def test_find_zero_bug():\n        # Test case that triggers the bug: an odd number of coefficients\n        xs = [1, 2, 3]  # coefficients of x^2 + 2x + 3\n>       result = find_zero(xs)\n                 ^^^^^^^^^^^^^\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:25: in find_zero\n    while poly(xs, begin) * poly(xs, end) > 0:\n          ^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nxs = [1, 2, 3], x = -1.3407807929942597e+154\n\n    def poly(xs: list, x: float):\n        \"\"\"\n        Evaluates polynomial with coefficients xs at point x.\n        return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n        \"\"\"\n>       return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n                            ^^^^^^^^^^^^^^\nE       OverflowError: math range error\n\nsource.py:9: OverflowError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_bug - OverflowError: math range error\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp791c8ej1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bug FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_find_zero_bug ______________________________\n\n    def test_find_zero_bug():\n        # Test case that triggers the bug: an odd number of coefficients\n        xs = [1, 2, 3]  # coefficients of x^2 + 2x + 3\n>       result = find_zero(xs)\n                 ^^^^^^^^^^^^^\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:25: in find_zero\n    while poly(xs, begin) * poly(xs, end) > 0:\n          ^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nxs = [1, 2, 3], x = -1.3407807929942597e+154\n\n    def poly(xs: list, x: float):\n        \"\"\"\n        Evaluates polynomial with coefficients xs at point x.\n        return xs[0] + xs[1] * x + xs[1] * x^2 + .... xs[n] * x^n\n        \"\"\"\n>       return sum([coeff * math.pow(x, i) for i, coeff in enumerate(xs)])\n                            ^^^^^^^^^^^^^^\nE       OverflowError: math range error\n\nsource.py:9: OverflowError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_bug - OverflowError: math range error\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:44:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import poly, find_zero\n\ndef test_find_zero_bug():\n    xs = [1, 2]\n    actual = find_zero(xs)\n    # The bug causes the function to find a different zero.\n    assert round(actual, 2) == -0.5, \"find_zero should return -0.5 for [1, 2]\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps1v7f9ph\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bug FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_find_zero_bug ______________________________\n\n    def test_find_zero_bug():\n        xs = [1, 2]\n        actual = find_zero(xs)\n        # The bug causes the function to find a different zero.\n>       assert round(actual, 2) == -0.5, \"find_zero should return -0.5 for [1, 2]\"\nE       AssertionError: find_zero should return -0.5 for [1, 2]\nE       assert -1.0 == -0.5\nE        +  where -1.0 = round(-1.0, 2)\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_bug - AssertionError: find_zero shou...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgvhz3lmm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bug PASSED                             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T19:44:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1957,
+  "completion_tokens_total": 196,
+  "duration_seconds": 5.21,
+  "timestamp": "2026-05-31T19:44:02Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
