@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import digit_distance_nums\n\ndef test_digit_distance_nums_bug_exposure():\n    # Test with small numbers where the '+', instead of '-', affects the output\n    result = digit_distance_nums(123, 456)\n    expected = sum(int(a) - int(b) for a, b in zip(str(123), str(456)))\n    assert result == expected, f\"Expected {expected}, but got {result} for inputs 123 and 456\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppc_19a80\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug_exposure FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_digit_distance_nums_bug_exposure _____________________\n\n    def test_digit_distance_nums_bug_exposure():\n        # Test with small numbers where the '+', instead of '-', affects the output\n        result = digit_distance_nums(123, 456)\n        expected = sum(int(a) - int(b) for a, b in zip(str(123), str(456)))\n>       assert result == expected, f\"Expected {expected}, but got {result} for inputs 123 and 456\"\nE       AssertionError: Expected -9, but got 21 for inputs 123 and 456\nE       assert 21 == -9\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug_exposure - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqwrtjjkh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug_exposure FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_digit_distance_nums_bug_exposure _____________________\n\n    def test_digit_distance_nums_bug_exposure():\n        # Test with small numbers where the '+', instead of '-', affects the output\n        result = digit_distance_nums(123, 456)\n        expected = sum(int(a) - int(b) for a, b in zip(str(123), str(456)))\n>       assert result == expected, f\"Expected {expected}, but got {result} for inputs 123 and 456\"\nE       AssertionError: Expected -9, but got 9 for inputs 123 and 456\nE       assert 9 == -9\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug_exposure - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_nums_bug_exposure():\n    n1, n2 = 123, 321\n    expected_result = 6  # |1-3| + |2-2| + |3-1|\n    actual_result = digit_distance_nums(n1, n2)\n    assert actual_result == expected_result, f\"Expected {expected_result}, but got {actual_result} for inputs {n1} and {n2}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzakh07zg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug_exposure FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_digit_distance_nums_bug_exposure _____________________\n\n    def test_digit_distance_nums_bug_exposure():\n        n1, n2 = 123, 321\n        expected_result = 6  # |1-3| + |2-2| + |3-1|\n        actual_result = digit_distance_nums(n1, n2)\n>       assert actual_result == expected_result, f\"Expected {expected_result}, but got {actual_result} for inputs {n1} and {n2}\"\nE       AssertionError: Expected 6, but got 12 for inputs 123 and 321\nE       assert 12 == 6\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug_exposure - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpruyar1xr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug_exposure FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_digit_distance_nums_bug_exposure _____________________\n\n    def test_digit_distance_nums_bug_exposure():\n        n1, n2 = 123, 321\n        expected_result = 6  # |1-3| + |2-2| + |3-1|\n        actual_result = digit_distance_nums(n1, n2)\n>       assert actual_result == expected_result, f\"Expected {expected_result}, but got {actual_result} for inputs {n1} and {n2}\"\nE       AssertionError: Expected 6, but got 18 for inputs 123 and 321\nE       assert 18 == 6\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug_exposure - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_nums_bug_exposure():\n    n1, n2 = 123, 321\n    expected_result = 6  # |1-3| + |2-2| + |3-1| = 2 + 0 + 3\n    actual_result = digit_distance_nums(n1, n2)\n    assert actual_result == expected_result, f\"Expected {expected_result}, but got {actual_result} for inputs {n1} and {n2}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxi95wlob\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug_exposure FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_digit_distance_nums_bug_exposure _____________________\n\n    def test_digit_distance_nums_bug_exposure():\n        n1, n2 = 123, 321\n        expected_result = 6  # |1-3| + |2-2| + |3-1| = 2 + 0 + 3\n        actual_result = digit_distance_nums(n1, n2)\n>       assert actual_result == expected_result, f\"Expected {expected_result}, but got {actual_result} for inputs {n1} and {n2}\"\nE       AssertionError: Expected 6, but got 12 for inputs 123 and 321\nE       assert 12 == 6\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug_exposure - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphv23xk9i\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_bug_exposure FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_digit_distance_nums_bug_exposure _____________________\n\n    def test_digit_distance_nums_bug_exposure():\n        n1, n2 = 123, 321\n        expected_result = 6  # |1-3| + |2-2| + |3-1| = 2 + 0 + 3\n        actual_result = digit_distance_nums(n1, n2)\n>       assert actual_result == expected_result, f\"Expected {expected_result}, but got {actual_result} for inputs {n1} and {n2}\"\nE       AssertionError: Expected 6, but got 18 for inputs 123 and 321\nE       assert 18 == 6\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_bug_exposure - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is caused by using the `+` operator instead of `-` in the calculation of `abs(n1 + n2)`, which should be `abs(n1 - n2)`.",
+    "bug_location": "digit_distance_nums, line 2",
+    "trigger_condition": "When n1 and n2 have different values, causing the sum to not equal their digit-wise difference.",
+    "expected_vs_actual": "Expected: The function should return the sum of the per-digit differences between n1 and n2. Actual: The function returns the sum of the digits of the absolute value of the sum of n1 and n2, which is incorrect.",
+    "suggested_test_strategy": "Create a test case where n1 and n2 have different values and their digit-wise difference is not zero. For example, test with n1=123 and n2=321. The expected result should be 6 (difference of digits: 3, 1, 2).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2929,
+  "completion_tokens_total": 546,
+  "duration_seconds": 10.81,
+  "timestamp": "2026-05-31T13:38:33Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "type_coercion_price",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import filter_expensive_items\n\ndef test_filter_expensive_items_with_string_price():\n    items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}]\n    threshold = 150\n    # Expect the function to filter items without crashing due to string coercion\n    assert filter_expensive_items(items, threshold) == [{'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}]",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph7kjcggn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_price FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_filter_expensive_items_with_string_price _________________\n\n    def test_filter_expensive_items_with_string_price():\n        items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}]\n        threshold = 150\n        # Expect the function to filter items without crashing due to string coercion\n>       assert filter_expensive_items(items, threshold) == [{'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}]\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nitems = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}]\nthreshold = 150\n\n    def filter_expensive_items(items, threshold):\n        \"\"\"\n        Filters items above a certain price.\n        items: [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n        \"\"\"\n        result = []\n        for item in items:\n            # BUG: If item['price'] is a string (\"200\"),\n            # \"200\" > 150 raises TypeError in Python 3.\n>           if item['price'] > threshold:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nE           TypeError: '>' not supported between instances of 'str' and 'int'\n\nsource.py:10: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_filter_expensive_items_with_string_price - Typ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpilge1t3a\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_price FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_filter_expensive_items_with_string_price _________________\n\n    def test_filter_expensive_items_with_string_price():\n        items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}]\n        threshold = 150\n        # Expect the function to filter items without crashing due to string coercion\n>       assert filter_expensive_items(items, threshold) == [{'name': 'B', 'price': '200'}, {'name': 'C', 'price': 150}]\nE       AssertionError: assert [{'name': 'B'...rice': '200'}] == [{'name': 'B'...'price': 150}]\nE         \nE         Right contains one more item: {'name': 'C', 'price': 150}\nE         \nE         Full diff:\nE           [\nE               {\nE                   'name': 'B',...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_filter_expensive_items_with_string_price - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:43:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import filter_expensive_items\n\ndef test_filter_expensive_items_with_string_price():\n    items = [{'name': 'A', 'price': '100'}, {'name': 'B', 'price': '200'}]\n    threshold = 150\n    with pytest.raises(TypeError):\n        filter_expensive_items(items, threshold)\n    \n    # Fixed version should convert prices to integers and work correctly\n    # This test case is to ensure the fix works, not to fail on it\n    # So we only check the bug scenario here",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr350p0uk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_price PASSED  [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy3o8h39e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_price FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_filter_expensive_items_with_string_price _________________\n\n    def test_filter_expensive_items_with_string_price():\n        items = [{'name': 'A', 'price': '100'}, {'name': 'B', 'price': '200'}]\n        threshold = 150\n>       with pytest.raises(TypeError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\n\ntest_generated.py:7: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_filter_expensive_items_with_string_price - Fai...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:43:50Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import filter_expensive_items\n\ndef test_filter_expensive_items_with_string_price():\n    items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n    threshold = 150\n\n    with pytest.raises(TypeError, match=\"'> not supported between instances of \\'str\\' and \\'int\\'\"):\n        filter_expensive_items(items, threshold)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpasn60j_c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_price FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_filter_expensive_items_with_string_price _________________\n\n    def test_filter_expensive_items_with_string_price():\n        items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n        threshold = 150\n    \n        with pytest.raises(TypeError, match=\"'> not supported between instances of \\'str\\' and \\'int\\'\"):\n>           filter_expensive_items(items, threshold)\n\ntest_generated.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nitems = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\nthreshold = 150\n\n    def filter_expensive_items(items, threshold):\n        \"\"\"\n        Filters items above a certain price.\n        items: [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n        \"\"\"\n        result = []\n        for item in items:\n            # BUG: If item['price'] is a string (\"200\"),\n            # \"200\" > 150 raises TypeError in Python 3.\n>           if item['price'] > threshold:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nE           TypeError: '>' not supported between instances of 'str' and 'int'\n\nsource.py:10: TypeError\n\nDuring handling of the above exception, another exception occurred:\n\n    def test_filter_expensive_items_with_string_price():\n        items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n        threshold = 150\n    \n>       with pytest.raises(TypeError, match=\"'> not supported between instances of \\'str\\' and \\'int\\'\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: Regex pattern did not match.\nE         Expected regex: \"'> not supported between instances of 'str' and 'int'\"\nE         Actual message: \"'>' not supported between instances of 'str' and 'int'\"\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_filter_expensive_items_with_string_price - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5kk0y1eo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_price FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_filter_expensive_items_with_string_price _________________\n\n    def test_filter_expensive_items_with_string_price():\n        items = [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n        threshold = 150\n    \n>       with pytest.raises(TypeError, match=\"'> not supported between instances of \\'str\\' and \\'int\\'\"):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'TypeError'>\n\ntest_generated.py:8: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_filter_expensive_items_with_string_price - Fai...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:43:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "Type coercion bug in Python 3: comparing a string price with an integer threshold raises a TypeError.",
+    "bug_location": "filter_expensive_items, line 5",
+    "trigger_condition": "Passing a list of items with string type prices, e.g., {'name': 'A', 'price': '100'}",
+    "expected_vs_actual": "Expected behavior: string price values should be converted to integers for comparison; actual behavior: TypeError occurs when comparing string price with integer threshold.",
+    "suggested_test_strategy": "Use pytest to pass a list of items with mixed string and integer price values and assert that the function filters items correctly without TypeError.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3048,
+  "completion_tokens_total": 564,
+  "duration_seconds": 12.38,
+  "timestamp": "2026-05-31T13:43:53Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1354,3 +1354,79 @@ BRTR.
 - Configs: `benchmark_v2_{haiku,gptoss120b,gptoss20b}_100_{baseline,adaptive}.yaml`,
   `benchmark_v2_gptoss20b_100_deep{,_resume}.yaml`,
   `benchmark_v2_qwen3coder_100_{baseline,adaptive}.yaml` (OpenRouter).
+
+## 15. Weak-model extension — phi-4 (14B) breaks the ceiling (2026-05-31)
+
+§14 closed the 5-model matrix but left a ceiling-effect problem: every
+model's baseline BRTR clustered in [0.89, 1.00], so the "does analysis
+help?" question was being asked only where there was little room to move.
+To open the bottom of the capability spectrum we added a sixth model,
+**Microsoft phi-4 (14B)**, served via OpenRouter (DeepInfra endpoint), and
+ran the same v2.0 100-task set under baseline, adaptive, and deep.
+
+### 15.1 Configuration / provenance
+
+- Model id `microsoft/phi-4`, `base_url https://openrouter.ai/api/v1`,
+  `api_key_env OPENROUTER_API_KEY`, temperature 0.7, `max_output_tokens 4096`.
+- 100 tasks × 3 runs = 300 runs per mode; concurrency 4; `max_attempts 3`;
+  `test_timeout_seconds 30`. Same task include-list as the other 100-task
+  configs.
+- Smoke-tested end to end on `quixbugs_gcd` (OK, 3.5s, real tokens) before
+  the full runs.
+
+### 15.2 Results — baseline and adaptive are real; deep is not measurable
+
+| Mode | BRTR | 95% CI | Successful | Avg dur | Avg c-tok |
+|---|---:|---|---:|---:|---:|
+| baseline | **66.7%** | [61.2, 71.8] | 200/300 | 7.1s | 254 |
+| adaptive | **67.7%** | [62.2, 72.7] | 203/300 | 9.3s | 377 |
+| deep | N/A ‡ | — | 0/300 (artefact) | 5.7s | 0 |
+
+**phi-4 baseline 0.667 is the new low end of the spectrum** — well below the
+[0.89, 1.00] cluster, exactly the ceiling-break we wanted. With a genuinely
+weak model the analysis question finally has room to move.
+
+**adaptive is neutral, not helpful:** +1.0 pp (+3 runs / 300), CIs almost
+fully overlapping — statistically indistinguishable from baseline. But the
+analysis-on-retry step still costs: completion tokens rise 254 → 377 (+48%)
+and wall-clock 7.1 s → 9.3 s. So even at the weak end, the structured
+analysis step does **not** rescue the model — it spends tokens for zero BRTR
+gain. This sharpens the thesis: "weak model ⇒ analysis helps" is false;
+analysis perfects a strong model (Sonnet deep 1.000, +5.7 pp) but cannot
+lift a weak one. Model capability remains the dominant variable.
+
+### 15.3 ‡ Why deep is N/A — a provider tool-calling gap, not a finding
+
+The deep run reported BRTR 0.0% (0/300), but this is a harness artefact and
+is **excluded** from the matrix:
+
+- All 300 runs have `tool_call_count = 0`, `prompt_tokens_total = 0`,
+  `completion_tokens_total = 0`, and emit the identical degenerate fallback
+  test `import source\nassert source is not None` — which PASSes on both
+  buggy and fixed code, hence BRTR 0.
+- Direct probe confirms the cause: OpenRouter returns
+  `404 "No endpoints found that support tool use"` for `microsoft/phi-4`.
+  Both providers serving it (NextBit, DeepInfra) lack function/tool-calling.
+- Deep mode's core mechanic is the `read_file` tool loop; with tools
+  unavailable the pipeline gets a 404, swallows it, and degrades to the stub
+  for every run.
+
+This is categorically different from the gpt-oss-20b deep collapse (§14.4),
+where all 236 failures were **real** test FAILs with recorded attempts and
+tokens — a genuine reasoning collapse under forced analysis. phi-4 deep
+measures nothing about phi-4; it measures the absence of a provider feature.
+To measure phi-4 deep one would need a tool-calling-capable endpoint (e.g. a
+local vLLM/Ollama serve, or an Azure OpenAI phi-4 deployment).
+
+### 15.4 Updated spectrum (baseline BRTR)
+
+haiku 0.980 · gpt-oss-120b 0.977 · gpt-oss-20b 0.940 · sonnet 0.943† ·
+qwen3-coder 0.890 · **phi-4 0.667** ← new low end.
+
+### 15.5 Raw data
+
+- `results/benchmark_v2_phi4_100_baseline_20260531_132254/`
+- `results/benchmark_v2_phi4_100_adaptive_20260531_133215/`
+- `results/benchmark_v2_phi4_100_deep_20260531_142054/` (300 runs, all
+  404→stub; retained as evidence, scored N/A)
+- Configs: `benchmark_v2_phi4_100_{baseline,adaptive,deep}.yaml`.

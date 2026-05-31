@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_hanoi",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_hanoi_single_disk_moves_correctly():\n    # Single disk moves should always be from start to end directly\n    moves = hanoi(1, start=1, end=3)\n    expected_moves = [(1, 3)]\n    assert moves == expected_moves, f\"Expected moves to be {expected_moves} but got {moves}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1xm2ppov\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_hanoi_single_disk_moves_correctly FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_hanoi_single_disk_moves_correctly ____________________\n\n    def test_hanoi_single_disk_moves_correctly():\n        # Single disk moves should always be from start to end directly\n>       moves = hanoi(1, start=1, end=3)\n                ^^^^^\nE       NameError: name 'hanoi' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_hanoi_single_disk_moves_correctly - NameError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpv6_76cui\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_hanoi_single_disk_moves_correctly FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_hanoi_single_disk_moves_correctly ____________________\n\n    def test_hanoi_single_disk_moves_correctly():\n        # Single disk moves should always be from start to end directly\n>       moves = hanoi(1, start=1, end=3)\n                ^^^^^\nE       NameError: name 'hanoi' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_hanoi_single_disk_moves_correctly - NameError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:40:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import hanoi\n\ndef test_hanoi_single_disk_moves_correctly():\n    # Test the edge case where height = 1\n    moves = hanoi(1, start=1, end=3)\n    # The expected move for a single disk is from start to end\n    expected_moves = [(1, 3)]\n    assert moves == expected_moves, f\"Expected moves {expected_moves}, but got {moves}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptq0lde1k\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_hanoi_single_disk_moves_correctly FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_hanoi_single_disk_moves_correctly ____________________\n\n    def test_hanoi_single_disk_moves_correctly():\n        # Test the edge case where height = 1\n        moves = hanoi(1, start=1, end=3)\n        # The expected move for a single disk is from start to end\n        expected_moves = [(1, 3)]\n>       assert moves == expected_moves, f\"Expected moves {expected_moves}, but got {moves}\"\nE       AssertionError: Expected moves [(1, 3)], but got [(1, 2)]\nE       assert [(1, 2)] == [(1, 3)]\nE         \nE         At index 0 diff: (1, 2) != (1, 3)\nE         \nE         Full diff:\nE           [\nE               (\nE                   1,...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_hanoi_single_disk_moves_correctly - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp86ho28e_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_hanoi_single_disk_moves_correctly PASSED         [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:41:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "In the single-disk branch, the move appended is `(start, helper)` instead of `(start, end)`, which results in incorrect move sequences.",
+    "bug_location": "function hanoi, line 6",
+    "trigger_condition": "Any non-zero height, specifically height = 1, triggers the incorrect move.",
+    "expected_vs_actual": "For height = 1, the expected move is [(start, end)], but the actual move is [(start, helper)].",
+    "suggested_test_strategy": "Use a test case with height = 1 and various start and end pegs to verify correct move sequence. For example, assert hanoi(1, start=1, end=3) returns [(1, 3)].",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2534,
+  "completion_tokens_total": 442,
+  "duration_seconds": 20.13,
+  "timestamp": "2026-05-31T13:41:12Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_139",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import special_factorial\n\ndef test_special_factorial_correctly_handles_4():\n    assert special_factorial(4) == 288, \"special_factorial(4) should return 288\"\n\ndef test_special_factorial_correctly_handles_3():\n    assert special_factorial(3) == 12, \"special_factorial(3) should return 12\"\n\ndef test_special_factorial_correctly_handles_2():\n    assert special_factorial(2) == 2, \"special_factorial(2) should return 2\"\n\ndef test_special_factorial_correctly_handles_1():\n    assert special_factorial(1) == 1, \"special_factorial(1) should return 1\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgpbe271w\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_special_factorial_correctly_handles_4 FAILED     [ 25%]\n\n=================================== FAILURES ===================================\n__________________ test_special_factorial_correctly_handles_4 __________________\n\n    def test_special_factorial_correctly_handles_4():\n>       assert special_factorial(4) == 288, \"special_factorial(4) should return 288\"\nE       AssertionError: special_factorial(4) should return 288\nE       assert 301989888 == 288\nE        +  where 301989888 = special_factorial(4)\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_special_factorial_correctly_handles_4 - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpepsrn96h\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_special_factorial_correctly_handles_4 PASSED     [ 25%]\ntest_generated.py::test_special_factorial_correctly_handles_3 PASSED     [ 50%]\ntest_generated.py::test_special_factorial_correctly_handles_2 PASSED     [ 75%]\ntest_generated.py::test_special_factorial_correctly_handles_1 PASSED     [100%]\n\n============================== 4 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:25:56Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 562,
+  "completion_tokens_total": 152,
+  "duration_seconds": 3.99,
+  "timestamp": "2026-05-31T13:25:56Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

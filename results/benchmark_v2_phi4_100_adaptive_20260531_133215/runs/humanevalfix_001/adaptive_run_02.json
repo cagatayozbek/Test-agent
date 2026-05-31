@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_001",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_separate_paren_groups():\n    assert separate_paren_groups('( ) (( )) (( )( )') == ['()', '(())', '(()())']",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpct845wkx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_separate_paren_groups FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_separate_paren_groups __________________________\n\n    def test_separate_paren_groups():\n>       assert separate_paren_groups('( ) (( )) (( )( )') == ['()', '(())', '(()())']\n               ^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'separate_paren_groups' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_separate_paren_groups - NameError: name 'separ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplqphn799\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_separate_paren_groups FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_separate_paren_groups __________________________\n\n    def test_separate_paren_groups():\n>       assert separate_paren_groups('( ) (( )) (( )( )') == ['()', '(())', '(()())']\n               ^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'separate_paren_groups' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_separate_paren_groups - NameError: name 'separ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import separate_paren_groups\n\ndef test_separate_paren_groups_correct_end_of_group():\n    input_str = '( ) (( )) (( )( ))'\n    expected_output = ['()', '(())', '(()())']\n    result = separate_paren_groups(input_str)\n    assert result == expected_output, f\"Expected {expected_output}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkctdpnp1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_separate_paren_groups_correct_end_of_group FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_separate_paren_groups_correct_end_of_group ________________\n\n    def test_separate_paren_groups_correct_end_of_group():\n        input_str = '( ) (( )) (( )( ))'\n        expected_output = ['()', '(())', '(()())']\n        result = separate_paren_groups(input_str)\n>       assert result == expected_output, f\"Expected {expected_output}, but got {result}\"\nE       AssertionError: Expected ['()', '(())', '(()())'], but got []\nE       assert [] == ['()', '(())', '(()())']\nE         \nE         Right contains 3 more items, first extra item: '()'\nE         \nE         Full diff:\nE         + []\nE         - [\nE         -     '()',...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_separate_paren_groups_correct_end_of_group - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgko_ly41\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_separate_paren_groups_correct_end_of_group PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug occurs because the condition checks if the current depth is less than 0, indicating the end of a parenthesis group. However, it should check for equality to 0, as the depth becomes exactly 0 when a group is balanced.",
+    "bug_location": "separate_paren_groups function, line 13",
+    "trigger_condition": "A string with nested parentheses that ends with a closing parenthesis that closes a group, such as '( ) (( )) (( )( ))'.",
+    "expected_vs_actual": "Expected behavior is that the function returns ['()', '(())', '(()())'] for the input '( ) (( )) (( )( )'. Actual behavior incorrectly adds groups when current depth is less than 0, potentially appending a group prematurely if a closing parenthesis is unmatched.",
+    "suggested_test_strategy": "Use pytest to test strings with multiple nested groups, such as '( ) (( )) (( )( )', ensuring the function correctly separates groups when the depth returns to 0.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2366,
+  "completion_tokens_total": 340,
+  "duration_seconds": 8.68,
+  "timestamp": "2026-05-31T13:33:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

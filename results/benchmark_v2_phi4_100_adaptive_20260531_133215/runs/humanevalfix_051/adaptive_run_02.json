@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_051",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_remove_vowels():\n    assert remove_vowels(\"abcdef\\nghijklm\") == \"bcdf\\nghjklm\", \"Should remove only 'a', 'e', 'i', 'o', 'u' from the string.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvp2dg3if\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_remove_vowels ______________________________\n\n    def test_remove_vowels():\n>       assert remove_vowels(\"abcdef\\nghijklm\") == \"bcdf\\nghjklm\", \"Should remove only 'a', 'e', 'i', 'o', 'u' from the string.\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'remove_vowels' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels - NameError: name 'remove_vowels...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi3fmr_dm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_remove_vowels ______________________________\n\n    def test_remove_vowels():\n>       assert remove_vowels(\"abcdef\\nghijklm\") == \"bcdf\\nghjklm\", \"Should remove only 'a', 'e', 'i', 'o', 'u' from the string.\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'remove_vowels' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels - NameError: name 'remove_vowels...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import remove_vowels\n\ndef test_remove_vowels_excludes_w_and_y():\n    text_with_w_and_y = \"abcwy\"\n    expected_output = \"abcwy\"\n    result = remove_vowels(text_with_w_and_y)\n    assert result == expected_output, f\"Expected '{expected_output}', but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4hnskcgr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_excludes_w_and_y FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_remove_vowels_excludes_w_and_y ______________________\n\n    def test_remove_vowels_excludes_w_and_y():\n        text_with_w_and_y = \"abcwy\"\n        expected_output = \"abcwy\"\n        result = remove_vowels(text_with_w_and_y)\n>       assert result == expected_output, f\"Expected '{expected_output}', but got '{result}'\"\nE       AssertionError: Expected 'abcwy', but got 'bc'\nE       assert 'bc' == 'abcwy'\nE         \nE         - abcwy\nE         + bc\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_excludes_w_and_y - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppq15uz1n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_excludes_w_and_y FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_remove_vowels_excludes_w_and_y ______________________\n\n    def test_remove_vowels_excludes_w_and_y():\n        text_with_w_and_y = \"abcwy\"\n        expected_output = \"abcwy\"\n        result = remove_vowels(text_with_w_and_y)\n>       assert result == expected_output, f\"Expected '{expected_output}', but got '{result}'\"\nE       AssertionError: Expected 'abcwy', but got 'bcwy'\nE       assert 'bcwy' == 'abcwy'\nE         \nE         - abcwy\nE         ? -\nE         + bcwy\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_excludes_w_and_y - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:27Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_remove_vowels_excludes_w_y():\n    assert remove_vowels(\"abcwy\") == \"bcwy\", \"Expected 'bcwy', but got something else\"\n    assert remove_vowels(\"aBcD\") == \"BcD\", \"Expected 'BcD' when 'w' and 'y' are present\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbvxs6mdn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_excludes_w_y FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_remove_vowels_excludes_w_y ________________________\n\n    def test_remove_vowels_excludes_w_y():\n>       assert remove_vowels(\"abcwy\") == \"bcwy\", \"Expected 'bcwy', but got something else\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'remove_vowels' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_excludes_w_y - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpamlbyl6s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_excludes_w_y FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_remove_vowels_excludes_w_y ________________________\n\n    def test_remove_vowels_excludes_w_y():\n>       assert remove_vowels(\"abcwy\") == \"bcwy\", \"Expected 'bcwy', but got something else\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'remove_vowels' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_excludes_w_y - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The function includes an extraneous character 'w' and 'y' in the list of vowels, which are not supposed to be considered as vowels for removal.",
+    "bug_location": "remove_vowels function, line 4",
+    "trigger_condition": "Any input text containing lowercase 'w' or 'y' characters.",
+    "expected_vs_actual": "The function should exclude only ['a', 'e', 'i', 'o', 'u'] as vowels but instead excludes ['a', 'e', 'i', 'o', 'u', 'w', 'y'].",
+    "suggested_test_strategy": "Test with strings containing 'w' and 'y' characters to verify that they are not removed. The test case remove_vowels('abcwy') should return 'bc', which verifies that 'w' and 'y' are not excluded.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3924,
+  "completion_tokens_total": 538,
+  "duration_seconds": 13.32,
+  "timestamp": "2026-05-31T13:34:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

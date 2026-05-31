@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_046",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_is_nonagonal_mutation_flips_assertion():\n    # Test with a small input where the arithmetic operator affects the output\n    n = 3\n    expected_nonagonal_number = 1  # The expected nth nonagonal number for n = 3\n\n    # Buggy code uses `*` instead of `//` for integer division\n    actual_nonagonal_number = is_nonagonal(n) * (7 * n - 5) * 2\n\n    # Assertion with descriptive message\n    assert actual_nonagonal_number == expected_nonagonal_number, (\n        f\"Expected nonagonal number for n={n} to be {expected_nonagonal_number}, \"\n        f\"but got {actual_nonagonal_number}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwup2_7yt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_mutation_flips_assertion FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_is_nonagonal_mutation_flips_assertion __________________\n\n    def test_is_nonagonal_mutation_flips_assertion():\n        # Test with a small input where the arithmetic operator affects the output\n        n = 3\n        expected_nonagonal_number = 1  # The expected nth nonagonal number for n = 3\n    \n        # Buggy code uses `*` instead of `//` for integer division\n>       actual_nonagonal_number = is_nonagonal(n) * (7 * n - 5) * 2\n                                  ^^^^^^^^^^^^\nE       NameError: name 'is_nonagonal' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_mutation_flips_assertion - NameEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpiy7s_7vr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_mutation_flips_assertion FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_is_nonagonal_mutation_flips_assertion __________________\n\n    def test_is_nonagonal_mutation_flips_assertion():\n        # Test with a small input where the arithmetic operator affects the output\n        n = 3\n        expected_nonagonal_number = 1  # The expected nth nonagonal number for n = 3\n    \n        # Buggy code uses `*` instead of `//` for integer division\n>       actual_nonagonal_number = is_nonagonal(n) * (7 * n - 5) * 2\n                                  ^^^^^^^^^^^^\nE       NameError: name 'is_nonagonal' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_mutation_flips_assertion - NameEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:27:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_is_nonagonal_with_operator_mutation():\n    n = 1  # Small input where the mutation affects the result\n    expected_nonagonal = 1  # The nth nonagonal number for n=1 is 1\n\n    # Buggy version of the function\n    nonagonal_number = (7 * n - 5) / 2\n\n    # Fixed version of the function using the correct arithmetic operator\n    nonagonal_number_fixed = is_nonagonal(n) * (7 * n - 5) * 2\n\n    assert nonagonal_number_fixed == expected_nonagonal, f\"Expected {expected_nonagonal}, but got {nonagonal_number_fixed}\"\n    assert is_nonagonal(n) == expected_nonagonal, f\"Expected {expected_nonagonal}, but got {is_nonagonal(n)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp82gyc459\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_with_operator_mutation FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_is_nonagonal_with_operator_mutation ___________________\n\n    def test_is_nonagonal_with_operator_mutation():\n        n = 1  # Small input where the mutation affects the result\n        expected_nonagonal = 1  # The nth nonagonal number for n=1 is 1\n    \n        # Buggy version of the function\n        nonagonal_number = (7 * n - 5) / 2\n    \n        # Fixed version of the function using the correct arithmetic operator\n>       nonagonal_number_fixed = is_nonagonal(n) * (7 * n - 5) * 2\n                                 ^^^^^^^^^^^^\nE       NameError: name 'is_nonagonal' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_with_operator_mutation - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2b83dk6m\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_with_operator_mutation FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_is_nonagonal_with_operator_mutation ___________________\n\n    def test_is_nonagonal_with_operator_mutation():\n        n = 1  # Small input where the mutation affects the result\n        expected_nonagonal = 1  # The nth nonagonal number for n=1 is 1\n    \n        # Buggy version of the function\n        nonagonal_number = (7 * n - 5) / 2\n    \n        # Fixed version of the function using the correct arithmetic operator\n>       nonagonal_number_fixed = is_nonagonal(n) * (7 * n - 5) * 2\n                                 ^^^^^^^^^^^^\nE       NameError: name 'is_nonagonal' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_with_operator_mutation - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:28:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_is_nonagonal_with_operator_mutation():\n    n = 1\n    expected_value = 1\n    assert is_nonagonal(n) == expected_value, f\"Expected nonagonal number for n={n} to be {expected_value}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeyklo8x8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_with_operator_mutation FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_is_nonagonal_with_operator_mutation ___________________\n\n    def test_is_nonagonal_with_operator_mutation():\n        n = 1\n        expected_value = 1\n>       assert is_nonagonal(n) == expected_value, f\"Expected nonagonal number for n={n} to be {expected_value}\"\n               ^^^^^^^^^^^^\nE       NameError: name 'is_nonagonal' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_with_operator_mutation - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr43_twdp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_with_operator_mutation FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_is_nonagonal_with_operator_mutation ___________________\n\n    def test_is_nonagonal_with_operator_mutation():\n        n = 1\n        expected_value = 1\n>       assert is_nonagonal(n) == expected_value, f\"Expected nonagonal number for n={n} to be {expected_value}\"\n               ^^^^^^^^^^^^\nE       NameError: name 'is_nonagonal' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_with_operator_mutation - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:28:04Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2336,
+  "completion_tokens_total": 421,
+  "duration_seconds": 10.92,
+  "timestamp": "2026-05-31T13:28:04Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

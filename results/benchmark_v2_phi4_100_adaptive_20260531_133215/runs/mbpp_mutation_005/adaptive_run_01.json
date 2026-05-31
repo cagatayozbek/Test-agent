@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_005",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import average_tuple\n\ndef test_average_tuple_bug():\n    input_data = ((1, 2), (3, 4))\n    expected_output = [3.0, 7.0]\n    actual_output = average_tuple(input_data)\n    assert actual_output == expected_output, f\"Expected {expected_output}, but got {actual_output}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpo3d9mxih\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_bug FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_average_tuple_bug ____________________________\n\n    def test_average_tuple_bug():\n        input_data = ((1, 2), (3, 4))\n        expected_output = [3.0, 7.0]\n        actual_output = average_tuple(input_data)\n>       assert actual_output == expected_output, f\"Expected {expected_output}, but got {actual_output}\"\nE       AssertionError: Expected [3.0, 7.0], but got [8, 12]\nE       assert [8, 12] == [3.0, 7.0]\nE         \nE         At index 0 diff: 8 != 3.0\nE         \nE         Full diff:\nE           [\nE         -     3.0,\nE         -     7.0,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_bug - AssertionError: Expected [...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3f8cq5e0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_bug FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_average_tuple_bug ____________________________\n\n    def test_average_tuple_bug():\n        input_data = ((1, 2), (3, 4))\n        expected_output = [3.0, 7.0]\n        actual_output = average_tuple(input_data)\n>       assert actual_output == expected_output, f\"Expected {expected_output}, but got {actual_output}\"\nE       AssertionError: Expected [3.0, 7.0], but got [2.0, 3.0]\nE       assert [2.0, 3.0] == [3.0, 7.0]\nE         \nE         At index 0 diff: 2.0 != 3.0\nE         \nE         Full diff:\nE           [\nE         +     2.0,\nE               3.0,\nE         -     7.0,\nE           ]\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_bug - AssertionError: Expected [...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import average_tuple\n\ndef test_average_tuple_bug():\n    input_data = [(1, 0), (0, 2), (3, 4)]\n    expected_output = [1.0, 2.0, 3.5]\n    \n    result = average_tuple(input_data)\n    assert result == expected_output, f\"Expected [1.0, 2.0, 3.5], but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl0nwbcvc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_bug FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_average_tuple_bug ____________________________\n\n    def test_average_tuple_bug():\n        input_data = [(1, 0), (0, 2), (3, 4)]\n        expected_output = [1.0, 2.0, 3.5]\n    \n        result = average_tuple(input_data)\n>       assert result == expected_output, f\"Expected [1.0, 2.0, 3.5], but got {result}\"\nE       AssertionError: Expected [1.0, 2.0, 3.5], but got [12, 18]\nE       assert [12, 18] == [1.0, 2.0, 3.5]\nE         \nE         At index 0 diff: 12 != 1.0\nE         Right contains one more item: 3.5\nE         \nE         Full diff:\nE           [\nE         -     1.0,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_bug - AssertionError: Expected [...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpszsftwzk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_bug FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_average_tuple_bug ____________________________\n\n    def test_average_tuple_bug():\n        input_data = [(1, 0), (0, 2), (3, 4)]\n        expected_output = [1.0, 2.0, 3.5]\n    \n        result = average_tuple(input_data)\n>       assert result == expected_output, f\"Expected [1.0, 2.0, 3.5], but got {result}\"\nE       AssertionError: Expected [1.0, 2.0, 3.5], but got [1.3333333333333333, 2.0]\nE       assert [1.3333333333333333, 2.0] == [1.0, 2.0, 3.5]\nE         \nE         At index 0 diff: 1.3333333333333333 != 1.0\nE         Right contains one more item: 3.5\nE         \nE         Full diff:\nE           [\nE         -     1.0,...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_bug - AssertionError: Expected [...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_average_tuple_mutation_zero_division_bug():\n    nums = [(1, 0), (0, 2), (3, 4)]\n    expected_result = [1.0, 2.0, 3.5]\n    result = average_tuple(nums)\n    assert result == expected_result, f\"Expected {expected_result}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpo7106zi5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_mutation_zero_division_bug FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_average_tuple_mutation_zero_division_bug _________________\n\n    def test_average_tuple_mutation_zero_division_bug():\n        nums = [(1, 0), (0, 2), (3, 4)]\n        expected_result = [1.0, 2.0, 3.5]\n>       result = average_tuple(nums)\n                 ^^^^^^^^^^^^^\nE       NameError: name 'average_tuple' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_mutation_zero_division_bug - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqda28vjp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_mutation_zero_division_bug FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_average_tuple_mutation_zero_division_bug _________________\n\n    def test_average_tuple_mutation_zero_division_bug():\n        nums = [(1, 0), (0, 2), (3, 4)]\n        expected_result = [1.0, 2.0, 3.5]\n>       result = average_tuple(nums)\n                 ^^^^^^^^^^^^^\nE       NameError: name 'average_tuple' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_mutation_zero_division_bug - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:35Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is due to the incorrect use of the arithmetic operator '/' instead of '*'. This causes incorrect calculations when tuples contain zero, leading to division by zero errors.",
+    "bug_location": "average_tuple, line 2",
+    "trigger_condition": "Tuples containing zero in any position of the inner tuples",
+    "expected_vs_actual": "The expected behavior is to calculate the average of each tuple by multiplying the sum by the length of the tuple. The actual behavior incorrectly divides the sum by the length, which is not valid when tuples contain zeros.",
+    "suggested_test_strategy": "Test with tuples containing zeros. For example, use input [(1, 0), (0, 2), (3, 4)] to assert that the result should be [1.0, 2.0, 3.5] instead of [1.0, 0.0, 3.0].",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3144,
+  "completion_tokens_total": 586,
+  "duration_seconds": 15.24,
+  "timestamp": "2026-05-31T13:37:35Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

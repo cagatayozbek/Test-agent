@@ -1,0 +1,52 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_amicable_numbers_sum_with_comparison_bug():\n    # Test input that triggers the bug by using the incorrect comparison operator\n    # The bug changes the condition from != to ==, leading to incorrect inclusion of numbers\n    # in the set of amicables, specifically affecting the inclusion of numbers like 220\n    # and 284, which should not be added individually but only as a pair.\n    \n    # Input value where the bug affects the output\n    limit = 300\n    expected_sum = 504  # Correct sum of 220 and 284, the only amicable pair under 300\n    \n    # Test the function with the buggy code\n    result = amicable_numbers_sum(limit)\n    \n    # Assert failure on the buggy code\n    assert result != expected_sum, f\"Expected sum of amicable numbers under {limit} to be {expected_sum}, but got {result}\"\n    \n    # Test input that triggers the bug with the correct comparison operator\n    limit = 300\n    result = amicable_numbers_sum(limit)\n    \n    # Assert success on the fixed code\n    assert result == expected_sum, f\"Expected sum of amicable numbers under {limit} to be {expected_sum}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwh7pt0tu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_with_comparison_bug FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_amicable_numbers_sum_with_comparison_bug _________________\n\n    def test_amicable_numbers_sum_with_comparison_bug():\n        # Test input that triggers the bug by using the incorrect comparison operator\n        # The bug changes the condition from != to ==, leading to incorrect inclusion of numbers\n        # in the set of amicables, specifically affecting the inclusion of numbers like 220\n        # and 284, which should not be added individually but only as a pair.\n    \n        # Input value where the bug affects the output\n        limit = 300\n        expected_sum = 504  # Correct sum of 220 and 284, the only amicable pair under 300\n    \n        # Test the function with the buggy code\n>       result = amicable_numbers_sum(limit)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:12: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_with_comparison_bug - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5fne4ncv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_with_comparison_bug FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_amicable_numbers_sum_with_comparison_bug _________________\n\n    def test_amicable_numbers_sum_with_comparison_bug():\n        # Test input that triggers the bug by using the incorrect comparison operator\n        # The bug changes the condition from != to ==, leading to incorrect inclusion of numbers\n        # in the set of amicables, specifically affecting the inclusion of numbers like 220\n        # and 284, which should not be added individually but only as a pair.\n    \n        # Input value where the bug affects the output\n        limit = 300\n        expected_sum = 504  # Correct sum of 220 and 284, the only amicable pair under 300\n    \n        # Test the function with the buggy code\n>       result = amicable_numbers_sum(limit)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:12: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_with_comparison_bug - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:28:06Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_with_flipped_comparison_operator():\n    # Edge case input where the comparison operator affects the output\n    result = amicable_numbers_sum(300)\n    expected_result = 504  # This is the sum of amicable numbers under 300\n    assert result == expected_result, (\n        f\"Test failed: Expected sum of amicable numbers under 300 to be {expected_result}, \"\n        f\"but got {result} due to flipped comparison operator.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa52077hr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_with_flipped_comparison_operator FAILED [100%]\n\n=================================== FAILURES ===================================\n__________ test_amicable_numbers_sum_with_flipped_comparison_operator __________\n\n    def test_amicable_numbers_sum_with_flipped_comparison_operator():\n        # Edge case input where the comparison operator affects the output\n        result = amicable_numbers_sum(300)\n        expected_result = 504  # This is the sum of amicable numbers under 300\n>       assert result == expected_result, (\n            f\"Test failed: Expected sum of amicable numbers under 300 to be {expected_result}, \"\n            f\"but got {result} due to flipped comparison operator.\"\n        )\nE       AssertionError: Test failed: Expected sum of amicable numbers under 300 to be 504, but got 34 due to flipped comparison operator.\nE       assert 34 == 504\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_with_flipped_comparison_operator\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3ppf410l\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_with_flipped_comparison_operator PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:28:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1469,
+  "completion_tokens_total": 379,
+  "duration_seconds": 8.27,
+  "timestamp": "2026-05-31T13:28:08Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

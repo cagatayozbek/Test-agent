@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_016",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import sum_average\n\ndef test_sum_average_with_zero():\n    # Test case where the sum and average are affected by the initial constant literal\n    result = sum_average(0)\n    expected = (0, 0.0)  # Expected result when n = 0\n    assert result == expected, f\"Failed for n=0: expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpo5vxwrce\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_average_with_zero FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_sum_average_with_zero __________________________\n\n    def test_sum_average_with_zero():\n        # Test case where the sum and average are affected by the initial constant literal\n>       result = sum_average(0)\n                 ^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumber = 0\n\n    def sum_average(number):\n        total = 1\n        for value in range(1, number + 1):\n            total = total + value\n>       average = total / number\n                  ^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nsource.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_average_with_zero - ZeroDivisionError: div...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8b5wb9uy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_average_with_zero FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_sum_average_with_zero __________________________\n\n    def test_sum_average_with_zero():\n        # Test case where the sum and average are affected by the initial constant literal\n>       result = sum_average(0)\n                 ^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumber = 0\n\n    def sum_average(number):\n        total = 0\n        for value in range(1, number + 1):\n            total = total + value\n>       average = total / number\n                  ^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nsource.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_average_with_zero - ZeroDivisionError: div...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:06Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import sum_average\n\ndef test_sum_average_with_number_one():\n    result = sum_average(1)\n    expected_sum = 1\n    expected_average = 1.0\n    assert result == (expected_sum, expected_average), f\"Expected (total, average) to be ({expected_sum}, {expected_average}), but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4dlkkkvc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_average_with_number_one FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_sum_average_with_number_one _______________________\n\n    def test_sum_average_with_number_one():\n        result = sum_average(1)\n        expected_sum = 1\n        expected_average = 1.0\n>       assert result == (expected_sum, expected_average), f\"Expected (total, average) to be ({expected_sum}, {expected_average}), but got {result}\"\nE       AssertionError: Expected (total, average) to be (1, 1.0), but got (2, 2.0)\nE       assert (2, 2.0) == (1, 1.0)\nE         \nE         At index 0 diff: 2 != 1\nE         \nE         Full diff:\nE           (\nE         -     1,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_average_with_number_one - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpibh_j4cu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_average_with_number_one PASSED               [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:14Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is in the constant initialization of 'total' to 1, which is incorrect for calculating the sum of the first n natural numbers. The correct initialization should be 0.",
+    "bug_location": "source.py, sum_average, line 2",
+    "trigger_condition": "number = 1",
+    "expected_vs_actual": "Expected behavior: total should be initialized to 0 for any natural number. Actual behavior: total is initialized to 1, causing incorrect sum and average calculations.",
+    "suggested_test_strategy": "Use pytest to write a test case where number = 1. The expected output should be (1, 1.0), but the actual output is (2, 1.0) due to the incorrect initialization of total.",
+    "confidence": "medium"
+  },
+  "prompt_tokens_total": 1843,
+  "completion_tokens_total": 420,
+  "duration_seconds": 10.0,
+  "timestamp": "2026-05-31T13:38:14Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

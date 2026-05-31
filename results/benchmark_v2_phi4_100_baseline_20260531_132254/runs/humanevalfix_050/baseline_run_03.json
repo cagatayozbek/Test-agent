@@ -1,0 +1,68 @@
+{
+  "task_id": "humanevalfix_050",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import decode_shift\n\ndef test_decode_shift_correct_shift_calculation():\n    # Buggy code produces incorrect output when input string is \"fghij\"\n    encoded_string = \"fghij\"\n    expected_decoded_string = \"abcde\"  # Correct decoding should shift characters back by 5\n\n    # Assert failure on buggy code\n    assert decode_shift(encoded_string) == \"uvwxy\", \"Buggy decode_shift should incorrectly decode 'fghij' to 'uvwxy'\"\n\n    # Assert pass on fixed code\n    assert decode_shift(encoded_string) == expected_decoded_string, \"Fixed decode_shift should correctly decode 'fghij' to 'abcde'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdk_0amlf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correct_shift_calculation FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_decode_shift_correct_shift_calculation __________________\n\n    def test_decode_shift_correct_shift_calculation():\n        # Buggy code produces incorrect output when input string is \"fghij\"\n        encoded_string = \"fghij\"\n        expected_decoded_string = \"abcde\"  # Correct decoding should shift characters back by 5\n    \n        # Assert failure on buggy code\n>       assert decode_shift(encoded_string) == \"uvwxy\", \"Buggy decode_shift should incorrectly decode 'fghij' to 'uvwxy'\"\nE       AssertionError: Buggy decode_shift should incorrectly decode 'fghij' to 'uvwxy'\nE       assert 'fhjln' == 'uvwxy'\nE         \nE         - uvwxy\nE         + fhjln\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correct_shift_calculation - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpezqivenn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correct_shift_calculation FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_decode_shift_correct_shift_calculation __________________\n\n    def test_decode_shift_correct_shift_calculation():\n        # Buggy code produces incorrect output when input string is \"fghij\"\n        encoded_string = \"fghij\"\n        expected_decoded_string = \"abcde\"  # Correct decoding should shift characters back by 5\n    \n        # Assert failure on buggy code\n>       assert decode_shift(encoded_string) == \"uvwxy\", \"Buggy decode_shift should incorrectly decode 'fghij' to 'uvwxy'\"\nE       AssertionError: Buggy decode_shift should incorrectly decode 'fghij' to 'uvwxy'\nE       assert 'abcde' == 'uvwxy'\nE         \nE         - uvwxy\nE         + abcde\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correct_shift_calculation - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:24:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_decode_shift_correct_variable_usage():\n    input_string = 'fghij'\n    expected_output = 'uvwxy'\n    \n    # Test the buggy version\n    assert decode_shift(input_string) != expected_output, \"Buggy version should produce incorrect output for 'fghij'\"\n    \n    # Test the fixed version\n    assert decode_shift(input_string) == expected_output, \"Fixed version should correctly decode 'fghij' to 'uvwxy'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjhpyzusm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correct_variable_usage FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_decode_shift_correct_variable_usage ___________________\n\n    def test_decode_shift_correct_variable_usage():\n        input_string = 'fghij'\n        expected_output = 'uvwxy'\n    \n        # Test the buggy version\n>       assert decode_shift(input_string) != expected_output, \"Buggy version should produce incorrect output for 'fghij'\"\n               ^^^^^^^^^^^^\nE       NameError: name 'decode_shift' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correct_variable_usage - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0u4qzcz6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correct_variable_usage FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_decode_shift_correct_variable_usage ___________________\n\n    def test_decode_shift_correct_variable_usage():\n        input_string = 'fghij'\n        expected_output = 'uvwxy'\n    \n        # Test the buggy version\n>       assert decode_shift(input_string) != expected_output, \"Buggy version should produce incorrect output for 'fghij'\"\n               ^^^^^^^^^^^^\nE       NameError: name 'decode_shift' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correct_variable_usage - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:24:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_decode_shift_correct_variable_usage():\n    s = \"fghij\"\n    expected = \"abcde\"\n    result = decode_shift(s)\n    assert result == expected, f\"Buggy version should produce incorrect output for '{s}': expected '{expected}', got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4ouvtez7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correct_variable_usage FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_decode_shift_correct_variable_usage ___________________\n\n    def test_decode_shift_correct_variable_usage():\n        s = \"fghij\"\n        expected = \"abcde\"\n>       result = decode_shift(s)\n                 ^^^^^^^^^^^^\nE       NameError: name 'decode_shift' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correct_variable_usage - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa6oc7pjj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correct_variable_usage FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_decode_shift_correct_variable_usage ___________________\n\n    def test_decode_shift_correct_variable_usage():\n        s = \"fghij\"\n        expected = \"abcde\"\n>       result = decode_shift(s)\n                 ^^^^^^^^^^^^\nE       NameError: name 'decode_shift' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correct_variable_usage - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:24:35Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2721,
+  "completion_tokens_total": 382,
+  "duration_seconds": 9.6,
+  "timestamp": "2026-05-31T13:24:35Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_lis",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import lis\n\ndef test_lis_correct_length():\n    # Test the LIS length for a specific input where the bug manifests\n    assert lis([4, 1, 5, 2, 3]) == 3, \"The LIS length should be 3 for the input [4, 1, 5, 2, 3]\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpx8_41kpa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_correct_length PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpx5b7s20i\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_correct_length PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:41:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_lis_correct_length():\n    # Example input where the LIS length is not simply the last index + 1\n    arr = [4, 1, 5, 1, 2, 3]\n\n    # The expected length of the LIS for this input should be 3\n    expected_lis_length = 3\n\n    # Assert that the LIS length is correctly calculated\n    assert lis(arr) == expected_lis_length, f\"Expected LIS length to be {expected_lis_length}, but got {lis(arr)}\"\n\n    # Another test case where LIS involves skipping elements\n    arr = [4, 1, 3, 5, 2]\n    expected_lis_length = 3\n    assert lis(arr) == expected_lis_length, f\"Expected LIS length to be {expected_lis_length}, but got {lis(arr)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmv52glvs\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_correct_length FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_lis_correct_length ____________________________\n\n    def test_lis_correct_length():\n        # Example input where the LIS length is not simply the last index + 1\n        arr = [4, 1, 5, 1, 2, 3]\n    \n        # The expected length of the LIS for this input should be 3\n        expected_lis_length = 3\n    \n        # Assert that the LIS length is correctly calculated\n>       assert lis(arr) == expected_lis_length, f\"Expected LIS length to be {expected_lis_length}, but got {lis(arr)}\"\n               ^^^\nE       NameError: name 'lis' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lis_correct_length - NameError: name 'lis' is ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph_k_z3wh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_correct_length FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_lis_correct_length ____________________________\n\n    def test_lis_correct_length():\n        # Example input where the LIS length is not simply the last index + 1\n        arr = [4, 1, 5, 1, 2, 3]\n    \n        # The expected length of the LIS for this input should be 3\n        expected_lis_length = 3\n    \n        # Assert that the LIS length is correctly calculated\n>       assert lis(arr) == expected_lis_length, f\"Expected LIS length to be {expected_lis_length}, but got {lis(arr)}\"\n               ^^^\nE       NameError: name 'lis' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lis_correct_length - NameError: name 'lis' is ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:41:49Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import lis\n\ndef test_lis_correct_length():\n    arr = [4, 1, 5, 2, 3]\n    expected_lis_length = 3\n    actual_lis_length = lis(arr)\n    assert actual_lis_length == expected_lis_length, (\n        f\"Expected LIS length to be {expected_lis_length}, but got {actual_lis_length}\"\n    )",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp640bhcg1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_correct_length PASSED                        [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpaf323vl6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_correct_length PASSED                        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:41:51Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is due to the incorrect update of the 'longest' variable. The current update 'longest = length + 1' does not consider cases where a longer increasing subsequence might already exist, potentially leading to 'longest' being updated incorrectly.",
+    "bug_location": "line 10",
+    "trigger_condition": "arr = [4, 1, 5, 2, 3]",
+    "expected_vs_actual": "Expected: 'longest' should be updated to the maximum of current 'longest' and 'length + 1'. Actual: 'longest' is updated to 'length + 1' directly without using 'max()'.",
+    "suggested_test_strategy": "Create a test case where the LIS length is not simply the last index + 1. Use sequences where the LIS involves skipping elements, e.g., [4, 1, 5, 2, 3]. Assert that the correct LIS length is 3.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3905,
+  "completion_tokens_total": 639,
+  "duration_seconds": 14.07,
+  "timestamp": "2026-05-31T13:41:51Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_mutation_047():\n    # Input where the comparison operator affects the output\n    result = amicable_numbers_sum(220)\n    assert result == 504, \"The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2l4ihka5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_mutation_047 FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_amicable_numbers_sum_mutation_047 ____________________\n\n    def test_amicable_numbers_sum_mutation_047():\n        # Input where the comparison operator affects the output\n        result = amicable_numbers_sum(220)\n>       assert result == 504, \"The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\"\nE       AssertionError: The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\nE       assert 34 == 504\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_mutation_047 - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz4292sra\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_mutation_047 FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_amicable_numbers_sum_mutation_047 ____________________\n\n    def test_amicable_numbers_sum_mutation_047():\n        # Input where the comparison operator affects the output\n        result = amicable_numbers_sum(220)\n>       assert result == 504, \"The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\"\nE       AssertionError: The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\nE       assert 220 == 504\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_mutation_047 - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:28:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_mutation_047():\n    # Using 220 as it is a known edge case where the bug affects the outcome\n    result = amicable_numbers_sum(220)\n    expected = 504  # This is the correct sum of amicable numbers up to 220\n    assert result == expected, f\"The sum of amicable numbers up to 220 should be {expected} with the correct comparison operator.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppulidvsm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_mutation_047 FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_amicable_numbers_sum_mutation_047 ____________________\n\n    def test_amicable_numbers_sum_mutation_047():\n        # Using 220 as it is a known edge case where the bug affects the outcome\n        result = amicable_numbers_sum(220)\n        expected = 504  # This is the correct sum of amicable numbers up to 220\n>       assert result == expected, f\"The sum of amicable numbers up to 220 should be {expected} with the correct comparison operator.\"\nE       AssertionError: The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\nE       assert 34 == 504\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_mutation_047 - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjg3zer2x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_mutation_047 FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_amicable_numbers_sum_mutation_047 ____________________\n\n    def test_amicable_numbers_sum_mutation_047():\n        # Using 220 as it is a known edge case where the bug affects the outcome\n        result = amicable_numbers_sum(220)\n        expected = 504  # This is the correct sum of amicable numbers up to 220\n>       assert result == expected, f\"The sum of amicable numbers up to 220 should be {expected} with the correct comparison operator.\"\nE       AssertionError: The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\nE       assert 220 == 504\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_mutation_047 - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:28:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_amicable_numbers_sum_047():\n    result = amicable_numbers_sum(220)\n    assert result == 504, \"The sum of amicable numbers up to 220 should be 504 with the correct comparison operator.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpk7srl_1_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_047 FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_amicable_numbers_sum_047 _________________________\n\n    def test_amicable_numbers_sum_047():\n>       result = amicable_numbers_sum(220)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_047 - NameError: name 'am...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3401n8tm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_047 FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_amicable_numbers_sum_047 _________________________\n\n    def test_amicable_numbers_sum_047():\n>       result = amicable_numbers_sum(220)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_047 - NameError: name 'am...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:28:06Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2660,
+  "completion_tokens_total": 302,
+  "duration_seconds": 9.13,
+  "timestamp": "2026-05-31T13:28:06Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

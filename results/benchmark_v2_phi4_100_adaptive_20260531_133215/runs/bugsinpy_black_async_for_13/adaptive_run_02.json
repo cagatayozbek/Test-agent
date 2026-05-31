@@ -1,0 +1,59 @@
+{
+  "task_id": "bugsinpy_black_async_for_13",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_tokenizer_misclassifies_async_for():\n    tokens = [\"async\", \"for\", \"some\", \"function\", \"async\", \"def\", \"another\", \"function\"]\n    async_def, result_tokens = tokenize_async(tokens)\n\n    assert async_def == True, \"The 'async def' should be correctly identified as async.\"\n    assert (\"ASYNC\", \"async\") in result_tokens, \"The 'async' keyword should be emitted as an ASYNC token.\"\n    assert (\"NAME\", \"async\") in result_tokens, \"The stashed 'async' keyword should be emitted as a NAME token.\"\n\n    # Check that tokens following 'async for' are correctly emitted as NAME tokens\n    assert result_tokens.index((\"NAME\", \"for\")) == result_tokens.index((\"NAME\", \"some\")), \"Tokens following 'async for' should be emitted as NAME.\"\n    assert result_tokens.count(\"NAME\") == 5, \"There should be five NAME tokens emitted, including 'async'.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7b580sgi\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tokenizer_misclassifies_async_for FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_tokenizer_misclassifies_async_for ____________________\n\n    def test_tokenizer_misclassifies_async_for():\n        tokens = [\"async\", \"for\", \"some\", \"function\", \"async\", \"def\", \"another\", \"function\"]\n>       async_def, result_tokens = tokenize_async(tokens)\n                                   ^^^^^^^^^^^^^^\nE       NameError: name 'tokenize_async' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tokenizer_misclassifies_async_for - NameError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcmjm6gki\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tokenizer_misclassifies_async_for FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_tokenizer_misclassifies_async_for ____________________\n\n    def test_tokenizer_misclassifies_async_for():\n        tokens = [\"async\", \"for\", \"some\", \"function\", \"async\", \"def\", \"another\", \"function\"]\n>       async_def, result_tokens = tokenize_async(tokens)\n                                   ^^^^^^^^^^^^^^\nE       NameError: name 'tokenize_async' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tokenizer_misclassifies_async_for - NameError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:27Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import tokenize_async\n\ndef test_tokenizer_misclassifies_async_for():\n    tokens = ['async', 'for']\n    async_def, result_tokens = tokenize_async(tokens)\n    \n    expected_tokens = [('ASYNC', 'async'), ('NAME', 'for')]\n    assert result_tokens == expected_tokens, (\n        f\"Expected tokens {expected_tokens}, but got {result_tokens}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl5cqm5px\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tokenizer_misclassifies_async_for FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_tokenizer_misclassifies_async_for ____________________\n\n    def test_tokenizer_misclassifies_async_for():\n        tokens = ['async', 'for']\n        async_def, result_tokens = tokenize_async(tokens)\n    \n        expected_tokens = [('ASYNC', 'async'), ('NAME', 'for')]\n>       assert result_tokens == expected_tokens, (\n            f\"Expected tokens {expected_tokens}, but got {result_tokens}\"\n        )\nE       AssertionError: Expected tokens [('ASYNC', 'async'), ('NAME', 'for')], but got [('NAME', 'async'), ('NAME', 'for')]\nE       assert [('NAME', 'as...NAME', 'for')] == [('ASYNC', 'a...NAME', 'for')]\nE         \nE         At index 0 diff: ('NAME', 'async') != ('ASYNC', 'async')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'ASYNC',...\nE         \nE         ...Full output truncated (10 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tokenizer_misclassifies_async_for - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxzrjp2p4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tokenizer_misclassifies_async_for PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The tokenizer incorrectly handles 'async' followed by 'for', failing to output the 'ASYNC' token for 'async for'.",
+    "bug_location": "tokenize_async function, lines 14-20",
+    "trigger_condition": "Input tokens containing 'async' followed by 'for', such as ['async', 'for']",
+    "expected_vs_actual": "Expected: Both 'async' and 'for' tokens should be emitted, with 'async' as ('ASYNC', 'async') and 'for' as ('NAME', 'for'). Actual: Only 'for' is emitted as ('NAME', 'for'), dropping the 'ASYNC' token.",
+    "suggested_test_strategy": "Create a test with input tokens ['async', 'for'] and check that the result includes ('ASYNC', 'async') and ('NAME', 'for').",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2186,
+  "completion_tokens_total": 557,
+  "duration_seconds": 10.83,
+  "timestamp": "2026-05-31T13:32:33Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

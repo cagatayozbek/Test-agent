@@ -1,0 +1,52 @@
+{
+  "task_id": "swallowed_exception",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import process_transaction\n\ndef test_swallow_exception():\n    transaction_str = \"item_123:100\"\n    expected_total = 110  # Assuming calculate_tax(100) would return 10\n    assert process_transaction(transaction_str) == expected_total, \"The function should not swallow exceptions and should return the correct total.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnzmyvyo2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_swallow_exception FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_swallow_exception ____________________________\n\n    def test_swallow_exception():\n        transaction_str = \"item_123:100\"\n        expected_total = 110  # Assuming calculate_tax(100) would return 10\n>       assert process_transaction(transaction_str) == expected_total, \"The function should not swallow exceptions and should return the correct total.\"\nE       AssertionError: The function should not swallow exceptions and should return the correct total.\nE       assert None == 110\nE        +  where None = process_transaction('item_123:100')\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_swallow_exception - AssertionError: The functi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpss3unaap\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_swallow_exception FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_swallow_exception ____________________________\n\n    def test_swallow_exception():\n        transaction_str = \"item_123:100\"\n        expected_total = 110  # Assuming calculate_tax(100) would return 10\n>       assert process_transaction(transaction_str) == expected_total, \"The function should not swallow exceptions and should return the correct total.\"\nE       AssertionError: The function should not swallow exceptions and should return the correct total.\nE       assert 118.0 == 110\nE        +  where 118.0 = process_transaction('item_123:100')\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_swallow_exception - AssertionError: The functi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:31:41Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import process_transaction\n\ndef test_swallow_exception():\n    # This test checks if a NameError is improperly swallowed by a bare except block\n    result = process_transaction('item_123:100')\n    # Assert that the function doesn't return None due to a swallowed NameError\n    assert result is not None, \"The function should raise a NameError, not return None due to a bare except block.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3poell3c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_swallow_exception FAILED                         [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_swallow_exception ____________________________\n\n    def test_swallow_exception():\n        # This test checks if a NameError is improperly swallowed by a bare except block\n        result = process_transaction('item_123:100')\n        # Assert that the function doesn't return None due to a swallowed NameError\n>       assert result is not None, \"The function should raise a NameError, not return None due to a bare except block.\"\nE       AssertionError: The function should raise a NameError, not return None due to a bare except block.\nE       assert None is not None\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_swallow_exception - AssertionError: The functi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcaviseib\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_swallow_exception PASSED                         [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:31:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1487,
+  "completion_tokens_total": 165,
+  "duration_seconds": 4.14,
+  "timestamp": "2026-05-31T13:31:43Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

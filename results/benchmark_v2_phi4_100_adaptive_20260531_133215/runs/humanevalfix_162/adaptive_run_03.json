@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_162",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_string_to_md5_with_empty_input():\n    \"\"\"\n    Test the function with an empty string input to ensure it returns None.\n    \"\"\"\n    result = string_to_md5(\"\")\n    assert result is None, \"Empty string should return None\"\n\ndef test_string_to_md5_with_valid_text():\n    \"\"\"\n    Test the function with valid text and ensure it returns the correct MD5 hash.\n    \"\"\"\n    expected_md5 = hashlib.md5('Hello world'.encode('ascii')).hexdigest()\n    result = string_to_md5('Hello world')\n    assert result == expected_md5, f\"MD5 hash of 'Hello world' should be {expected_md5}\"\n\ndef test_string_to_md5_with_non_ascii_text():\n    \"\"\"\n    Test the function with non-ASCII text to ensure it handles encoding correctly.\n    \"\"\"\n    expected_md5 = hashlib.md5('Hello world 🌍'.encode('utf-8')).hexdigest()\n    result = string_to_md5('Hello world 🌍')\n    assert result == expected_md5, f\"MD5 hash of 'Hello world 🌍' should be {expected_md5}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3wh4nv_8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_string_to_md5_with_empty_input FAILED            [ 33%]\n\n=================================== FAILURES ===================================\n_____________________ test_string_to_md5_with_empty_input ______________________\n\n    def test_string_to_md5_with_empty_input():\n        \"\"\"\n        Test the function with an empty string input to ensure it returns None.\n        \"\"\"\n>       result = string_to_md5(\"\")\n                 ^^^^^^^^^^^^^\nE       NameError: name 'string_to_md5' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_string_to_md5_with_empty_input - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3ff8huao\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_string_to_md5_with_empty_input FAILED            [ 33%]\n\n=================================== FAILURES ===================================\n_____________________ test_string_to_md5_with_empty_input ______________________\n\n    def test_string_to_md5_with_empty_input():\n        \"\"\"\n        Test the function with an empty string input to ensure it returns None.\n        \"\"\"\n>       result = string_to_md5(\"\")\n                 ^^^^^^^^^^^^^\nE       NameError: name 'string_to_md5' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_string_to_md5_with_empty_input - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import string_to_md5\n\ndef test_string_to_md5_with_non_empty_string():\n    # Test with a non-empty string to expose the bug\n    assert string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62', \\\n        \"The MD5 hash for 'Hello world' should be '3e25960a79dbc69b674cd4ec67a72c62', but it was incorrect due to encoding issues.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz0803fsz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_string_to_md5_with_non_empty_string FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_string_to_md5_with_non_empty_string ___________________\n\n    def test_string_to_md5_with_non_empty_string():\n        # Test with a non-empty string to expose the bug\n>       assert string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62', \\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n            \"The MD5 hash for 'Hello world' should be '3e25960a79dbc69b674cd4ec67a72c62', but it was incorrect due to encoding issues.\"\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntext = 'Hello world'\n\n    def string_to_md5(text):\n        \"\"\"\n        Given a string 'text', return its md5 hash equivalent string.\n        If 'text' is an empty string, return None.\n    \n        >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n        \"\"\"\n        import hashlib\n>       return hashlib.md5('text').hexdigest() if text else None\n               ^^^^^^^^^^^^^^^^^^^\nE       TypeError: Strings must be encoded before hashing\n\nsource.py:10: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_string_to_md5_with_non_empty_string - TypeErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqdqwwiqe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_string_to_md5_with_non_empty_string PASSED       [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function uses the wrong method to generate an MD5 hash. It uses 'hashlib.md5' instead of 'hashlib.md5' with the correct encoding.",
+    "bug_location": "string_to_md5, line 9",
+    "trigger_condition": "Any non-empty string input",
+    "expected_vs_actual": "The actual behavior generates an incorrect MD5 hash due to using 'hashlib.md5' and passing a string directly without encoding. The expected behavior should encode the input text to ASCII before hashing and then generate the correct MD5 hash.",
+    "suggested_test_strategy": "Test with non-empty strings to check the MD5 hash output, ensuring the string is encoded correctly before hashing. Use examples like 'Hello world' which should produce the correct MD5 hash.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2024,
+  "completion_tokens_total": 533,
+  "duration_seconds": 11.82,
+  "timestamp": "2026-05-31T13:37:08Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

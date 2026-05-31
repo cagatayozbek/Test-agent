@@ -1,0 +1,75 @@
+{
+  "task_id": "bugsinpy_tqdm_enumerate_start_1",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import tenumerate\n\ndef test_tenumerate_with_start():\n    iterable = ['a', 'b', 'c']\n    start_index = 1\n    expected_output = [('a', 1), ('b', 2), ('c', 3)]\n\n    result = list(tenumerate(iterable, start=start_index))\n    assert result == expected_output, f\"Expected indices to start at {start_index}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbsqk737t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_with_start FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_tenumerate_with_start __________________________\n\n    def test_tenumerate_with_start():\n        iterable = ['a', 'b', 'c']\n        start_index = 1\n        expected_output = [('a', 1), ('b', 2), ('c', 3)]\n    \n        result = list(tenumerate(iterable, start=start_index))\n>       assert result == expected_output, f\"Expected indices to start at {start_index}, but got {result}\"\nE       AssertionError: Expected indices to start at 1, but got [(0, 'a'), (1, 'b'), (2, 'c')]\nE       assert [(0, 'a'), (1, 'b'), (2, 'c')] == [('a', 1), ('b', 2), ('c', 3)]\nE         \nE         At index 0 diff: (0, 'a') != ('a', 1)\nE         \nE         Full diff:\nE           [\nE               (\nE         +         0,...\nE         \nE         ...Full output truncated (14 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_with_start - AssertionError: Expect...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl4tkvlr2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_with_start FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_tenumerate_with_start __________________________\n\n    def test_tenumerate_with_start():\n        iterable = ['a', 'b', 'c']\n        start_index = 1\n        expected_output = [('a', 1), ('b', 2), ('c', 3)]\n    \n        result = list(tenumerate(iterable, start=start_index))\n>       assert result == expected_output, f\"Expected indices to start at {start_index}, but got {result}\"\nE       AssertionError: Expected indices to start at 1, but got [(1, 'a'), (2, 'b'), (3, 'c')]\nE       assert [(1, 'a'), (2, 'b'), (3, 'c')] == [('a', 1), ('b', 2), ('c', 3)]\nE         \nE         At index 0 diff: (1, 'a') != ('a', 1)\nE         \nE         Full diff:\nE           [\nE               (\nE         +         1,...\nE         \nE         ...Full output truncated (14 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_with_start - AssertionError: Expect...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_tenumerate_start_parameter_bug():\n    # Create a list as an iterable\n    iterable = ['a', 'b', 'c', 'd', 'e']\n    \n    # Ensure the test fails on buggy code by using a start parameter that is not 0\n    start_index = 2\n    \n    # Call the buggy function\n    result = list(tenumerate(iterable, start=start_index))\n    \n    # Check if the indices begin at the specified start value\n    assert len(result) == len(iterable), \"Enumerated list should have the same length as the original iterable.\"\n    \n    # Check that the first index matches the start value\n    assert result[0][0] == start_index, f\"Expected first index to start at {start_index}, but got 0 instead.\"\n    \n    # Check each index matches the expected value based on the start\n    for i, (index, item) in enumerate(result):\n        expected_index = start_index + i\n        assert index == expected_index, f\"Expected index {expected_index} for item '{item}', but got {index}.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg9rpy1x0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_parameter_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_tenumerate_start_parameter_bug ______________________\n\n    def test_tenumerate_start_parameter_bug():\n        # Create a list as an iterable\n        iterable = ['a', 'b', 'c', 'd', 'e']\n    \n        # Ensure the test fails on buggy code by using a start parameter that is not 0\n        start_index = 2\n    \n        # Call the buggy function\n>       result = list(tenumerate(iterable, start=start_index))\n                      ^^^^^^^^^^\nE       NameError: name 'tenumerate' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_start_parameter_bug - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp34n6ezka\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_parameter_bug FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_tenumerate_start_parameter_bug ______________________\n\n    def test_tenumerate_start_parameter_bug():\n        # Create a list as an iterable\n        iterable = ['a', 'b', 'c', 'd', 'e']\n    \n        # Ensure the test fails on buggy code by using a start parameter that is not 0\n        start_index = 2\n    \n        # Call the buggy function\n>       result = list(tenumerate(iterable, start=start_index))\n                      ^^^^^^^^^^\nE       NameError: name 'tenumerate' is not defined\n\ntest_generated.py:9: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_start_parameter_bug - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import tenumerate\n\ndef test_tenumerate_with_start_1():\n    iterable = ['a', 'b', 'c', 'd', 'e']\n    start = 1\n    result = list(tenumerate(iterable, start=start))\n    assert result[0] == (1, iterable[0]), \"Expected enumeration to start at index 1, but it started at 0\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp47eq8lu_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_with_start_1 FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_tenumerate_with_start_1 _________________________\n\n    def test_tenumerate_with_start_1():\n        iterable = ['a', 'b', 'c', 'd', 'e']\n        start = 1\n        result = list(tenumerate(iterable, start=start))\n>       assert result[0] == (1, iterable[0]), \"Expected enumeration to start at index 1, but it started at 0\"\nE       AssertionError: Expected enumeration to start at index 1, but it started at 0\nE       assert (0, 'a') == (1, 'a')\nE         \nE         At index 0 diff: 0 != 1\nE         \nE         Full diff:\nE           (\nE         -     1,\nE         ?     ^...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_with_start_1 - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpj8f6nsr4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_with_start_1 PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The 'start' parameter intended for 'enumerate' is incorrectly forwarded to 'tqdm_class' instead.",
+    "bug_location": "tenumerate function, line 11",
+    "trigger_condition": "Calling tenumerate with a start value different from 0.",
+    "expected_vs_actual": "Expected: The enumeration should begin at the specified 'start' index. Actual: The enumeration begins at 0 regardless of the 'start' value.",
+    "suggested_test_strategy": "Write a test using tenumerate with a start value of 1 on an iterable of length 5. Assert that the first enumerated index is 1.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3259,
+  "completion_tokens_total": 627,
+  "duration_seconds": 13.47,
+  "timestamp": "2026-05-31T13:33:25Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

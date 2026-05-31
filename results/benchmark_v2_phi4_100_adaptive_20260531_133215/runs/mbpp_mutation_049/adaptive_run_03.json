@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_snake_to_camel_mutation():\n    # Input where 'or' logic affects the output\n    result = snake_to_camel(\"a_b_c\")\n    assert result == \"ABC\", \"Expected 'ABC' from snake_2_camel conversion of 'a_b_c'\"\n\ndef test_snake_to_camel_correct_behavior():\n    # Input where 'and' logic correctly handles the conversion\n    result = snake_to_camel(\"a_b_c\")\n    assert result == \"ABC\", \"Expected 'ABC' from snake_2_camel conversion of 'a_b_c'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsp_0abun\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_snake_to_camel_mutation FAILED                   [ 50%]\n\n=================================== FAILURES ===================================\n_________________________ test_snake_to_camel_mutation _________________________\n\n    def test_snake_to_camel_mutation():\n        # Input where 'or' logic affects the output\n>       result = snake_to_camel(\"a_b_c\")\n                 ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_mutation - NameError: name 'sna...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9ynft1yp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_snake_to_camel_mutation FAILED                   [ 50%]\n\n=================================== FAILURES ===================================\n_________________________ test_snake_to_camel_mutation _________________________\n\n    def test_snake_to_camel_mutation():\n        # Input where 'or' logic affects the output\n>       result = snake_to_camel(\"a_b_c\")\n                 ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_mutation - NameError: name 'sna...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_mutation():\n    # Test case designed to trigger the bug and pass on the fixed code\n    input_word = \"a_b_c\"\n    expected_output = \"aBC\"  # Expected camelCase conversion\n    result = snake_to_camel(input_word)\n    assert result == expected_output, f\"Expected {expected_output} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4g1lvf88\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_mutation FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_snake_to_camel_mutation _________________________\n\n    def test_snake_to_camel_mutation():\n        # Test case designed to trigger the bug and pass on the fixed code\n        input_word = \"a_b_c\"\n        expected_output = \"aBC\"  # Expected camelCase conversion\n        result = snake_to_camel(input_word)\n>       assert result == expected_output, f\"Expected {expected_output} but got {result}\"\nE       AssertionError: Expected aBC but got ___\nE       assert '___' == 'aBC'\nE         \nE         - aBC\nE         + ___\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_mutation - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph7jsqje1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_mutation FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_snake_to_camel_mutation _________________________\n\n    def test_snake_to_camel_mutation():\n        # Test case designed to trigger the bug and pass on the fixed code\n        input_word = \"a_b_c\"\n        expected_output = \"aBC\"  # Expected camelCase conversion\n        result = snake_to_camel(input_word)\n>       assert result == expected_output, f\"Expected {expected_output} but got {result}\"\nE       AssertionError: Expected aBC but got ABC\nE       assert 'ABC' == 'aBC'\nE         \nE         - aBC\nE         + ABC\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_mutation - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_correct_conversion():\n    # This test checks the conversion from snake_case to camelCase.\n    # The bug is related to incorrect use of 'or' instead of 'and'.\n    # The input 'a_b_c' should be converted to 'aBC'.\n    result = snake_to_camel(\"a_b_c\")\n    assert result == \"aBC\", f\"Expected 'aBC' but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8dejelet\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_correct_conversion FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_snake_to_camel_correct_conversion ____________________\n\n    def test_snake_to_camel_correct_conversion():\n        # This test checks the conversion from snake_case to camelCase.\n        # The bug is related to incorrect use of 'or' instead of 'and'.\n        # The input 'a_b_c' should be converted to 'aBC'.\n        result = snake_to_camel(\"a_b_c\")\n>       assert result == \"aBC\", f\"Expected 'aBC' but got {result}\"\nE       AssertionError: Expected 'aBC' but got ___\nE       assert '___' == 'aBC'\nE         \nE         - aBC\nE         + ___\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_correct_conversion - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_6b8923d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_correct_conversion FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_snake_to_camel_correct_conversion ____________________\n\n    def test_snake_to_camel_correct_conversion():\n        # This test checks the conversion from snake_case to camelCase.\n        # The bug is related to incorrect use of 'or' instead of 'and'.\n        # The input 'a_b_c' should be converted to 'aBC'.\n        result = snake_to_camel(\"a_b_c\")\n>       assert result == \"aBC\", f\"Expected 'aBC' but got {result}\"\nE       AssertionError: Expected 'aBC' but got ABC\nE       assert 'ABC' == 'aBC'\nE         \nE         - aBC\nE         + ABC\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_correct_conversion - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug involves the incorrect use of the boolean 'or' operator instead of 'and'. This affects the conditional logic in the code.",
+    "bug_location": "source.py, function snake_to_camel",
+    "trigger_condition": "Any input to the function where conditional logic based on the boolean operator is applied.",
+    "expected_vs_actual": "The function should convert snake_case to camelCase using 'and' logic for conditions, but it uses 'or', leading to incorrect capitalization of segments.",
+    "suggested_test_strategy": "Create a test case with a snake case string that includes multiple segments and use a condition that affects the conversion to camelCase, such as checking whether the first segment's capitalization affects the output. Assert the expected output using 'and' logic to ensure the correct behavior.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2953,
+  "completion_tokens_total": 510,
+  "duration_seconds": 11.76,
+  "timestamp": "2026-05-31T13:39:33Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

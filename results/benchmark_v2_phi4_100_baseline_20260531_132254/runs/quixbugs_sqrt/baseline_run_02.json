@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import sqrt\n\ndef test_sqrt_newton_raphson():\n    # Known square root value of 2 with actual value approximately 1.41421\n    actual_sqrt_2 = 1.41421\n    # Known approximate value of sqrt(2) using Newton-Raphson method\n    expected_approx_sqrt_2 = actual_sqrt_2\n    \n    result = sqrt(2, 0.01)\n    \n    # Assert that the result is approximately the actual square root of 2\n    assert abs(result - expected_approx_sqrt_2) < 0.01, f\"sqrt(2, 0.01) should approximate 1.41421, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcl0omib0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_newton_raphson PASSED                       [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:31:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 573,
+  "completion_tokens_total": 149,
+  "duration_seconds": 33.61,
+  "timestamp": "2026-05-31T13:31:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

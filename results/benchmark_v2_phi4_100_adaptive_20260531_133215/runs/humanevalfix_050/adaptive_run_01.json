@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_050",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_decode_shift_shifts_characters_correctly():\n    # Input where the bug is observable: 'fghij' shifted by 5 results in 'kmlno'\n    # Buggy code would shift by ord(ch) instead of ord('a')\n    input_string = \"fghij\"\n    expected_output = \"kmlno\"\n    assert decode_shift(input_string) == expected_output",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpb1ap7758\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_shifts_characters_correctly FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_decode_shift_shifts_characters_correctly _________________\n\n    def test_decode_shift_shifts_characters_correctly():\n        # Input where the bug is observable: 'fghij' shifted by 5 results in 'kmlno'\n        # Buggy code would shift by ord(ch) instead of ord('a')\n        input_string = \"fghij\"\n        expected_output = \"kmlno\"\n>       assert decode_shift(input_string) == expected_output\n               ^^^^^^^^^^^^\nE       NameError: name 'decode_shift' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_shifts_characters_correctly - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkomla56e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_shifts_characters_correctly FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_decode_shift_shifts_characters_correctly _________________\n\n    def test_decode_shift_shifts_characters_correctly():\n        # Input where the bug is observable: 'fghij' shifted by 5 results in 'kmlno'\n        # Buggy code would shift by ord(ch) instead of ord('a')\n        input_string = \"fghij\"\n        expected_output = \"kmlno\"\n>       assert decode_shift(input_string) == expected_output\n               ^^^^^^^^^^^^\nE       NameError: name 'decode_shift' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_shifts_characters_correctly - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_decode_shift_correctly_decodes_shifted_characters():\n    encoded_string = encode_shift('abc')\n    decoded_string = decode_shift(encoded_string)\n    \n    assert decoded_string == 'vwx', \"Decoded string should be 'vwx' for input 'abc'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphxxgxc_d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correctly_decodes_shifted_characters FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_decode_shift_correctly_decodes_shifted_characters ____________\n\n    def test_decode_shift_correctly_decodes_shifted_characters():\n>       encoded_string = encode_shift('abc')\n                         ^^^^^^^^^^^^\nE       NameError: name 'encode_shift' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correctly_decodes_shifted_characters\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqgk4xomt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correctly_decodes_shifted_characters FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_decode_shift_correctly_decodes_shifted_characters ____________\n\n    def test_decode_shift_correctly_decodes_shifted_characters():\n>       encoded_string = encode_shift('abc')\n                         ^^^^^^^^^^^^\nE       NameError: name 'encode_shift' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correctly_decodes_shifted_characters\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_decode_shift_correctly_decodes_shifted_characters():\n    # Encode a string using the correct encode_shift function\n    encoded_string = encode_shift('abc')\n    \n    # Decode the string using the correct decode_shift function\n    decoded_string = decode_shift(encoded_string)\n    \n    # Assert the decoded string matches the expected original string\n    assert decoded_string == 'abc', \"Decoded string should match the original encoded string 'abc'.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4n529ft3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correctly_decodes_shifted_characters FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_decode_shift_correctly_decodes_shifted_characters ____________\n\n    def test_decode_shift_correctly_decodes_shifted_characters():\n        # Encode a string using the correct encode_shift function\n>       encoded_string = encode_shift('abc')\n                         ^^^^^^^^^^^^\nE       NameError: name 'encode_shift' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correctly_decodes_shifted_characters\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuzg8n312\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_correctly_decodes_shifted_characters FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_decode_shift_correctly_decodes_shifted_characters ____________\n\n    def test_decode_shift_correctly_decodes_shifted_characters():\n        # Encode a string using the correct encode_shift function\n>       encoded_string = encode_shift('abc')\n                         ^^^^^^^^^^^^\nE       NameError: name 'encode_shift' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_correctly_decodes_shifted_characters\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:27Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is in the variable used within the chr function in the decode_shift function. The code incorrectly uses 'ch' instead of the base character 'a' when calculating the ASCII value to decode.",
+    "bug_location": "decode_shift function, line 3",
+    "trigger_condition": "Calling decode_shift with any encoded string that was shifted by the encode_shift function.",
+    "expected_vs_actual": "The expected behavior is to shift characters back by 5 places in the alphabet to decode. The actual behavior incorrectly shifts back by the ASCII value of the characters in the string itself, leading to incorrect decoding.",
+    "suggested_test_strategy": "Use a pytest function to encode a string with encode_shift and then decode it with the buggy decode_shift. Assert the decoded string does not match the original string. Example: assert decode_shift(encode_shift('abc')) != 'abc'.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3649,
+  "completion_tokens_total": 624,
+  "duration_seconds": 15.06,
+  "timestamp": "2026-05-31T13:34:27Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

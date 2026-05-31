@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_091",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_is_bored_literal_mismatch():\n    from source import is_bored\n\n    # Buggy case example\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 0, \"Buggy code should return 0 for sentence 'I love this weather' due to incorrect literal ' I'\"\n\n    # Correct case example\n    assert is_bored(\"Hello world\") == 0, \"Correct code should return 0 for sentence without 'I '\"\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Correct code should return 1 for sentence 'I love this weather' with correct literal ' I '\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1s1ktq23\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_literal_mismatch FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_bored_literal_mismatch ________________________\n\n    def test_is_bored_literal_mismatch():\n        from source import is_bored\n    \n        # Buggy case example\n        assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 0, \"Buggy code should return 0 for sentence 'I love this weather' due to incorrect literal ' I'\"\n    \n        # Correct case example\n        assert is_bored(\"Hello world\") == 0, \"Correct code should return 0 for sentence without 'I '\"\n>       assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Correct code should return 1 for sentence 'I love this weather' with correct literal ' I '\"\nE       AssertionError: Correct code should return 1 for sentence 'I love this weather' with correct literal ' I '\nE       assert 0 == 1\nE        +  where 0 = <function is_bored at 0x109d868e0>('The sky is blue. The sun is shining. I love this weather')\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_literal_mismatch - AssertionError: Co...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg8w2vslp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_literal_mismatch FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_bored_literal_mismatch ________________________\n\n    def test_is_bored_literal_mismatch():\n        from source import is_bored\n    \n        # Buggy case example\n>       assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 0, \"Buggy code should return 0 for sentence 'I love this weather' due to incorrect literal ' I'\"\nE       AssertionError: Buggy code should return 0 for sentence 'I love this weather' due to incorrect literal ' I'\nE       assert 1 == 0\nE        +  where 1 = <function is_bored at 0x1085528e0>('The sky is blue. The sun is shining. I love this weather')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_literal_mismatch - AssertionError: Bu...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_is_bored_literal_mismatch():\n    # Test case that triggers the bug\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Expected 1 boredom when sentences start with 'I '.\"\n\n    # Test case for the fixed code to confirm the correct behavior\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Expected 1 boredom when sentences start with 'I '.\"\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather. I am happy.\") == 2, \"Expected 2 boredom when sentences start with 'I '.\"\n    assert is_bored(\"Hello world\") == 0, \"Expected 0 boredom when no sentence starts with 'I '.\"\n\n    # Test case that should fail on the buggy code and pass on the fixed code\n    assert is_bored(\"I am bored. You are not.\") == 1, \"Expected 1 boredom when sentence starts with 'I '.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbfu296zu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_literal_mismatch FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_bored_literal_mismatch ________________________\n\n    def test_is_bored_literal_mismatch():\n        # Test case that triggers the bug\n>       assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Expected 1 boredom when sentences start with 'I '.\"\n               ^^^^^^^^\nE       NameError: name 'is_bored' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_literal_mismatch - NameError: name 'i...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpt7w1dlv_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_literal_mismatch FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_bored_literal_mismatch ________________________\n\n    def test_is_bored_literal_mismatch():\n        # Test case that triggers the bug\n>       assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"Expected 1 boredom when sentences start with 'I '.\"\n               ^^^^^^^^\nE       NameError: name 'is_bored' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_literal_mismatch - NameError: name 'i...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import is_bored\n\ndef test_is_bored_literal_mismatch():\n    # Test case that should reveal the bug\n    result = is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n    assert result == 1, \"Expected 1 boredom when sentences start with 'I ', but got {}\".format(result)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprl746yk7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_literal_mismatch FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_bored_literal_mismatch ________________________\n\n    def test_is_bored_literal_mismatch():\n        # Test case that should reveal the bug\n        result = is_bored(\"The sky is blue. The sun is shining. I love this weather\")\n>       assert result == 1, \"Expected 1 boredom when sentences start with 'I ', but got {}\".format(result)\nE       AssertionError: Expected 1 boredom when sentences start with 'I ', but got 0\nE       assert 0 == 1\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_literal_mismatch - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpinigeyll\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_literal_mismatch PASSED                 [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The comparison string ' I' is used instead of 'I ', leading to incorrect counting of sentences starting with 'I'.",
+    "bug_location": "function is_bored, line 12",
+    "trigger_condition": "When a sentence starts with 'I ' and not with ' I'.",
+    "expected_vs_actual": "EXPECTED: Correctly counts sentences starting with 'I ', returning 1 for input \"The sky is blue. The sun is shining. I love this weather\". ACTUAL: Incorrectly counts sentences starting with ' I', potentially returning 0.",
+    "suggested_test_strategy": "Use a test case where a sentence starts with 'I ' and verify the count is incremented correctly. Example: `is_bored(\"I am bored. You are not.\")` should return `1`.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3554,
+  "completion_tokens_total": 681,
+  "duration_seconds": 14.54,
+  "timestamp": "2026-05-31T13:35:34Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

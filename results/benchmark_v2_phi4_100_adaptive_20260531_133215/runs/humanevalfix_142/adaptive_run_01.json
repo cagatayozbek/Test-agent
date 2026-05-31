@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_142",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import sum_squares\n\ndef test_sum_squares_corrects_index_logic():\n    test_input = [1, 2, 3, 4]\n    expected_output = 1 + 8 + 3 + 64  # 1 (index 0: square), 8 (index 1: cube), 3 (index 2: unchanged), 64 (index 3: cube)\n    result = sum_squares(test_input)\n    assert result == expected_output, f\"Expected {expected_output}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeivfg465\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_corrects_index_logic FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_sum_squares_corrects_index_logic _____________________\n\n    def test_sum_squares_corrects_index_logic():\n        test_input = [1, 2, 3, 4]\n        expected_output = 1 + 8 + 3 + 64  # 1 (index 0: square), 8 (index 1: cube), 3 (index 2: unchanged), 64 (index 3: cube)\n        result = sum_squares(test_input)\n>       assert result == expected_output, f\"Expected {expected_output}, but got {result}\"\nE       AssertionError: Expected 76, but got 52\nE       assert 52 == 76\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_squares_corrects_index_logic - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg5hzb1au\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_corrects_index_logic FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_sum_squares_corrects_index_logic _____________________\n\n    def test_sum_squares_corrects_index_logic():\n        test_input = [1, 2, 3, 4]\n        expected_output = 1 + 8 + 3 + 64  # 1 (index 0: square), 8 (index 1: cube), 3 (index 2: unchanged), 64 (index 3: cube)\n        result = sum_squares(test_input)\n>       assert result == expected_output, f\"Expected {expected_output}, but got {result}\"\nE       AssertionError: Expected 76, but got 22\nE       assert 22 == 76\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_squares_corrects_index_logic - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import sum_squares\n\ndef test_sum_squares_corrects_index_logic():\n    lst = [0, 0, 0, 2, 3, 0, 0, 0, 0]\n    expected_output = 31  # 2^2 + 3^3 = 4 + 27\n    result = sum_squares(lst)\n    assert result == expected_output, f\"Expected {expected_output}, but got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy4sos6jr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_corrects_index_logic PASSED          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7if_4uud\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_corrects_index_logic PASSED          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import sum_quares\n\ndef test_sum_squares_corrects_index_logic():\n    # Create a list where index 3 is a multiple of 4 but not 3\n    lst = [0, 0, 0, 2, 0, 0, 0, 0]\n    # Check the expected output: 2^2 = 4, and 4^3 = 64, sum = 68\n    expected_output = 68\n    result = sum_quares(lst)\n    \n    # Assert the expected outcome using descriptive message\n    assert result == expected_output, f\"Expected {expected_output}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl5fgwqgq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\nImportError while importing test module '/private/tmp/claude-501/tmpl5fgwqgq/test_generated.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntest_generated.py:1: in <module>\n    from source import sum_quares\nE   ImportError: cannot import name 'sum_quares' from 'source' (/private/tmp/claude-501/tmpl5fgwqgq/source.py). Did you mean: 'sum_squares'?\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.05s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptvc15av0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\nImportError while importing test module '/private/tmp/claude-501/tmptvc15av0/test_generated.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntest_generated.py:1: in <module>\n    from source import sum_quares\nE   ImportError: cannot import name 'sum_quares' from 'source' (/private/tmp/claude-501/tmptvc15av0/source.py). Did you mean: 'sum_squares'?\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.05s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The condition for cubing elements is incorrectly set. The function cubes the element if the index is not a multiple of 3, which does not ensure it is a multiple of 4 and not a multiple of 3.",
+    "bug_location": "sum_squares function, line 11",
+    "trigger_condition": "An input list where there is an element at an index that is a multiple of 4 but not a multiple of 3.",
+    "expected_vs_actual": "The function should cube the element at indices that are multiples of 4 and not multiples of 3. However, it cubes any element whose index is not a multiple of 3, leading to incorrect behavior for indices like 4, 8, 16, etc.",
+    "suggested_test_strategy": "Create a test with a list where indices 3 and 4 are filled with non-zero values, e.g., [0, 0, 0, 2, 3, 0, 0, 0, 0], and assert that the output is 27. The element at index 3 should be squared (2^2 = 4) and the element at index 4 should be cubed (3^3 = 27), leading to a sum of 31.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 4025,
+  "completion_tokens_total": 793,
+  "duration_seconds": 15.53,
+  "timestamp": "2026-05-31T13:36:43Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

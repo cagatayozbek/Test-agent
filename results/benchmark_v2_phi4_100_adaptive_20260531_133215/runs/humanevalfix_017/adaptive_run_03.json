@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_017",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_parse_music_wrong_note_duration():\n    from source import parse_music\n    assert parse_music('o o| .| o| o| .| .| .| .| o o') == [3, 2, 1, 2, 2, 1, 1, 1, 1, 3, 3], \"Test should pass with correct note durations: 'o' should map to 4 beats, not 3.\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph0lhn_ys\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_wrong_note_duration PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2ch5m569\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_wrong_note_duration FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_parse_music_wrong_note_duration _____________________\n\n    def test_parse_music_wrong_note_duration():\n        from source import parse_music\n>       assert parse_music('o o| .| o| o| .| .| .| .| o o') == [3, 2, 1, 2, 2, 1, 1, 1, 1, 3, 3], \"Test should pass with correct note durations: 'o' should map to 4 beats, not 3.\"\nE       AssertionError: Test should pass with correct note durations: 'o' should map to 4 beats, not 3.\nE       assert [4, 2, 1, 2, 2, 1, ...] == [3, 2, 1, 2, 2, 1, ...]\nE         \nE         At index 0 diff: 4 != 3\nE         \nE         Full diff:\nE           [\nE         -     3,\nE         ?     ^...\nE         \nE         ...Full output truncated (19 lines hidden), use '-vv' to show\n\ntest_generated.py:3: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_parse_music_wrong_note_duration - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import parse_music\n\ndef test_parse_music_wrong_note_duration():\n    input_music = 'o o| .| o| o| .| .| .| .| o o'\n    expected_output = [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n    actual_output = parse_music(input_music)\n    assert actual_output == expected_output, (\n        f\"Expected {expected_output} but got {actual_output} for input '{input_music}'\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpo_nskqho\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_wrong_note_duration FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_parse_music_wrong_note_duration _____________________\n\n    def test_parse_music_wrong_note_duration():\n        input_music = 'o o| .| o| o| .| .| .| .| o o'\n        expected_output = [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n        actual_output = parse_music(input_music)\n>       assert actual_output == expected_output, (\n            f\"Expected {expected_output} but got {actual_output} for input '{input_music}'\"\n        )\nE       AssertionError: Expected [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4] but got [3, 2, 1, 2, 2, 1, 1, 1, 1, 3, 3] for input 'o o| .| o| o| .| .| .| .| o o'\nE       assert [3, 2, 1, 2, 2, 1, ...] == [4, 2, 1, 2, 2, 1, ...]\nE         \nE         At index 0 diff: 3 != 4\nE         \nE         Full diff:\nE           [\nE         -     4,\nE         ?     ^...\nE         \nE         ...Full output truncated (19 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_parse_music_wrong_note_duration - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpopn2vc5p\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_wrong_note_duration PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The 'o' note is mapped incorrectly to 3 beats instead of 4 beats.",
+    "bug_location": "parse_music function, line 14",
+    "trigger_condition": "A music string containing 'o' as a note, e.g., 'o o| .| o| o| .| .| .| .| o o'",
+    "expected_vs_actual": "Should return [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4], but returns [3, 2, 1, 2, 2, 1, 1, 1, 1, 3, 3]",
+    "suggested_test_strategy": "Use pytest to create a test case with the input 'o o| .| o| o| .| .| .| .| o o' and assert that the output is [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4].",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2552,
+  "completion_tokens_total": 479,
+  "duration_seconds": 9.09,
+  "timestamp": "2026-05-31T13:33:36Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,68 @@
+{
+  "task_id": "bugsinpy_black_async_for_13",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_async_keyword_misclassification():\n    tokens = [\"async\", \"for\", \"some_function\", \"(\", \")\", \"async\", \"def\", \"another_function\"]\n    async_def, token_stream = tokenize_async(tokens)\n    assert async_def, \"The async def flag should be set when 'async def' is encountered.\"\n    assert (\"ASYNC\", \"async\") in token_stream, \"The 'ASYNC' token should be emitted for 'async for'.\"\n    assert (\"NAME\", \"async\") in token_stream, \"The 'NAME' token should be emitted for 'async def'.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm05rvxp2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_keyword_misclassification FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_async_keyword_misclassification _____________________\n\n    def test_async_keyword_misclassification():\n        tokens = [\"async\", \"for\", \"some_function\", \"(\", \")\", \"async\", \"def\", \"another_function\"]\n>       async_def, token_stream = tokenize_async(tokens)\n                                  ^^^^^^^^^^^^^^\nE       NameError: name 'tokenize_async' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_keyword_misclassification - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5t_o359j\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_keyword_misclassification FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_async_keyword_misclassification _____________________\n\n    def test_async_keyword_misclassification():\n        tokens = [\"async\", \"for\", \"some_function\", \"(\", \")\", \"async\", \"def\", \"another_function\"]\n>       async_def, token_stream = tokenize_async(tokens)\n                                  ^^^^^^^^^^^^^^\nE       NameError: name 'tokenize_async' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_keyword_misclassification - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_async_keyword_misclassification():\n    tokens = [\"async\", \"for\"]\n    async_def, token_stream = tokenize_async(tokens)\n\n    assert async_def is False, \"Test should reveal that 'async def' is not set\"\n    assert (\"async\", \"async\") in token_stream, \"Tokens should include 'async' for 'async for'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp04p5of1r\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_keyword_misclassification FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_async_keyword_misclassification _____________________\n\n    def test_async_keyword_misclassification():\n        tokens = [\"async\", \"for\"]\n>       async_def, token_stream = tokenize_async(tokens)\n                                  ^^^^^^^^^^^^^^\nE       NameError: name 'tokenize_async' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_keyword_misclassification - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbuypriz1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_keyword_misclassification FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_async_keyword_misclassification _____________________\n\n    def test_async_keyword_misclassification():\n        tokens = [\"async\", \"for\"]\n>       async_def, token_stream = tokenize_async(tokens)\n                                  ^^^^^^^^^^^^^^\nE       NameError: name 'tokenize_async' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_keyword_misclassification - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import tokenize_async\n\ndef test_async_for_keyword_misclassification():\n    tokens = [\"async\", \"for\", \"i\", \"in\", \"range\", \"10\"]\n    expected_async_def = False\n    expected_tokens = [(\"ASYNC\", \"async\"), (\"NAME\", \"for\"), (\"NAME\", \"i\"), \n                       (\"NAME\", \"in\"), (\"NAME\", \"range\"), (\"NAME\", \"10\")]\n    \n    async_def, token_stream = tokenize_async(tokens)\n    \n    assert async_def == expected_async_def, f\"Expected async_def to be {expected_async_def}, got {async_def}\"\n    assert token_stream == expected_tokens, f\"Expected tokens {expected_tokens}, got {token_stream}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1dzsdws2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_keyword_misclassification FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_async_for_keyword_misclassification ___________________\n\n    def test_async_for_keyword_misclassification():\n        tokens = [\"async\", \"for\", \"i\", \"in\", \"range\", \"10\"]\n        expected_async_def = False\n        expected_tokens = [(\"ASYNC\", \"async\"), (\"NAME\", \"for\"), (\"NAME\", \"i\"),\n                           (\"NAME\", \"in\"), (\"NAME\", \"range\"), (\"NAME\", \"10\")]\n    \n        async_def, token_stream = tokenize_async(tokens)\n    \n        assert async_def == expected_async_def, f\"Expected async_def to be {expected_async_def}, got {async_def}\"\n>       assert token_stream == expected_tokens, f\"Expected tokens {expected_tokens}, got {token_stream}\"\nE       AssertionError: Expected tokens [('ASYNC', 'async'), ('NAME', 'for'), ('NAME', 'i'), ('NAME', 'in'), ('NAME', 'range'), ('NAME', '10')], got [('NAME', 'async'), ('NAME', 'for'), ('NAME', 'i'), ('NAME', 'in'), ('NAME', 'range'), ('NAME', '10')]\nE       assert [('NAME', 'as...'NAME', '10')] == [('ASYNC', 'a...'NAME', '10')]\nE         \nE         At index 0 diff: ('NAME', 'async') != ('ASYNC', 'async')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'ASYNC',...\nE         \nE         ...Full output truncated (26 lines hidden), use '-vv' to show\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_for_keyword_misclassification - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqa9vzyca\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_keyword_misclassification PASSED       [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2642,
+  "completion_tokens_total": 444,
+  "duration_seconds": 14.74,
+  "timestamp": "2026-05-31T13:32:30Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

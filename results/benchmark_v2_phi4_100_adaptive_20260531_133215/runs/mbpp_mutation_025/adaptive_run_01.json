@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import digit_distance_nums\n\ndef test_sum_of_per_digit_difference():\n    n1 = 123\n    n2 = 321\n    expected_result = sum(abs(int(a) - int(b)) for a, b in zip(str(n1), str(n2)))\n    result = digit_distance_nums(n1, n2)\n    assert result == expected_result, f\"Expected {expected_result}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4s4ha0zh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_of_per_digit_difference FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_sum_of_per_digit_difference _______________________\n\n    def test_sum_of_per_digit_difference():\n        n1 = 123\n        n2 = 321\n        expected_result = sum(abs(int(a) - int(b)) for a, b in zip(str(n1), str(n2)))\n        result = digit_distance_nums(n1, n2)\n>       assert result == expected_result, f\"Expected {expected_result}, got {result}\"\nE       AssertionError: Expected 4, got 12\nE       assert 12 == 4\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_of_per_digit_difference - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyaby7thc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_of_per_digit_difference FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_sum_of_per_digit_difference _______________________\n\n    def test_sum_of_per_digit_difference():\n        n1 = 123\n        n2 = 321\n        expected_result = sum(abs(int(a) - int(b)) for a, b in zip(str(n1), str(n2)))\n        result = digit_distance_nums(n1, n2)\n>       assert result == expected_result, f\"Expected {expected_result}, got {result}\"\nE       AssertionError: Expected 4, got 18\nE       assert 18 == 4\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_of_per_digit_difference - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_per_digit_difference():\n    # Buggy code test setup\n    result = digit_distance_nums(123, 456)\n    expected_result = 9  # Expected result: sum of digits of 123\n\n    # Assertion that fails on buggy code\n    assert result == expected_result, f\"Expected {expected_result}, got {result}\"\n\n    # Fixed code test setup\n    result = digit_distance_nums(123, 456)\n    expected_result = 9  # Expected: sum of digits of 123\n\n    # Assertion that passes on fixed code\n    assert result == expected_result, f\"Expected {expected_result}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpknyu1h_e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_per_digit_difference FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_per_digit_difference ___________________________\n\n    def test_per_digit_difference():\n        # Buggy code test setup\n>       result = digit_distance_nums(123, 456)\n                 ^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'digit_distance_nums' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_per_digit_difference - NameError: name 'digit_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbmsnnaxm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_per_digit_difference FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_per_digit_difference ___________________________\n\n    def test_per_digit_difference():\n        # Buggy code test setup\n>       result = digit_distance_nums(123, 456)\n                 ^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'digit_distance_nums' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_per_digit_difference - NameError: name 'digit_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_digit_distance_bug():\n    n1, n2 = 123, 456\n    expected_result = sum(map(int, str(abs(n1 - n2))))  # |3 - 4 - 1 - 2| = 2\n    result = digit_distance_nums(n1, n2)\n    assert result == expected_result, f\"Expected {expected_result}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpq_cr3obx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_bug FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_digit_distance_bug ____________________________\n\n    def test_digit_distance_bug():\n        n1, n2 = 123, 456\n        expected_result = sum(map(int, str(abs(n1 - n2))))  # |3 - 4 - 1 - 2| = 2\n>       result = digit_distance_nums(n1, n2)\n                 ^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'digit_distance_nums' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_bug - NameError: name 'digit_di...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpij7a4s3k\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_bug FAILED                        [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_digit_distance_bug ____________________________\n\n    def test_digit_distance_bug():\n        n1, n2 = 123, 456\n        expected_result = sum(map(int, str(abs(n1 - n2))))  # |3 - 4 - 1 - 2| = 2\n>       result = digit_distance_nums(n1, n2)\n                 ^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'digit_distance_nums' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_bug - NameError: name 'digit_di...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is due to using the '+' operator instead of '-' between n1 and n2, which changes the intended behavior of calculating the per-digit difference.",
+    "bug_location": "source.py, digit_distance_nums, line 2",
+    "trigger_condition": "Any inputs where the per-digit difference between n1 and n2 is not equivalent to the sum of digits of the absolute sum of n1 and n2.",
+    "expected_vs_actual": "Expected: The function should calculate the sum of the per-digit differences between n1 and n2. Actual: The function calculates the sum of the digits of the absolute value of the sum of n1 and n2.",
+    "suggested_test_strategy": "Create a test case where the per-digit difference between n1 and n2 is clearly different from the sum of the digits of their absolute sum. For example, test with n1 = 123 and n2 = 456, where the expected result is 9 (1+2+3) but the actual result is 21.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3129,
+  "completion_tokens_total": 641,
+  "duration_seconds": 13.77,
+  "timestamp": "2026-05-31T13:38:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

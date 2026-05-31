@@ -1,0 +1,52 @@
+{
+  "task_id": "quixbugs_is_valid_parenthesization",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_is_valid_parenthesization():\n    # Test case where the function should return False due to more opening than closing parentheses\n    assert not is_valid_parenthesization('(('), \"Should return False for '((' as depth does not end at zero\"\n    # Test case where the function should return True\n    assert is_valid_parenthesization('((()()))()'), \"Should return True for properly nested parentheses\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl_aw56yb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_valid_parenthesization FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_valid_parenthesization ________________________\n\n    def test_is_valid_parenthesization():\n        # Test case where the function should return False due to more opening than closing parentheses\n>       assert not is_valid_parenthesization('(('), \"Should return False for '((' as depth does not end at zero\"\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'is_valid_parenthesization' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_valid_parenthesization - NameError: name 'i...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplxb3wf9p\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_valid_parenthesization FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_valid_parenthesization ________________________\n\n    def test_is_valid_parenthesization():\n        # Test case where the function should return False due to more opening than closing parentheses\n>       assert not is_valid_parenthesization('(('), \"Should return False for '((' as depth does not end at zero\"\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'is_valid_parenthesization' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_valid_parenthesization - NameError: name 'i...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:29:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import is_valid_parenthesization\n\ndef test_is_valid_parenthesization_leaving_openings():\n    # Test case with more openings than closings should return False\n    assert not is_valid_parenthesization('(('), \"Function should return False for unclosed parentheses\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxcfaet5t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_valid_parenthesization_leaving_openings FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_is_valid_parenthesization_leaving_openings ________________\n\n    def test_is_valid_parenthesization_leaving_openings():\n        # Test case with more openings than closings should return False\n>       assert not is_valid_parenthesization('(('), \"Function should return False for unclosed parentheses\"\nE       AssertionError: Function should return False for unclosed parentheses\nE       assert not True\nE        +  where True = is_valid_parenthesization('((')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_valid_parenthesization_leaving_openings - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplvrcpf2q\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_valid_parenthesization_leaving_openings PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:29:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1371,
+  "completion_tokens_total": 208,
+  "duration_seconds": 5.56,
+  "timestamp": "2026-05-31T13:29:45Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

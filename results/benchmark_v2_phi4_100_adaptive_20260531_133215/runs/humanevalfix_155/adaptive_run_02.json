@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_155",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import even_odd_count\n\ndef test_even_odd_count_negative_odd_number():\n    number = -13579\n    expected_result = (4, 1)\n    result = even_odd_count(number)\n    assert result == expected_result, f\"Expected {expected_result} for {number} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp3hwrm8k\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_even_odd_count_negative_odd_number FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_even_odd_count_negative_odd_number ____________________\n\n    def test_even_odd_count_negative_odd_number():\n        number = -13579\n        expected_result = (4, 1)\n        result = even_odd_count(number)\n>       assert result == expected_result, f\"Expected {expected_result} for {number} but got {result}\"\nE       AssertionError: Expected (4, 1) for -13579 but got (0, 0)\nE       assert (0, 0) == (4, 1)\nE         \nE         At index 0 diff: 0 != 4\nE         \nE         Full diff:\nE           (\nE         -     4,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_even_odd_count_negative_odd_number - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl6i0ldw6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_even_odd_count_negative_odd_number FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_even_odd_count_negative_odd_number ____________________\n\n    def test_even_odd_count_negative_odd_number():\n        number = -13579\n        expected_result = (4, 1)\n        result = even_odd_count(number)\n>       assert result == expected_result, f\"Expected {expected_result} for {number} but got {result}\"\nE       AssertionError: Expected (4, 1) for -13579 but got (0, 5)\nE       assert (0, 5) == (4, 1)\nE         \nE         At index 0 diff: 0 != 4\nE         \nE         Full diff:\nE           (\nE         -     4,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_even_odd_count_negative_odd_number - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_even_odd_count_odd_digits():\n    from source import even_odd_count\n\n    # Test input with odd digits\n    input_number = 123  # Example: odd digits are 1, 2, and 3\n    expected_output = (1, 2)  # Odd digits: 1 and 3\n\n    # Call the function and check its output\n    actual_output = even_odd_count(input_number)\n\n    assert actual_output == expected_output, f\"Expected output {expected_output} for input {input_number}, but got {actual_output}\"\n\n# Test input: -123, which also has odd digits\ntest_even_odd_count_odd_digits()",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplvxht3ul\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\ntest_generated.py:14: in <module>\n    test_even_odd_count_odd_digits()\ntest_generated.py:11: in test_even_odd_count_odd_digits\n    assert actual_output == expected_output, f\"Expected output {expected_output} for input {input_number}, but got {actual_output}\"\nE   AssertionError: Expected output (1, 2) for input 123, but got (1, 0)\nE   assert (1, 0) == (1, 2)\n=========================== short test summary info ============================\nERROR test_generated.py - AssertionError: Expected output (1, 2) for input 12...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.05s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpujwixaaa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_even_odd_count_odd_digits PASSED                 [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:59Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is due to a missing clause to increment odd_count when the digit is odd.",
+    "bug_location": "even_odd_count function, line 9",
+    "trigger_condition": "Any integer where the number of odd digits is greater than zero.",
+    "expected_vs_actual": "The function SHOULD increment odd_count when an odd digit is encountered, but DOES only increment even_count.",
+    "suggested_test_strategy": "Use integers with odd digits to ensure odd_count is incremented correctly. For example, test with inputs like 123 and -123 to verify that odd_count is incremented for each odd digit.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2042,
+  "completion_tokens_total": 409,
+  "duration_seconds": 9.45,
+  "timestamp": "2026-05-31T13:36:59Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

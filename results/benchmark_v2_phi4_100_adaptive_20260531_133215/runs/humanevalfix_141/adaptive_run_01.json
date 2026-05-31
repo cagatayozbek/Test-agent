@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_141",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_file_name_check_valid_filename():\n    assert file_name_check(\"example.1txt\") == 'No', 'The file name should be invalid due to more than three digits before the dot.'\n\ndef test_file_name_check_valid_filename():\n    assert file_name_check(\"example.1txt\") == 'Yes', 'The file name should be valid with one digit before the dot and correct suffix.'\n\ndef test_file_name_check_invalid_prefix():\n    assert file_name_check(\"1example.txt\") == 'No', 'The file name should be invalid due to the prefix not starting with a letter.'\n\ndef test_file_name_check_invalid_suffix():\n    assert file_name_check(\"example.1exe\") == 'No', 'The file name should be invalid due to more than three digits before the dot.'\n\ndef test_file_name_check_empty_prefix():\n    assert file_name_check(\"..txt\") == 'No', 'The file name should be invalid due to the empty prefix before the dot.'",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmttf5dm9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_file_name_check_valid_filename FAILED            [ 25%]\n\n=================================== FAILURES ===================================\n_____________________ test_file_name_check_valid_filename ______________________\n\n    def test_file_name_check_valid_filename():\n>       assert file_name_check(\"example.1txt\") == 'Yes', 'The file name should be valid with one digit before the dot and correct suffix.'\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'file_name_check' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_file_name_check_valid_filename - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7e2l6t4k\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_file_name_check_valid_filename FAILED            [ 25%]\n\n=================================== FAILURES ===================================\n_____________________ test_file_name_check_valid_filename ______________________\n\n    def test_file_name_check_valid_filename():\n>       assert file_name_check(\"example.1txt\") == 'Yes', 'The file name should be valid with one digit before the dot and correct suffix.'\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'file_name_check' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_file_name_check_valid_filename - NameError: na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import file_name_check\n\ndef test_file_name_check_with_more_than_three_digits_before_dot():\n    # Test a file name with more than three digits before the dot, which should be invalid\n    file_name = \"1234.exe\"\n    expected_result = 'No'\n    actual_result = file_name_check(file_name)\n    assert actual_result == expected_result, f\"Expected '{expected_result}' for '{file_name}', but got '{actual_result}'\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_ld1t8o9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_file_name_check_with_more_than_three_digits_before_dot PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpc73r9je2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_file_name_check_with_more_than_three_digits_before_dot PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import file_name_check\n\ndef test_file_name_check_with_more_than_three_digits():\n    assert file_name_check(\"12abc.1234.exe\") == 'No', \"The filename '12abc.1234.exe' should return 'No' due to more than three digits before the dot.\"\n\ndef test_file_name_check_with_valid_suffix():\n    assert file_name_check(\"example.txt\") == 'Yes', \"The filename 'example.txt' should return 'Yes' as it is valid.\"\n\ndef test_file_name_check_with_non_alpha_start():\n    assert file_name_check(\"1example.dll\") == 'No', \"The filename '1example.dll' should return 'No' due to non-alphabetic start before the dot.\"\n\ndef test_file_name_check_with_empty_substring():\n    assert file_name_check(\"example.\") == 'No', \"The filename 'example.' should return 'No' due to empty substring before the dot.\"\n\ndef test_file_name_check_with_incorrect_suffix():\n    assert file_name_check(\"example.txtx\") == 'No', \"The filename 'example.txtx' should return 'No' due to incorrect suffix.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg_zpbyle\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 5 items\n\ntest_generated.py::test_file_name_check_with_more_than_three_digits PASSED [ 20%]\ntest_generated.py::test_file_name_check_with_valid_suffix PASSED         [ 40%]\ntest_generated.py::test_file_name_check_with_non_alpha_start PASSED      [ 60%]\ntest_generated.py::test_file_name_check_with_empty_substring FAILED      [ 80%]\n\n=================================== FAILURES ===================================\n__________________ test_file_name_check_with_empty_substring ___________________\n\n    def test_file_name_check_with_empty_substring():\n>       assert file_name_check(\"example.\") == 'No', \"The filename 'example.' should return 'No' due to empty substring before the dot.\"\nE       AssertionError: The filename 'example.' should return 'No' due to empty substring before the dot.\nE       assert 'Yes' == 'No'\nE         \nE         - No\nE         + Yes\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_file_name_check_with_empty_substring - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 3 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpd26425qu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 5 items\n\ntest_generated.py::test_file_name_check_with_more_than_three_digits PASSED [ 20%]\ntest_generated.py::test_file_name_check_with_valid_suffix PASSED         [ 40%]\ntest_generated.py::test_file_name_check_with_non_alpha_start PASSED      [ 60%]\ntest_generated.py::test_file_name_check_with_empty_substring PASSED      [ 80%]\ntest_generated.py::test_file_name_check_with_incorrect_suffix PASSED     [100%]\n\n============================== 5 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The bug is due to a missing check for the substring after the dot in the file name, leading to incorrect validation.",
+    "bug_location": "function file_name_check, line 11",
+    "trigger_condition": "A file name with more than three digits before the dot, such as '1234.exe'",
+    "expected_vs_actual": "The function should return 'No' if the substring before the dot contains more than three digits, but it returns 'Yes'.",
+    "suggested_test_strategy": "Use pytest to call file_name_check with inputs such as '1234.exe' and assert that the return value is 'No'.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 4233,
+  "completion_tokens_total": 689,
+  "duration_seconds": 18.69,
+  "timestamp": "2026-05-31T13:36:38Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

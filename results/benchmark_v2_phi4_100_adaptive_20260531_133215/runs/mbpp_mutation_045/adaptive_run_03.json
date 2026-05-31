@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_snake_to_camel_conversion():\n    # Test case where the mutation 'or -> and' affects the output\n    result = snake_2_camel('hello_world')\n    assert result == 'HelloWorld', f\"Expected 'HelloWorld', but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp40svvsof\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n        # Test case where the mutation 'or -> and' affects the output\n>       result = snake_2_camel('hello_world')\n                 ^^^^^^^^^^^^^\nE       NameError: name 'snake_2_camel' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - NameError: name 's...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw37e7wjo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n        # Test case where the mutation 'or -> and' affects the output\n>       result = snake_2_camel('hello_world')\n                 ^^^^^^^^^^^^^\nE       NameError: name 'snake_2_camel' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - NameError: name 's...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_snake_to_camel_conversion():\n    result = snake_to_camel('hello_world_file')\n    assert result == 'HelloWorldFile', \"The output should be 'HelloWorldFile' when converting 'hello_world_file' using the correct logic.\"\n\n    result = snake_to_camel('file_upload')\n    assert result == 'FileUpload', \"The output should be 'FileUpload' when converting 'file_upload' with correct logic.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1pw8s7e1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n>       result = snake_to_camel('hello_world_file')\n                 ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - NameError: name 's...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvttjncxa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n>       result = snake_to_camel('hello_world_file')\n                 ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - NameError: name 's...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_snake_to_camel_conversion():\n    # Test the buggy code with 'or' to check the incorrect behavior\n    assert snake_to_camel('file_upload') == 'FileUpload', \"Buggy code should incorrectly convert 'file_upload' to 'FileUpload'\"\n\n    # Test the fixed code with 'and' to check the correct behavior\n    assert snake_to_camel('upload_file') == 'UploadFile', \"Fixed code should correctly convert 'upload_file' to 'UploadFile'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp99i30dkh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n        # Test the buggy code with 'or' to check the incorrect behavior\n>       assert snake_to_camel('file_upload') == 'FileUpload', \"Buggy code should incorrectly convert 'file_upload' to 'FileUpload'\"\n               ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - NameError: name 's...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbf_s2o7v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n        # Test the buggy code with 'or' to check the incorrect behavior\n>       assert snake_to_camel('file_upload') == 'FileUpload', \"Buggy code should incorrectly convert 'file_upload' to 'FileUpload'\"\n               ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - NameError: name 's...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The mutation of the boolean operator from `or` to `and` in the `snake_2_camel` function affects the output by ensuring that underscores are removed only if there are no consecutive uppercase characters following them.",
+    "bug_location": "function name: snake_2_camel, line number: 2",
+    "trigger_condition": "The input string 'file_upload' where the logic depends on the condition `x.capitalize() and '_'` being true, due to the presence of an underscore.",
+    "expected_vs_actual": "The expected behavior is to convert 'file_upload' to 'FileUpload' by capitalizing characters after underscores. The actual behavior with `and` would incorrectly capitalize none, resulting in 'fileUpload'.",
+    "suggested_test_strategy": "Assert the output for strings with consecutive lowercase characters followed by an underscore, and strings with consecutive uppercase characters followed by an underscore, ensuring that `file_upload` converts to 'FileUpload' and `upload_file` converts to 'UploadFile'.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3211,
+  "completion_tokens_total": 621,
+  "duration_seconds": 15.53,
+  "timestamp": "2026-05-31T13:39:12Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_002",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_square_sum_of_first_n_odd_natural_numbers():\n    # Choose a small input n where the arithmetic operator affects the calculation\n    n = 1\n    expected_result = 1  # Sum of squares of first 1 odd natural number (1^2)\n\n    result = square_Sum(n)\n    assert result == expected_result, f\"Expected result to be {expected_result} for n={n}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkcosxtdt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_sum_of_first_n_odd_natural_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_square_sum_of_first_n_odd_natural_numbers ________________\n\n    def test_square_sum_of_first_n_odd_natural_numbers():\n        # Choose a small input n where the arithmetic operator affects the calculation\n        n = 1\n        expected_result = 1  # Sum of squares of first 1 odd natural number (1^2)\n    \n>       result = square_Sum(n)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_sum_of_first_n_odd_natural_numbers - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5ecwqqo7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_sum_of_first_n_odd_natural_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_square_sum_of_first_n_odd_natural_numbers ________________\n\n    def test_square_sum_of_first_n_odd_natural_numbers():\n        # Choose a small input n where the arithmetic operator affects the calculation\n        n = 1\n        expected_result = 1  # Sum of squares of first 1 odd natural number (1^2)\n    \n>       result = square_Sum(n)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_sum_of_first_n_odd_natural_numbers - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_square_sum_of_first_n_odd_natural_numbers():\n    result = square_Sum(2)\n    assert result == 10, \"The sum of squares of the first 2 odd natural numbers should be 10\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplv4wkjfq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_sum_of_first_n_odd_natural_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_square_sum_of_first_n_odd_natural_numbers ________________\n\n    def test_square_sum_of_first_n_odd_natural_numbers():\n>       result = square_Sum(2)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_sum_of_first_n_odd_natural_numbers - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpv9ieizyv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_sum_of_first_n_odd_natural_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_square_sum_of_first_n_odd_natural_numbers ________________\n\n    def test_square_sum_of_first_n_odd_natural_numbers():\n>       result = square_Sum(2)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_sum_of_first_n_odd_natural_numbers - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_square_sum_of_first_n_odd_natural_numbers():\n    # Test the function with n = 2 to ensure integer division is used correctly\n    expected_result = 10  # Calculated from 1^2 + 3^2\n    result = square_Sum(2)\n\n    assert result == expected_result, f\"Expected result 10, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw8d1zzev\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_sum_of_first_n_odd_natural_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_square_sum_of_first_n_odd_natural_numbers ________________\n\n    def test_square_sum_of_first_n_odd_natural_numbers():\n        # Test the function with n = 2 to ensure integer division is used correctly\n        expected_result = 10  # Calculated from 1^2 + 3^2\n>       result = square_Sum(2)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_sum_of_first_n_odd_natural_numbers - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwbn55zkk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_sum_of_first_n_odd_natural_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_square_sum_of_first_n_odd_natural_numbers ________________\n\n    def test_square_sum_of_first_n_odd_natural_numbers():\n        # Test the function with n = 2 to ensure integer division is used correctly\n        expected_result = 10  # Calculated from 1^2 + 3^2\n>       result = square_Sum(2)\n                 ^^^^^^^^^^\nE       NameError: name 'square_Sum' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_sum_of_first_n_odd_natural_numbers - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug in the function `square_Sum` is caused by the misuse of the arithmetic operator `//` instead of `*`. This operator performs integer division, which leads to incorrect results when calculating the sum of squares of the first n odd natural numbers.",
+    "bug_location": "source.py function square_Sum, line 2",
+    "trigger_condition": "Input n = 2 triggers the bug because `4 // n` results in integer division, causing the output to differ from the expected result.",
+    "expected_vs_actual": "For n = 2, the expected result using `*` is 10 (since the sum of squares of the first 2 odd numbers [1, 3] is 1^2 + 3^2 = 10), but the actual result using `//` is 2 (since 4 // 2 = 2, and the calculation becomes (2 * 2 - 1) / 3 = 1, which is then integer divided by 3 to yield 0).",
+    "suggested_test_strategy": "Create a pytest test for `square_Sum(2)` and assert that the output is 10. This test will fail on the buggy version and pass on the fixed version using integer multiplication `*` instead of integer division `//`.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3397,
+  "completion_tokens_total": 653,
+  "duration_seconds": 16.4,
+  "timestamp": "2026-05-31T13:37:25Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_090",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import next_smallest\n\ndef test_next_smallest_with_two_elements():\n    lst = [1, 1]\n    expected = None\n    result = next_smallest(lst)\n    assert result == expected, f\"Expected {expected} but got {result} for input {lst}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpevylmdox\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_elements PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnduaaaye\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_elements PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import next_smallest\n\ndef test_next_smallest_with_two_identical_elements():\n    result = next_smallest([1, 1])\n    assert result is None, \"The function should return None for lists with fewer than 2 unique elements.\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpalmgfc8x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_identical_elements PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn6o5gmj1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_identical_elements PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_next_smallest_with_two_identical_elements():\n    from source import next_smallest\n\n    # Test case: list with exactly two identical elements\n    lst = [5, 5]\n    result = next_smallest(lst)\n    assert result is None, \"Expected None for lists with exactly two identical elements\"\n\n    # Test case: list with fewer than two unique elements\n    lst = [1, 1]\n    result = next_smallest(lst)\n    assert result is None, \"Expected None for lists with fewer than two unique elements\"\n\n    # Test case: list with two unique elements\n    lst = [1, 2]\n    result = next_smallest(lst)\n    assert result == 1, \"Expected second smallest element to be 1 for list with two unique elements\"\n\n    # Test case: list with fewer than two elements\n    lst = [1]\n    result = next_smallest(lst)\n    assert result is None, \"Expected None for lists with fewer than two elements\"\n\n    # Test case: empty list\n    lst = []\n    result = next_smallest(lst)\n    assert result is None, \"Expected None for an empty list\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpslf_pswv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_identical_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_next_smallest_with_two_identical_elements ________________\n\n    def test_next_smallest_with_two_identical_elements():\n        from source import next_smallest\n    \n        # Test case: list with exactly two identical elements\n        lst = [5, 5]\n        result = next_smallest(lst)\n        assert result is None, \"Expected None for lists with exactly two identical elements\"\n    \n        # Test case: list with fewer than two unique elements\n        lst = [1, 1]\n        result = next_smallest(lst)\n        assert result is None, \"Expected None for lists with fewer than two unique elements\"\n    \n        # Test case: list with two unique elements\n        lst = [1, 2]\n        result = next_smallest(lst)\n>       assert result == 1, \"Expected second smallest element to be 1 for list with two unique elements\"\nE       AssertionError: Expected second smallest element to be 1 for list with two unique elements\nE       assert None == 1\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_with_two_identical_elements - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp68muuygt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_identical_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_next_smallest_with_two_identical_elements ________________\n\n    def test_next_smallest_with_two_identical_elements():\n        from source import next_smallest\n    \n        # Test case: list with exactly two identical elements\n        lst = [5, 5]\n        result = next_smallest(lst)\n        assert result is None, \"Expected None for lists with exactly two identical elements\"\n    \n        # Test case: list with fewer than two unique elements\n        lst = [1, 1]\n        result = next_smallest(lst)\n        assert result is None, \"Expected None for lists with fewer than two unique elements\"\n    \n        # Test case: list with two unique elements\n        lst = [1, 2]\n        result = next_smallest(lst)\n>       assert result == 1, \"Expected second smallest element to be 1 for list with two unique elements\"\nE       AssertionError: Expected second smallest element to be 1 for list with two unique elements\nE       assert 2 == 1\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_with_two_identical_elements - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The condition `len(lst) < 3` is incorrect for determining if the second smallest element exists. It should be `len(lst) < 2` because a list with fewer than 2 unique elements cannot have a second smallest element.",
+    "bug_location": "function next_smallest, line 12",
+    "trigger_condition": "Lists with exactly 2 unique elements, such as `[1, 1]` or `[5, 5]`",
+    "expected_vs_actual": "EXPECTED: `None` should be returned for lists with fewer than 2 unique elements. ACTUAL: `None` is returned only for lists with fewer than 3 unique elements, incorrectly returning the second element for lists with exactly 2 unique elements.",
+    "suggested_test_strategy": "Create test cases where the input list has exactly 2 unique elements, such as `[1, 1]`, `[2, 2]`, `[5, 5]`, and confirm that `None` is returned. This will reveal the bug because the buggy code will return the erroneous second element instead of `None`.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3836,
+  "completion_tokens_total": 655,
+  "duration_seconds": 12.98,
+  "timestamp": "2026-05-31T13:35:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

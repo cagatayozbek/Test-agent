@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_gcd",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_gcd_recursion_error_gcd():\n    # Test with exact boundary values that trigger the specific bug described.\n    a, b = 35, 21\n    try:\n        result = gcd(a, b)\n    except RecursionError:\n        result = \"recursion error\"\n\n    assert result == 7, f\"Expected gcd({a}, {b}) to return 7, but got {result}\"\n\ndef test_gcd_correct_order():\n    # Test with boundary values that should work correctly after fixing the bug.\n    a, b = 21, 35\n    result = gcd(a, b)\n\n    assert result == 7, f\"Expected gcd({a}, {b}) to return 7, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpabtu36lt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_gcd_recursion_error_gcd FAILED                   [ 50%]\n\n=================================== FAILURES ===================================\n_________________________ test_gcd_recursion_error_gcd _________________________\n\n    def test_gcd_recursion_error_gcd():\n        # Test with exact boundary values that trigger the specific bug described.\n        a, b = 35, 21\n        try:\n>           result = gcd(a, b)\n                     ^^^\nE           NameError: name 'gcd' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_recursion_error_gcd - NameError: name 'gcd...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpx_3a9xam\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_gcd_recursion_error_gcd FAILED                   [ 50%]\n\n=================================== FAILURES ===================================\n_________________________ test_gcd_recursion_error_gcd _________________________\n\n    def test_gcd_recursion_error_gcd():\n        # Test with exact boundary values that trigger the specific bug described.\n        a, b = 35, 21\n        try:\n>           result = gcd(a, b)\n                     ^^^\nE           NameError: name 'gcd' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_recursion_error_gcd - NameError: name 'gcd...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:29:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import gcd\n\ndef test_gcd_recursion_bug_with_35_and_21():\n    with pytest.raises(RecursionError):\n        gcd(35, 21)\n    # The test should fail with a RecursionError on the buggy code.\n    # It should pass on the fixed code, confirming the fix works.",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8lyj48oe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_recursion_bug_with_35_and_21 PASSED          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp25j53cqr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_recursion_bug_with_35_and_21 FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_gcd_recursion_bug_with_35_and_21 _____________________\n\n    def test_gcd_recursion_bug_with_35_and_21():\n>       with pytest.raises(RecursionError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'RecursionError'>\n\ntest_generated.py:5: Failed\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_recursion_bug_with_35_and_21 - Failed: DID...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:29:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_gcd_recursion_bug_with_35_and_21():\n    a, b = 35, 21\n    with pytest.raises(RecursionError):\n        gcd(a, b)\n\n# This test should fail due to infinite recursion in the buggy version of gcd.\n# The fixed version should raise a RecursionError, confirming that the recursion error is correctly detected.",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpedkk_82h\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_recursion_bug_with_35_and_21 FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_gcd_recursion_bug_with_35_and_21 _____________________\n\n    def test_gcd_recursion_bug_with_35_and_21():\n        a, b = 35, 21\n>       with pytest.raises(RecursionError):\n             ^^^^^^\nE       NameError: name 'pytest' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_recursion_bug_with_35_and_21 - NameError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyrwi3jt0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_recursion_bug_with_35_and_21 FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_gcd_recursion_bug_with_35_and_21 _____________________\n\n    def test_gcd_recursion_bug_with_35_and_21():\n        a, b = 35, 21\n>       with pytest.raises(RecursionError):\n             ^^^^^^\nE       NameError: name 'pytest' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_recursion_bug_with_35_and_21 - NameError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:29:40Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2545,
+  "completion_tokens_total": 426,
+  "duration_seconds": 10.25,
+  "timestamp": "2026-05-31T13:29:40Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

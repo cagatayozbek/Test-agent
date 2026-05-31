@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_090",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_next_smallest_with_two_elements():\n    from source import next_smallest\n    lst = [1, 1]\n    expected = None\n    assert next_smallest(lst) == expected, f\"Expected None for list {lst}, but got {next_smallest(lst)}\"\n\ndef test_next_smallest_with_no_elements():\n    from source import next_smallest\n    lst = []\n    expected = None\n    assert next_smallest(lst) == expected, f\"Expected None for an empty list, but got {next_smallest(lst)}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwe0pfzbu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_next_smallest_with_two_elements PASSED           [ 50%]\ntest_generated.py::test_next_smallest_with_no_elements PASSED            [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5btapi3t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_next_smallest_with_two_elements PASSED           [ 50%]\ntest_generated.py::test_next_smallest_with_no_elements PASSED            [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import next_smallest\n\ndef test_next_smallest_with_two_elements():\n    result = next_smallest([1, 2])\n    assert result is None, \"Expected None for a list with two elements, got {}\".format(result)",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_1k6m724\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_elements PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5jmmq2tp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_elements FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_next_smallest_with_two_elements _____________________\n\n    def test_next_smallest_with_two_elements():\n        result = next_smallest([1, 2])\n>       assert result is None, \"Expected None for a list with two elements, got {}\".format(result)\nE       AssertionError: Expected None for a list with two elements, got 2\nE       assert 2 is None\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_with_two_elements - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_next_smallest_with_two_elements():\n    lst = [1, 2]\n    result = next_smallest(lst)\n    assert result == 2, \"Expected 2 as the second smallest element, got {}\".format(result)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkdnku6du\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_elements FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_next_smallest_with_two_elements _____________________\n\n    def test_next_smallest_with_two_elements():\n        lst = [1, 2]\n>       result = next_smallest(lst)\n                 ^^^^^^^^^^^^^\nE       NameError: name 'next_smallest' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_with_two_elements - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp64mm6mpy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_with_two_elements FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_next_smallest_with_two_elements _____________________\n\n    def test_next_smallest_with_two_elements():\n        lst = [1, 2]\n>       result = next_smallest(lst)\n                 ^^^^^^^^^^^^^\nE       NameError: name 'next_smallest' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_with_two_elements - NameError: n...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:35:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is caused by using the wrong literal in the condition check, specifically 'len(lst) < 3' instead of 'len(lst) < 2'. This leads to incorrect behavior when determining if there is a second smallest element in the list.",
+    "bug_location": "next_smallest, line 10",
+    "trigger_condition": "When the length of the list is exactly 2, the function should return the second smallest element, but it returns None due to the incorrect condition.",
+    "expected_vs_actual": "The function SHOULD return the second element of the sorted set if the length of the list is at least 2. However, the function DOES return None if the list length is less than 3.",
+    "suggested_test_strategy": "Test the function with lists of varying lengths, specifically with a list of length 2 to ensure it returns the second element. Also, test with lists of length 1 and 0 to ensure it properly returns None.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3804,
+  "completion_tokens_total": 574,
+  "duration_seconds": 13.62,
+  "timestamp": "2026-05-31T13:35:30Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

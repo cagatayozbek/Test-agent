@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_121",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_solution_wrong_behavior_exposes_bug():\n    from source import solution\n\n    # Edge case where the wrong behavior is triggered\n    data = [5, 8, 7, 1]\n    expected_result = 5  # Only the first odd element at position 1 (index 0) should be summed\n    assert solution(data) == expected_result, \"Test failed: incorrect sum due to wrong condition on odd indices\"\n\n    # Check if correct behavior passes\n    data = [5, 8, 7, 1]\n    expected_result = 5 + 1  # Positions 0 and 2 should be considered (5 at position 0 and 1 at position 2)\n    assert solution(data) == expected_result, \"Test failed: should sum odd elements at even indices\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph1cir05e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_wrong_behavior_exposes_bug FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_solution_wrong_behavior_exposes_bug ___________________\n\n    def test_solution_wrong_behavior_exposes_bug():\n        from source import solution\n    \n        # Edge case where the wrong behavior is triggered\n        data = [5, 8, 7, 1]\n        expected_result = 5  # Only the first odd element at position 1 (index 0) should be summed\n>       assert solution(data) == expected_result, \"Test failed: incorrect sum due to wrong condition on odd indices\"\nE       AssertionError: Test failed: incorrect sum due to wrong condition on odd indices\nE       assert 1 == 5\nE        +  where 1 = <function solution at 0x109f1e840>([5, 8, 7, 1])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_solution_wrong_behavior_exposes_bug - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpj9umk7z1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_wrong_behavior_exposes_bug FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_solution_wrong_behavior_exposes_bug ___________________\n\n    def test_solution_wrong_behavior_exposes_bug():\n        from source import solution\n    \n        # Edge case where the wrong behavior is triggered\n        data = [5, 8, 7, 1]\n        expected_result = 5  # Only the first odd element at position 1 (index 0) should be summed\n>       assert solution(data) == expected_result, \"Test failed: incorrect sum due to wrong condition on odd indices\"\nE       AssertionError: Test failed: incorrect sum due to wrong condition on odd indices\nE       assert 12 == 5\nE        +  where 12 = <function solution at 0x10aa02840>([5, 8, 7, 1])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_solution_wrong_behavior_exposes_bug - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_solution_sum_even_positions():\n    from source import solution\n    \n    # Create a list where odd indexed elements are odd numbers, and even indexed elements are even numbers\n    input_list = [5, 8, 7, 1, 11, 4, 13, 6]\n    \n    # Expected sum of elements at even indices (0, 2, 4, 6) which are 5, 7, 11\n    expected_sum = 5 + 7 + 11  # 23\n    \n    # Assert the sum of elements at even indices is calculated correctly\n    assert solution(input_list) == expected_sum, f\"Expected sum of elements at even indices to be {expected_sum}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp4dn9i57\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_sum_even_positions FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_solution_sum_even_positions _______________________\n\n    def test_solution_sum_even_positions():\n        from source import solution\n    \n        # Create a list where odd indexed elements are odd numbers, and even indexed elements are even numbers\n        input_list = [5, 8, 7, 1, 11, 4, 13, 6]\n    \n        # Expected sum of elements at even indices (0, 2, 4, 6) which are 5, 7, 11\n        expected_sum = 5 + 7 + 11  # 23\n    \n        # Assert the sum of elements at even indices is calculated correctly\n>       assert solution(input_list) == expected_sum, f\"Expected sum of elements at even indices to be {expected_sum}\"\nE       AssertionError: Expected sum of elements at even indices to be 23\nE       assert 1 == 23\nE        +  where 1 = <function solution at 0x10ab968e0>([5, 8, 7, 1, 11, 4, ...])\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_solution_sum_even_positions - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpayivt4y6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_sum_even_positions FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_solution_sum_even_positions _______________________\n\n    def test_solution_sum_even_positions():\n        from source import solution\n    \n        # Create a list where odd indexed elements are odd numbers, and even indexed elements are even numbers\n        input_list = [5, 8, 7, 1, 11, 4, 13, 6]\n    \n        # Expected sum of elements at even indices (0, 2, 4, 6) which are 5, 7, 11\n        expected_sum = 5 + 7 + 11  # 23\n    \n        # Assert the sum of elements at even indices is calculated correctly\n>       assert solution(input_list) == expected_sum, f\"Expected sum of elements at even indices to be {expected_sum}\"\nE       AssertionError: Expected sum of elements at even indices to be 23\nE       assert 36 == 23\nE        +  where 36 = <function solution at 0x108cca8e0>([5, 8, 7, 1, 11, 4, ...])\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_solution_sum_even_positions - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import solution\n\ndef test_solution_even_index_odd_elements_exposes_bug():\n    # Test with a list where elements at even indices are odd numbers\n    input_list = [5, 8, 7, 1]  # Expected sum: 5 (index 0) + 7 (index 2) = 12\n    expected_result = 12\n    result = solution(input_list)\n    assert result == expected_result, f\"Expected sum of odd elements at even indices to be {expected_result}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdh4_wuow\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_even_index_odd_elements_exposes_bug FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_solution_even_index_odd_elements_exposes_bug _______________\n\n    def test_solution_even_index_odd_elements_exposes_bug():\n        # Test with a list where elements at even indices are odd numbers\n        input_list = [5, 8, 7, 1]  # Expected sum: 5 (index 0) + 7 (index 2) = 12\n        expected_result = 12\n        result = solution(input_list)\n>       assert result == expected_result, f\"Expected sum of odd elements at even indices to be {expected_result}, but got {result}\"\nE       AssertionError: Expected sum of odd elements at even indices to be 12, but got 1\nE       assert 1 == 12\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_solution_even_index_odd_elements_exposes_bug\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcxsbuboz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_solution_even_index_odd_elements_exposes_bug PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The bug is caused by using the wrong condition for index parity. The buggy line checks for odd indexes with `idx%2==1`, but it should check for even indexes with `idx%2==0`.",
+    "bug_location": "source.py, line 7",
+    "trigger_condition": "Any list where elements at even positions are supposed to be summed. For example, calling `solution([5, 8, 7, 1])` should check and sum elements at indices 0 and 2.",
+    "expected_vs_actual": "The function should sum elements at even indices (0, 2, 4, ...), but instead sums elements at odd indices (1, 3, 5, ...).",
+    "suggested_test_strategy": "Create a test with a list where elements at even positions are odd numbers and elements at odd positions are even numbers. Assert that the sum of elements at even positions is calculated correctly.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3552,
+  "completion_tokens_total": 777,
+  "duration_seconds": 19.03,
+  "timestamp": "2026-05-31T13:36:23Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

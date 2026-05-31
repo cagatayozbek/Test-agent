@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_with_boolean_operator_bug():\n    # Test case where the boolean operator bug affects the output\n    input_word = 'a_b_c'\n    expected_output = 'aBC'  # Correct camel case conversion\n    actual_output = snake_to_camel(input_word)\n    \n    assert actual_output == expected_output, (\n        f\"Expected '{expected_output}' but got '{actual_output}' for input '{input_word}'. \"\n        \"The 'or' operator in the list comprehension should be replaced with 'and'.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqfttz949\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_boolean_operator_bug FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_snake_to_camel_with_boolean_operator_bug _________________\n\n    def test_snake_to_camel_with_boolean_operator_bug():\n        # Test case where the boolean operator bug affects the output\n        input_word = 'a_b_c'\n        expected_output = 'aBC'  # Correct camel case conversion\n        actual_output = snake_to_camel(input_word)\n    \n>       assert actual_output == expected_output, (\n            f\"Expected '{expected_output}' but got '{actual_output}' for input '{input_word}'. \"\n            \"The 'or' operator in the list comprehension should be replaced with 'and'.\"\n        )\nE       AssertionError: Expected 'aBC' but got '___' for input 'a_b_c'. The 'or' operator in the list comprehension should be replaced with 'and'.\nE       assert '___' == 'aBC'\nE         \nE         - aBC\nE         + ___\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_with_boolean_operator_bug - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmr7fqut_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_boolean_operator_bug FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_snake_to_camel_with_boolean_operator_bug _________________\n\n    def test_snake_to_camel_with_boolean_operator_bug():\n        # Test case where the boolean operator bug affects the output\n        input_word = 'a_b_c'\n        expected_output = 'aBC'  # Correct camel case conversion\n        actual_output = snake_to_camel(input_word)\n    \n>       assert actual_output == expected_output, (\n            f\"Expected '{expected_output}' but got '{actual_output}' for input '{input_word}'. \"\n            \"The 'or' operator in the list comprehension should be replaced with 'and'.\"\n        )\nE       AssertionError: Expected 'aBC' but got 'ABC' for input 'a_b_c'. The 'or' operator in the list comprehension should be replaced with 'and'.\nE       assert 'ABC' == 'aBC'\nE         \nE         - aBC\nE         + ABC\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_with_boolean_operator_bug - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:19Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_snake_to_camel_with_or_operator_bug():\n    # Test with a simple multi-part snake case string\n    input_string = \"hello_world\"\n    expected_output = \"HelloWorld\"\n\n    # Assert that the buggy function does not produce the expected output\n    assert snake_to_camel(input_string) != expected_output, \"The function should not convert using 'and' operator\"\n\n    # Assert that the fixed function produces the expected output\n    assert snake_to_camel(input_string) == expected_output, \"The function should convert 'hello_world' to 'HelloWorld' using 'or' operator\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzgfi0ig4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_or_operator_bug FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_snake_to_camel_with_or_operator_bug ___________________\n\n    def test_snake_to_camel_with_or_operator_bug():\n        # Test with a simple multi-part snake case string\n        input_string = \"hello_world\"\n        expected_output = \"HelloWorld\"\n    \n        # Assert that the buggy function does not produce the expected output\n>       assert snake_to_camel(input_string) != expected_output, \"The function should not convert using 'and' operator\"\n               ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_with_or_operator_bug - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8vjm_hu7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_or_operator_bug FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_snake_to_camel_with_or_operator_bug ___________________\n\n    def test_snake_to_camel_with_or_operator_bug():\n        # Test with a simple multi-part snake case string\n        input_string = \"hello_world\"\n        expected_output = \"HelloWorld\"\n    \n        # Assert that the buggy function does not produce the expected output\n>       assert snake_to_camel(input_string) != expected_output, \"The function should not convert using 'and' operator\"\n               ^^^^^^^^^^^^^^\nE       NameError: name 'snake_to_camel' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_with_or_operator_bug - NameErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_with_boolean_operator_bug():\n    input_string = 'hello_world'\n    expected_output = 'HelloWorld'\n    actual_output = snake_to_camel(input_string)\n    assert actual_output == expected_output, f\"Expected '{expected_output}' but got '{actual_output}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0jnl7h5y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_boolean_operator_bug FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_snake_to_camel_with_boolean_operator_bug _________________\n\n    def test_snake_to_camel_with_boolean_operator_bug():\n        input_string = 'hello_world'\n        expected_output = 'HelloWorld'\n        actual_output = snake_to_camel(input_string)\n>       assert actual_output == expected_output, f\"Expected '{expected_output}' but got '{actual_output}'\"\nE       AssertionError: Expected 'HelloWorld' but got '__'\nE       assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_with_boolean_operator_bug - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgndhu0i0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_with_boolean_operator_bug PASSED  [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The bug is caused by the use of the `and` operator instead of `or`. In Python, `and` returns the first falsy value or the last value if none are falsy, while `or` returns the first truthy value or the last value if none are truthy. This affects the string joining process.",
+    "bug_location": "function name, line number: snake_to_camel, line 3",
+    "trigger_condition": "Any input string with multiple parts separated by underscores, e.g., 'hello_world'.",
+    "expected_vs_actual": "Expected: 'HelloWorld' (proper camel case conversion). Actual: '_elloWorld' because `capitalize()` returns the capitalized string, but `and '_'` results in `'_'` being added between parts.",
+    "suggested_test_strategy": "Create a test with a simple multi-part snake case string, such as 'hello_world'. The expected output should be 'HelloWorld'. The test should assert that the output is not equal to the actual result from the buggy function.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3014,
+  "completion_tokens_total": 565,
+  "duration_seconds": 11.35,
+  "timestamp": "2026-05-31T13:39:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

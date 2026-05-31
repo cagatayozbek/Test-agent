@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_longest_common_subsequence",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import longest_common_subsequence\n\ndef test_longest_common_subsequence_matches_advance_b():\n    test_a = 'AGCAT'\n    test_b = 'GAC'\n    expected_lcs = 'GAC'  # A valid LCS of 'AGCAT' and 'GAC'\n    \n    result = longest_common_subsequence(test_a, test_b)\n    \n    assert result == expected_lcs, f\"Expected LCS to be '{expected_lcs}', but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkout334e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_matches_advance_b FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_longest_common_subsequence_matches_advance_b _______________\n\n    def test_longest_common_subsequence_matches_advance_b():\n        test_a = 'AGCAT'\n        test_b = 'GAC'\n        expected_lcs = 'GAC'  # A valid LCS of 'AGCAT' and 'GAC'\n    \n        result = longest_common_subsequence(test_a, test_b)\n    \n>       assert result == expected_lcs, f\"Expected LCS to be '{expected_lcs}', but got '{result}'\"\nE       AssertionError: Expected LCS to be 'GAC', but got 'AC'\nE       assert 'AC' == 'GAC'\nE         \nE         - GAC\nE         ? -\nE         + AC\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence_matches_advance_b\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_h59d68b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_matches_advance_b FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_longest_common_subsequence_matches_advance_b _______________\n\n    def test_longest_common_subsequence_matches_advance_b():\n        test_a = 'AGCAT'\n        test_b = 'GAC'\n        expected_lcs = 'GAC'  # A valid LCS of 'AGCAT' and 'GAC'\n    \n        result = longest_common_subsequence(test_a, test_b)\n    \n>       assert result == expected_lcs, f\"Expected LCS to be '{expected_lcs}', but got '{result}'\"\nE       AssertionError: Expected LCS to be 'GAC', but got 'AC'\nE       assert 'AC' == 'GAC'\nE         \nE         - GAC\nE         ? -\nE         + AC\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence_matches_advance_b\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:30:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_longest_common_subsequence_matches_advance_a_and_b():\n    # Test the specific bug where recursion advances only `a` and not `b`\n    result = longest_common_subsequence('AGCAT', 'GAC')\n    assert result == 'GA', \"Expected LCS to be 'GA', but got '{}'\".format(result)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxkbujb22\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_matches_advance_a_and_b FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_longest_common_subsequence_matches_advance_a_and_b ____________\n\n    def test_longest_common_subsequence_matches_advance_a_and_b():\n        # Test the specific bug where recursion advances only `a` and not `b`\n>       result = longest_common_subsequence('AGCAT', 'GAC')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'longest_common_subsequence' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence_matches_advance_a_and_b\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpenpq9wig\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_matches_advance_a_and_b FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_longest_common_subsequence_matches_advance_a_and_b ____________\n\n    def test_longest_common_subsequence_matches_advance_a_and_b():\n        # Test the specific bug where recursion advances only `a` and not `b`\n>       result = longest_common_subsequence('AGCAT', 'GAC')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'longest_common_subsequence' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence_matches_advance_a_and_b\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:30:18Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_longest_common_subsequence_matches_advance_a_and_b():\n    # Test the LCS for strings 'AGCAT' and 'GAC' should return 'GA'\n    result = longest_common_subsequence('AGCAT', 'GAC')\n    assert result == 'GA', f\"Expected LCS to be 'GA', but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphmvyyl0s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_matches_advance_a_and_b FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_longest_common_subsequence_matches_advance_a_and_b ____________\n\n    def test_longest_common_subsequence_matches_advance_a_and_b():\n        # Test the LCS for strings 'AGCAT' and 'GAC' should return 'GA'\n>       result = longest_common_subsequence('AGCAT', 'GAC')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'longest_common_subsequence' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence_matches_advance_a_and_b\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsbscuo0t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_matches_advance_a_and_b FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_longest_common_subsequence_matches_advance_a_and_b ____________\n\n    def test_longest_common_subsequence_matches_advance_a_and_b():\n        # Test the LCS for strings 'AGCAT' and 'GAC' should return 'GA'\n>       result = longest_common_subsequence('AGCAT', 'GAC')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'longest_common_subsequence' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_longest_common_subsequence_matches_advance_a_and_b\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:30:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2875,
+  "completion_tokens_total": 318,
+  "duration_seconds": 9.23,
+  "timestamp": "2026-05-31T13:30:22Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

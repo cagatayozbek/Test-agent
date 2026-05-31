@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_032",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import poly, find_zero\n\ndef test_find_zero_corrects_variable_issue():\n    # Buggy condition test case: incorrect variable reference in polynomial evaluation\n    # Should fail with the buggy version because it uses `end` before `begin`\n    assert round(poly([-6, 11, -6, 1], -0.5), 2) * round(poly([-6, 11, -6, 1], 1.5), 2) > 0\n\n    # Correct condition test case: should pass with fixed version\n    assert round(poly([-6, 11, -6, 1], -0.5), 2) * round(poly([-6, 11, -6, 1], 1.5), 2) < 0\n\n    # Test specific examples that are expected to pass\n    assert round(find_zero([1, 2]), 2) == -0.5\n    assert round(find_zero([-6, 11, -6, 1]), 2) == 1.0",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp26thf59o\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_corrects_variable_issue FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_find_zero_corrects_variable_issue ____________________\n\n    def test_find_zero_corrects_variable_issue():\n        # Buggy condition test case: incorrect variable reference in polynomial evaluation\n        # Should fail with the buggy version because it uses `end` before `begin`\n>       assert round(poly([-6, 11, -6, 1], -0.5), 2) * round(poly([-6, 11, -6, 1], 1.5), 2) > 0\nE       assert (-13.12 * 0.38) > 0\nE        +  where -13.12 = round(-13.125, 2)\nE        +    where -13.125 = poly([-6, 11, -6, 1], -0.5)\nE        +  and   0.38 = round(0.375, 2)\nE        +    where 0.375 = poly([-6, 11, -6, 1], 1.5)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_corrects_variable_issue - assert (-1...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpj1h9wcv7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_corrects_variable_issue FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_find_zero_corrects_variable_issue ____________________\n\n    def test_find_zero_corrects_variable_issue():\n        # Buggy condition test case: incorrect variable reference in polynomial evaluation\n        # Should fail with the buggy version because it uses `end` before `begin`\n>       assert round(poly([-6, 11, -6, 1], -0.5), 2) * round(poly([-6, 11, -6, 1], 1.5), 2) > 0\nE       assert (-13.12 * 0.38) > 0\nE        +  where -13.12 = round(-13.125, 2)\nE        +    where -13.125 = poly([-6, 11, -6, 1], -0.5)\nE        +  and   0.38 = round(0.375, 2)\nE        +    where 0.375 = poly([-6, 11, -6, 1], 1.5)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_corrects_variable_issue - assert (-1...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:24:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import find_zero\n\ndef test_find_zero_corrects_variable_issue():\n    # Test case that triggers the bug\n    coefficients = [-6, 11, -6, 1]  # Polynomial: (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n    expected_root = 1.0\n    result = find_zero(coefficients)\n    assert round(result, 2) == expected_root, f\"Expected root {expected_root}, but got {round(result, 2)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3k7mj9jq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_corrects_variable_issue FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_find_zero_corrects_variable_issue ____________________\n\n    def test_find_zero_corrects_variable_issue():\n        # Test case that triggers the bug\n        coefficients = [-6, 11, -6, 1]  # Polynomial: (x - 1) * (x - 2) * (x - 3) = -6 + 11x - 6x^2 + x^3\n        expected_root = 1.0\n        result = find_zero(coefficients)\n>       assert round(result, 2) == expected_root, f\"Expected root {expected_root}, but got {round(result, 2)}\"\nE       AssertionError: Expected root 1.0, but got -1.0\nE       assert -1.0 == 1.0\nE        +  where -1.0 = round(-1.0, 2)\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_corrects_variable_issue - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppij39zwm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_corrects_variable_issue PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:24:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 2077,
+  "completion_tokens_total": 360,
+  "duration_seconds": 7.54,
+  "timestamp": "2026-05-31T13:24:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

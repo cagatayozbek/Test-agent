@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_042",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import incr_list\n\ndef test_incr_list_correct_increment():\n    # This test should fail with the buggy code and pass with the fixed code\n    input_list = [1, 2, 3]\n    expected_output = [2, 3, 4]\n    result = incr_list(input_list)\n    assert result == expected_output, f\"Expected {expected_output} but got {result} for list [1, 2, 3]\"\n    \n    input_list = [5, 3, 5, 2, 3, 3, 9, 0, 123]\n    expected_output = [6, 4, 6, 3, 4, 4, 10, 1, 124]\n    result = incr_list(input_list)\n    assert result == expected_output, f\"Expected {expected_output} but got {result} for list [5, 3, 5, 2, 3, 3, 9, 0, 123]\"\n\ndef test_incr_list_edge_cases():\n    # This test should also fail with buggy code and pass with fixed code\n    input_list = [0, 0, 0]\n    expected_output = [1, 1, 1]\n    result = incr_list(input_list)\n    assert result == expected_output, f\"Expected {expected_output} but got {result} for list [0, 0, 0]\"\n    \n    input_list = [-1, -2, -3]\n    expected_output = [0, -1, -2]\n    result = incr_list(input_list)\n    assert result == expected_output, f\"Expected {expected_output} but got {result} for list [-1, -2, -3]\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppz2spld8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_incr_list_correct_increment FAILED               [ 50%]\n\n=================================== FAILURES ===================================\n_______________________ test_incr_list_correct_increment _______________________\n\n    def test_incr_list_correct_increment():\n        # This test should fail with the buggy code and pass with the fixed code\n        input_list = [1, 2, 3]\n        expected_output = [2, 3, 4]\n        result = incr_list(input_list)\n>       assert result == expected_output, f\"Expected {expected_output} but got {result} for list [1, 2, 3]\"\nE       AssertionError: Expected [2, 3, 4] but got [3, 4, 5] for list [1, 2, 3]\nE       assert [3, 4, 5] == [2, 3, 4]\nE         \nE         At index 0 diff: 3 != 2\nE         \nE         Full diff:\nE           [\nE         -     2,\nE               3,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_incr_list_correct_increment - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_7remw8p\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_incr_list_correct_increment PASSED               [ 50%]\ntest_generated.py::test_incr_list_edge_cases PASSED                      [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:18Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 627,
+  "completion_tokens_total": 417,
+  "duration_seconds": 7.69,
+  "timestamp": "2026-05-31T13:34:18Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

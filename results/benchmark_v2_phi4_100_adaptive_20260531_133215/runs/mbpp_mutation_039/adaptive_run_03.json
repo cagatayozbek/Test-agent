@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_039",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import volume_cube\n\ndef test_volume_of_cube_with_small_side_length():\n    side_length = 1\n    expected_volume = 1\n    calculated_volume = volume_cube(side_length)\n    assert calculated_volume == expected_volume, f\"Expected volume {expected_volume} for side length {side_length}, but got {calculated_volume}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5a5tosbn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_of_cube_with_small_side_length PASSED     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5jrxg18o\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_of_cube_with_small_side_length PASSED     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:54Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_volume_of_cube_with_small_side_length():\n    # Test with small integer values where the bug is triggered\n    side_length = 2\n    expected_volume = 2 * 2 * 2  # The correct calculation for volume\n    actual_volume = volume_cube(side_length)\n    assert actual_volume == expected_volume, f\"Expected volume {expected_volume}, but got {actual_volume} for side length {side_length}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsdn3uqki\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_of_cube_with_small_side_length FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_volume_of_cube_with_small_side_length __________________\n\n    def test_volume_of_cube_with_small_side_length():\n        # Test with small integer values where the bug is triggered\n        side_length = 2\n        expected_volume = 2 * 2 * 2  # The correct calculation for volume\n>       actual_volume = volume_cube(side_length)\n                        ^^^^^^^^^^^\nE       NameError: name 'volume_cube' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_of_cube_with_small_side_length - NameEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp12u_6vfh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_of_cube_with_small_side_length FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_volume_of_cube_with_small_side_length __________________\n\n    def test_volume_of_cube_with_small_side_length():\n        # Test with small integer values where the bug is triggered\n        side_length = 2\n        expected_volume = 2 * 2 * 2  # The correct calculation for volume\n>       actual_volume = volume_cube(side_length)\n                        ^^^^^^^^^^^\nE       NameError: name 'volume_cube' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_of_cube_with_small_side_length - NameEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import volume_cube\n\ndef test_volume_of_cube_with_side_length_of_2():\n    side_length = 2\n    expected_volume = side_length ** 3\n    actual_volume = volume_cube(side_length)\n    assert actual_volume == expected_volume, f\"Expected volume {expected_volume} for side length {side_length}, but got {actual_volume}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpczzobdsn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_of_cube_with_side_length_of_2 FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_volume_of_cube_with_side_length_of_2 ___________________\n\n    def test_volume_of_cube_with_side_length_of_2():\n        side_length = 2\n        expected_volume = side_length ** 3\n        actual_volume = volume_cube(side_length)\n>       assert actual_volume == expected_volume, f\"Expected volume {expected_volume} for side length {side_length}, but got {actual_volume}\"\nE       AssertionError: Expected volume 8 for side length 2, but got 2\nE       assert 2 == 8\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_of_cube_with_side_length_of_2 - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7gpj6wcg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_volume_of_cube_with_side_length_of_2 PASSED      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The bug involves using the floor division operator `//` instead of the multiplication operator `*`, which incorrectly calculates the volume of a cube.",
+    "bug_location": "function volume_cube, line 2",
+    "trigger_condition": "Any non-1 integer value for `l` triggers the bug since `l // l` will result in 1 for any non-zero `l`, leading to incorrect volume calculation.",
+    "expected_vs_actual": "EXPECTED: For a cube with side length `l`, the volume should be `l * l * l`. ACTUAL: The volume is calculated as `l`, since `l // l` results in `1`.",
+    "suggested_test_strategy": "Test with small integer values for `l` such as 2, 3, or 4. Assert that the volume is equal to `l**3`. For example, using `l = 2`, expect the result to be 8, but the bug will yield 2.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3190,
+  "completion_tokens_total": 543,
+  "duration_seconds": 11.84,
+  "timestamp": "2026-05-31T13:39:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_024",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import largest_divisor\n\ndef test_largest_divisor():\n    assert largest_divisor(15) == 5, \"The largest divisor of 15 should be 5, not 15 itself.\"\n    assert largest_divisor(12) == 6, \"The largest divisor of 12 should be 6, not 12 itself.\"\n    assert largest_divisor(1) == 1, \"The largest divisor of 1 should be 1.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvd3f5vbt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_largest_divisor _____________________________\n\n    def test_largest_divisor():\n>       assert largest_divisor(15) == 5, \"The largest divisor of 15 should be 5, not 15 itself.\"\nE       AssertionError: The largest divisor of 15 should be 5, not 15 itself.\nE       assert None == 5\nE        +  where None = largest_divisor(15)\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor - AssertionError: The largest ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdo0vcc94\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_largest_divisor _____________________________\n\n    def test_largest_divisor():\n        assert largest_divisor(15) == 5, \"The largest divisor of 15 should be 5, not 15 itself.\"\n        assert largest_divisor(12) == 6, \"The largest divisor of 12 should be 6, not 12 itself.\"\n>       assert largest_divisor(1) == 1, \"The largest divisor of 1 should be 1.\"\n               ^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 1\n\n    def largest_divisor(n: int) -> int:\n        \"\"\" For a given number n, find the largest number that divides n evenly, smaller than n\n        >>> largest_divisor(15)\n        5\n        \"\"\"\n        for i in reversed(range(n)):\n>           if n % i == 0:\n               ^^^^^\nE           ZeroDivisionError: integer modulo by zero\n\nsource.py:9: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor - ZeroDivisionError: integer m...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:46Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_largest_divisor():\n    # The largest divisor of a number should not be the number itself.\n    # For prime numbers, the largest divisor smaller than the number should be 1.\n    # Here, we test with a prime number to ensure the test passes on the fixed code.\n    assert largest_divisor(7) == 1, \"The largest divisor of 7 should be 1, not 7 itself.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsmzwpuwq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_largest_divisor _____________________________\n\n    def test_largest_divisor():\n        # The largest divisor of a number should not be the number itself.\n        # For prime numbers, the largest divisor smaller than the number should be 1.\n        # Here, we test with a prime number to ensure the test passes on the fixed code.\n>       assert largest_divisor(7) == 1, \"The largest divisor of 7 should be 1, not 7 itself.\"\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'largest_divisor' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor - NameError: name 'largest_div...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp93hwpeol\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_largest_divisor FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_largest_divisor _____________________________\n\n    def test_largest_divisor():\n        # The largest divisor of a number should not be the number itself.\n        # For prime numbers, the largest divisor smaller than the number should be 1.\n        # Here, we test with a prime number to ensure the test passes on the fixed code.\n>       assert largest_divisor(7) == 1, \"The largest divisor of 7 should be 1, not 7 itself.\"\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'largest_divisor' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor - NameError: name 'largest_div...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_largest_divisor():\n    # Test using a prime number, where the largest divisor should be 1\n    assert largest_divisor(7) == 1, \"The largest divisor of 7 should be 1, not 7 itself.\"\n    # Test using another prime number, 11\n    assert largest_divisor(11) == 1, \"The largest divisor of 11 should be 1, not 11 itself.\"\n    # Test with a composite number, where the largest divisor is not the number itself\n    assert largest_divisor(15) == 5, \"The largest divisor of 15 should be 5, not 15 itself.\"\n\n# Check for numbers where the largest divisor is less than the number itself\ndef test_largest_divisor_non_self():\n    assert largest_divisor(9) == 3, \"The largest divisor of 9 should be 3, not 9 itself.\"\n    assert largest_divisor(12) == 6, \"The largest divisor of 12 should be 6, not 12 itself.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6yxg1qt5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_largest_divisor FAILED                           [ 50%]\n\n=================================== FAILURES ===================================\n_____________________________ test_largest_divisor _____________________________\n\n    def test_largest_divisor():\n        # Test using a prime number, where the largest divisor should be 1\n>       assert largest_divisor(7) == 1, \"The largest divisor of 7 should be 1, not 7 itself.\"\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'largest_divisor' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor - NameError: name 'largest_div...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpao8wzc7y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_largest_divisor FAILED                           [ 50%]\n\n=================================== FAILURES ===================================\n_____________________________ test_largest_divisor _____________________________\n\n    def test_largest_divisor():\n        # Test using a prime number, where the largest divisor should be 1\n>       assert largest_divisor(7) == 1, \"The largest divisor of 7 should be 1, not 7 itself.\"\n               ^^^^^^^^^^^^^^^\nE       NameError: name 'largest_divisor' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_largest_divisor - NameError: name 'largest_div...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The function uses the subtraction operator '-' instead of the modulus operator '%' to check for divisibility, leading to incorrect behavior.",
+    "bug_location": "function name: largest_divisor, line number: 7",
+    "trigger_condition": "Any input number n where the largest divisor smaller than n is not n itself.",
+    "expected_vs_actual": "EXPECTED: Find the largest divisor of n that is smaller than n. ACTUAL: Returns n itself when n-i == 0, which is incorrect for finding the largest divisor.",
+    "suggested_test_strategy": "Use pytest to test numbers where the largest divisor is clearly smaller than the number itself, such as prime numbers or numbers with small divisors.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3103,
+  "completion_tokens_total": 717,
+  "duration_seconds": 14.34,
+  "timestamp": "2026-05-31T13:33:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_amicable_numbers_sum_comparison_operator():\n    result = amicable_numbers_sum(220)\n    assert result == 284, \"The function should correctly identify and sum amicable numbers, resulting in 284 for the input 220.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxu6lp6eq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_comparison_operator FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_amicable_numbers_sum_comparison_operator _________________\n\n    def test_amicable_numbers_sum_comparison_operator():\n>       result = amicable_numbers_sum(220)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_comparison_operator - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqo7fwf0d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_comparison_operator FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_amicable_numbers_sum_comparison_operator _________________\n\n    def test_amicable_numbers_sum_comparison_operator():\n>       result = amicable_numbers_sum(220)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_comparison_operator - Nam...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_amicable_numbers_sum():\n    result = amicable_numbers_sum(220)\n    assert result == 504, \"The sum should be 504 for the known amicable pair (220, 284).\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp3l0knjr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_amicable_numbers_sum ___________________________\n\n    def test_amicable_numbers_sum():\n>       result = amicable_numbers_sum(220)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum - NameError: name 'amicab...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmh3slnry\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_amicable_numbers_sum ___________________________\n\n    def test_amicable_numbers_sum():\n>       result = amicable_numbers_sum(220)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum - NameError: name 'amicab...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_amicable_numbers_sum():\n    limit = 300\n    expected_sum = 504  # Known sum of amicable numbers below 1000, like (220, 284)\n    result = amicable_numbers_sum(limit)\n    assert result == expected_sum, f\"Expected sum of amicable numbers below {limit} to be {expected_sum}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwiyhi_zp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_amicable_numbers_sum ___________________________\n\n    def test_amicable_numbers_sum():\n        limit = 300\n        expected_sum = 504  # Known sum of amicable numbers below 1000, like (220, 284)\n>       result = amicable_numbers_sum(limit)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum - NameError: name 'amicab...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpau805c0l\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_amicable_numbers_sum ___________________________\n\n    def test_amicable_numbers_sum():\n        limit = 300\n        expected_sum = 504  # Known sum of amicable numbers below 1000, like (220, 284)\n>       result = amicable_numbers_sum(limit)\n                 ^^^^^^^^^^^^^^^^^^^^\nE       NameError: name 'amicable_numbers_sum' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum - NameError: name 'amicab...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:39:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The comparison operator in the if condition `if num == sum_fact2 and num == sum_fact` incorrectly identifies amicable numbers. Amicable numbers require `num` to be equal to `sum_fact2` and `sum_fact` to be equal to `num`, not `sum_fact2`.",
+    "bug_location": "amicable_numbers_sum function, line 12",
+    "trigger_condition": "Any input where there exist amicable numbers, such as limit = 300.",
+    "expected_vs_actual": "EXPECTED: Amicable numbers like (220, 284) are identified correctly. ACTUAL: Only numbers where `num == sum_fact` are identified, missing true amicable pairs.",
+    "suggested_test_strategy": "Write a test case using `pytest` with a known amicable pair, such as limit = 300, and assert that the sum of amicable numbers is 504.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3737,
+  "completion_tokens_total": 556,
+  "duration_seconds": 13.14,
+  "timestamp": "2026-05-31T13:39:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

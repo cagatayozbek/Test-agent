@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_114",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_minSubArraySum_calls_correct_min_function():\n    nums = [1, -2, -3, 4, -5]\n    expected_min_sum = -5  # This is the expected result based on the correct logic: minSubArraySum = -maxSubArraySum\n\n    # Buggy version call\n    result_buggy = minSubArraySum(nums)\n    assert result_buggy != expected_min_sum, f\"Expected min sub-array sum to be {expected_min_sum}, but got {result_buggy} due to incorrect function call.\"\n\n    # Fixed version call\n    nums = [1, -2, -3, 4, -5]\n    expected_min_sum = -5  # Correct calculation for the fixed version\n    result_fixed = minSubArraySum(nums)\n    assert result_fixed == expected_min_sum, f\"Expected min sub-array sum to be {expected_min_sum}, but got {result_fixed} with correct function call.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg_a69l25\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_calls_correct_min_function FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_minSubArraySum_calls_correct_min_function ________________\n\n    def test_minSubArraySum_calls_correct_min_function():\n        nums = [1, -2, -3, 4, -5]\n        expected_min_sum = -5  # This is the expected result based on the correct logic: minSubArraySum = -maxSubArraySum\n    \n        # Buggy version call\n>       result_buggy = minSubArraySum(nums)\n                       ^^^^^^^^^^^^^^\nE       NameError: name 'minSubArraySum' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_calls_correct_min_function - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnvdieq4l\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_calls_correct_min_function FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_minSubArraySum_calls_correct_min_function ________________\n\n    def test_minSubArraySum_calls_correct_min_function():\n        nums = [1, -2, -3, 4, -5]\n        expected_min_sum = -5  # This is the expected result based on the correct logic: minSubArraySum = -maxSubArraySum\n    \n        # Buggy version call\n>       result_buggy = minSubArraySum(nums)\n                       ^^^^^^^^^^^^^^\nE       NameError: name 'minSubArraySum' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_calls_correct_min_function - Na...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_minSubArraySum_trigger_bug():\n    # Test case where all elements are non-positive, triggering the bug condition\n    nums = [-1, -2, -3, -4]\n    max_sum = sum(nums)  # Expecting max_sum = -10 (since all elements are negative)\n    result_expected = -max_sum  # Should be -1, corresponding to the smallest element\n\n    # Create the expected buggy output\n    result_buggy = min(-i for i in nums)  # Incorrectly calculated min_sub_array sum\n\n    # Asserting that the buggy behavior returns incorrect min_sub_array sum\n    assert minSubArraySum(nums) == result_buggy, f\"Expected minSubArraySum to return {result_buggy} for input {nums}\"\n\n    # Asserting that the fix should correctly return the smallest element\n    assert minSubArraySum(nums) == result_expected, f\"Expected minSubArraySum to return {result_expected} for input {nums}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsv2dcxkc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_trigger_bug FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_minSubArraySum_trigger_bug ________________________\n\n    def test_minSubArraySum_trigger_bug():\n        # Test case where all elements are non-positive, triggering the bug condition\n        nums = [-1, -2, -3, -4]\n        max_sum = sum(nums)  # Expecting max_sum = -10 (since all elements are negative)\n        result_expected = -max_sum  # Should be -1, corresponding to the smallest element\n    \n        # Create the expected buggy output\n        result_buggy = min(-i for i in nums)  # Incorrectly calculated min_sub_array sum\n    \n        # Asserting that the buggy behavior returns incorrect min_sub_array sum\n>       assert minSubArraySum(nums) == result_buggy, f\"Expected minSubArraySum to return {result_buggy} for input {nums}\"\n               ^^^^^^^^^^^^^^\nE       NameError: name 'minSubArraySum' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_trigger_bug - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxkfsp_2p\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_trigger_bug FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_minSubArraySum_trigger_bug ________________________\n\n    def test_minSubArraySum_trigger_bug():\n        # Test case where all elements are non-positive, triggering the bug condition\n        nums = [-1, -2, -3, -4]\n        max_sum = sum(nums)  # Expecting max_sum = -10 (since all elements are negative)\n        result_expected = -max_sum  # Should be -1, corresponding to the smallest element\n    \n        # Create the expected buggy output\n        result_buggy = min(-i for i in nums)  # Incorrectly calculated min_sub_array sum\n    \n        # Asserting that the buggy behavior returns incorrect min_sub_array sum\n>       assert minSubArraySum(nums) == result_buggy, f\"Expected minSubArraySum to return {result_buggy} for input {nums}\"\n               ^^^^^^^^^^^^^^\nE       NameError: name 'minSubArraySum' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_trigger_bug - NameError: name '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import minSubArraySum\n\ndef test_minSubArraySum_nonPositiveElements():\n    nums = [-1, -2, -3]\n    expected_min_sum = -6\n    result_buggy = minSubArraySum(nums)\n    assert result_buggy == expected_min_sum, f\"Expected {expected_min_sum} but got {result_buggy} for input {nums}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp74lq_k2i\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_nonPositiveElements FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_minSubArraySum_nonPositiveElements ____________________\n\n    def test_minSubArraySum_nonPositiveElements():\n        nums = [-1, -2, -3]\n        expected_min_sum = -6\n        result_buggy = minSubArraySum(nums)\n>       assert result_buggy == expected_min_sum, f\"Expected {expected_min_sum} but got {result_buggy} for input {nums}\"\nE       AssertionError: Expected -6 but got 1 for input [-1, -2, -3]\nE       assert 1 == -6\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_nonPositiveElements - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpfzt1l7th\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_nonPositiveElements PASSED        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:36:16Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The bug is that the function calculates the minimum sub-array sum incorrectly by using `min(-i for i in nums)` instead of calculating `min_sum = -max_sum` when `max_sum` is 0.",
+    "bug_location": "minSubArraySum, line 15",
+    "trigger_condition": "When the maximum sub-array sum is 0, which happens when all elements are non-positive.",
+    "expected_vs_actual": "Expect the minimum sub-array sum to be the smallest element in `nums` when all elements are non-positive. Actual behavior calculates the minimum element as if it was a negative maximum sub-array sum, leading to incorrect results.",
+    "suggested_test_strategy": "Create test cases where all elements are non-positive, such as `[-1, -2, -3]`, and assert that the function returns the minimum element as the result. This will reveal the bug as the function should return `-6` instead of `-1`.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3566,
+  "completion_tokens_total": 721,
+  "duration_seconds": 14.98,
+  "timestamp": "2026-05-31T13:36:16Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

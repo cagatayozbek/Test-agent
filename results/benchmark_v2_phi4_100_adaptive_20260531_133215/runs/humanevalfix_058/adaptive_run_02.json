@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_058",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_common_function_returns_correct_sorted_unique_common_elements():\n    from source import common\n\n    # Test case that exposes the bug\n    result_buggy = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    assert result_buggy == [1, 4, 3, 34, 5, 653], (\n        \"Buggy code should return [1, 4, 3, 34, 5, 653] for common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\"\n    )\n\n    # Test case that confirms the fix works\n    result_fixed = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n    assert result_fixed == [1, 5, 653], (\n        \"Fixed code should return [1, 5, 653] for common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8dbbbvge\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_function_returns_correct_sorted_unique_common_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n______ test_common_function_returns_correct_sorted_unique_common_elements ______\n\n    def test_common_function_returns_correct_sorted_unique_common_elements():\n        from source import common\n    \n        # Test case that exposes the bug\n        result_buggy = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n>       assert result_buggy == [1, 4, 3, 34, 5, 653], (\n            \"Buggy code should return [1, 4, 3, 34, 5, 653] for common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\"\n        )\nE       AssertionError: Buggy code should return [1, 4, 3, 34, 5, 653] for common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\nE       assert [1, 2, 3, 4, 5, 34, ...] == [1, 4, 3, 34, 5, 653]\nE         \nE         At index 1 diff: 2 != 4\nE         Left contains one more item: 653\nE         \nE         Full diff:\nE           [\nE               1,...\nE         \nE         ...Full output truncated (11 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_function_returns_correct_sorted_unique_common_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1lhovodf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_function_returns_correct_sorted_unique_common_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n______ test_common_function_returns_correct_sorted_unique_common_elements ______\n\n    def test_common_function_returns_correct_sorted_unique_common_elements():\n        from source import common\n    \n        # Test case that exposes the bug\n        result_buggy = common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\n>       assert result_buggy == [1, 4, 3, 34, 5, 653], (\n            \"Buggy code should return [1, 4, 3, 34, 5, 653] for common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\"\n        )\nE       AssertionError: Buggy code should return [1, 4, 3, 34, 5, 653] for common([1, 4, 3, 34, 653, 2, 5], [5, 7, 1, 5, 9, 653, 121])\nE       assert [1, 5, 653] == [1, 4, 3, 34, 5, 653]\nE         \nE         At index 1 diff: 5 != 4\nE         Right contains 3 more items, first extra item: 34\nE         \nE         Full diff:\nE           [\nE               1,...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_function_returns_correct_sorted_unique_common_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_common_function_returns_correct_sorted_unique_common_elements():\n    l1 = [1, 4, 3, 34, 653, 2, 5]\n    l2 = [5, 7, 1, 5, 9, 653, 121]\n    expected_result = [1, 5, 653]\n    result = common(l1, l2)\n    assert result == expected_result, f\"Expected sorted unique common elements {expected_result}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpfuzjcqik\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_function_returns_correct_sorted_unique_common_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n______ test_common_function_returns_correct_sorted_unique_common_elements ______\n\n    def test_common_function_returns_correct_sorted_unique_common_elements():\n        l1 = [1, 4, 3, 34, 653, 2, 5]\n        l2 = [5, 7, 1, 5, 9, 653, 121]\n        expected_result = [1, 5, 653]\n>       result = common(l1, l2)\n                 ^^^^^^\nE       NameError: name 'common' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_function_returns_correct_sorted_unique_common_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpv66tp5tw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_function_returns_correct_sorted_unique_common_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n______ test_common_function_returns_correct_sorted_unique_common_elements ______\n\n    def test_common_function_returns_correct_sorted_unique_common_elements():\n        l1 = [1, 4, 3, 34, 653, 2, 5]\n        l2 = [5, 7, 1, 5, 9, 653, 121]\n        expected_result = [1, 5, 653]\n>       result = common(l1, l2)\n                 ^^^^^^\nE       NameError: name 'common' is not defined\n\ntest_generated.py:5: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_function_returns_correct_sorted_unique_common_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_common_function_returns_empty_list_when_no_common_elements():\n    l1 = [1, 4, 3]\n    l2 = [5, 6]\n\n    expected_result = []\n\n    result = common(l1, l2)\n\n    assert result == expected_result, f\"Expected {expected_result} but got {result}. The function should return an empty list when there are no common elements between the lists.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_1dw9pwi\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_function_returns_empty_list_when_no_common_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n_______ test_common_function_returns_empty_list_when_no_common_elements ________\n\n    def test_common_function_returns_empty_list_when_no_common_elements():\n        l1 = [1, 4, 3]\n        l2 = [5, 6]\n    \n        expected_result = []\n    \n>       result = common(l1, l2)\n                 ^^^^^^\nE       NameError: name 'common' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_function_returns_empty_list_when_no_common_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpko14vxxo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_common_function_returns_empty_list_when_no_common_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n_______ test_common_function_returns_empty_list_when_no_common_elements ________\n\n    def test_common_function_returns_empty_list_when_no_common_elements():\n        l1 = [1, 4, 3]\n        l2 = [5, 6]\n    \n        expected_result = []\n    \n>       result = common(l1, l2)\n                 ^^^^^^\nE       NameError: name 'common' is not defined\n\ntest_generated.py:7: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_common_function_returns_empty_list_when_no_common_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The function adds every element of the first list to the result set without checking if it is also in the second list, leading to incorrect results.",
+    "bug_location": "common function, line 9",
+    "trigger_condition": "When the lists have elements that are not common to both, e.g., common([1, 4], [5, 6])",
+    "expected_vs_actual": "Expected to return an empty list as there are no common elements. Actual returns [1, 4].",
+    "suggested_test_strategy": "Test with lists that have no common elements to ensure the function returns an empty list. For example, use common([1, 4], [5, 6]).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3725,
+  "completion_tokens_total": 745,
+  "duration_seconds": 16.12,
+  "timestamp": "2026-05-31T13:34:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

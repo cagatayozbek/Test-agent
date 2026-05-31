@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_015",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_list_to_float_conversion():\n    input_list = [('a', 'b'), ('c', '1'), ('d', '2')]\n    expected_output = [('a', 'b'), ('c', 1.0), ('d', 2.0)]\n    assert list_to_float(input_list) == expected_output, \"The conversion of elements to floats should be correctly applied in the second tuple of each pair.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp80qqbirq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_conversion FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_list_to_float_conversion _________________________\n\n    def test_list_to_float_conversion():\n        input_list = [('a', 'b'), ('c', '1'), ('d', '2')]\n        expected_output = [('a', 'b'), ('c', 1.0), ('d', 2.0)]\n>       assert list_to_float(input_list) == expected_output, \"The conversion of elements to floats should be correctly applied in the second tuple of each pair.\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'list_to_float' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_conversion - NameError: name 'li...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6waar44i\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_conversion FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_list_to_float_conversion _________________________\n\n    def test_list_to_float_conversion():\n        input_list = [('a', 'b'), ('c', '1'), ('d', '2')]\n        expected_output = [('a', 'b'), ('c', 1.0), ('d', 2.0)]\n>       assert list_to_float(input_list) == expected_output, \"The conversion of elements to floats should be correctly applied in the second tuple of each pair.\"\n               ^^^^^^^^^^^^^\nE       NameError: name 'list_to_float' is not defined\n\ntest_generated.py:4: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_conversion - NameError: name 'li...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_conversion():\n    input_list = [(\"a\", \"123\"), (\"b\", \"456\")]\n    expected_output = [(\"a\", \"123.0\"), (\"b\", \"456.0\")]\n    output = list_to_float(input_list)\n    assert output == expected_output, f\"Expected {expected_output} but got {output}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7ffpnjak\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_conversion FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_list_to_float_conversion _________________________\n\n    def test_list_to_float_conversion():\n        input_list = [(\"a\", \"123\"), (\"b\", \"456\")]\n        expected_output = [(\"a\", \"123.0\"), (\"b\", \"456.0\")]\n        output = list_to_float(input_list)\n>       assert output == expected_output, f\"Expected {expected_output} but got {output}\"\nE       AssertionError: Expected [('a', '123.0'), ('b', '456.0')] but got [(123.0, 123.0), (456.0, 456.0)]\nE       assert [(123.0, 123....456.0, 456.0)] == [('a', '123.0...'b', '456.0')]\nE         \nE         At index 0 diff: (123.0, 123.0) != ('a', '123.0')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'a',...\nE         \nE         ...Full output truncated (13 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_conversion - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuep4mz2q\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_conversion FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_list_to_float_conversion _________________________\n\n    def test_list_to_float_conversion():\n        input_list = [(\"a\", \"123\"), (\"b\", \"456\")]\n        expected_output = [(\"a\", \"123.0\"), (\"b\", \"456.0\")]\n        output = list_to_float(input_list)\n>       assert output == expected_output, f\"Expected {expected_output} but got {output}\"\nE       AssertionError: Expected [('a', '123.0'), ('b', '456.0')] but got [('a', 123.0), ('b', 456.0)]\nE       assert [('a', 123.0), ('b', 456.0)] == [('a', '123.0...'b', '456.0')]\nE         \nE         At index 0 diff: ('a', 123.0) != ('a', '123.0')\nE         \nE         Full diff:\nE           [\nE               (\nE                   'a',...\nE         \nE         ...Full output truncated (11 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_conversion - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_conversion():\n    test_list = [(\"a\", \"1\"), (\"2\", \"b\"), (\"3\", \"c\")]\n    expected_output = [(\"a\", 1.0), (\"2\", 2.0), (\"3\", 3.0)]\n    assert list_to_float(test_list) == expected_output",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpfx03j2jn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_conversion FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_list_to_float_conversion _________________________\n\n    def test_list_to_float_conversion():\n        test_list = [(\"a\", \"1\"), (\"2\", \"b\"), (\"3\", \"c\")]\n        expected_output = [(\"a\", 1.0), (\"2\", 2.0), (\"3\", 3.0)]\n>       assert list_to_float(test_list) == expected_output\nE       AssertionError: assert [(1.0, 1.0), ...), ('c', 'c')] == [('a', 1.0), ...), ('3', 3.0)]\nE         \nE         At index 0 diff: (1.0, 1.0) != ('a', 1.0)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'a',...\nE         \nE         ...Full output truncated (26 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_conversion - AssertionError: ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi7d6z_4e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_conversion FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_list_to_float_conversion _________________________\n\n    def test_list_to_float_conversion():\n        test_list = [(\"a\", \"1\"), (\"2\", \"b\"), (\"3\", \"c\")]\n        expected_output = [(\"a\", 1.0), (\"2\", 2.0), (\"3\", 3.0)]\n>       assert list_to_float(test_list) == expected_output\nE       AssertionError: assert [('a', 1.0), ...), (3.0, 'c')] == [('a', 1.0), ...), ('3', 3.0)]\nE         \nE         At index 1 diff: (2.0, 'b') != ('2', 2.0)\nE         \nE         Full diff:\nE           [\nE               (\nE                   'a',...\nE         \nE         ...Full output truncated (13 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_conversion - AssertionError: ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:38:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is caused by the mutation of the constant literal 0 to 1 in the condition `if ele.isalpha()`. This change causes a logical error in the condition checking, affecting the conversion process of elements within the tuples.",
+    "bug_location": "list_2_0, line 6",
+    "trigger_condition": "A tuple containing an element that is alphabetic in the input list.",
+    "expected_vs_actual": "The expected behavior is to convert non-alphabetic elements to floats. The actual behavior, due to the mutation, incorrectly converts the element at index 1 within each tuple, regardless of its type, potentially converting alphabetic elements into floats based on the changed condition.",
+    "suggested_test_strategy": "Create a test list with tuples containing both alphabetic and numeric strings, ensuring at least one alphabetic string is at index 1. Assert that the output retains the original type of elements, with non-alphabetic elements converted to floats.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3266,
+  "completion_tokens_total": 553,
+  "duration_seconds": 12.34,
+  "timestamp": "2026-05-31T13:38:05Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

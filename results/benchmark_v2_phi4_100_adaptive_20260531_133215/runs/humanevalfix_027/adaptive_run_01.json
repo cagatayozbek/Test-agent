@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_027",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import flip_case\n\n@pytest.mark.parametrize(\"input_string, expected_output\", [\n    ('Hello', 'hELLO'),\n    ('HELLO', 'hello'),\n    ('HeLLo', 'hellO'),\n    ('hello', 'HELLO'),\n    ('', ''),\n    ('123', '123'),  # edge case with non-alphabetic characters\n    ('Hello World!', 'hELLO wORLD!'),\n])\ndef test_flip_case(input_string, expected_output):\n    assert flip_case(input_string) == expected_output, f\"Expected flip_case('{input_string}') to produce '{expected_output}', but got incorrect result.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphnkk7tpg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 7 items\n\ntest_generated.py::test_flip_case[Hello-hELLO] FAILED                    [ 14%]\n\n=================================== FAILURES ===================================\n_________________________ test_flip_case[Hello-hELLO] __________________________\n\ninput_string = 'Hello', expected_output = 'hELLO'\n\n    @pytest.mark.parametrize(\"input_string, expected_output\", [\n        ('Hello', 'hELLO'),\n        ('HELLO', 'hello'),\n        ('HeLLo', 'hellO'),\n        ('hello', 'HELLO'),\n        ('', ''),\n        ('123', '123'),  # edge case with non-alphabetic characters\n        ('Hello World!', 'hELLO wORLD!'),\n    ])\n    def test_flip_case(input_string, expected_output):\n>       assert flip_case(input_string) == expected_output, f\"Expected flip_case('{input_string}') to produce '{expected_output}', but got incorrect result.\"\nE       AssertionError: Expected flip_case('Hello') to produce 'hELLO', but got incorrect result.\nE       assert 'hello' == 'hELLO'\nE         \nE         - hELLO\nE         + hello\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flip_case[Hello-hELLO] - AssertionError: Expec...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxirgqpid\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 7 items\n\ntest_generated.py::test_flip_case[Hello-hELLO] PASSED                    [ 14%]\ntest_generated.py::test_flip_case[HELLO-hello] PASSED                    [ 28%]\ntest_generated.py::test_flip_case[HeLLo-hellO] FAILED                    [ 42%]\n\n=================================== FAILURES ===================================\n_________________________ test_flip_case[HeLLo-hellO] __________________________\n\ninput_string = 'HeLLo', expected_output = 'hellO'\n\n    @pytest.mark.parametrize(\"input_string, expected_output\", [\n        ('Hello', 'hELLO'),\n        ('HELLO', 'hello'),\n        ('HeLLo', 'hellO'),\n        ('hello', 'HELLO'),\n        ('', ''),\n        ('123', '123'),  # edge case with non-alphabetic characters\n        ('Hello World!', 'hELLO wORLD!'),\n    ])\n    def test_flip_case(input_string, expected_output):\n>       assert flip_case(input_string) == expected_output, f\"Expected flip_case('{input_string}') to produce '{expected_output}', but got incorrect result.\"\nE       AssertionError: Expected flip_case('HeLLo') to produce 'hellO', but got incorrect result.\nE       assert 'hEllO' == 'hellO'\nE         \nE         - hellO\nE         ?  ^\nE         + hEllO\nE         ?  ^\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flip_case[HeLLo-hellO] - AssertionError: Expec...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 2 passed in 0.02s ==========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:49Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_flip_case_bug_exposed():\n    result = flip_case('Hello')\n    assert result == 'hELLO', f\"Expected 'hELLO', but got '{result}'\"\n\ndef test_flip_case_bug_fixed():\n    result = flip_case('Hello')\n    assert result == 'HeLLo', f\"Expected 'HeLLo', but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyqxv88e3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_flip_case_bug_exposed FAILED                     [ 50%]\n\n=================================== FAILURES ===================================\n__________________________ test_flip_case_bug_exposed __________________________\n\n    def test_flip_case_bug_exposed():\n>       result = flip_case('Hello')\n                 ^^^^^^^^^\nE       NameError: name 'flip_case' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flip_case_bug_exposed - NameError: name 'flip_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdxcqy80t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_flip_case_bug_exposed FAILED                     [ 50%]\n\n=================================== FAILURES ===================================\n__________________________ test_flip_case_bug_exposed __________________________\n\n    def test_flip_case_bug_exposed():\n>       result = flip_case('Hello')\n                 ^^^^^^^^^\nE       NameError: name 'flip_case' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flip_case_bug_exposed - NameError: name 'flip_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:54Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import flip_case\n\ndef test_flip_case_mixed_case():\n    test_input = 'Hello'\n    expected_output = 'hELLO'\n    result = flip_case(test_input)\n    assert result == expected_output, f\"Expected '{expected_output}' but got '{result}' for input '{test_input}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpce7z5cwa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_flip_case_mixed_case FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_flip_case_mixed_case ___________________________\n\n    def test_flip_case_mixed_case():\n        test_input = 'Hello'\n        expected_output = 'hELLO'\n        result = flip_case(test_input)\n>       assert result == expected_output, f\"Expected '{expected_output}' but got '{result}' for input '{test_input}'\"\nE       AssertionError: Expected 'hELLO' but got 'hello' for input 'Hello'\nE       assert 'hello' == 'hELLO'\nE         \nE         - hELLO\nE         + hello\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flip_case_mixed_case - AssertionError: Expecte...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpns4nutqp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_flip_case_mixed_case PASSED                      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:33:56Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The function `flip_case` incorrectly uses `string.lower()` instead of `string.swapcase()`, leading to incorrect behavior.",
+    "bug_location": "flip_case function, line 6",
+    "trigger_condition": "Any input string with mixed case characters, e.g., 'Hello'.",
+    "expected_vs_actual": "Expected to return 'hELLO' for input 'Hello', but actually returns 'hello'.",
+    "suggested_test_strategy": "Use pytest to test the function with a string like 'Hello' and assert that the output is 'hELLO'.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2881,
+  "completion_tokens_total": 433,
+  "duration_seconds": 9.84,
+  "timestamp": "2026-05-31T13:33:56Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

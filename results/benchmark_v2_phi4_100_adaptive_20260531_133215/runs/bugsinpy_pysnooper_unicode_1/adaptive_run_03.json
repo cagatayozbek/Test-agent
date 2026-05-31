@@ -1,0 +1,75 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_detect_and_write_unicode_encoding() -> None:\n    # Create a source with UTF-8 encoded bytes\n    utf8_source = [b\"# coding: utf-8\\n\", b\"x = b'\\xf6\\x9f'\\n\"]\n\n    # Instantiate the Tracer with a path to a file\n    tracer = Tracer(\"test_unicode_output.txt\")\n\n    # Process the source and write it to the file\n    rendered_source = tracer.dump_source(utf8_source)\n\n    # Read back the file content and verify it maintains the UTF-8 characters without corruption\n    with open(\"test_unicode_output.txt\", \"r\", encoding=\"utf-8\") as fh:\n        file_content = fh.read()\n\n    assert file_content == \"\\uf6\\x9f\", \"The file should contain the original UTF-8 characters without corruption.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn14ovtcj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/python.py:507: in importtestmodule\n    mod = import_path(\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1387: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1360: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:935: in _load_unlocked\n    ???\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n    source_stat, co = _rewrite_test(fn, self.config)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:357: in _rewrite_test\n    tree = ast.parse(source, filename=strfn)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/ast.py:54: in parse\n    return compile(source, filename, mode, flags,\nE     File \"/private/tmp/claude-501/tmpn14ovtcj/test_generated.py\", line 15\nE       assert file_content == \"\\uf6\\x9f\", \"The file should contain the original UTF-8 characters without corruption.\"\nE                              ^^^^^^^^^^\nE   SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 0-3: truncated \\uXXXX escape\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.09s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6nwzcosz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/python.py:507: in importtestmodule\n    mod = import_path(\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1387: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1360: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:935: in _load_unlocked\n    ???\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n    source_stat, co = _rewrite_test(fn, self.config)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:357: in _rewrite_test\n    tree = ast.parse(source, filename=strfn)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/ast.py:54: in parse\n    return compile(source, filename, mode, flags,\nE     File \"/private/tmp/claude-501/tmp6nwzcosz/test_generated.py\", line 15\nE       assert file_content == \"\\uf6\\x9f\", \"The file should contain the original UTF-8 characters without corruption.\"\nE                              ^^^^^^^^^^\nE   SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 0-3: truncated \\uXXXX escape\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.09s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_tracer_unicode_write():\n    # Create a string with non-ASCII characters to be written\n    non_ascii_text = \"Hello, world! \\u00A0\"  # Contains a non-ASCII character (Circumflex Accent)\n    \n    # Instantiate the Tracer class\n    tracer = Tracer(path=\"output.txt\", overwrite=True)\n    \n    # Attempt to write the string to the file\n    try:\n        tracer.write(non_ascii_text)\n    except UnicodeEncodeError as e:\n        assert False, f\"Test failed due to Unicode encoding error: {str(e)}\"\n\n    # Check if the file content matches the expected non-ASCII text\n    with open(\"output.txt\", \"r\", encoding=\"utf-8\") as fh:\n        written_content = fh.read()\n\n    assert non_ascii_text == written_content, \"Test failed: The file content does not match the expected non-ASCII text.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpml70j9_f\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_unicode_write FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_tracer_unicode_write ___________________________\n\n    def test_tracer_unicode_write():\n        # Create a string with non-ASCII characters to be written\n        non_ascii_text = \"Hello, world! \\u00A0\"  # Contains a non-ASCII character (Circumflex Accent)\n    \n        # Instantiate the Tracer class\n>       tracer = Tracer(path=\"output.txt\", overwrite=True)\n                 ^^^^^^\nE       NameError: name 'Tracer' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tracer_unicode_write - NameError: name 'Tracer...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzxno1510\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_unicode_write FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_tracer_unicode_write ___________________________\n\n    def test_tracer_unicode_write():\n        # Create a string with non-ASCII characters to be written\n        non_ascii_text = \"Hello, world! \\u00A0\"  # Contains a non-ASCII character (Circumflex Accent)\n    \n        # Instantiate the Tracer class\n>       tracer = Tracer(path=\"output.txt\", overwrite=True)\n                 ^^^^^^\nE       NameError: name 'Tracer' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tracer_unicode_write - NameError: name 'Tracer...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import Tracer\n\ndef test_tracer_unicode_write():\n    # Setup\n    tracer = Tracer(path=\"output.txt\", overwrite=True)\n    non_ascii_text = \"Hello, 世界\"  # Contains non-ASCII characters\n\n    # Action\n    tracer.write(non_ascii_text)\n\n    # Verify\n    with open(\"output.txt\", \"r\", encoding=\"utf-8\") as file:\n        content = file.read()\n\n    # Assertion\n    assert content == non_ascii_text, \"The file content should match the original string without corruption.\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbe74ps98\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_unicode_write PASSED                      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp3ho4b70\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_unicode_write PASSED                      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:32:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "Tracer class writes files without specifying UTF-8 encoding, leading to potential corruption of non-ASCII characters.",
+    "bug_location": "Tracer.write method, line 13",
+    "trigger_condition": "Any non-ASCII bytes in the 'text' parameter being written to the file.",
+    "expected_vs_actual": "Expected behavior: files should be written with UTF-8 encoding to handle non-ASCII characters correctly. Actual behavior: files are written with ASCII encoding, corrupting non-ASCII characters.",
+    "suggested_test_strategy": "Create a test with a string containing non-ASCII characters, such as UTF-8 encoded bytes, and call the write method of the Tracer class. Verify that the file content matches the original string without any character replacements or corruption.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 4161,
+  "completion_tokens_total": 744,
+  "duration_seconds": 15.15,
+  "timestamp": "2026-05-31T13:32:48Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_096",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import count_up_to\n\ndef test_count_up_to_with_input_five():\n    result = count_up_to(5)\n    expected_primes = [2, 3]\n    assert result == expected_primes, f\"Expected primes [2, 3] for input 5, got {result}\"\n\ndef test_count_up_to_with_input_ten():\n    result = count_up_to(10)\n    expected_primes = [2, 3, 5, 7]\n    assert result == expected_primes, f\"Expected primes [2, 3, 5, 7] for input 10, got {result}\"\n\ndef test_count_up_to_with_input_zero():\n    result = count_up_to(0)\n    expected_primes = []\n    assert result == expected_primes, f\"Expected empty list for input 0, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn7curi90\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_count_up_to_with_input_five FAILED               [ 33%]\n\n=================================== FAILURES ===================================\n_______________________ test_count_up_to_with_input_five _______________________\n\n    def test_count_up_to_with_input_five():\n        result = count_up_to(5)\n        expected_primes = [2, 3]\n>       assert result == expected_primes, f\"Expected primes [2, 3] for input 5, got {result}\"\nE       AssertionError: Expected primes [2, 3] for input 5, got [2, 3, 4]\nE       assert [2, 3, 4] == [2, 3]\nE         \nE         Left contains one more item: 4\nE         \nE         Full diff:\nE           [\nE               2,\nE               3,\nE         +     4,\nE           ]\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_count_up_to_with_input_five - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpghj7s81_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_count_up_to_with_input_five PASSED               [ 33%]\ntest_generated.py::test_count_up_to_with_input_ten PASSED                [ 66%]\ntest_generated.py::test_count_up_to_with_input_zero PASSED               [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:25:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 659,
+  "completion_tokens_total": 182,
+  "duration_seconds": 4.95,
+  "timestamp": "2026-05-31T13:25:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

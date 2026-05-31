@@ -1,0 +1,75 @@
+{
+  "task_id": "humanevalfix_057",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_monotonic_increasing():\n    assert monotonic([1, 2, 4, 20]) == True, \"List [1, 2, 4, 20] should be monotonically increasing\"\n\ndef test_monotonic_not_increasing():\n    assert monotonic([1, 20, 4, 10]) == False, \"List [1, 20, 4, 10] should not be monotonically increasing\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm43hg7vt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_monotonic_increasing FAILED                      [ 50%]\n\n=================================== FAILURES ===================================\n__________________________ test_monotonic_increasing ___________________________\n\n    def test_monotonic_increasing():\n>       assert monotonic([1, 2, 4, 20]) == True, \"List [1, 2, 4, 20] should be monotonically increasing\"\n               ^^^^^^^^^\nE       NameError: name 'monotonic' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_increasing - NameError: name 'monoto...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpc8z4_oto\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_monotonic_increasing FAILED                      [ 50%]\n\n=================================== FAILURES ===================================\n__________________________ test_monotonic_increasing ___________________________\n\n    def test_monotonic_increasing():\n>       assert monotonic([1, 2, 4, 20]) == True, \"List [1, 2, 4, 20] should be monotonically increasing\"\n               ^^^^^^^^^\nE       NameError: name 'monotonic' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_increasing - NameError: name 'monoto...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_monotonic_condition():\n    assert monotonic([1, 2, 4, 20]) == True, \"List [1, 2, 4, 20] should be monotonically increasing\"\n    assert monotonic([1, 20, 4, 10]) == False, \"List [1, 20, 4, 10] should not be monotonically increasing or decreasing\"\n    assert monotonic([4, 3, 2, 1]) == True, \"List [4, 3, 2, 1] should be monotonically decreasing\"\n    assert monotonic([1, 2, 3, 4]) == True, \"List [1, 2, 3, 4] should be monotonically increasing\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn6n84_7x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_condition FAILED                       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_monotonic_condition ___________________________\n\n    def test_monotonic_condition():\n>       assert monotonic([1, 2, 4, 20]) == True, \"List [1, 2, 4, 20] should be monotonically increasing\"\n               ^^^^^^^^^\nE       NameError: name 'monotonic' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_condition - NameError: name 'monoton...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6f7_gkah\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_condition FAILED                       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_monotonic_condition ___________________________\n\n    def test_monotonic_condition():\n>       assert monotonic([1, 2, 4, 20]) == True, \"List [1, 2, 4, 20] should be monotonically increasing\"\n               ^^^^^^^^^\nE       NameError: name 'monotonic' is not defined\n\ntest_generated.py:2: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_condition - NameError: name 'monoton...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import monotonic\n\ndef test_monotonic_increasing():\n    assert monotonic([1, 2, 4, 20]) is True, \"List [1, 2, 4, 20] should be monotonically increasing\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpme4d12id\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_increasing FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_monotonic_increasing ___________________________\n\n    def test_monotonic_increasing():\n>       assert monotonic([1, 2, 4, 20]) is True, \"List [1, 2, 4, 20] should be monotonically increasing\"\nE       AssertionError: List [1, 2, 4, 20] should be monotonically increasing\nE       assert False is True\nE        +  where False = monotonic([1, 2, 4, 20])\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_monotonic_increasing - AssertionError: List [1...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqbrj6wyw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_monotonic_increasing PASSED                      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:34:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": {
+    "bug_hypothesis": "The function incorrectly returns True when the list is monotonic and False otherwise due to the wrong return values.",
+    "bug_location": "function monotonic, line 7-8",
+    "trigger_condition": "Any input list that is monotonically increasing or decreasing.",
+    "expected_vs_actual": "EXPECTED: The function should return True for monotonic lists (e.g., [1, 2, 4, 20]) and False otherwise (e.g., [1, 20, 4, 10]). ACTUAL: The function returns False for monotonic lists and True otherwise.",
+    "suggested_test_strategy": "Write pytest tests that check both increasing and decreasing monotonic lists. Use test cases like `monotonic([1, 2, 4, 20])` which should return True and `monotonic([1, 20, 4, 10])` which should return False.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3380,
+  "completion_tokens_total": 573,
+  "duration_seconds": 13.23,
+  "timestamp": "2026-05-31T13:34:39Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

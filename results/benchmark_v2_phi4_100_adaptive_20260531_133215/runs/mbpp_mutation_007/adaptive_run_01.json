@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_min_k_with_constant_affected():\n    test_list = [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]\n    K = 2\n    expected_result = [(1, 'a'), (2, 'b')]\n\n    result = min_k(test_list, K)\n    assert result == expected_result, f\"Expected {expected_result}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprbj7zpqj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_constant_affected FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_with_constant_affected _______________________\n\n    def test_min_k_with_constant_affected():\n        test_list = [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]\n        K = 2\n        expected_result = [(1, 'a'), (2, 'b')]\n    \n>       result = min_k(test_list, K)\n                 ^^^^^\nE       NameError: name 'min_k' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_constant_affected - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptr1ah35k\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_constant_affected FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_with_constant_affected _______________________\n\n    def test_min_k_with_constant_affected():\n        test_list = [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]\n        K = 2\n        expected_result = [(1, 'a'), (2, 'b')]\n    \n>       result = min_k(test_list, K)\n                 ^^^^^\nE       NameError: name 'min_k' is not defined\n\ntest_generated.py:6: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_constant_affected - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_min_k_with_constant_affected():\n    # Test list with fewer elements than K\n    test_list = [(5, 'e'), (3, 'c'), (7, 'g')]\n    K = 5  # K is greater than the length of the test list\n\n    # Expected behavior: return the first K elements of the sorted list\n    expected_result = sorted(test_list, key=lambda x: x[0])[:K]\n\n    # Actual buggy behavior: constant mutation affects slicing behavior, causing fewer elements than expected\n    # Expected result should be exactly K elements or handle the case when K exceeds the list length\n    result = min_k(test_list, K)\n\n    # Assert that the result should contain exactly K elements, or handle the case where K exceeds list length\n    assert len(result) == K, f\"Expected result length to be {K}, but got {len(result)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6xlb_6d9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_constant_affected FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_with_constant_affected _______________________\n\n    def test_min_k_with_constant_affected():\n        # Test list with fewer elements than K\n        test_list = [(5, 'e'), (3, 'c'), (7, 'g')]\n        K = 5  # K is greater than the length of the test list\n    \n        # Expected behavior: return the first K elements of the sorted list\n        expected_result = sorted(test_list, key=lambda x: x[0])[:K]\n    \n        # Actual buggy behavior: constant mutation affects slicing behavior, causing fewer elements than expected\n        # Expected result should be exactly K elements or handle the case when K exceeds the list length\n>       result = min_k(test_list, K)\n                 ^^^^^\nE       NameError: name 'min_k' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_constant_affected - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxo8xtd_h\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_constant_affected FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_with_constant_affected _______________________\n\n    def test_min_k_with_constant_affected():\n        # Test list with fewer elements than K\n        test_list = [(5, 'e'), (3, 'c'), (7, 'g')]\n        K = 5  # K is greater than the length of the test list\n    \n        # Expected behavior: return the first K elements of the sorted list\n        expected_result = sorted(test_list, key=lambda x: x[0])[:K]\n    \n        # Actual buggy behavior: constant mutation affects slicing behavior, causing fewer elements than expected\n        # Expected result should be exactly K elements or handle the case when K exceeds the list length\n>       result = min_k(test_list, K)\n                 ^^^^^\nE       NameError: name 'min_k' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_constant_affected - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "def test_min_k_with_constant_affected():\n    # Define a test list with fewer elements than K\n    test_list = [(5, 'e'), (3, 'c'), (4, 'd')]\n    \n    # Define K to be greater than the length of the test list\n    K = 5\n    \n    # Expected result should handle the case when K exceeds the list length\n    expected_result = test_list\n    \n    # Run the min_k function with the test list and K\n    result = min_k(test_list, K)\n    \n    # Assert that the result matches the expected behavior\n    assert result == expected_result, f\"Expected result of length {len(test_list)}, but got length {len(result)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwghcamp1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_constant_affected FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_with_constant_affected _______________________\n\n    def test_min_k_with_constant_affected():\n        # Define a test list with fewer elements than K\n        test_list = [(5, 'e'), (3, 'c'), (4, 'd')]\n    \n        # Define K to be greater than the length of the test list\n        K = 5\n    \n        # Expected result should handle the case when K exceeds the list length\n        expected_result = test_list\n    \n        # Run the min_k function with the test list and K\n>       result = min_k(test_list, K)\n                 ^^^^^\nE       NameError: name 'min_k' is not defined\n\ntest_generated.py:12: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_constant_affected - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpywcxqe4n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_constant_affected FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_with_constant_affected _______________________\n\n    def test_min_k_with_constant_affected():\n        # Define a test list with fewer elements than K\n        test_list = [(5, 'e'), (3, 'c'), (4, 'd')]\n    \n        # Define K to be greater than the length of the test list\n        K = 5\n    \n        # Expected result should handle the case when K exceeds the list length\n        expected_result = test_list\n    \n        # Run the min_k function with the test list and K\n>       result = min_k(test_list, K)\n                 ^^^^^\nE       NameError: name 'min_k' is not defined\n\ntest_generated.py:12: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_constant_affected - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:37:49Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The mutation `1` -> `0` in the code changes the slicing operation to potentially exclude non-target elements.",
+    "bug_location": "min_k function, line 2",
+    "trigger_condition": "When the list is sorted and you attempt to slice the first K elements with K being greater than the length of sorted list.",
+    "expected_vs_actual": "EXPECTED: The function returns the first K elements of the sorted list. ACTUAL: The function may return fewer than K elements if K is larger than the number of elements in the sorted list, due to incorrect slicing.",
+    "suggested_test_strategy": "Create a test case where the input list has fewer elements than K. Assert that the length of the returned list is exactly K, or handle the case where K exceeds the list length.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3271,
+  "completion_tokens_total": 823,
+  "duration_seconds": 17.01,
+  "timestamp": "2026-05-31T13:37:49Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

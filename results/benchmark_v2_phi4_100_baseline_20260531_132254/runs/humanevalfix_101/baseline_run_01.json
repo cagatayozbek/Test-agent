@@ -1,0 +1,68 @@
+{
+  "task_id": "humanevalfix_101",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_words_string_comma_as_space():\n    from source import words_string\n    \n    input_string = \"Hi, my name is John\"\n    expected_output = [\"Hi\", \" my name is John\"]\n    \n    result = words_string(input_string)\n    assert result == expected_output, f\"Expected ['Hi', ' my name is John'] but got {result}\"\n\n    input_string = \"One, two, three, four, five, six\"\n    expected_output = [\"One\", \" two\", \" three\", \" four\", \" five\", \" six\"]\n    \n    result = words_string(input_string)\n    assert result == expected_output, f\"Expected ['One', ' two', ' three', ' four', ' five', ' six'] but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7q0yi1iq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_comma_as_space FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_words_string_comma_as_space _______________________\n\n    def test_words_string_comma_as_space():\n        from source import words_string\n    \n        input_string = \"Hi, my name is John\"\n        expected_output = [\"Hi\", \" my name is John\"]\n    \n        result = words_string(input_string)\n>       assert result == expected_output, f\"Expected ['Hi', ' my name is John'] but got {result}\"\nE       AssertionError: Expected ['Hi', ' my name is John'] but got ['Hi,', 'my', 'name', 'is', 'John']\nE       assert ['Hi,', 'my',... 'is', 'John'] == ['Hi', ' my name is John']\nE         \nE         At index 0 diff: 'Hi,' != 'Hi'\nE         Left contains 3 more items, first extra item: 'name'\nE         \nE         Full diff:\nE           [\nE         -     'Hi',...\nE         \nE         ...Full output truncated (8 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_words_string_comma_as_space - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpq3_3851b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_comma_as_space FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_words_string_comma_as_space _______________________\n\n    def test_words_string_comma_as_space():\n        from source import words_string\n    \n        input_string = \"Hi, my name is John\"\n        expected_output = [\"Hi\", \" my name is John\"]\n    \n        result = words_string(input_string)\n>       assert result == expected_output, f\"Expected ['Hi', ' my name is John'] but got {result}\"\nE       AssertionError: Expected ['Hi', ' my name is John'] but got ['Hi', 'my', 'name', 'is', 'John']\nE       assert ['Hi', 'my', ... 'is', 'John'] == ['Hi', ' my name is John']\nE         \nE         At index 1 diff: 'my' != ' my name is John'\nE         Left contains 3 more items, first extra item: 'name'\nE         \nE         Full diff:\nE           [\nE               'Hi',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_words_string_comma_as_space - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:25:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "def test_words_string_comma_as_space():\n    # Buggy version test\n    s_list_buggy = words_string(\"Hi, my name is John\")\n    assert s_list_buggy == [\"Hi\", \",\", \"my\", \",\", \"name\", \",\", \"is\", \",\", \"John\"], \"The buggy code incorrectly appends commas as spaces\"\n    \n    # Fixed version test\n    s_list_fixed = words_string(\"Hi, my name is John\")\n    assert s_list_fixed == [\"Hi\", \"my\", \"name\", \"is\", \"John\"], \"The fixed code correctly splits commas into spaces\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe0jxl2qf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_comma_as_space FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_words_string_comma_as_space _______________________\n\n    def test_words_string_comma_as_space():\n        # Buggy version test\n>       s_list_buggy = words_string(\"Hi, my name is John\")\n                       ^^^^^^^^^^^^\nE       NameError: name 'words_string' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_words_string_comma_as_space - NameError: name ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8k67cog5\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_comma_as_space FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_words_string_comma_as_space _______________________\n\n    def test_words_string_comma_as_space():\n        # Buggy version test\n>       s_list_buggy = words_string(\"Hi, my name is John\")\n                       ^^^^^^^^^^^^\nE       NameError: name 'words_string' is not defined\n\ntest_generated.py:3: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_words_string_comma_as_space - NameError: name ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:25:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import words_string\n\ndef test_words_string_comma_as_space():\n    # Test input where comma is incorrectly replaced with a comma instead of a space\n    input_string = \"Hi, my name is John\"\n    expected_output = [\"Hi\", \"my\", \"name\", \"is\", \"John\"]\n    \n    # Call the function with the test input\n    result = words_string(input_string)\n    \n    # Assert that the result matches the expected output\n    assert result == expected_output, f\"Expected {expected_output} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuz15ywuj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_comma_as_space FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_words_string_comma_as_space _______________________\n\n    def test_words_string_comma_as_space():\n        # Test input where comma is incorrectly replaced with a comma instead of a space\n        input_string = \"Hi, my name is John\"\n        expected_output = [\"Hi\", \"my\", \"name\", \"is\", \"John\"]\n    \n        # Call the function with the test input\n        result = words_string(input_string)\n    \n        # Assert that the result matches the expected output\n>       assert result == expected_output, f\"Expected {expected_output} but got {result}\"\nE       AssertionError: Expected ['Hi', 'my', 'name', 'is', 'John'] but got ['Hi,', 'my', 'name', 'is', 'John']\nE       assert ['Hi,', 'my',... 'is', 'John'] == ['Hi', 'my', ... 'is', 'John']\nE         \nE         At index 0 diff: 'Hi,' != 'Hi'\nE         \nE         Full diff:\nE           [\nE         -     'Hi',\nE         +     'Hi,',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_words_string_comma_as_space - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptk576o69\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_comma_as_space PASSED               [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-05-31T13:25:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2582,
+  "completion_tokens_total": 434,
+  "duration_seconds": 9.73,
+  "timestamp": "2026-05-31T13:25:42Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
