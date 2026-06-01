@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_black_async_for_13",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import tokenize_async\n\ndef test_async_for_emits_async_token():\n    \"\"\"\n    Test that 'async for' produces an ASYNC token (not NAME) and that\n    'async def' produces an ASYNC token and sets async_def flag.\n    This reveals the bug where async before 'for' was dropped or misclassified.\n    \"\"\"\n    # Test async for: should emit ASYNC token, not NAME\n    async_def, tokens = tokenize_async([\"async\", \"for\"])\n    assert async_def is False, \"async_def should be False for 'async for'\"\n    # Check that the first token is ASYNC, not NAME\n    assert (\"ASYNC\", \"async\") in tokens, (\n        \"Expected ASYNC token for 'async' in 'async for', but got NAME or missing.\"\n    )\n    # Ensure no NAME token for 'async' exists\n    assert (\"NAME\", \"async\") not in tokens, (\n        \"'async' should not be emitted as NAME when followed by 'for'.\"\n    )\n    # Also check the second token\n    assert (\"NAME\", \"for\") in tokens, \"Expected NAME token for 'for'\"\n\n    # Test async def: should set async_def and emit ASYNC token\n    async_def2, tokens2 = tokenize_async([\"async\", \"def\", \"foo\"])\n    assert async_def2 is True, \"async_def should be True for 'async def'\"\n    assert (\"ASYNC\", \"async\") in tokens2, (\n        \"Expected ASYNC token for 'async' in 'async def'\"\n    )\n    assert (\"NAME\", \"def\") in tokens2\n    assert (\"NAME\", \"foo\") in tokens2",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpusk1wly3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_emits_async_token FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_async_for_emits_async_token _______________________\n\n    def test_async_for_emits_async_token():\n        \"\"\"\n        Test that 'async for' produces an ASYNC token (not NAME) and that\n        'async def' produces an ASYNC token and sets async_def flag.\n        This reveals the bug where async before 'for' was dropped or misclassified.\n        \"\"\"\n        # Test async for: should emit ASYNC token, not NAME\n        async_def, tokens = tokenize_async([\"async\", \"for\"])\n        assert async_def is False, \"async_def should be False for 'async for'\"\n        # Check that the first token is ASYNC, not NAME\n>       assert (\"ASYNC\", \"async\") in tokens, (\n            \"Expected ASYNC token for 'async' in 'async for', but got NAME or missing.\"\n        )\nE       AssertionError: Expected ASYNC token for 'async' in 'async for', but got NAME or missing.\nE       assert ('ASYNC', 'async') in [('NAME', 'async'), ('NAME', 'for')]\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_for_emits_async_token - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvuedxoq0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_emits_async_token PASSED               [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:50:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 592,
+  "completion_tokens_total": 1550,
+  "duration_seconds": 38.02,
+  "timestamp": "2026-06-01T10:50:58Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_071",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import triangle_area\n\ndef test_triangle_area_known_case():\n    # For a 3-4-5 triangle, area should be 6.00.\n    # The buggy code computes s = a + b + c (12) instead of (a+b+c)/2 (6),\n    # leading to area = (12*9*8*7)**0.5 ≈ sqrt(6048) ≈ 77.77, not 6.00.\n    assert triangle_area(3, 4, 5) == 6.00, \"Area of 3-4-5 triangle should be 6.00\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa32dvyvl\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_triangle_area_known_case FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_triangle_area_known_case _________________________\n\n    def test_triangle_area_known_case():\n        # For a 3-4-5 triangle, area should be 6.00.\n        # The buggy code computes s = a + b + c (12) instead of (a+b+c)/2 (6),\n        # leading to area = (12*9*8*7)**0.5 ≈ sqrt(6048) ≈ 77.77, not 6.00.\n>       assert triangle_area(3, 4, 5) == 6.00, \"Area of 3-4-5 triangle should be 6.00\"\nE       AssertionError: Area of 3-4-5 triangle should be 6.00\nE       assert 77.77 == 6.0\nE        +  where 77.77 = triangle_area(3, 4, 5)\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_triangle_area_known_case - AssertionError: Are...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpicx36il3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_triangle_area_known_case PASSED                  [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:30:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 587,
+  "completion_tokens_total": 140,
+  "duration_seconds": 6.14,
+  "timestamp": "2026-06-01T10:30:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

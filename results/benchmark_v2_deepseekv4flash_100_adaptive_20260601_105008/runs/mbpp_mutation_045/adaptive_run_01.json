@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def test_snake_to_camel_simple():\n    from source import snake_to_camel\n    result = snake_to_camel(\"a_b\")\n    assert result == \"aB\", f\"Expected 'aB' but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmpsymkca\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_simple FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_simple __________________________\n\n    def test_snake_to_camel_simple():\n        from source import snake_to_camel\n        result = snake_to_camel(\"a_b\")\n>       assert result == \"aB\", f\"Expected 'aB' but got '{result}'\"\nE       AssertionError: Expected 'aB' but got '__'\nE       assert '__' == 'aB'\nE         \nE         - aB\nE         + __\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_simple - AssertionError: Expect...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpudz1f9bt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_simple FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_simple __________________________\n\n    def test_snake_to_camel_simple():\n        from source import snake_to_camel\n        result = snake_to_camel(\"a_b\")\n>       assert result == \"aB\", f\"Expected 'aB' but got '{result}'\"\nE       AssertionError: Expected 'aB' but got 'AB'\nE       assert 'AB' == 'aB'\nE         \nE         - aB\nE         + AB\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_simple - AssertionError: Expect...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:03:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_capitalizes_each_word():\n    # Bug: 'and' instead of 'or' causes the generator expression to yield '_' for each non-empty part.\n    # Fixed code: uses 'or' so each part is correctly capitalized.\n    assert snake_to_camel('hello_world') == 'HelloWorld', (\n        \"Expected snake_to_camel('hello_world') to return 'HelloWorld', \"\n        \"but buggy code returns underscores due to 'and' operator.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe6967p_3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_capitalizes_each_word FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_snake_to_camel_capitalizes_each_word ___________________\n\n    def test_snake_to_camel_capitalizes_each_word():\n        # Bug: 'and' instead of 'or' causes the generator expression to yield '_' for each non-empty part.\n        # Fixed code: uses 'or' so each part is correctly capitalized.\n>       assert snake_to_camel('hello_world') == 'HelloWorld', (\n            \"Expected snake_to_camel('hello_world') to return 'HelloWorld', \"\n            \"but buggy code returns underscores due to 'and' operator.\"\n        )\nE       AssertionError: Expected snake_to_camel('hello_world') to return 'HelloWorld', but buggy code returns underscores due to 'and' operator.\nE       assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_capitalizes_each_word - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsvxezryx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_capitalizes_each_word PASSED      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:03:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The boolean operator 'and' was mutated from 'or' in the generator expression. With 'and', x.capitalize() returns a truthy string for non-empty x, so the and expression yields '_' instead of the capitalized word. Thus the function returns a string of underscores.",
+    "bug_location": "snake_to_camel function, line 3, generator expression inside ''.join()",
+    "trigger_condition": "Any input string that splits into at least one non-empty part (e.g., 'hello_world') triggers the bug.",
+    "expected_vs_actual": "Expected for 'hello_world': canonical version returns 'HelloWorld' (each part capitalized and joined). Actual: buggy code returns '__' (underscore for each part).",
+    "suggested_test_strategy": "Write a pytest test: assert snake_to_camel('hello_world') == 'HelloWorld'. This test fails on the buggy code (returns '__') and passes on the canonical code (which uses 'or' or other proper capitalization).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1795,
+  "completion_tokens_total": 5681,
+  "duration_seconds": 65.29,
+  "timestamp": "2026-06-01T11:03:39Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

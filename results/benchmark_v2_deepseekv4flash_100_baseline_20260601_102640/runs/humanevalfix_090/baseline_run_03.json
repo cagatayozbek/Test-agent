@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_090",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import next_smallest\n\ndef test_next_smallest_returns_second_smallest_for_two_distinct_elements():\n    # When list has exactly two distinct elements, the second smallest is the larger one\n    # Buggy code requires len >= 3, so it returns None incorrectly\n    assert next_smallest([3, 1]) == 1, \"Should return 1 as the 2nd smallest of [3, 1]\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkqlb7c0z\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_returns_second_smallest_for_two_distinct_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n_____ test_next_smallest_returns_second_smallest_for_two_distinct_elements _____\n\n    def test_next_smallest_returns_second_smallest_for_two_distinct_elements():\n        # When list has exactly two distinct elements, the second smallest is the larger one\n        # Buggy code requires len >= 3, so it returns None incorrectly\n>       assert next_smallest([3, 1]) == 1, \"Should return 1 as the 2nd smallest of [3, 1]\"\nE       AssertionError: Should return 1 as the 2nd smallest of [3, 1]\nE       assert None == 1\nE        +  where None = next_smallest([3, 1])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_returns_second_smallest_for_two_distinct_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvotk87y0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_returns_second_smallest_for_two_distinct_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n_____ test_next_smallest_returns_second_smallest_for_two_distinct_elements _____\n\n    def test_next_smallest_returns_second_smallest_for_two_distinct_elements():\n        # When list has exactly two distinct elements, the second smallest is the larger one\n        # Buggy code requires len >= 3, so it returns None incorrectly\n>       assert next_smallest([3, 1]) == 1, \"Should return 1 as the 2nd smallest of [3, 1]\"\nE       AssertionError: Should return 1 as the 2nd smallest of [3, 1]\nE       assert 3 == 1\nE        +  where 3 = next_smallest([3, 1])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_returns_second_smallest_for_two_distinct_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:31:20Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import next_smallest\n\ndef test_next_smallest_returns_second_smallest_for_two_distinct_elements():\n    # Bug: code returns None when len(lst) < 3, but should handle len == 2.\n    # For a list with exactly two distinct elements, the second smallest is the larger one.\n    assert next_smallest([3, 1]) == 3, (\n        \"next_smallest([3, 1]) should return 3 (second smallest), \"\n        \"but buggy code returns None because len(set) == 2 < 3\"\n    )\n    assert next_smallest([1, 2]) == 2, (\n        \"next_smallest([1, 2]) should return 2\"\n    )\n    # Also test with duplicates that collapse to two distinct values\n    assert next_smallest([5, 5, 3, 3]) == 5, (\n        \"next_smallest([5, 5, 3, 3]) should return 5 \"\n        \"(distinct list is [3,5], second smallest is 5)\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7qy8g4_9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_returns_second_smallest_for_two_distinct_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n_____ test_next_smallest_returns_second_smallest_for_two_distinct_elements _____\n\n    def test_next_smallest_returns_second_smallest_for_two_distinct_elements():\n        # Bug: code returns None when len(lst) < 3, but should handle len == 2.\n        # For a list with exactly two distinct elements, the second smallest is the larger one.\n>       assert next_smallest([3, 1]) == 3, (\n            \"next_smallest([3, 1]) should return 3 (second smallest), \"\n            \"but buggy code returns None because len(set) == 2 < 3\"\n        )\nE       AssertionError: next_smallest([3, 1]) should return 3 (second smallest), but buggy code returns None because len(set) == 2 < 3\nE       assert None == 3\nE        +  where None = next_smallest([3, 1])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_returns_second_smallest_for_two_distinct_elements\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeou80c4e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_next_smallest_returns_second_smallest_for_two_distinct_elements PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:31:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1427,
+  "completion_tokens_total": 1016,
+  "duration_seconds": 14.36,
+  "timestamp": "2026-06-01T10:31:30Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,59 @@
+{
+  "task_id": "async_race_condition",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import run_race\n\ndef test_async_counter_race_condition():\n    \"\"\"Test that concurrent increments correctly sum to the number of tasks.\n    This test exposes the race condition: without a lock, the final count\n    is less than the number of tasks.\"\"\"\n    result = asyncio.run(run_race())\n    assert result == 50, f\"Expected 50, but got {result}. Race condition caused lost updates.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_7azsbtw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_counter_race_condition FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_async_counter_race_condition _______________________\n\n    def test_async_counter_race_condition():\n        \"\"\"Test that concurrent increments correctly sum to the number of tasks.\n        This test exposes the race condition: without a lock, the final count\n        is less than the number of tasks.\"\"\"\n>       result = asyncio.run(run_race())\n                 ^^^^^^^\nE       NameError: name 'asyncio' is not defined. Did you forget to import 'asyncio'?\n\ntest_generated.py:8: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_counter_race_condition - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmnzzwhdy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_counter_race_condition FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_async_counter_race_condition _______________________\n\n    def test_async_counter_race_condition():\n        \"\"\"Test that concurrent increments correctly sum to the number of tasks.\n        This test exposes the race condition: without a lock, the final count\n        is less than the number of tasks.\"\"\"\n>       result = asyncio.run(run_race())\n                 ^^^^^^^\nE       NameError: name 'asyncio' is not defined. Did you forget to import 'asyncio'?\n\ntest_generated.py:8: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_counter_race_condition - NameError: name...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:50:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import asyncio\nfrom source import run_race\n\ndef test_async_counter_race_condition():\n    \"\"\"Test that concurrent increments correctly sum to the number of tasks.\"\"\"\n    result = asyncio.run(run_race())\n    assert result == 50, (\n        f\"Expected count to be 50 after 50 concurrent increments, \"\n        f\"but got {result}. This indicates a race condition bug.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpygw8zeem\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_counter_race_condition FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_async_counter_race_condition _______________________\n\n    def test_async_counter_race_condition():\n        \"\"\"Test that concurrent increments correctly sum to the number of tasks.\"\"\"\n        result = asyncio.run(run_race())\n>       assert result == 50, (\n            f\"Expected count to be 50 after 50 concurrent increments, \"\n            f\"but got {result}. This indicates a race condition bug.\"\n        )\nE       AssertionError: Expected count to be 50 after 50 concurrent increments, but got 1. This indicates a race condition bug.\nE       assert 1 == 50\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_counter_race_condition - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.03s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe0tm9bcb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_counter_race_condition PASSED              [100%]\n\n============================== 1 passed in 0.60s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:50:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The increment method reads self.count, then awaits a sleep (allowing a context switch), then writes back temp+1. Without a lock, multiple concurrent tasks can read the same initial count value, resulting in lost updates and a final count less than the number of tasks.",
+    "bug_location": "AsyncCounter.increment, line 9-12",
+    "trigger_condition": "Running 50 concurrent increment tasks via asyncio.gather",
+    "expected_vs_actual": "Expected: final count equals 50. Actual: final count is less than 50 (e.g., 1 or 2) because each task reads the same initial count and overwrites each other.",
+    "suggested_test_strategy": "Write a pytest test that calls run_race() and asserts the returned count == 50. This test will fail on the buggy code because the race condition causes lost updates, and pass on a fixed version that uses an asyncio.Lock.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1970,
+  "completion_tokens_total": 842,
+  "duration_seconds": 17.06,
+  "timestamp": "2026-06-01T10:50:25Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

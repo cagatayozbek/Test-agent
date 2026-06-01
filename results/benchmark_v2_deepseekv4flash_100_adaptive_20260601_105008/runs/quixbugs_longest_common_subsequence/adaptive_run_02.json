@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_longest_common_subsequence",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp16l6ylgt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8tlj44z1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:11:46Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import longest_common_subsequence\n\ndef test_longest_common_subsequence_does_not_reuse_characters():\n    \"\"\"\n    Test that the function does not reuse characters from string b.\n    The buggy code only advances string a on a match, allowing the same\n    character from b to be matched multiple times, producing an invalid\n    result that is longer than the true LCS.\n    \"\"\"\n    result = longest_common_subsequence('AGCAT', 'GAC')\n    # The true LCS of 'AGCAT' and 'GAC' has length 2 (either 'GA' or 'GC')\n    # Buggy code may return a longer invalid string like 'GAC' (length 3)\n    # by reusing the 'A' from b for both the 'A' at position 1 and 'A' at position 4 in a.\n    assert len(result) == 2, (\n        f\"Expected LCS length 2, but got '{result}' of length {len(result)}. \"\n        \"Bug: character reuse from b produces invalid longer subsequence.\"\n    )\n    # Verify result is a subsequence of both strings\n    def is_subsequence(sub, string):\n        it = iter(string)\n        return all(c in it for c in sub)\n    assert is_subsequence(result, 'AGCAT'), f\"'{result}' is not a subsequence of 'AGCAT'\"\n    assert is_subsequence(result, 'GAC'), f\"'{result}' is not a subsequence of 'GAC'\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz1r8q2aw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_does_not_reuse_characters PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp53r2epgd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_longest_common_subsequence_does_not_reuse_characters PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:12:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import longest_common_subsequence\n\ndef test_lcs_duplicate_characters_in_b():\n    \"\"\"Test that LCS does not reuse characters from string b when a match occurs.\n    \n    For strings 'AGCAT' and 'GAC', the correct LCS has length 2 ('GA' or 'GC').\n    The buggy code reuses the 'A' from b ('GAC') and produces 'GCA' (length 3),\n    which is not a valid subsequence of b because 'C' appears before 'A' in b.\n    \"\"\"\n    result = longest_common_subsequence('AGCAT', 'GAC')\n    \n    # The result must be a subsequence of both strings\n    # Check that result is a subsequence of 'GAC'\n    iter_b = iter('GAC')\n    assert all(char in iter_b for char in result), (\n        f\"Result '{result}' is not a subsequence of 'GAC'\"\n    )\n    \n    # Check that result is a subsequence of 'AGCAT'\n    iter_a = iter('AGCAT')\n    assert all(char in iter_a for char in result), (\n        f\"Result '{result}' is not a subsequence of 'AGCAT'\"\n    )\n    \n    # Verify the length matches the known LCS length (2 for 'GA' or 'GC')\n    assert len(result) == 2, (\n        f\"Expected LCS length 2, but got length {len(result)} ('{result}')\"\n    )",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxk3zx6xw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_duplicate_characters_in_b PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6wvi9_72\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_duplicate_characters_in_b PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:12:35Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "When characters match, the recursion only advances string `a` but not string `b`, allowing the same character from `b` to be reused, which can produce subsequences that are not actually common or that are longer than the true LCS.",
+    "bug_location": "In function `longest_common_subsequence`, line containing `return a[0] + longest_common_subsequence(a[1:], b)`",
+    "trigger_condition": "Input strings where `b` contains duplicate characters or where a character in `b` could be matched more than once because `b` is not advanced on match. The given example `('AGCAT', 'GAC')` triggers the bug because the algorithm may produce a string like 'GAC' (length 3) which is not a subsequence of `b` or overcounts.",
+    "expected_vs_actual": "Expected: The function returns a valid LCS (e.g., 'GA' or 'GC', length 2) that is a subsequence of both strings and has maximum length. Actual: The buggy code may return a string that is not a subsequence of `b` (e.g., 'GCA' or something longer than 2) because it reuses characters from `b`.",
+    "suggested_test_strategy": "Write a pytest test that calls `longest_common_subsequence('AGCAT', 'GAC')` and verifies: (1) the result is a subsequence of both strings, and (2) its length equals the known LCS length (2). This test will fail on the buggy code (which may return a non-subsequence or a longer string) and pass on the fixed code.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 4392,
+  "completion_tokens_total": 8241,
+  "duration_seconds": 141.44,
+  "timestamp": "2026-06-01T11:12:35Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

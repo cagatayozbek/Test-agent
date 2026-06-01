@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import Tracer\n\ndef test_unicode_roundtrip_without_coding_header(tmp_path):\n    \"\"\"Verify that UTF-8 characters survive dump_source round-trip when\n    no coding header is present (bug: default ASCII corrupts them).\"\"\"\n    source_bytes = [b'h\\xc3\\xa9llo']          # 'héllo' in UTF-8\n    expected = 'héllo'\n    path = tmp_path / \"output.txt\"\n    tracer = Tracer(str(path), overwrite=True)\n\n    result = tracer.dump_source(source_bytes)\n\n    # Check the returned string\n    assert result == expected, (\n        f\"dump_source returned {result!r}, expected {expected!r}\"\n    )\n\n    # Check the file content (must be UTF-8 encoded)\n    with open(path, 'r', encoding='utf-8') as f:\n        file_content = f.read()\n    assert file_content == expected, (\n        f\"File content is {file_content!r}, expected {expected!r}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyugazbtd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_roundtrip_without_coding_header FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_unicode_roundtrip_without_coding_header _________________\n\ntmp_path = PosixPath('/private/tmp/claude-501/pytest-of-cagatayozbek/pytest-27/test_unicode_roundtrip_without0')\n\n    def test_unicode_roundtrip_without_coding_header(tmp_path):\n        \"\"\"Verify that UTF-8 characters survive dump_source round-trip when\n        no coding header is present (bug: default ASCII corrupts them).\"\"\"\n        source_bytes = [b'h\\xc3\\xa9llo']          # 'héllo' in UTF-8\n        expected = 'héllo'\n        path = tmp_path / \"output.txt\"\n        tracer = Tracer(str(path), overwrite=True)\n    \n        result = tracer.dump_source(source_bytes)\n    \n        # Check the returned string\n>       assert result == expected, (\n            f\"dump_source returned {result!r}, expected {expected!r}\"\n        )\nE       AssertionError: dump_source returned 'h��llo', expected 'héllo'\nE       assert 'h��llo' == 'héllo'\nE         \nE         - héllo\nE         + h��llo\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_unicode_roundtrip_without_coding_header - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2iqs739v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_roundtrip_without_coding_header PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:27:11Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 728,
+  "completion_tokens_total": 1488,
+  "duration_seconds": 23.03,
+  "timestamp": "2026-06-01T10:27:11Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

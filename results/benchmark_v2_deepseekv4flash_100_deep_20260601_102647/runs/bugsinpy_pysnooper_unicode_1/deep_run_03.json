@@ -1,0 +1,47 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\nimport tempfile\nimport os\n\n\ndef test_unicode_roundtrip_without_coding_header():\n    \"\"\"Bug: tracer defaults to ASCII encoding and corrupts non-ASCII characters.\n    Fixed code should round-trip UTF-8 encoded bytes without replacement.\"\"\"\n    # UTF-8 encoded bytes containing a non-ASCII character (é = \\xc3\\xa9)\n    source_lines = [b\"caf\\xc3\\xa9\"]\n    with tempfile.NamedTemporaryFile(mode=\"w\", suffix=\".py\", delete=False) as tmp:\n        path = tmp.name\n    try:\n        tracer = source.Tracer(path, overwrite=True)\n        result = tracer.dump_source(source_lines)\n        # The fixed code should preserve the UTF-8 characters\n        assert result == \"café\", f\"Expected 'café' but got {result!r}\"\n    finally:\n        os.unlink(path)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4bpih2iu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_unicode_roundtrip_without_coding_header FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_unicode_roundtrip_without_coding_header _________________\n\n    def test_unicode_roundtrip_without_coding_header():\n        \"\"\"Bug: tracer defaults to ASCII encoding and corrupts non-ASCII characters.\n        Fixed code should round-trip UTF-8 encoded bytes without replacement.\"\"\"\n        # UTF-8 encoded bytes containing a non-ASCII character (é = \\xc3\\xa9)\n        source_lines = [b\"caf\\xc3\\xa9\"]\n        with tempfile.NamedTemporaryFile(mode=\"w\", suffix=\".py\", delete=False) as tmp:\n            path = tmp.name\n        try:\n            tracer = source.Tracer(path, overwrite=True)\n            result = tracer.dump_source(source_lines)\n            # The fixed code should preserve the UTF-8 characters\n>           assert result == \"café\", f\"Expected 'café' but got {result!r}\"\nE           AssertionError: Expected 'café' but got 'caf��'\nE           assert 'caf��' == 'café'\nE             \nE             - café\nE             + caf��\n\ntest_generated.py:21: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_unicode_roundtrip_without_coding_header - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpj_nglh33\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_unicode_roundtrip_without_coding_header PASSED   [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:28:31Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7982,
+  "completion_tokens_total": 2189,
+  "duration_seconds": 27.15,
+  "timestamp": "2026-06-01T10:28:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

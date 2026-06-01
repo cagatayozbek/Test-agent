@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_wrap",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import wrap\n\ndef test_wrap_appends_remaining_text():\n    result = wrap('aaa bbb ccc', 4)\n    expected = ['aaa', 'bbb', 'ccc']\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkbr7dzbr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_appends_remaining_text FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_wrap_appends_remaining_text _______________________\n\n    def test_wrap_appends_remaining_text():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_appends_remaining_text - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgtdb0xyc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_appends_remaining_text FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_wrap_appends_remaining_text _______________________\n\n    def test_wrap_appends_remaining_text():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_appends_remaining_text - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.03s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:15:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import wrap\n\ndef test_wrap_appends_remaining_text():\n    result = wrap('aaa bbb ccc', 4)\n    # The buggy code drops the last fragment; fixed code should include it.\n    assert len(result) == 3, f\"Expected 3 lines, got {len(result)}: {result}\"\n    assert result[2] == ' ccc', f\"Last line should be ' ccc', got {result[2]!r}\"\n    # Also verify concatenation equals original input\n    assert ''.join(result) == 'aaa bbb ccc', f\"Concatenation should match input: {''.join(result)!r}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpahoj3_vc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_appends_remaining_text FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_wrap_appends_remaining_text _______________________\n\n    def test_wrap_appends_remaining_text():\n        result = wrap('aaa bbb ccc', 4)\n        # The buggy code drops the last fragment; fixed code should include it.\n>       assert len(result) == 3, f\"Expected 3 lines, got {len(result)}: {result}\"\nE       AssertionError: Expected 3 lines, got 2: ['aaa', ' bbb']\nE       assert 2 == 3\nE        +  where 2 = len(['aaa', ' bbb'])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_appends_remaining_text - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1_nvrcia\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_appends_remaining_text PASSED               [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:16:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "At the end of the loop the remaining `text` is not appended to the lines list; the trailing words are lost from the output.",
+    "bug_location": "wrap function, after the while loop (line 8 in source.py)",
+    "trigger_condition": "Any input where the remaining text after the last split is non-empty (i.e., the last line is shorter than cols).",
+    "expected_vs_actual": "Expected: The final piece of text after the loop should be appended to lines. Actual: The loop exits without appending the remaining text, so the last line(s) are omitted.",
+    "suggested_test_strategy": "Use input 'aaa bbb ccc' with cols=4. The buggy function returns ['aaa', ' bbb'] (length 2) while the correct output should be ['aaa', ' bbb', ' ccc'] (length 3). Assert that the output list has exactly 3 elements and that ''.join(output) equals the original input 'aaa bbb ccc'.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2231,
+  "completion_tokens_total": 3127,
+  "duration_seconds": 73.35,
+  "timestamp": "2026-06-01T11:16:53Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

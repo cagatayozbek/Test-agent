@@ -1,0 +1,36 @@
+{
+  "task_id": "swallowed_exception",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import process_transaction\n\ndef test_process_transaction_does_not_swallow_name_error():\n    \"\"\"\n    Ensures that a NameError from calculate_tax is not swallowed by a bare except.\n    The buggy version returns None, the fixed version should either return a valid total\n    or raise the NameError (but not silently return None).\n    \"\"\"\n    # Valid input that should trigger calculate_tax call\n    result = process_transaction(\"item123:100\")\n    \n    # The buggy code returns None, hiding the NameError.\n    # Fixed code should either:\n    # 1. Return a valid total (if calculate_tax is properly defined), or\n    # 2. Raise an exception (if calculate_tax is still missing)\n    # Either way, None is the wrong answer for valid input.\n    assert result is not None, (\n        \"process_transaction returned None for valid input, \"\n        \"likely due to a bare except swallowing a NameError from calculate_tax. \"\n        \"The function should either work correctly or propagate the error.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsivi8e6n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_does_not_swallow_name_error FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_process_transaction_does_not_swallow_name_error _____________\n\n    def test_process_transaction_does_not_swallow_name_error():\n        \"\"\"\n        Ensures that a NameError from calculate_tax is not swallowed by a bare except.\n        The buggy version returns None, the fixed version should either return a valid total\n        or raise the NameError (but not silently return None).\n        \"\"\"\n        # Valid input that should trigger calculate_tax call\n        result = process_transaction(\"item123:100\")\n    \n        # The buggy code returns None, hiding the NameError.\n        # Fixed code should either:\n        # 1. Return a valid total (if calculate_tax is properly defined), or\n        # 2. Raise an exception (if calculate_tax is still missing)\n        # Either way, None is the wrong answer for valid input.\n>       assert result is not None, (\n            \"process_transaction returned None for valid input, \"\n            \"likely due to a bare except swallowing a NameError from calculate_tax. \"\n            \"The function should either work correctly or propagate the error.\"\n        )\nE       AssertionError: process_transaction returned None for valid input, likely due to a bare except swallowing a NameError from calculate_tax. The function should either work correctly or propagate the error.\nE       assert None is not None\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_does_not_swallow_name_error\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp1h4tpbn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_does_not_swallow_name_error PASSED [100%]\n\n============================== 1 passed in 0.02s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:16:40Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 593,
+  "completion_tokens_total": 230,
+  "duration_seconds": 6.68,
+  "timestamp": "2026-06-01T11:16:40Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

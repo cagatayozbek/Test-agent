@@ -1,0 +1,52 @@
+{
+  "task_id": "swallowed_exception",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import process_transaction\n\ndef test_process_transaction_raises_error_for_missing_function():\n    \"\"\"\n    Tests that process_transaction does NOT silently return None\n    when a NameError occurs due to a missing function.\n    Fixed code should propagate the NameError.\n    \"\"\"\n    # Using a valid transaction string that would trigger the NameError\n    # because calculate_tax is not defined properly.\n    with pytest.raises(NameError, match=\"calculate_tax\"):\n        process_transaction(\"item123:100\")",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxuh6b2k9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_raises_error_for_missing_function FAILED [100%]\n\n=================================== FAILURES ===================================\n__________ test_process_transaction_raises_error_for_missing_function __________\n\n    def test_process_transaction_raises_error_for_missing_function():\n        \"\"\"\n        Tests that process_transaction does NOT silently return None\n        when a NameError occurs due to a missing function.\n        Fixed code should propagate the NameError.\n        \"\"\"\n        # Using a valid transaction string that would trigger the NameError\n        # because calculate_tax is not defined properly.\n>       with pytest.raises(NameError, match=\"calculate_tax\"):\n             ^^^^^^\nE       NameError: name 'pytest' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_raises_error_for_missing_function\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps5wvt3k1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_raises_error_for_missing_function FAILED [100%]\n\n=================================== FAILURES ===================================\n__________ test_process_transaction_raises_error_for_missing_function __________\n\n    def test_process_transaction_raises_error_for_missing_function():\n        \"\"\"\n        Tests that process_transaction does NOT silently return None\n        when a NameError occurs due to a missing function.\n        Fixed code should propagate the NameError.\n        \"\"\"\n        # Using a valid transaction string that would trigger the NameError\n        # because calculate_tax is not defined properly.\n>       with pytest.raises(NameError, match=\"calculate_tax\"):\n             ^^^^^^\nE       NameError: name 'pytest' is not defined\n\ntest_generated.py:11: NameError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_raises_error_for_missing_function\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:48:16Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import process_transaction\n\ndef test_process_transaction_does_not_swallow_name_error():\n    \"\"\"\n    Verify that process_transaction does not silently swallow a NameError\n    caused by a missing function (calculate_tax). The buggy version returns None,\n    hiding the error. The fixed version either properly computes the total or\n    raises the NameError.\n    \"\"\"\n    try:\n        result = process_transaction(\"item:100\")\n        # If no exception, the function should have worked (fixed version).\n        assert result is not None, (\n            \"process_transaction returned None for valid input, \"\n            \"indicating that an exception was swallowed\"\n        )\n    except NameError:\n        # Fixed version that exposes the crash is acceptable.\n        pass",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp61t3njw6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_does_not_swallow_name_error FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_process_transaction_does_not_swallow_name_error _____________\n\n    def test_process_transaction_does_not_swallow_name_error():\n        \"\"\"\n        Verify that process_transaction does not silently swallow a NameError\n        caused by a missing function (calculate_tax). The buggy version returns None,\n        hiding the error. The fixed version either properly computes the total or\n        raises the NameError.\n        \"\"\"\n        try:\n            result = process_transaction(\"item:100\")\n            # If no exception, the function should have worked (fixed version).\n>           assert result is not None, (\n                \"process_transaction returned None for valid input, \"\n                \"indicating that an exception was swallowed\"\n            )\nE           AssertionError: process_transaction returned None for valid input, indicating that an exception was swallowed\nE           assert None is not None\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_does_not_swallow_name_error\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl5dkfhqv\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_process_transaction_does_not_swallow_name_error PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:48:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1479,
+  "completion_tokens_total": 1499,
+  "duration_seconds": 33.54,
+  "timestamp": "2026-06-01T10:48:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

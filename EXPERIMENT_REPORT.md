@@ -1685,3 +1685,68 @@ llama-3.1-8b −47.0 pp · gpt-oss-20b −72.7 pp. Range of the analysis step:
 - `results/benchmark_v2_llama33_70b_100_deep_20260601_094951/` (300 runs,
   OpenRouter via the §15.3 routing override; 300/300 made tool calls)
 - Configs: `benchmark_v2_llama33_70b_100_{baseline,adaptive,deep}.yaml`.
+
+
+## 19. Generational jump and a reasoning-model harness limit — DeepSeek-V4-flash (2026-06-01)
+
+We added **deepseek/deepseek-v4-flash** (DeepSeek-V4-flash, a 2026 reasoning
+model, 1M context, ~$0.10/$0.20 per Mtok) via OpenRouter to (a) measure the
+V3.1 → V4 generational delta and (b) probe deep mode on a reasoning model.
+
+### 19.1 Results — strong baseline/adaptive; deep is N/A (harness limit)
+
+| Mode | BRTR | 95% CI | Successful | Avg dur | Avg c-tok |
+|---|---:|---|---:|---:|---:|
+| baseline | 94.7% | [91.5, 96.7] | 284/300 | 18.0s | 1084 |
+| adaptive | 97.0% | [94.4, 98.4] | 291/300 | — | — |
+| deep | N/A ‡‡ | — | (artefact) | 39.7s | 881 |
+
+**Generational jump:** baseline 0.853 (V3.1, §17) → **0.947 (V4-flash)**,
++9.4 pp — V4-flash lands in the top band with haiku/gpt-oss-120b. adaptive
+0.970 adds +2.3 pp over baseline (high c-tok ~1084 confirms it is a
+token-heavy reasoning model). Both modes are genuine.
+
+### 19.2 ‡‡ Why deep is N/A — reasoning-model response format breaks the loop
+
+The deep run reported BRTR 17.0% (51/300), but this is a harness artefact and
+is **excluded**, diagnosed by tracing a single task:
+
+- The agent calls `read_file`, then on the next turn returns an **empty
+  response** — no `content`, no `tool_calls`, `completion_tokens=0`. The
+  reasoning model emits its work in a separate reasoning channel that
+  `bugtest/deep/llm.py:_call_openai_compat` does not read (it parses only
+  `message.content` and `message.tool_calls`).
+- The agent loop treats "no tool calls" as a final summary (agent.py:181) and
+  stops **before writing a test**, leaving the workspace's seed stub
+  `import source
+assert source is not None`.
+- Consequently **all 300 runs emit the identical seed stub**; the 51 "passes"
+  are tasks where that trivial import test is coincidentally bug-revealing
+  (buggy import errors, fixed imports cleanly). `tool_failure_mode_count` is
+  empty and most runs make only 1 tool call before the empty turn.
+
+This is **not** a genuine deep collapse: the same deep harness scored
+DeepSeek-V3.1 (a non-reasoning model) at **0.950** (§17). The failure is
+specific to V4-flash's reasoning response format. Like phi-4 (§15.3), deep is
+marked N/A. The fix is to teach `_call_openai_compat` to read the provider's
+`reasoning`/`reasoning_content` field and not terminate on an empty-but-still-
+thinking turn; deferred as future work.
+
+### 19.3 Methodological note
+
+This is the third deep-mode N/A and the second distinct *cause*:
+- §15.3 phi-4: no tool-calling endpoint + Together mis-routing.
+- §19.2 V4-flash: reasoning response format not parsed by the deep client.
+
+Both inflate to a degenerate seed-stub BRTR that must be caught by inspecting
+`tool_call_count`, token counts, and test-code diversity — never reported at
+face value. Deep-mode numbers are only trustworthy when the run shows real
+tokens, real tool calls, **and** diverse generated tests.
+
+### 19.4 Raw data
+
+- `results/benchmark_v2_deepseekv4flash_100_baseline_20260601_102640/`
+- `results/benchmark_v2_deepseekv4flash_100_adaptive_20260601_105008/`
+- `results/benchmark_v2_deepseekv4flash_100_deep_20260601_102647/` (300 runs,
+  all seed-stub; reasoning-format harness limit; scored N/A)
+- Configs: `benchmark_v2_deepseekv4flash_100_{baseline,adaptive,deep}.yaml`.

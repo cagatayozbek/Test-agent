@@ -1,4 +1,4 @@
-# 100-Task BRTR Matrix — baseline × adaptive × deep (9 models)
+# 100-Task BRTR Matrix — baseline × adaptive × deep (10 models)
 
 Özet matris. Tüm sayılar ilgili `results/benchmark_v2_*_100*/summary.json`
 dosyalarından okunmuştur. Detaylı analiz için bkz. `EXPERIMENT_REPORT.md`
@@ -22,6 +22,7 @@ fixed kodda PASS edecek. Birincil metrik. Her hücre = 100 task × 3 run =
 | **llama-3.1-8b** | **64.3%** (193/300) | **68.7%** (206/300) | **17.3%** (52/300) | OpenRouter ◇ |
 | **DeepSeek-V3.1** | 85.3% (256/300) | 89.0% (267/300) | **95.0%** (285/300) | OpenRouter ◇ |
 | **llama-3.3-70b** | 79.3% (238/300) | 81.3% (244/300) | **34.0%** (102/300) | OpenRouter ◇ |
+| **DeepSeek-V4-flash** | 94.7% (284/300) | 97.0% (291/300) | N/A ‡‡ | OpenRouter |
 
 **† Sonnet baseline/adaptive timeout-bozulmuş:** bu iki moddaki
 başarısızlıkların ~%80'i gerçek test FAIL'i değil, 120s `claude -p`
@@ -39,6 +40,18 @@ kısıtıdır, modelin akıl yürütme çöküşü **değildir** (gpt-oss-20b de
 Ek olarak deep path, model id'de "/" görünce config'i yok sayıp
 `TOGETHER_API_KEY`'e yönleniyor (bkz. ◇); phi-4 Together'da da yok, yani
 çift sebeple ölçülemez (bkz. §15.3).
+
+**‡‡ DeepSeek-V4-flash deep ölçülemez (reasoning-format harness uyumsuzluğu):**
+v4-flash bir *reasoning* modeli; deep tool döngüsünde dosyaları `read_file`
+ile okuyup ardından **boş bir tur** döndürüyor (content yok, tool_calls yok,
+ctok=0 — muhtemelen yanıtı ayrı bir `reasoning` kanalında, harness'in
+okuduğu `content`/`tool_calls` alanlarında değil). Agent loop "tool yok =
+bitti" sayıp erken duruyor, test hiç yazılmıyor → 300/300 run aynı seed
+stub'ı (`import source; assert source is not None`) bırakıyor; 51 "başarı"
+stub'ın bazı tasklarda tesadüfen bug-revealing olması. **Gerçek deep çöküşü
+DEĞİL** — aynı harness'te DeepSeek-V3.1 (reasoning değil) 0.950 aldı. phi-4
+gibi N/A. (Düzeltme: deep client'ı v4-flash'ın `reasoning` alanını okuyacak
+şekilde yamamak gerekir; gelecek iş.)
 
 **◇ Deep mode routing düzeltmesi:** `_resolve_deep_model_name`, model id'de
 "/" görünce config'in `base_url`/`api_key_env`'ini **yok sayıp** ortamdaki
@@ -70,6 +83,7 @@ gerçek ölçümle** bağımsız doğrular.
 | llama-3.1-8b | [58.8, 69.5] | [63.2, 73.7] | [13.5, 22.0] |
 | DeepSeek-V3.1 | [80.9, 88.9] | [85.0, 92.1] | [91.9, 97.0] |
 | llama-3.3-70b | [74.4, 83.5] | [76.5, 85.3] | [28.9, 39.5] |
+| DeepSeek-V4-flash | [91.5, 96.7] | [94.4, 98.4] | N/A ‡‡ |
 
 ## Okunuş — analizin değeri model gücüne göre dereceli
 
@@ -112,6 +126,12 @@ gerçek ölçümle** bağımsız doğrular.
   llama-3.3-70b (0.793) deep'te **0.340'a düşüyor** → baseline kapasitesi
   deep sonucunu öngörmüyor; belirleyici **tool-sürme/agentic beceri**.
 
+- **Tepe bant, reasoning (DeepSeek-V4-flash):** baseline 0.947, adaptive
+  **0.970** (+2.3pp) — V3.1'den (0.853) +9.4pp kuşak sıçraması, üst banda
+  taşıyor. deep ölçülemedi (‡‡): reasoning yanıt formatı deep tool döngüsünü
+  kırıyor. Not: bu, "tavana yakın model → deep faydasız" sorusunu yanıtlamaz;
+  harness uyumsuzluğu nedeniyle açık kalır.
+
 **Tek satır sonuç:** Analiz adımının işareti modele bağlıdır. İki uç:
 yetenekli-ama-doymamış modelde **monoton fayda** (DeepSeek-V3.1: deep 0.950
 > baseline 0.853, anlamlı; sonnet deep 1.000) ↔ zayıf modelde **deep
@@ -152,4 +172,7 @@ büyük model bile çöker.
 | llama-3.3-70b baseline | `results/benchmark_v2_llama33_70b_100_baseline_*/` |
 | llama-3.3-70b adaptive | `results/benchmark_v2_llama33_70b_100_adaptive_*/` |
 | llama-3.3-70b deep | `results/benchmark_v2_llama33_70b_100_deep_20260601_094951/` (300 run, OpenRouter override; 300/300 tool çağırdı, sıfır zero-token) |
+| DeepSeek-V4-flash baseline | `results/benchmark_v2_deepseekv4flash_100_baseline_*/` |
+| DeepSeek-V4-flash adaptive | `results/benchmark_v2_deepseekv4flash_100_adaptive_*/` |
+| DeepSeek-V4-flash deep (artefakt) | `results/benchmark_v2_deepseekv4flash_100_deep_20260601_102647/` (300 run, hepsi seed stub; reasoning-format uyumsuzluğu; N/A) |
 | deep (sonnet/haiku/120b/qwen) | §11.1 deep-mode leaderboard run'ları |

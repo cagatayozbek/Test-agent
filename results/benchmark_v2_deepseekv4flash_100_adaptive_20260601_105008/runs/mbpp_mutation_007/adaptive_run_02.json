@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import min_k\n\ndef test_min_k_sorts_by_second_element():\n    \"\"\"\n    Verify that min_k sorts tuples by their second element (index 1),\n    not by the first element (index 0). The buggy code uses x[0] instead of x[1].\n    \"\"\"\n    test_list = [(1, 10), (2, 5), (3, 1)]\n    K = 2\n    # Correct ordering by second element: (3,1), (2,5), (1,10) → smallest two\n    expected = [(3, 1), (2, 5)]\n    result = min_k(test_list, K)\n    assert result == expected, (\n        f\"Expected minimum {K} records sorted by the second element: {expected}, \"\n        f\"but got {result}. The function likely sorts by the first element (index 0) instead of the second (index 1).\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkw4wm6db\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_second_element FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_sorts_by_second_element ______________________\n\n    def test_min_k_sorts_by_second_element():\n        \"\"\"\n        Verify that min_k sorts tuples by their second element (index 1),\n        not by the first element (index 0). The buggy code uses x[0] instead of x[1].\n        \"\"\"\n        test_list = [(1, 10), (2, 5), (3, 1)]\n        K = 2\n        # Correct ordering by second element: (3,1), (2,5), (1,10) → smallest two\n        expected = [(3, 1), (2, 5)]\n        result = min_k(test_list, K)\n>       assert result == expected, (\n            f\"Expected minimum {K} records sorted by the second element: {expected}, \"\n            f\"but got {result}. The function likely sorts by the first element (index 0) instead of the second (index 1).\"\n        )\nE       AssertionError: Expected minimum 2 records sorted by the second element: [(3, 1), (2, 5)], but got [(1, 10), (2, 5)]. The function likely sorts by the first element (index 0) instead of the second (index 1).\nE       assert [(1, 10), (2, 5)] == [(3, 1), (2, 5)]\nE         \nE         At index 0 diff: (1, 10) != (3, 1)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         3,...\nE         \nE         ...Full output truncated (8 lines hidden), use '-vv' to show\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_sorts_by_second_element - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa3_r8r5r\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_second_element PASSED             [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:00:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 469,
+  "completion_tokens_total": 1622,
+  "duration_seconds": 26.91,
+  "timestamp": "2026-06-01T11:00:34Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

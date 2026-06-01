@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_142",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "```python\nfrom source import sum_squares\n\ndef test_sum_squares_index_4_not_multiple_of_3():\n    \"\"\"\n    Test that index 4 (multiple of 4 but not multiple of 3) is cubed.\n    Bug: the original code cubes all non-multiple-of-3 indices, \n    but the spec says only cube if index is multiple of 4 AND not multiple of 3.\n    For lst = [1, 2, 3, 4, 5], index 4 should be cubed (5**3=125),\n    but index 2 (not multiple of 3 or 4) should remain unchanged (3).\n    Expected sum: 1 + 2 + 3 + 4 + 125 = 135\n    \"\"\"\n    result = sum_squares([1, 2, 3, 4, 5])\n    assert result == 135, f\"Expected 135 but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcomfmeiz\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/python.py:507: in importtestmodule\n    mod = import_path(\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1387: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1360: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:935: in _load_unlocked\n    ???\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n    source_stat, co = _rewrite_test(fn, self.config)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:357: in _rewrite_test\n    tree = ast.parse(source, filename=strfn)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/ast.py:54: in parse\n    return compile(source, filename, mode, flags,\nE     File \"/private/tmp/claude-501/tmpcomfmeiz/test_generated.py\", line 1\nE       ```python\nE       ^\nE   SyntaxError: invalid syntax\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.09s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzrwdpih2\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/python.py:507: in importtestmodule\n    mod = import_path(\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1387: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1360: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:935: in _load_unlocked\n    ???\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n    source_stat, co = _rewrite_test(fn, self.config)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/_pytest/assertion/rewrite.py:357: in _rewrite_test\n    tree = ast.parse(source, filename=strfn)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/ast.py:54: in parse\n    return compile(source, filename, mode, flags,\nE     File \"/private/tmp/claude-501/tmpzrwdpih2/test_generated.py\", line 1\nE       ```python\nE       ^\nE   SyntaxError: invalid syntax\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.09s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:58:51Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import sum_squares\n\ndef test_sum_squares_non_multiple_of_3_or_4_not_changed():\n    \"\"\"\n    Test that indices not multiples of 3 or 4 are left unchanged.\n    Bug: the elif condition `i % 3 != 0` cubes all non-multiples of 3,\n    but should only cube those that are also multiples of 4.\n    \"\"\"\n    # lst = [2, 3]\n    # index 0: multiple of 3 -> squared -> 4\n    # index 1: not multiple of 3, not multiple of 4 -> unchanged -> 3\n    # expected sum = 7\n    # Buggy code cubes index 1 (3**3=27) -> sum = 4+27=31\n    result = sum_squares([2, 3])\n    assert result == 7, (\n        f\"Expected sum 7 for [2,3] (index0 squared=4, index1 unchanged=3), \"\n        f\"but got {result}. This indicates the bug where non-multiple-of-3 \"\n        f\"indices are incorrectly cubed.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvaqwtvlh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_non_multiple_of_3_or_4_not_changed FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_sum_squares_non_multiple_of_3_or_4_not_changed ______________\n\n    def test_sum_squares_non_multiple_of_3_or_4_not_changed():\n        \"\"\"\n        Test that indices not multiples of 3 or 4 are left unchanged.\n        Bug: the elif condition `i % 3 != 0` cubes all non-multiples of 3,\n        but should only cube those that are also multiples of 4.\n        \"\"\"\n        # lst = [2, 3]\n        # index 0: multiple of 3 -> squared -> 4\n        # index 1: not multiple of 3, not multiple of 4 -> unchanged -> 3\n        # expected sum = 7\n        # Buggy code cubes index 1 (3**3=27) -> sum = 4+27=31\n        result = sum_squares([2, 3])\n>       assert result == 7, (\n            f\"Expected sum 7 for [2,3] (index0 squared=4, index1 unchanged=3), \"\n            f\"but got {result}. This indicates the bug where non-multiple-of-3 \"\n            f\"indices are incorrectly cubed.\"\n        )\nE       AssertionError: Expected sum 7 for [2,3] (index0 squared=4, index1 unchanged=3), but got 31. This indicates the bug where non-multiple-of-3 indices are incorrectly cubed.\nE       assert 31 == 7\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sum_squares_non_multiple_of_3_or_4_not_changed\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgw6wxw1e\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sum_squares_non_multiple_of_3_or_4_not_changed PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:59:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "Missing condition for cubing: the elif clause should check both i % 4 == 0 and i % 3 != 0, but it only checks i % 3 != 0, causing all non-multiples of 3 to be cubed instead of only those that are multiples of 4.",
+    "bug_location": "function sum_squares, line 'elif i%3 != 0:'",
+    "trigger_condition": "Any input list where an index is not a multiple of 3 but also not a multiple of 4 (e.g., index 1, 2, 5, 7, etc.) should remain unchanged, but the bug cubes them.",
+    "expected_vs_actual": "For an index like 1 (not multiple of 3, not multiple of 4), the entry should stay as is, but the bug cubes it. For example, lst = [0, 1] should give sum = 0**2 + 1 = 1, but bug gives 0**2 + 1**3 = 1 (but for a different example like [2,3] index 1: should be 2**2 + 3 = 7, bug gives 2**2 + 3**3 = 31)",
+    "suggested_test_strategy": "Write a test that includes an index which is not a multiple of 3 and not a multiple of 4, and verify that the entry is not squared or cubed. For example, sum_squares([2, 3]) should be 2^2 + 3 = 7 but bug gives 2^2 + 3^3 = 31.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2458,
+  "completion_tokens_total": 1132,
+  "duration_seconds": 23.93,
+  "timestamp": "2026-06-01T10:59:09Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

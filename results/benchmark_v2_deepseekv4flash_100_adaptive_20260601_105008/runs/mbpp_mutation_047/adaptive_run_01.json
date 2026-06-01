@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_excludes_perfect_numbers():\n    \"\"\"\n    Test that perfect numbers (where sum of proper divisors equals the number)\n    are not counted as amicable numbers. The buggy code uses `==` instead of `!=`\n    and incorrectly includes them.\n    \"\"\"\n    limit = 6  # 6 is a perfect number; no amicable numbers exist <= 6\n    result = amicable_numbers_sum(limit)\n    assert result == 0, (\n        f\"Expected 0 for limit={limit}, but got {result}. \"\n        \"Perfect numbers like 6 should not be included in amicable sum.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_z_pcjuw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_excludes_perfect_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_amicable_numbers_sum_excludes_perfect_numbers ______________\n\n    def test_amicable_numbers_sum_excludes_perfect_numbers():\n        \"\"\"\n        Test that perfect numbers (where sum of proper divisors equals the number)\n        are not counted as amicable numbers. The buggy code uses `==` instead of `!=`\n        and incorrectly includes them.\n        \"\"\"\n        limit = 6  # 6 is a perfect number; no amicable numbers exist <= 6\n        result = amicable_numbers_sum(limit)\n>       assert result == 0, (\n            f\"Expected 0 for limit={limit}, but got {result}. \"\n            \"Perfect numbers like 6 should not be included in amicable sum.\"\n        )\nE       AssertionError: Expected 0 for limit=6, but got 6. Perfect numbers like 6 should not be included in amicable sum.\nE       assert 6 == 0\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_excludes_perfect_numbers\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpylfbmou1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_excludes_perfect_numbers PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T11:03:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 584,
+  "completion_tokens_total": 828,
+  "duration_seconds": 20.99,
+  "timestamp": "2026-06-01T11:03:25Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

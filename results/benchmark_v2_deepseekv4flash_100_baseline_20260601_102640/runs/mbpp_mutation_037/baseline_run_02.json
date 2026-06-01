@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_037",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import count_element_in_list\n\ndef test_count_element_in_list_nonzero_count():\n    \"\"\"\n    Test that count_element_in_list correctly counts sublists containing x.\n    The buggy version always returns 0 due to 'ctr += 0' instead of 'ctr += 1'.\n    Expect 2 sublists contain 1: [[1,2], [1,5]].\n    \"\"\"\n    list1 = [[1, 2], [3, 4], [1, 5]]\n    x = 1\n    expected = 2\n    result = count_element_in_list(list1, x)\n    assert result == expected, (\n        f\"Expected {expected} sublists containing {x}, but got {result}. \"\n        \"The buggy code increments by 0 instead of 1, so result is always 0.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpo2buv_lu\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_count_element_in_list_nonzero_count FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_count_element_in_list_nonzero_count ___________________\n\n    def test_count_element_in_list_nonzero_count():\n        \"\"\"\n        Test that count_element_in_list correctly counts sublists containing x.\n        The buggy version always returns 0 due to 'ctr += 0' instead of 'ctr += 1'.\n        Expect 2 sublists contain 1: [[1,2], [1,5]].\n        \"\"\"\n        list1 = [[1, 2], [3, 4], [1, 5]]\n        x = 1\n        expected = 2\n        result = count_element_in_list(list1, x)\n>       assert result == expected, (\n            f\"Expected {expected} sublists containing {x}, but got {result}. \"\n            \"The buggy code increments by 0 instead of 1, so result is always 0.\"\n        )\nE       AssertionError: Expected 2 sublists containing 1, but got 0. The buggy code increments by 0 instead of 1, so result is always 0.\nE       assert 0 == 2\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_count_element_in_list_nonzero_count - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkmu037an\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_count_element_in_list_nonzero_count PASSED       [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:36:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 456,
+  "completion_tokens_total": 384,
+  "duration_seconds": 5.42,
+  "timestamp": "2026-06-01T10:36:48Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

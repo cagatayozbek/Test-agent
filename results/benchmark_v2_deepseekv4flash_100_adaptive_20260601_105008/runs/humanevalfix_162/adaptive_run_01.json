@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_162",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import string_to_md5\n\ndef test_string_to_md5_hello_world():\n    \"\"\"\n    Test that string_to_md5('Hello world') returns the correct MD5 hash.\n    Buggy code hashes the literal 'text' instead of the actual input.\n    \"\"\"\n    result = string_to_md5('Hello world')\n    expected = '3e25960a79dbc69b674cd4ec67a72c62'\n    assert result == expected, (\n        f\"Expected {expected}, got {result}. \"\n        \"Bug: likely hashing literal 'text' instead of input.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmjwv83wf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_string_to_md5_hello_world FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_string_to_md5_hello_world ________________________\n\n    def test_string_to_md5_hello_world():\n        \"\"\"\n        Test that string_to_md5('Hello world') returns the correct MD5 hash.\n        Buggy code hashes the literal 'text' instead of the actual input.\n        \"\"\"\n>       result = string_to_md5('Hello world')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:8: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntext = 'Hello world'\n\n    def string_to_md5(text):\n        \"\"\"\n        Given a string 'text', return its md5 hash equivalent string.\n        If 'text' is an empty string, return None.\n    \n        >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n        \"\"\"\n        import hashlib\n>       return hashlib.md5('text').hexdigest() if text else None\n               ^^^^^^^^^^^^^^^^^^^\nE       TypeError: Strings must be encoded before hashing\n\nsource.py:10: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_string_to_md5_hello_world - TypeError: Strings...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz89h3lwh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_string_to_md5_hello_world PASSED                 [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:59:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 530,
+  "completion_tokens_total": 404,
+  "duration_seconds": 5.8,
+  "timestamp": "2026-06-01T10:59:26Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

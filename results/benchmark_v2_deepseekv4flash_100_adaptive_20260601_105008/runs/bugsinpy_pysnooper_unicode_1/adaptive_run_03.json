@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom pathlib import Path\n\ndef test_unicode_roundtrip_without_coding_header(tmp_path: Path) -> None:\n    \"\"\"Test that non-ASCII characters are preserved when no coding header is present.\n    \n    The buggy code defaults to ASCII decoding, which corrupts UTF-8 bytes.\n    The fixed code should detect UTF-8 (or default to it) and preserve the characters.\n    \"\"\"\n    from source import Tracer\n\n    # A non-ASCII string encoded as UTF-8 bytes (no coding header in the source)\n    original = \"hello 世界\"\n    source_bytes = [original.encode(\"utf-8\")]\n\n    output_file = tmp_path / \"output.log\"\n    tracer = Tracer(str(output_file))\n    tracer.dump_source(source_bytes)\n\n    with open(output_file, \"r\", encoding=\"utf-8\") as f:\n        written = f.read()\n\n    assert written == original, (\n        f\"Expected file content '{original}', but got '{written}'. \"\n        f\"This failure indicates that the tracer either decoded the source \"\n        f\"with the wrong encoding (defaulting to ASCII) or wrote the file \"\n        f\"without specifying UTF-8 encoding.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp39_qnpud\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_roundtrip_without_coding_header FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_unicode_roundtrip_without_coding_header _________________\n\ntmp_path = PosixPath('/private/tmp/claude-501/pytest-of-cagatayozbek/pytest-34/test_unicode_roundtrip_without0')\n\n    def test_unicode_roundtrip_without_coding_header(tmp_path: Path) -> None:\n        \"\"\"Test that non-ASCII characters are preserved when no coding header is present.\n    \n        The buggy code defaults to ASCII decoding, which corrupts UTF-8 bytes.\n        The fixed code should detect UTF-8 (or default to it) and preserve the characters.\n        \"\"\"\n        from source import Tracer\n    \n        # A non-ASCII string encoded as UTF-8 bytes (no coding header in the source)\n        original = \"hello 世界\"\n        source_bytes = [original.encode(\"utf-8\")]\n    \n        output_file = tmp_path / \"output.log\"\n        tracer = Tracer(str(output_file))\n        tracer.dump_source(source_bytes)\n    \n        with open(output_file, \"r\", encoding=\"utf-8\") as f:\n            written = f.read()\n    \n>       assert written == original, (\n            f\"Expected file content '{original}', but got '{written}'. \"\n            f\"This failure indicates that the tracer either decoded the source \"\n            f\"with the wrong encoding (defaulting to ASCII) or wrote the file \"\n            f\"without specifying UTF-8 encoding.\"\n        )\nE       AssertionError: Expected file content 'hello 世界', but got 'hello ������'. This failure indicates that the tracer either decoded the source with the wrong encoding (defaulting to ASCII) or wrote the file without specifying UTF-8 encoding.\nE       assert 'hello ������' == 'hello 世界'\nE         \nE         - hello 世界\nE         + hello ������\n\ntest_generated.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_unicode_roundtrip_without_coding_header - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpu5skmxei\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_roundtrip_without_coding_header PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:50:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 728,
+  "completion_tokens_total": 2806,
+  "duration_seconds": 30.59,
+  "timestamp": "2026-06-01T10:50:55Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
