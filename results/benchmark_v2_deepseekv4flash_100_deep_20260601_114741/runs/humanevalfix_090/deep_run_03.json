@@ -1,0 +1,47 @@
+{
+  "task_id": "humanevalfix_090",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_next_smallest_returns_second_smallest():\n    \"\"\"Reveals bug: len < 3 instead of len < 2. With two unique elements,\n    the 2nd smallest should be the larger element, not None.\"\"\"\n    assert source.next_smallest([1, 2]) == 2",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9b87_n4c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_next_smallest_returns_second_smallest FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_next_smallest_returns_second_smallest __________________\n\n    def test_next_smallest_returns_second_smallest():\n        \"\"\"Reveals bug: len < 3 instead of len < 2. With two unique elements,\n        the 2nd smallest should be the larger element, not None.\"\"\"\n>       assert source.next_smallest([1, 2]) == 2\nE       assert None == 2\nE        +  where None = <function next_smallest at 0x10c83a3e0>([1, 2])\nE        +    where <function next_smallest at 0x10c83a3e0> = source.next_smallest\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_next_smallest_returns_second_smallest - assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpweh73w23\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_next_smallest_returns_second_smallest PASSED     [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T12:06:26Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 9055,
+  "completion_tokens_total": 942,
+  "duration_seconds": 86.87,
+  "timestamp": "2026-06-01T12:06:26Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

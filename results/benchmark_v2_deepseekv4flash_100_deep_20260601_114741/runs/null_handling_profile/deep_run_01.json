@@ -1,0 +1,47 @@
+{
+  "task_id": "null_handling_profile",
+  "mode": "deep",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_get_user_display_name_none_profile():\n    \"\"\"Reveals bug: calling get_user_display_name with profile=None raises TypeError.\"\"\"\n    assert source.get_user_display_name({\"profile\": None}) is None",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzimr3j7d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_get_user_display_name_none_profile FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_get_user_display_name_none_profile ____________________\n\n    def test_get_user_display_name_none_profile():\n        \"\"\"Reveals bug: calling get_user_display_name with profile=None raises TypeError.\"\"\"\n>       assert source.get_user_display_name({\"profile\": None}) is None\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:8: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nuser_data = {'profile': None}\n\n    def get_user_display_name(user_data):\n        \"\"\"\n        Returns the display name from user data.\n        Expected structure: {'profile': {'display_name': '...', ...}, ...}\n        However, the 'profile' key can sometimes be None.\n        \"\"\"\n        # BUG: If user_data.get('profile') returns None,\n        # accessing ['display_name'] on None raises TypeError.\n        profile = user_data.get('profile')\n    \n        # The developer assumed profile is always present or forgot to check for None.\n>       return profile['display_name']\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: 'NoneType' object is not subscriptable\n\nsource.py:12: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_none_profile - TypeError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4ownlxry\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_get_user_display_name_none_profile FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_get_user_display_name_none_profile ____________________\n\n    def test_get_user_display_name_none_profile():\n        \"\"\"Reveals bug: calling get_user_display_name with profile=None raises TypeError.\"\"\"\n>       assert source.get_user_display_name({\"profile\": None}) is None\nE       AssertionError: assert 'Anonymous' is None\nE        +  where 'Anonymous' = <function get_user_display_name at 0x10a3ea3e0>({'profile': None})\nE        +    where <function get_user_display_name at 0x10a3ea3e0> = source.get_user_display_name\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_get_user_display_name_none_profile - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T12:21:07Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 15968,
+  "completion_tokens_total": 2171,
+  "duration_seconds": 41.15,
+  "timestamp": "2026-06-01T12:21:07Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

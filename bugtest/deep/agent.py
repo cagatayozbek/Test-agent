@@ -197,6 +197,11 @@ class Agent:
             )
 
             assistant_msg = {"role": "assistant", "content": response.content or ""}
+            # Reasoning models (e.g. deepseek-v4) require their chain-of-thought
+            # to be echoed back or they emit an empty next turn and the loop
+            # stalls before writing a test. None for non-reasoning models.
+            if getattr(response, "reasoning_details", None):
+                assistant_msg["reasoning_details"] = response.reasoning_details
             assistant_msg["tool_calls"] = [
                 {
                     "id": tc["id"],

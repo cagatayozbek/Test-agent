@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_amicable_numbers_220():\n    \"\"\"Bug: `!=` flipped to `==` means perfect numbers (6,28) are counted\n    as amicable, while true amicable numbers (220) are excluded.\n    For limit=220: buggy returns 34 (6+28), correct returns 220.\"\"\"\n    assert source.amicable_numbers_sum(220) == 220",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdkf97pri\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_amicable_numbers_220 FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_amicable_numbers_220 ___________________________\n\n    def test_amicable_numbers_220():\n        \"\"\"Bug: `!=` flipped to `==` means perfect numbers (6,28) are counted\n        as amicable, while true amicable numbers (220) are excluded.\n        For limit=220: buggy returns 34 (6+28), correct returns 220.\"\"\"\n>       assert source.amicable_numbers_sum(220) == 220\nE       assert 34 == 220\nE        +  where 34 = <function amicable_numbers_sum at 0x10a7fa3e0>(220)\nE        +    where <function amicable_numbers_sum at 0x10a7fa3e0> = source.amicable_numbers_sum\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_220 - assert 34 == 220\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdn6k5g8c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_amicable_numbers_220 PASSED                      [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T12:20:16Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 5439,
+  "completion_tokens_total": 2664,
+  "duration_seconds": 26.5,
+  "timestamp": "2026-06-01T12:20:16Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": true,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

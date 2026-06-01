@@ -26,6 +26,12 @@ class LLMResponse:
     tool_calls: list  # list of {id, name, arguments}
     prompt_tokens: int = 0
     completion_tokens: int = 0
+    # Reasoning models (e.g. deepseek-v4) return their chain-of-thought in a
+    # separate `reasoning_details` channel that must be echoed back in the
+    # assistant turn or the model emits an empty next turn and the tool loop
+    # stalls. We carry it through so the agent can re-attach it. None for
+    # non-reasoning models (no behavioural change for them).
+    reasoning_details: Optional[list] = None
 
 
 # gpt-oss-120b's framing varies across responses:
@@ -380,11 +386,16 @@ class LLMClient:
                 content_text = ""  # framing is noise once calls are extracted
 
         usage = resp.usage
+        # Preserve the reasoning chain for reasoning models so the agent can
+        # echo it back next turn (see LLMResponse.reasoning_details). Absent on
+        # non-reasoning models → None.
+        reasoning_details = getattr(msg, "reasoning_details", None)
         return LLMResponse(
             content=content_text,
             tool_calls=tool_calls,
             prompt_tokens=usage.prompt_tokens if usage else 0,
             completion_tokens=usage.completion_tokens if usage else 0,
+            reasoning_details=reasoning_details,
         )
 
     def _call_anthropic(

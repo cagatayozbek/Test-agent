@@ -1687,66 +1687,95 @@ llama-3.1-8b −47.0 pp · gpt-oss-20b −72.7 pp. Range of the analysis step:
 - Configs: `benchmark_v2_llama33_70b_100_{baseline,adaptive,deep}.yaml`.
 
 
-## 19. Generational jump and a reasoning-model harness limit — DeepSeek-V4-flash (2026-06-01)
+## 19. Generational jump + patching the deep loop for reasoning models — DeepSeek-V4-flash (2026-06-01)
 
 We added **deepseek/deepseek-v4-flash** (DeepSeek-V4-flash, a 2026 reasoning
 model, 1M context, ~$0.10/$0.20 per Mtok) via OpenRouter to (a) measure the
-V3.1 → V4 generational delta and (b) probe deep mode on a reasoning model.
+V3.1 → V4 generational delta and (b) probe deep mode on a reasoning model. The
+first deep run was a harness artefact; diagnosing it produced a small,
+general fix to the deep client (§19.2) and a genuine deep measurement (§19.3).
 
-### 19.1 Results — strong baseline/adaptive; deep is N/A (harness limit)
+### 19.1 Results — all three modes genuine (after the §19.2 patch)
 
 | Mode | BRTR | 95% CI | Successful | Avg dur | Avg c-tok |
 |---|---:|---|---:|---:|---:|
 | baseline | 94.7% | [91.5, 96.7] | 284/300 | 18.0s | 1084 |
 | adaptive | 97.0% | [94.4, 98.4] | 291/300 | — | — |
-| deep | N/A ‡‡ | — | (artefact) | 39.7s | 881 |
+| deep ◆ | 85.7% | [81.2, 89.2] | 257/300 | 44.1s | 1796 |
 
 **Generational jump:** baseline 0.853 (V3.1, §17) → **0.947 (V4-flash)**,
 +9.4 pp — V4-flash lands in the top band with haiku/gpt-oss-120b. adaptive
-0.970 adds +2.3 pp over baseline (high c-tok ~1084 confirms it is a
-token-heavy reasoning model). Both modes are genuine.
+0.970 adds +2.3 pp (high c-tok confirms a token-heavy reasoning model).
 
-### 19.2 ‡‡ Why deep is N/A — reasoning-model response format breaks the loop
+### 19.2 The bug and the patch — reasoning chain must be echoed back
 
-The deep run reported BRTR 17.0% (51/300), but this is a harness artefact and
-is **excluded**, diagnosed by tracing a single task:
+The first deep run scored 17.0% (51/300) — a harness artefact, diagnosed by
+tracing one task and confirmed by inspecting all 300 runs: every run emitted
+the identical seed stub `import source / assert source is not None`, with most
+runs making only 1–2 tool calls. The mechanism, found via a raw multi-turn
+probe:
 
-- The agent calls `read_file`, then on the next turn returns an **empty
-  response** — no `content`, no `tool_calls`, `completion_tokens=0`. The
-  reasoning model emits its work in a separate reasoning channel that
-  `bugtest/deep/llm.py:_call_openai_compat` does not read (it parses only
-  `message.content` and `message.tool_calls`).
-- The agent loop treats "no tool calls" as a final summary (agent.py:181) and
-  stops **before writing a test**, leaving the workspace's seed stub
-  `import source
-assert source is not None`.
-- Consequently **all 300 runs emit the identical seed stub**; the 51 "passes"
-  are tasks where that trivial import test is coincidentally bug-revealing
-  (buggy import errors, fixed imports cleanly). `tool_failure_mode_count` is
-  empty and most runs make only 1 tool call before the empty turn.
+- Turn 1: v4-flash returns `tool_calls` plus its chain-of-thought in
+  `message.reasoning_details` (a field `_call_openai_compat` did not read).
+- Turn 2 (after the tool result): the model returns an **empty completion** —
+  no content, no tool calls, `completion_tokens=0`, `finish_reason=stop`. With
+  its prior reasoning dropped from the conversation, it has nothing to
+  continue from and stops, so the agent loop ends before writing a test.
 
-This is **not** a genuine deep collapse: the same deep harness scored
-DeepSeek-V3.1 (a non-reasoning model) at **0.950** (§17). The failure is
-specific to V4-flash's reasoning response format. Like phi-4 (§15.3), deep is
-marked N/A. The fix is to teach `_call_openai_compat` to read the provider's
-`reasoning`/`reasoning_content` field and not terminate on an empty-but-still-
-thinking turn; deferred as future work.
+A controlled probe confirmed the fix: replaying turn 2 **with
+`reasoning_details` echoed back in the assistant message** makes the model emit
+a real `safe_edit_file` writing a bug-revealing test (ctok 1047). Two-part patch:
 
-### 19.3 Methodological note
+1. `bugtest/deep/llm.py` — `LLMResponse` gains a `reasoning_details` field;
+   `_call_openai_compat` captures `msg.reasoning_details` (None for
+   non-reasoning models → no behavioural change for the other 9 models).
+2. `bugtest/deep/agent.py` — the assistant turn re-attaches `reasoning_details`
+   when present.
+3. `bugtest/deep/capabilities.py` — a v4-flash profile with
+   `supports_parallel_tools: True` (it emits parallel `read_file` calls and
+   stalls if only one is answered).
 
-This is the third deep-mode N/A and the second distinct *cause*:
-- §15.3 phi-4: no tool-calling endpoint + Together mis-routing.
-- §19.2 V4-flash: reasoning response format not parsed by the deep client.
+### 19.3 Recovered measurement — deep is neutral for this near-ceiling model
 
-Both inflate to a degenerate seed-stub BRTR that must be caught by inspecting
-`tool_call_count`, token counts, and test-code diversity — never reported at
-face value. Deep-mode numbers are only trustworthy when the run shows real
-tokens, real tool calls, **and** diverse generated tests.
+After the patch, deep = **85.7% (257/300)**, genuine: 300/300 made tool calls,
+zero zero-token runs, generated tests are diverse. **Caveat:** 36 runs (~12%)
+still end in the seed stub — almost all at `tool_call_count=2` (the empty-turn
+residual the patch reduced from 100% to 12%), concentrated in 7 tasks. Treating
+those as harness residue and excluding them gives **97.3%** on the 264
+loop-completing runs. So the true deep BRTR is in the **85.7–97.3%** band —
+either way **strong, not a collapse**, and **≈ baseline (0.947)**: deep is
+**neutral** for V4-flash.
 
-### 19.4 Raw data
+This closes the headroom story within one vendor family:
+
+| DeepSeek | baseline | deep | Δ |
+|---|---:|---:|---:|
+| V3.1 (headroom) | 0.853 | 0.950 | **+9.7 pp** |
+| V4-flash (near ceiling) | 0.947 | 0.857–0.973 | **≈0 (neutral)** |
+
+Both models drive the agentic loop competently (once the harness supports
+them); the difference is **headroom**. V3.1 has room below the ceiling and deep
+converts it to a significant gain; V4-flash is already near the top and deep
+neither helps nor hurts — matching the gpt-oss-120b / haiku ceiling pattern.
+
+### 19.4 Methodological note — two deep-mode failure causes, both caught
+
+- §15.3 phi-4: no tool-calling endpoint + Together mis-routing → unmeasurable
+  (genuinely no fix on available infra; stays N/A).
+- §19.2 V4-flash: reasoning chain dropped across turns → **fixed**, deep
+  recovered from 17% (artefact) to 85.7% (genuine).
+
+Both first appeared as a degenerate ~uniform seed-stub BRTR. The guardrail:
+never trust a deep number without checking `tool_call_count`, token counts,
+and **test-code diversity** — a uniform stub across runs is the artefact
+signature.
+
+### 19.5 Raw data
 
 - `results/benchmark_v2_deepseekv4flash_100_baseline_20260601_102640/`
 - `results/benchmark_v2_deepseekv4flash_100_adaptive_20260601_105008/`
-- `results/benchmark_v2_deepseekv4flash_100_deep_20260601_102647/` (300 runs,
-  all seed-stub; reasoning-format harness limit; scored N/A)
+- `results/benchmark_v2_deepseekv4flash_100_deep_20260601_114741/` (300 runs,
+  post-patch; 257 success, 36 residual stub)
+- `..._deep_20260601_102647_ARTIFACT/` (pre-patch, 300 stub; kept as evidence)
+- Patch: `bugtest/deep/{llm.py,agent.py,capabilities.py}`.
 - Configs: `benchmark_v2_deepseekv4flash_100_{baseline,adaptive,deep}.yaml`.

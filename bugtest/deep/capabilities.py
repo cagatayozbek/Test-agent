@@ -114,6 +114,19 @@ _EXACT: dict[str, Capabilities] = {
         "tool_names": _ORCHESTRATOR_TOOL_NAMES,
     },
 
+    # DeepSeek-V4-flash on OpenRouter — reasoning model. Emits parallel tool
+    # calls (e.g. two read_file in one turn) and needs them all answered, or
+    # it stalls; also returns its chain-of-thought in `reasoning_details`,
+    # which the agent now echoes back (see bugtest/deep/llm.py).
+    "openai:deepseek/deepseek-v4-flash": {
+        "provider": "openai",
+        "supports_parallel_tools": True,
+        "supports_tool_choice_auto": True,
+        "supports_structured_tools": True,
+        "supports_system_role": True,
+        "tool_names": _ORCHESTRATOR_TOOL_NAMES,
+    },
+
     # DeepSeek-Coder 33B Instruct — older arch, single tool at a time is
     # safer in practice.
     "openai:deepseek-ai/deepseek-coder-33b-instruct": {
