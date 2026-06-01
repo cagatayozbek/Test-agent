@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_018",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_Max_Num\n\ndef test_find_max_num_mutation_zero_to_one():\n    arr = [0]\n    result = find_Max_Num(arr)\n    assert result == 0, f\"Expected largest number from {arr} to be 0, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwlna88q4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_max_num_mutation_zero_to_one FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_find_max_num_mutation_zero_to_one ____________________\n\n    def test_find_max_num_mutation_zero_to_one():\n        arr = [0]\n>       result = find_Max_Num(arr)\n                 ^^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\narr = [0]\n\n    def find_Max_Num(arr):\n        n = len(arr)\n        arr.sort(reverse=True)\n>       num = arr[1]\n              ^^^^^^\nE       IndexError: list index out of range\n\nsource.py:4: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_max_num_mutation_zero_to_one - IndexError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsj26mi_p\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_max_num_mutation_zero_to_one PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T07:59:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 468,
+  "completion_tokens_total": 67,
+  "duration_seconds": 4.88,
+  "timestamp": "2026-06-01T07:59:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

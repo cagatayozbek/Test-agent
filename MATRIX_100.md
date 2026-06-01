@@ -1,4 +1,4 @@
-# 100-Task BRTR Matrix — baseline × adaptive × deep (7 models)
+# 100-Task BRTR Matrix — baseline × adaptive × deep (8 models)
 
 Özet matris. Tüm sayılar ilgili `results/benchmark_v2_*_100*/summary.json`
 dosyalarından okunmuştur. Detaylı analiz için bkz. `EXPERIMENT_REPORT.md`
@@ -20,6 +20,7 @@ fixed kodda PASS edecek. Birincil metrik. Her hücre = 100 task × 3 run =
 | **gpt-oss-20b** | 94.0% (282/300) | 95.0% (285/300) | **21.3%** (64/300) | merged |
 | **phi-4 (14B)** | **66.7%** (200/300) | **67.7%** (203/300) | N/A ‡ | — |
 | **llama-3.1-8b** | **64.3%** (193/300) | **68.7%** (206/300) | **17.3%** (52/300) | OpenRouter ◇ |
+| **DeepSeek-V3.1** | 85.3% (256/300) | 89.0% (267/300) | **95.0%** (285/300) | OpenRouter ◇ |
 
 **† Sonnet baseline/adaptive timeout-bozulmuş:** bu iki moddaki
 başarısızlıkların ~%80'i gerçek test FAIL'i değil, 120s `claude -p`
@@ -66,6 +67,7 @@ gerçek ölçümle** bağımsız doğrular.
 | gpt-oss-20b | [90.7, 96.2] | [91.9, 97.0] | [17.1, 26.3] |
 | phi-4 (14B) | [61.2, 71.8] | [62.2, 72.7] | N/A ‡ |
 | llama-3.1-8b | [58.8, 69.5] | [63.2, 73.7] | [13.5, 22.0] |
+| DeepSeek-V3.1 | [80.9, 88.9] | [85.0, 92.1] | [91.9, 97.0] |
 
 ## Okunuş — analizin değeri model gücüne göre dereceli
 
@@ -91,12 +93,23 @@ gerçek ölçümle** bağımsız doğrular.
   8'i network kopması artefaktı = 0-token; gerçek payda ~292, BRTR≈0.178 —
   fark ihmal edilebilir.)
 
-**Tek satır sonuç:** Analiz adımının işareti modele bağlıdır — yalnızca en
-güçlü modelde net fayda (+5.7pp deep), orta/zayıf modellerde sıfır ya da
-büyük zarar. Zayıf modellerde **hafif/nötr adaptive** ama **deep felaket**
-(iki bağımsız zayıf model: gpt-oss-20b 0.213, llama-3.1-8b 0.173). Model
-kapasitesi baskın değişkendir: analiz güçlü modeli mükemmelleştirir, zayıf
-modeli kurtaramaz, zorunlu agentic döngü (deep) zayıf modeli çökertir.
+- **Güçlü, tavanda değil (DeepSeek-V3.1):** **monoton fayda** —
+  baseline 0.853 < adaptive 0.890 < **deep 0.950**, analiz dozuyla doğru
+  orantılı. Üstelik deep CI'ı [91.9, 97.0], baseline CI'ı [80.9, 88.9]'un
+  tamamen **üstünde** (örtüşmez) → deep, baseline'dan **istatistiksel olarak
+  anlamlı** şekilde iyi. Tezin en net pozitif kanıtı: oynayacak yeri olan
+  yetenekli bir modelde analiz açıkça yardım ediyor. (300/300, sıfır
+  zero-token, hepsi tool çağırdı.)
+
+**Tek satır sonuç:** Analiz adımının işareti modele bağlıdır. İki uç:
+yetenekli-ama-doymamış modelde **monoton fayda** (DeepSeek-V3.1: deep 0.950
+> baseline 0.853, anlamlı; sonnet deep 1.000) ↔ zayıf modelde **deep
+felaket** (gpt-oss-20b 0.213, llama-3.1-8b 0.173). Arada tavan etkisi
+(haiku), hafif/monoton zarar (gpt-oss-120b, qwen). Model kapasitesi baskın
+değişkendir; ama "daha güçlü = daha çok fayda" basit değil: gpt-oss-120b
+(baseline 0.977) deep'te **zarar** görürken DeepSeek (baseline 0.853) deep'te
+**belirgin kazanır** — doygunluğa uzaklık + tool döngüsünü iyi sürebilme
+birlikte belirleyici.
 
 ## Ham veri dizinleri
 
@@ -119,4 +132,7 @@ modeli kurtaramaz, zorunlu agentic döngü (deep) zayıf modeli çökertir.
 | llama-3.1-8b baseline | `results/benchmark_v2_llama31_8b_100_baseline_20260531_194231/` |
 | llama-3.1-8b adaptive | `results/benchmark_v2_llama31_8b_100_adaptive_20260531_201622/` |
 | llama-3.1-8b deep | `results/benchmark_v2_llama31_8b_100_deep_20260531_194639/` (300 run, OpenRouter override; 289/300 tool çağırdı) |
+| DeepSeek-V3.1 baseline | `results/benchmark_v2_deepseekv31_100_baseline_*/` |
+| DeepSeek-V3.1 adaptive | `results/benchmark_v2_deepseekv31_100_adaptive_*/` |
+| DeepSeek-V3.1 deep | `results/benchmark_v2_deepseekv31_100_deep_20260601_075443/` (300 run, OpenRouter override; 300/300 tool çağırdı, sıfır zero-token) |
 | deep (sonnet/haiku/120b/qwen) | §11.1 deep-mode leaderboard run'ları |

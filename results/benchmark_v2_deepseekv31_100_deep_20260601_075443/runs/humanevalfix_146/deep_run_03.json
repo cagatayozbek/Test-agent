@@ -1,0 +1,47 @@
+{
+  "task_id": "humanevalfix_146",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_specialFilter_excludes_numbers_with_digit_2():\n    \"\"\"Test that specialFilter correctly excludes numbers with digit 2 as first or last digit.\n    \n    The buggy version includes 2 in odd_digits tuple, causing incorrect counting.\n    \"\"\"\n    # Numbers where first digit is 2 and last digit is odd (should not be counted)\n    # 21: first digit 2, last digit 1 (odd) - should NOT be counted\n    # 23: first digit 2, last digit 3 (odd) - should NOT be counted\n    # 25: first digit 2, last digit 5 (odd) - should NOT be counted\n    # 27: first digit 2, last digit 7 (odd) - should NOT be counted\n    # 29: first digit 2, last digit 9 (odd) - should NOT be counted\n    \n    # Numbers where last digit is 2 and first digit is odd (should not be counted)\n    # 12: first digit 1 (odd), last digit 2 - should NOT be counted\n    # 32: first digit 3 (odd), last digit 2 - should NOT be counted\n    # 52: first digit 5 (odd), last digit 2 - should NOT be counted\n    # 72: first digit 7 (odd), last digit 2 - should NOT be counted\n    # 92: first digit 9 (odd), last digit 2 - should NOT be counted\n    \n    # Test case: mixed numbers including those with digit 2\n    nums = [21, 23, 12, 32, 15, 33, 45]\n    # Expected count: only 15, 33, 45 should be counted (all >10, first and last digits odd)\n    # 15: first=1 (odd), last=5 (odd) ✓\n    # 33: first=3 (odd), last=3 (odd) ✓\n    # 45: first=4 (even), last=5 (odd) ✗ (first digit even)\n    # So expected count = 2\n    \n    result = source.specialFilter(nums)\n    assert result == 2, f\"Expected 2, got {result}. Bug: 2 is incorrectly included in odd_digits.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpin3lc7ey\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_specialFilter_excludes_numbers_with_digit_2 FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_specialFilter_excludes_numbers_with_digit_2 _______________\n\n    def test_specialFilter_excludes_numbers_with_digit_2():\n        \"\"\"Test that specialFilter correctly excludes numbers with digit 2 as first or last digit.\n    \n        The buggy version includes 2 in odd_digits tuple, causing incorrect counting.\n        \"\"\"\n        # Numbers where first digit is 2 and last digit is odd (should not be counted)\n        # 21: first digit 2, last digit 1 (odd) - should NOT be counted\n        # 23: first digit 2, last digit 3 (odd) - should NOT be counted\n        # 25: first digit 2, last digit 5 (odd) - should NOT be counted\n        # 27: first digit 2, last digit 7 (odd) - should NOT be counted\n        # 29: first digit 2, last digit 9 (odd) - should NOT be counted\n    \n        # Numbers where last digit is 2 and first digit is odd (should not be counted)\n        # 12: first digit 1 (odd), last digit 2 - should NOT be counted\n        # 32: first digit 3 (odd), last digit 2 - should NOT be counted\n        # 52: first digit 5 (odd), last digit 2 - should NOT be counted\n        # 72: first digit 7 (odd), last digit 2 - should NOT be counted\n        # 92: first digit 9 (odd), last digit 2 - should NOT be counted\n    \n        # Test case: mixed numbers including those with digit 2\n        nums = [21, 23, 12, 32, 15, 33, 45]\n        # Expected count: only 15, 33, 45 should be counted (all >10, first and last digits odd)\n        # 15: first=1 (odd), last=5 (odd) ✓\n        # 33: first=3 (odd), last=3 (odd) ✓\n        # 45: first=4 (even), last=5 (odd) ✗ (first digit even)\n        # So expected count = 2\n    \n        result = source.specialFilter(nums)\n>       assert result == 2, f\"Expected 2, got {result}. Bug: 2 is incorrectly included in odd_digits.\"\nE       AssertionError: Expected 2, got 6. Bug: 2 is incorrectly included in odd_digits.\nE       assert 6 == 2\n\ntest_generated.py:34: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_specialFilter_excludes_numbers_with_digit_2 - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpaujz7wbi\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_specialFilter_excludes_numbers_with_digit_2 PASSED [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:23:13Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 8353,
+  "completion_tokens_total": 1243,
+  "duration_seconds": 54.02,
+  "timestamp": "2026-06-01T08:23:13Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

@@ -1,0 +1,47 @@
+{
+  "task_id": "off_by_one_loop",
+  "mode": "deep",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_process_batch_handles_all_items():\n    \"\"\"Test that process_batch processes all items in the input list.\"\"\"\n    # Create a list with multiple items\n    input_list = [1, 2, 3, 4, 5]\n    \n    # The fixed code should return a list with same length as input\n    # Each item multiplied by 2\n    expected = [2, 4, 6, 8, 10]\n    \n    result = source.process_batch(input_list)\n    \n    # Assert that output has same length as input\n    assert len(result) == len(input_list), \\\n        f\"Output length ({len(result)}) should equal input length ({len(input_list)})\"\n    \n    # Also assert the actual values are correct\n    assert result == expected, \\\n        f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdz6sa7ir\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_process_batch_handles_all_items FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_process_batch_handles_all_items _____________________\n\n    def test_process_batch_handles_all_items():\n        \"\"\"Test that process_batch processes all items in the input list.\"\"\"\n        # Create a list with multiple items\n        input_list = [1, 2, 3, 4, 5]\n    \n        # The fixed code should return a list with same length as input\n        # Each item multiplied by 2\n        expected = [2, 4, 6, 8, 10]\n    \n        result = source.process_batch(input_list)\n    \n        # Assert that output has same length as input\n>       assert len(result) == len(input_list), \\\n            f\"Output length ({len(result)}) should equal input length ({len(input_list)})\"\nE       AssertionError: Output length (4) should equal input length (5)\nE       assert 4 == 5\nE        +  where 4 = len([2, 4, 6, 8])\nE        +  and   5 = len([1, 2, 3, 4, 5])\n\ntest_generated.py:18: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_batch_handles_all_items - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppij6xe8f\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_process_batch_handles_all_items PASSED           [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:46:42Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7372,
+  "completion_tokens_total": 768,
+  "duration_seconds": 34.96,
+  "timestamp": "2026-06-01T08:46:42Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

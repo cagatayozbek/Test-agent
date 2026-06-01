@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_075",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import is_multiply_prime\n\ndef test_is_multiply_prime_with_small_input():\n    assert is_multiply_prime(8) == False, \"8 should not be a product of 3 primes\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdtkf08ud\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_with_small_input FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_is_multiply_prime_with_small_input ____________________\n\n    def test_is_multiply_prime_with_small_input():\n>       assert is_multiply_prime(8) == False, \"8 should not be a product of 3 primes\"\n               ^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:17: in is_multiply_prime\n    if not is_prime(i): continue\n           ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 2\n\n    def is_prime(n):\n        for j in range(0,n):\n>           if n%j == 0:\n               ^^^\nE           ZeroDivisionError: integer modulo by zero\n\nsource.py:12: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_multiply_prime_with_small_input - ZeroDivis...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1ip4k77y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_with_small_input FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_is_multiply_prime_with_small_input ____________________\n\n    def test_is_multiply_prime_with_small_input():\n>       assert is_multiply_prime(8) == False, \"8 should not be a product of 3 primes\"\nE       AssertionError: 8 should not be a product of 3 primes\nE       assert True == False\nE        +  where True = is_multiply_prime(8)\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_multiply_prime_with_small_input - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:09:11Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import is_multiply_prime\n\ndef test_is_multiply_prime_30():\n    \"\"\"Test a true case that triggers the division by zero bug in is_prime.\"\"\"\n    result = is_multiply_prime(30)\n    assert result == True, f\"Expected 30 to be a product of 3 primes, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0rwycfef\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_30 FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_is_multiply_prime_30 ___________________________\n\n    def test_is_multiply_prime_30():\n        \"\"\"Test a true case that triggers the division by zero bug in is_prime.\"\"\"\n>       result = is_multiply_prime(30)\n                 ^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:17: in is_multiply_prime\n    if not is_prime(i): continue\n           ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 2\n\n    def is_prime(n):\n        for j in range(0,n):\n>           if n%j == 0:\n               ^^^\nE           ZeroDivisionError: integer modulo by zero\n\nsource.py:12: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_multiply_prime_30 - ZeroDivisionError: inte...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7kvabhst\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_30 PASSED                      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:09:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The is_prime function has a bug where range(0,n) starts at 0, causing division by zero when checking n%j where j=0.",
+    "bug_location": "is_prime function, line: for j in range(0,n):",
+    "trigger_condition": "Calling is_prime with any n>0 (since range(0,n) includes 0, and n%0 raises ZeroDivisionError).",
+    "expected_vs_actual": "Expected: is_prime should check divisibility starting from 2 up to n-1. Actual: The loop starts at j=0, causing ZeroDivisionError on first iteration for any n>0.",
+    "suggested_test_strategy": "Test is_multiply_prime with any valid input (e.g., 30) that triggers the is_prime check, causing a ZeroDivisionError. This will fail the buggy code but pass the fixed version where range starts at 2.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2149,
+  "completion_tokens_total": 338,
+  "duration_seconds": 20.95,
+  "timestamp": "2026-06-01T08:09:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

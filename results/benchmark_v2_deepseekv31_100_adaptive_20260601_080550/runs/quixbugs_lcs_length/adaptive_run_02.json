@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_lcs_length",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import lcs_length\n\ndef test_lcs_length_known_example():\n    result = lcs_length('ABCBDAB', 'BDCAB')\n    expected = 4\n    assert result == expected, f\"Expected LCS length {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpb_j_tbnn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_known_example FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_known_example _________________________\n\n    def test_lcs_length_known_example():\n        result = lcs_length('ABCBDAB', 'BDCAB')\n        expected = 4\n>       assert result == expected, f\"Expected LCS length {expected}, got {result}\"\nE       AssertionError: Expected LCS length 4, got 1\nE       assert 1 == 4\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_known_example - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwoo40frf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_known_example FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_known_example _________________________\n\n    def test_lcs_length_known_example():\n        result = lcs_length('ABCBDAB', 'BDCAB')\n        expected = 4\n>       assert result == expected, f\"Expected LCS length {expected}, got {result}\"\nE       AssertionError: Expected LCS length 4, got 2\nE       assert 2 == 4\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_known_example - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:17:19Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import lcs_length\n\ndef test_lcs_length_known_example():\n    s = 'ABCBDAB'\n    t = 'BDCAB'\n    expected = 4\n    result = lcs_length(s, t)\n    assert result == expected, f\"Expected LCS length {expected} for '{s}' and '{t}', got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnj_x6r3t\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_known_example FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_known_example _________________________\n\n    def test_lcs_length_known_example():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        expected = 4\n        result = lcs_length(s, t)\n>       assert result == expected, f\"Expected LCS length {expected} for '{s}' and '{t}', got {result}\"\nE       AssertionError: Expected LCS length 4 for 'ABCBDAB' and 'BDCAB', got 1\nE       assert 1 == 4\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_known_example - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp36_1elmg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_known_example FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_known_example _________________________\n\n    def test_lcs_length_known_example():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        expected = 4\n        result = lcs_length(s, t)\n>       assert result == expected, f\"Expected LCS length {expected} for '{s}' and '{t}', got {result}\"\nE       AssertionError: Expected LCS length 4 for 'ABCBDAB' and 'BDCAB', got 2\nE       assert 2 == 4\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_known_example - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:17:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import lcs_length\n\ndef test_lcs_length_known_example():\n    s = 'ABCBDAB'\n    t = 'BDCAB'\n    result = lcs_length(s, t)\n    expected = 4\n    assert result == expected, f\"Expected LCS length {expected} for '{s}' and '{t}', got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuaiuj4aw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_known_example FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_known_example _________________________\n\n    def test_lcs_length_known_example():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        result = lcs_length(s, t)\n        expected = 4\n>       assert result == expected, f\"Expected LCS length {expected} for '{s}' and '{t}', got {result}\"\nE       AssertionError: Expected LCS length 4 for 'ABCBDAB' and 'BDCAB', got 1\nE       assert 1 == 4\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_known_example - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpt7no3egi\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_lcs_length_known_example FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_lcs_length_known_example _________________________\n\n    def test_lcs_length_known_example():\n        s = 'ABCBDAB'\n        t = 'BDCAB'\n        result = lcs_length(s, t)\n        expected = 4\n>       assert result == expected, f\"Expected LCS length {expected} for '{s}' and '{t}', got {result}\"\nE       AssertionError: Expected LCS length 4 for 'ABCBDAB' and 'BDCAB', got 2\nE       assert 2 == 4\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lcs_length_known_example - AssertionError: Exp...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:17:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "When characters match, the code incorrectly uses dp[i-1, j] + 1 instead of dp[i-1, j-1] + 1, which adds the count from the previous row in the same column rather than the diagonal, causing overcounting of the LCS length.",
+    "bug_location": "lcs_length, line inside nested loops where s[i] == t[j]",
+    "trigger_condition": "Input strings where a matching character follows a match in the same column of the previous row (e.g., repeated characters or overlapping substrings), such as 'ABCBDAB' and 'BDCAB'.",
+    "expected_vs_actual": "Expected LCS length for 'ABCBDAB' and 'BDCAB' is 4 (for 'BCAB' or 'BDAB'), but actual with bug is 5 due to cumulative addition from dp[i-1, j].",
+    "suggested_test_strategy": "Test with known LCS examples: assert lcs_length('ABCBDAB', 'BDCAB') == 4; also test edge cases like empty strings, single matches, and non-overlapping strings.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3556,
+  "completion_tokens_total": 476,
+  "duration_seconds": 32.81,
+  "timestamp": "2026-06-01T08:17:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

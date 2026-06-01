@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_027",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_all_unique_with_unique_elements():\n    \"\"\"Test that a list with all unique elements returns True.\"\"\"\n    # With unique elements, len(test_list) == len(set(test_list))\n    # Buggy code uses >=, so it returns False incorrectly\n    # Fixed code should return True\n    test_list = [1, 2, 3, 4, 5]\n    assert source.all_unique(test_list) == True\n\n\ndef test_all_unique_with_duplicates():\n    \"\"\"Test that a list with duplicates returns False.\"\"\"\n    # With duplicates, len(test_list) > len(set(test_list))\n    # Both buggy and fixed code should return False\n    test_list = [1, 2, 3, 2, 1]\n    assert source.all_unique(test_list) == False",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjoc750p8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_all_unique_with_unique_elements FAILED           [ 66%]\n\n=================================== FAILURES ===================================\n_____________________ test_all_unique_with_unique_elements _____________________\n\n    def test_all_unique_with_unique_elements():\n        \"\"\"Test that a list with all unique elements returns True.\"\"\"\n        # With unique elements, len(test_list) == len(set(test_list))\n        # Buggy code uses >=, so it returns False incorrectly\n        # Fixed code should return True\n        test_list = [1, 2, 3, 4, 5]\n>       assert source.all_unique(test_list) == True\nE       assert False == True\nE        +  where False = <function all_unique at 0x10841a3e0>([1, 2, 3, 4, 5])\nE        +    where <function all_unique at 0x10841a3e0> = source.all_unique\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_with_unique_elements - assert False...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3zmip8ko\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_all_unique_with_unique_elements PASSED           [ 66%]\ntest_generated.py::test_all_unique_with_duplicates PASSED                [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:38:44Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7417,
+  "completion_tokens_total": 853,
+  "duration_seconds": 41.04,
+  "timestamp": "2026-06-01T08:38:44Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

@@ -1,0 +1,75 @@
+{
+  "task_id": "quixbugs_wrap",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import wrap\n\ndef test_wrap_includes_trailing_words():\n    result = wrap('aaa bbb ccc', 4)\n    expected = ['aaa', 'bbb', 'ccc']\n    assert result == expected, f\"Expected {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpufnwk_iq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_trailing_words FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_wrap_includes_trailing_words _______________________\n\n    def test_wrap_includes_trailing_words():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected {expected}, but got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], but got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_trailing_words - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2qikne2b\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_trailing_words FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_wrap_includes_trailing_words _______________________\n\n    def test_wrap_includes_trailing_words():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected {expected}, but got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], but got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_trailing_words - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:21:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import wrap\n\ndef test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols():\n    result = wrap('aaa bbb ccc', 4)\n    expected = ['aaa', 'bbb', 'ccc']\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp91b8au9z\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols FAILED [100%]\n\n=================================== FAILURES ===================================\n___ test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols ____\n\n    def test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb']\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpt0igz5n4\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols FAILED [100%]\n\n=================================== FAILURES ===================================\n___ test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols ____\n\n    def test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols():\n        result = wrap('aaa bbb ccc', 4)\n        expected = ['aaa', 'bbb', 'ccc']\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], got ['aaa', ' bbb', ' ccc']\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_final_segment_when_length_less_than_or_equal_to_cols\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:21:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import wrap\n\ndef test_wrap_includes_final_segment():\n    text = \"aaa bbb ccc\"\n    cols = 4\n    result = wrap(text, cols)\n    expected = [\"aaa\", \"bbb\", \"ccc\"]\n    assert result == expected, f\"Expected {expected}, but got {result}. The final segment 'ccc' is missing.\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpytzqaatw\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_final_segment FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_wrap_includes_final_segment _______________________\n\n    def test_wrap_includes_final_segment():\n        text = \"aaa bbb ccc\"\n        cols = 4\n        result = wrap(text, cols)\n        expected = [\"aaa\", \"bbb\", \"ccc\"]\n>       assert result == expected, f\"Expected {expected}, but got {result}. The final segment 'ccc' is missing.\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], but got ['aaa', ' bbb']. The final segment 'ccc' is missing.\nE       assert ['aaa', ' bbb'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         Right contains one more item: 'ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_final_segment - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsini_aio\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_includes_final_segment FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_wrap_includes_final_segment _______________________\n\n    def test_wrap_includes_final_segment():\n        text = \"aaa bbb ccc\"\n        cols = 4\n        result = wrap(text, cols)\n        expected = [\"aaa\", \"bbb\", \"ccc\"]\n>       assert result == expected, f\"Expected {expected}, but got {result}. The final segment 'ccc' is missing.\"\nE       AssertionError: Expected ['aaa', 'bbb', 'ccc'], but got ['aaa', ' bbb', ' ccc']. The final segment 'ccc' is missing.\nE       assert ['aaa', ' bbb', ' ccc'] == ['aaa', 'bbb', 'ccc']\nE         \nE         At index 1 diff: ' bbb' != 'bbb'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE         -     'bbb',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_includes_final_segment - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:21:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The while loop condition checks if len(text) > cols, and when the remaining text length is <= cols, the loop exits without appending the remaining text to lines.",
+    "bug_location": "wrap function, line with while loop condition",
+    "trigger_condition": "When the final segment of text has length <= cols, such as in wrap('aaa bbb ccc', 4) where after processing 'aaa' and 'bbb', 'ccc' remains with length 3 which is <= cols=4.",
+    "expected_vs_actual": "Expected: All text should be included in output lines, including the final segment. Actual: The final segment of text (when length <= cols) is omitted from the output list.",
+    "suggested_test_strategy": "Test with inputs where the final word or segment length is less than or equal to cols, and verify the output contains all original text segments.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3552,
+  "completion_tokens_total": 424,
+  "duration_seconds": 25.66,
+  "timestamp": "2026-06-01T08:21:22Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

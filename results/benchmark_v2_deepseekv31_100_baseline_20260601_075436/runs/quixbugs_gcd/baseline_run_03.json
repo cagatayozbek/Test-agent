@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_gcd",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import gcd\n\ndef test_gcd_recursion_order():\n    result = gcd(35, 21)\n    assert result == 7, f\"Expected gcd(35, 21) to be 7, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6gr7hcdj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_recursion_order FAILED                       [100%]\n\n=================================== FAILURES ===================================\n___________________________ test_gcd_recursion_order ___________________________\n\n    def test_gcd_recursion_order():\n>       result = gcd(35, 21)\n                 ^^^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nE   RecursionError: maximum recursion depth exceeded\n!!! Recursion detected (same locals & position)\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_recursion_order - RecursionError: maximum ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpavm9kuzm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_recursion_order PASSED                       [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:02:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 494,
+  "completion_tokens_total": 54,
+  "duration_seconds": 4.24,
+  "timestamp": "2026-06-01T08:02:33Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

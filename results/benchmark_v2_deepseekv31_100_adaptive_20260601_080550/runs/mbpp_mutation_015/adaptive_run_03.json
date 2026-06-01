@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_015",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import list_to_float\n\ndef test_list_to_float_converts_numeric_strings_to_floats():\n    test_input = [[\"1\", \"2\"], [\"3\", \"4\"]]\n    result = list_to_float(test_input)\n    expected = [(2.0, 2.0), (4.0, 4.0)]\n    assert result == expected, f\"Expected {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2zzzqw3z\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_converts_numeric_strings_to_floats PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2526c71n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_converts_numeric_strings_to_floats FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_list_to_float_converts_numeric_strings_to_floats _____________\n\n    def test_list_to_float_converts_numeric_strings_to_floats():\n        test_input = [[\"1\", \"2\"], [\"3\", \"4\"]]\n        result = list_to_float(test_input)\n        expected = [(2.0, 2.0), (4.0, 4.0)]\n>       assert result == expected, f\"Expected {expected}, but got {result}\"\nE       AssertionError: Expected [(2.0, 2.0), (4.0, 4.0)], but got [(1.0, 2.0), (3.0, 4.0)]\nE       assert [(1.0, 2.0), (3.0, 4.0)] == [(2.0, 2.0), (4.0, 4.0)]\nE         \nE         At index 0 diff: (1.0, 2.0) != (2.0, 2.0)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         2.0,...\nE         \nE         ...Full output truncated (13 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_converts_numeric_strings_to_floats\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:13:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_converts_first_and_second_elements_correctly():\n    input_list = [['1', '2.5']]\n    result = list_to_float(input_list)\n    expected = [(1.0, 2.5)]\n    assert result == expected, f\"Expected {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphgx1smdo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_converts_first_and_second_elements_correctly FAILED [100%]\n\n=================================== FAILURES ===================================\n_______ test_list_to_float_converts_first_and_second_elements_correctly ________\n\n    def test_list_to_float_converts_first_and_second_elements_correctly():\n        input_list = [['1', '2.5']]\n        result = list_to_float(input_list)\n        expected = [(1.0, 2.5)]\n>       assert result == expected, f\"Expected {expected}, but got {result}\"\nE       AssertionError: Expected [(1.0, 2.5)], but got [(2.5, 2.5)]\nE       assert [(2.5, 2.5)] == [(1.0, 2.5)]\nE         \nE         At index 0 diff: (2.5, 2.5) != (1.0, 2.5)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         1.0,...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_converts_first_and_second_elements_correctly\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsdwro66v\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_converts_first_and_second_elements_correctly PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:13:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is in the line 'res.append((temp[1], temp[1]))' where it should be 'res.append((temp[0], temp[1]))' but the mutation changed index 0 to 1, causing both tuple elements to reference the same (second) element instead of the first and second elements",
+    "bug_location": "list_to_float, line 10",
+    "trigger_condition": "Any input list where the first and second elements of a tuple are different values (one convertible to float and one not, or different float values)",
+    "expected_vs_actual": "Expected: Each tuple in result should contain (first_element, second_element). Actual: Each tuple contains (second_element, second_element) due to using temp[1] for both positions",
+    "suggested_test_strategy": "Test with input [['1', '2.5']] where first element '1' and second element '2.5' are different. Expected output should be [(1.0, 2.5)] but buggy code returns [(2.5, 2.5)]",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1976,
+  "completion_tokens_total": 436,
+  "duration_seconds": 30.45,
+  "timestamp": "2026-06-01T08:13:23Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

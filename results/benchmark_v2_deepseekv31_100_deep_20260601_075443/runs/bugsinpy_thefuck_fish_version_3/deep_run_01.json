@@ -1,0 +1,47 @@
+{
+  "task_id": "bugsinpy_thefuck_fish_version_3",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_fish_info_returns_only_numeric_version():\n    \"\"\"Test that fish_info extracts only the version number from command output.\"\"\"\n    from source import fish_info\n    \n    # Create a runner that simulates the actual fish command output\n    def mock_runner(cmd):\n        # Simulate what the real fish command would output\n        return \"fish, version 3.6.1\\n\"\n    \n    result = fish_info(mock_runner)\n    # The buggy code returns \"Fish Shell fish, version 3.6.1\"\n    # The fixed code should return just \"3.6.1\" (or maybe \"Fish Shell 3.6.1\"?)\n    # Let's check what the buggy code actually returns to understand\n    \n    # Actually, looking at the source code:\n    # The buggy code returns: f\"Fish Shell {output.strip()}\"\n    # With output = \"fish, version 3.6.1\\n\"\n    # output.strip() = \"fish, version 3.6.1\"\n    # So buggy result = \"Fish Shell fish, version 3.6.1\"\n    \n    # The fixed code should extract just the version number\n    # So expected result should be \"Fish Shell 3.6.1\" \n    # (just the numeric version without the \"fish, version\" prefix)\n    \n    # Let's test what the fixed code should return:\n    assert result == \"Fish Shell 3.6.1\", f\"Expected 'Fish Shell 3.6.1' but got '{result}'\"\n\ndef test_fish_info_with_default_runner():\n    \"\"\"Test fish_info with the default runner.\"\"\"\n    from source import fish_info\n    \n    result = fish_info()\n    # With default runner returning \"fish, version 3.1.2\\n\"\n    # Buggy code returns: \"Fish Shell fish, version 3.1.2\"\n    # Fixed code should return: \"Fish Shell 3.1.2\"\n    \n    assert result == \"Fish Shell 3.1.2\", f\"Expected 'Fish Shell 3.1.2' but got '{result}'\"\ndef test_fish_info_extracts_version_from_various_formats():\n    \"\"\"Test that fish_info extracts version number from different command outputs.\"\"\"\n    from source import fish_info\n    \n    test_cases = [\n        # (mock_runner_output, expected_result)\n        (\"fish, version 3.6.1\\n\", \"Fish Shell 3.6.1\"),\n        (\"fish, version 3.1.2\", \"Fish Shell 3.1.2\"),  # No newline\n        (\"  fish, version 2.7.0  \\n\", \"Fish Shell 2.7.0\"),  # Extra whitespace\n        (\"fish, version 4.0.0-beta1\\n\", \"Fish Shell 4.0.0-beta1\"),  # Version with prerelease\n    ]\n    \n    for mock_output, expected in test_cases:\n        def make_runner(output):\n            return lambda cmd: output\n        \n        result = fish_info(make_runner(mock_output))\n        assert result == expected, f\"For output '{mock_output!r}', expected '{expected}' but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwa0ddygc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 25%]\ntest_generated.py::test_fish_info_returns_only_numeric_version FAILED    [ 50%]\n\n=================================== FAILURES ===================================\n_________________ test_fish_info_returns_only_numeric_version __________________\n\n    def test_fish_info_returns_only_numeric_version():\n        \"\"\"Test that fish_info extracts only the version number from command output.\"\"\"\n        from source import fish_info\n    \n        # Create a runner that simulates the actual fish command output\n        def mock_runner(cmd):\n            # Simulate what the real fish command would output\n            return \"fish, version 3.6.1\\n\"\n    \n        result = fish_info(mock_runner)\n        # The buggy code returns \"Fish Shell fish, version 3.6.1\"\n        # The fixed code should return just \"3.6.1\" (or maybe \"Fish Shell 3.6.1\"?)\n        # Let's check what the buggy code actually returns to understand\n    \n        # Actually, looking at the source code:\n        # The buggy code returns: f\"Fish Shell {output.strip()}\"\n        # With output = \"fish, version 3.6.1\\n\"\n        # output.strip() = \"fish, version 3.6.1\"\n        # So buggy result = \"Fish Shell fish, version 3.6.1\"\n    \n        # The fixed code should extract just the version number\n        # So expected result should be \"Fish Shell 3.6.1\"\n        # (just the numeric version without the \"fish, version\" prefix)\n    \n        # Let's test what the fixed code should return:\n>       assert result == \"Fish Shell 3.6.1\", f\"Expected 'Fish Shell 3.6.1' but got '{result}'\"\nE       AssertionError: Expected 'Fish Shell 3.6.1' but got 'Fish Shell fish, version 3.6.1'\nE       assert 'Fish Shell f...version 3.6.1' == 'Fish Shell 3.6.1'\nE         \nE         - Fish Shell 3.6.1\nE         + Fish Shell fish, version 3.6.1\n\ntest_generated.py:31: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fish_info_returns_only_numeric_version - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpo45m7vvc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 25%]\ntest_generated.py::test_fish_info_returns_only_numeric_version PASSED    [ 50%]\ntest_generated.py::test_fish_info_with_default_runner PASSED             [ 75%]\ntest_generated.py::test_fish_info_extracts_version_from_various_formats PASSED [100%]\n\n============================== 4 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T07:59:37Z",
+      "tool_call_count": 8,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 31200,
+  "completion_tokens_total": 2563,
+  "duration_seconds": 116.99,
+  "timestamp": "2026-06-01T07:59:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

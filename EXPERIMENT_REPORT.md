@@ -1530,3 +1530,80 @@ clean re-run.
   OpenRouter via the §15.3 routing override; 289/300 made tool calls,
   8 zero-token network-outage casualties)
 - Configs: `benchmark_v2_llama31_8b_100_{baseline,adaptive,deep}.yaml`.
+
+
+## 17. Stronger model with monotone analysis benefit — DeepSeek-V3.1 (2026-06-01)
+
+§16 nailed the weak end (deep collapses). This section adds a *stronger* model
+to test the other extreme: does the analysis step help a capable model that is
+**not** already at the BRTR ceiling? We added **deepseek/deepseek-chat-v3.1**
+(DeepSeek-V3.1, a frontier-class open model) via OpenRouter and ran all three
+modes on the v2.0 100-task set.
+
+### 17.1 Configuration / provenance
+
+- Model id `deepseek/deepseek-chat-v3.1`, served via OpenRouter (Novita /
+  DeepInfra). baseline/adaptive use the normal client; **deep used the §15.3
+  routing override** (`OPENAI_API_KEY=$OPENROUTER_API_KEY`,
+  `DEEPTEST_OPENAI_BASE_URL=https://openrouter.ai/api/v1`).
+- 100 tasks × 3 runs = 300 runs per mode; concurrency 4; `max_attempts 3`.
+- Clean run, no network incidents; deep: 300/300 complete, **zero zero-token
+  runs, all 300 made tool calls**.
+
+### 17.2 Results — monotone in analysis dose, deep significantly > baseline
+
+| Mode | BRTR | 95% CI | Successful | Avg dur | Avg c-tok |
+|---|---:|---|---:|---:|---:|
+| baseline | 85.3% | [80.9, 88.9] | 256/300 | 8.8s | 123 |
+| adaptive | 89.0% | [85.0, 92.1] | 267/300 | 12.6s | 187 |
+| **deep** | **95.0%** | [91.9, 97.0] | 285/300 | 72.2s | 1429 |
+
+**BRTR rises monotonically with analysis dose: 0.853 → 0.890 → 0.950.** The
+deep CI [91.9, 97.0] lies entirely **above** the baseline CI [80.9, 88.9]
+(91.9 > 88.9, non-overlapping) — deep is **statistically significantly** better
+than baseline (+9.7 pp). adaptive sits in between (+3.7 pp over baseline, CIs
+overlap). This is the cleanest positive evidence in the whole study that the
+structured analysis step *helps* — on a capable model with headroom to move.
+
+### 17.3 Headline — "stronger = more benefit" is not the rule; headroom + tool skill is
+
+DeepSeek-V3.1 is the mirror image of the §16 weak models:
+
+- **Weak (gpt-oss-20b 0.213, llama-3.1-8b 0.173):** deep collapses — the model
+  engages the tool loop but cannot drive it.
+- **Strong-with-headroom (DeepSeek-V3.1):** deep climbs monotonically and
+  significantly — the model uses the tool loop *productively* and has room to
+  improve over its 0.853 baseline.
+
+But capability alone does not predict the sign. Compare two high-capability
+models:
+
+- **gpt-oss-120b:** baseline 0.977, deep **0.897** (−8 pp, harm).
+- **DeepSeek-V3.1:** baseline 0.853, deep **0.950** (+9.7 pp, benefit).
+
+gpt-oss-120b is *higher* on baseline yet deep *hurts* it; DeepSeek is lower yet
+deep *helps*. The discriminating factors are (a) **headroom** — distance from
+the ceiling: a model already at 0.98 has little to gain and much to lose to
+tool-loop noise; and (b) **tool-driving skill** — DeepSeek made tool calls on
+300/300 runs and converted them into bug-revealing tests, whereas weak models
+call tools but fumble the protocol. Analysis helps when the model is *both*
+below saturation *and* competent enough to use the agentic loop.
+
+### 17.4 Updated capability spectrum (baseline BRTR)
+
+haiku 0.980 · gpt-oss-120b 0.977 · gpt-oss-20b 0.940 · sonnet 0.943† ·
+qwen3-coder 0.890 · **DeepSeek-V3.1 0.853** · phi-4 0.667 · llama-3.1-8b 0.643.
+
+Deep-mode effect by model (Δ = deep − baseline):
+sonnet +0/ceiling (1.000) · **DeepSeek-V3.1 +9.7 pp (significant)** ·
+haiku ≈0 (ceiling) · gpt-oss-120b −8 pp · qwen −6.7 pp (monotone harm) ·
+gpt-oss-20b −72.7 pp · llama-3.1-8b −47.0 pp (collapse). The analysis step
+spans the full range from +9.7 pp to −72.7 pp depending on the model.
+
+### 17.5 Raw data
+
+- `results/benchmark_v2_deepseekv31_100_baseline_20260601_075436/`
+- `results/benchmark_v2_deepseekv31_100_adaptive_20260601_080550/`
+- `results/benchmark_v2_deepseekv31_100_deep_20260601_075443/` (300 runs,
+  OpenRouter via the §15.3 routing override; 300/300 made tool calls)
+- Configs: `benchmark_v2_deepseekv31_100_{baseline,adaptive,deep}.yaml`.

@@ -1,0 +1,25 @@
+experiment:
+  name: smoke_deepseek
+  runs_per_task: 1
+  concurrency: 1
+  modes:
+  - deep
+model:
+  api_key_env: OPENROUTER_API_KEY
+  max_output_tokens: 4096
+  model_id: deepseek/deepseek-chat-v3.1
+  temperature: 0.7
+  base_url: https://openrouter.ai/api/v1
+retry:
+  max_attempts: 3
+  test_timeout_seconds: 30
+results:
+  dir: results
+tasks:
+  dir: evaluation/tasks_v2
+  include:
+  - quixbugs_gcd
+  exclude: []
+  sources: []
+  difficulties: []
+  bug_types: []

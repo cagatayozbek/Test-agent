@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_027",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import all_unique\n\n\ndef test_all_unique_with_duplicate_elements():\n    test_input = [1, 2, 2]\n    result = all_unique(test_input)\n    assert result == False, f\"Expected False for list with duplicates {test_input}, got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpml02av0a\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_duplicate_elements PASSED        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeeml6ekh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_duplicate_elements PASSED        [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:14:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import all_unique\n\ndef test_all_unique_with_unique_elements():\n    test_list = [1, 2, 3]\n    assert all_unique(test_list) == True, \"Function should return True for list with all unique elements\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy1gdts78\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_unique_elements FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_all_unique_with_unique_elements _____________________\n\n    def test_all_unique_with_unique_elements():\n        test_list = [1, 2, 3]\n>       assert all_unique(test_list) == True, \"Function should return True for list with all unique elements\"\nE       AssertionError: Function should return True for list with all unique elements\nE       assert False == True\nE        +  where False = all_unique([1, 2, 3])\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_with_unique_elements - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzjg01tyn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_with_unique_elements PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:14:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is in the condition 'len(test_list) >= len(set(test_list))' where '>=' should be '>'. This causes the function to return False when the list has duplicates (correct) but also incorrectly returns False when all elements are unique and the list length equals the set length.",
+    "bug_location": "all_unique, line 2",
+    "trigger_condition": "Any input list where all elements are unique (len(test_list) == len(set(test_list)))",
+    "expected_vs_actual": "Expected: return True when all elements are unique. Actual: returns False when len(test_list) == len(set(test_list)) due to '>=' instead of '>'.",
+    "suggested_test_strategy": "Test with a list containing unique elements like [1, 2, 3] and assert that the function returns True. This will fail with the buggy code but pass with the correct code using '>' comparison.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1871,
+  "completion_tokens_total": 334,
+  "duration_seconds": 22.11,
+  "timestamp": "2026-06-01T08:14:17Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

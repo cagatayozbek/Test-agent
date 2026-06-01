@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_146",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import specialFilter\n\ndef test_specialFilter_excludes_numbers_with_even_first_or_last_digit():\n    # Including 2 in odd_digits causes false positives for numbers like 21 or 12\n    # Choose numbers where first digit is odd, last digit is even (or vice versa)\n    # but both digits are in {1,2,3,5,7,9} due to bug. Example: 21 (2 and 1)\n    # Expected: 21 should NOT count (last digit 1 is odd, but first digit 2 is even)\n    # Buggy: counts it because 2 is mistakenly in odd_digits.\n    result = specialFilter([21, 23])\n    # 21: first digit 2 (even), last digit 1 (odd) -> should NOT count\n    # 23: first digit 2 (even), last digit 3 (odd) -> should NOT count\n    # Correct count: 0\n    assert result == 0, f\"Expected 0 numbers meeting criteria, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6plvx9s6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_specialFilter_excludes_numbers_with_even_first_or_last_digit FAILED [100%]\n\n=================================== FAILURES ===================================\n______ test_specialFilter_excludes_numbers_with_even_first_or_last_digit _______\n\n    def test_specialFilter_excludes_numbers_with_even_first_or_last_digit():\n        # Including 2 in odd_digits causes false positives for numbers like 21 or 12\n        # Choose numbers where first digit is odd, last digit is even (or vice versa)\n        # but both digits are in {1,2,3,5,7,9} due to bug. Example: 21 (2 and 1)\n        # Expected: 21 should NOT count (last digit 1 is odd, but first digit 2 is even)\n        # Buggy: counts it because 2 is mistakenly in odd_digits.\n        result = specialFilter([21, 23])\n        # 21: first digit 2 (even), last digit 1 (odd) -> should NOT count\n        # 23: first digit 2 (even), last digit 3 (odd) -> should NOT count\n        # Correct count: 0\n>       assert result == 0, f\"Expected 0 numbers meeting criteria, got {result}\"\nE       AssertionError: Expected 0 numbers meeting criteria, got 2\nE       assert 2 == 0\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_specialFilter_excludes_numbers_with_even_first_or_last_digit\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp6dlogay\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_specialFilter_excludes_numbers_with_even_first_or_last_digit PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T07:58:44Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 615,
+  "completion_tokens_total": 230,
+  "duration_seconds": 11.76,
+  "timestamp": "2026-06-01T07:58:44Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

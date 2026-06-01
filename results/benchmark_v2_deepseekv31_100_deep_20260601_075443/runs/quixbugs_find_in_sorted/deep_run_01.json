@@ -1,0 +1,47 @@
+{
+  "task_id": "quixbugs_find_in_sorted",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_find_in_sorted_last_element():\n    \"\"\"Test that find_in_sorted correctly finds the last element in array.\"\"\"\n    # Target is the last element, should return index 4\n    result = source.find_in_sorted([3, 4, 5, 6, 7], 7)\n    assert result == 4, f\"Expected index 4 for last element 7, got {result}\"\n\ndef test_find_in_sorted_upper_half():\n    \"\"\"Test that find_in_sorted correctly searches in upper half.\"\"\"\n    # Test various cases where target is in upper half\n    # This should trigger the bug when lower bound is mid instead of mid+1\n    result1 = source.find_in_sorted([1, 2, 3, 4, 5], 5)\n    assert result1 == 4, f\"Expected index 4 for element 5, got {result1}\"\n    \n    result2 = source.find_in_sorted([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 9)\n    assert result2 == 8, f\"Expected index 8 for element 9, got {result2}\"\n    \n    result3 = source.find_in_sorted([10, 20, 30, 40, 50], 50)\n    assert result3 == 4, f\"Expected index 4 for element 50, got {result3}\"\ndef test_find_in_sorted_element_not_found():\n    \"\"\"Test that find_in_sorted returns -1 for elements not in array.\"\"\"\n    # Search for element not in array - this might trigger infinite recursion\n    result = source.find_in_sorted([3, 4, 5, 6, 7], 8)\n    assert result == -1, f\"Expected -1 for element 8 not in array, got {result}\"\n    \n    # Another test with element in upper half but not present\n    result2 = source.find_in_sorted([1, 2, 3, 4, 5], 6)\n    assert result2 == -1, f\"Expected -1 for element 6 not in array, got {result2}\"\n    \n    # Element in lower half but not present\n    result3 = source.find_in_sorted([1, 2, 3, 4, 5], 0)\n    assert result3 == -1, f\"Expected -1 for element 0 not in array, got {result3}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcyg4007q\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 25%]\ntest_generated.py::test_find_in_sorted_last_element PASSED               [ 50%]\ntest_generated.py::test_find_in_sorted_upper_half PASSED                 [ 75%]\ntest_generated.py::test_find_in_sorted_element_not_found FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_find_in_sorted_element_not_found _____________________\n\n    def test_find_in_sorted_element_not_found():\n        \"\"\"Test that find_in_sorted returns -1 for elements not in array.\"\"\"\n        # Search for element not in array - this might trigger infinite recursion\n>       result = source.find_in_sorted([3, 4, 5, 6, 7], 8)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:27: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:13: in find_in_sorted\n    return binsearch(0, len(arr))\n           ^^^^^^^^^^^^^^^^^^^^^^\nsource.py:9: in binsearch\n    return binsearch(mid, end)\n           ^^^^^^^^^^^^^^^^^^^\nsource.py:9: in binsearch\n    return binsearch(mid, end)\n           ^^^^^^^^^^^^^^^^^^^\nsource.py:9: in binsearch\n    return binsearch(mid, end)\n           ^^^^^^^^^^^^^^^^^^^\nsource.py:9: in binsearch\n    return binsearch(mid, end)\n           ^^^^^^^^^^^^^^^^^^^\nsource.py:9: in binsearch\n    return binsearch(mid, end)\n           ^^^^^^^^^^^^^^^^^^^\nE   RecursionError: maximum recursion depth exceeded\n!!! Recursion detected (same locals & position)\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_in_sorted_element_not_found - RecursionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 3 passed in 0.03s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy7lev69o\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 25%]\ntest_generated.py::test_find_in_sorted_last_element PASSED               [ 50%]\ntest_generated.py::test_find_in_sorted_upper_half PASSED                 [ 75%]\ntest_generated.py::test_find_in_sorted_element_not_found PASSED          [100%]\n\n============================== 4 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:54:47Z",
+      "tool_call_count": 5,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 15857,
+  "completion_tokens_total": 1921,
+  "duration_seconds": 82.33,
+  "timestamp": "2026-06-01T08:54:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

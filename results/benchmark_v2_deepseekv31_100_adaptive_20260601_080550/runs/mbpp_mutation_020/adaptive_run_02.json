@@ -1,0 +1,59 @@
+{
+  "task_id": "mbpp_mutation_020",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import newman_prime\n\ndef test_newman_prime_n_equals_2():\n    result = newman_prime(2)\n    expected = 3\n    assert result == expected, f\"Expected {expected} for n=2, but got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl7fp88gx\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_n_equals_2 PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqqkh0bjj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_n_equals_2 PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:13:26Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import newman_prime\n\ndef test_newman_prime_n_equals_3():\n    result = newman_prime(3)\n    assert result == 7, f\"Expected newman_prime(3) to be 7, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpasy4l624\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_n_equals_3 FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_newman_prime_n_equals_3 _________________________\n\n    def test_newman_prime_n_equals_3():\n        result = newman_prime(3)\n>       assert result == 7, f\"Expected newman_prime(3) to be 7, but got {result}\"\nE       AssertionError: Expected newman_prime(3) to be 7, but got 9\nE       assert 9 == 7\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_newman_prime_n_equals_3 - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpk2ey2hav\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_n_equals_3 PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:13:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The constant literal mutation changes the recurrence relation from '2 * newman_prime(n - 1) + newman_prime(n - 2)' to '2 * newman_prime(n - 1) + newman_prime(n - 1)', which is actually '3 * newman_prime(n - 1)'. This corrupts the Newman–Shanks–Williams prime sequence definition.",
+    "bug_location": "source.py, line 4, expression within return statement",
+    "trigger_condition": "Any integer n >= 2; the bug triggers on the second recursive call where newman_prime(n - 1) is incorrectly used instead of newman_prime(n - 2).",
+    "expected_vs_actual": "For n=2: Expected sequence: NS(0)=1, NS(1)=1, NS(2)=2*NS(1)+NS(0)=2*1+1=3. Actual with bug: NS(2)=2*NS(1)+NS(1)=2*1+1=3? Wait, that's also 3? Let's recalc: newman_prime(n-1) is NS(1)=1, so bug gives 2*1+1=3. But correct formula uses NS(0) for last term. For n=3: Expected NS(3)=2*NS(2)+NS(1)=2*3+1=7. Bug: NS(3)=2*NS(2)+NS(2)=2*3+3=9. So deviation starts at n=3.",
+    "suggested_test_strategy": "Test n=3: assert newman_prime(3) == 7 (canonical value). This will fail on buggy code (returns 9) and pass on fixed code.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2114,
+  "completion_tokens_total": 512,
+  "duration_seconds": 30.69,
+  "timestamp": "2026-06-01T08:13:52Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

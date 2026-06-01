@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_digit_distance_nums():\n    \"\"\"Test digit_distance_nums function for the arithmetic operator bug.\"\"\"\n    result = source.digit_distance_nums(12, 34)\n    # Correct implementation should compute abs(12 - 34) = 22, then sum digits 2+2 = 4\n    # Buggy implementation computes abs(12 + 34) = 46, then sum digits 4+6 = 10\n    assert result == 4, f\"Expected 4 (sum of digits of |12-34|), got {result}\"\ndef test_digit_distance_nums_negative():\n    \"\"\"Test digit_distance_nums with negative numbers.\"\"\"\n    result = source.digit_distance_nums(7, -3)\n    # Correct: abs(7 - (-3)) = abs(10) = 10, sum digits 1+0 = 1\n    # Buggy: abs(7 + (-3)) = abs(4) = 4, sum digits = 4\n    assert result == 1, f\"Expected 1 (sum of digits of |7 - (-3)|), got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpd_emuflg\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_digit_distance_nums FAILED                       [ 66%]\n\n=================================== FAILURES ===================================\n___________________________ test_digit_distance_nums ___________________________\n\n    def test_digit_distance_nums():\n        \"\"\"Test digit_distance_nums function for the arithmetic operator bug.\"\"\"\n        result = source.digit_distance_nums(12, 34)\n        # Correct implementation should compute abs(12 - 34) = 22, then sum digits 2+2 = 4\n        # Buggy implementation computes abs(12 + 34) = 46, then sum digits 4+6 = 10\n>       assert result == 4, f\"Expected 4 (sum of digits of |12-34|), got {result}\"\nE       AssertionError: Expected 4 (sum of digits of |12-34|), got 10\nE       assert 10 == 4\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums - AssertionError: Expected...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5e4l1bjb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_digit_distance_nums PASSED                       [ 66%]\ntest_generated.py::test_digit_distance_nums_negative PASSED              [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:35:53Z",
+      "tool_call_count": 6,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 22933,
+  "completion_tokens_total": 2241,
+  "duration_seconds": 107.03,
+  "timestamp": "2026-06-01T08:35:53Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

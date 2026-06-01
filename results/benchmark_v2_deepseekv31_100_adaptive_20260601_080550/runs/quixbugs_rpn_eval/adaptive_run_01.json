@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_rpn_eval",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import rpn_eval\n\ndef test_subtraction_non_commutative():\n    result = rpn_eval(['5', '1', '-'])\n    expected = 4.0\n    assert result == expected, f\"Expected 5 - 1 = {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1cdhtn8y\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_subtraction_non_commutative FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_subtraction_non_commutative _______________________\n\n    def test_subtraction_non_commutative():\n>       result = rpn_eval(['5', '1', '-'])\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_subtraction_non_commutative - IndexError: pop ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8toqdgum\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_subtraction_non_commutative FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_subtraction_non_commutative _______________________\n\n    def test_subtraction_non_commutative():\n>       result = rpn_eval(['5', '1', '-'])\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_subtraction_non_commutative - IndexError: pop ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:19:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import rpn_eval\n\ndef test_subtraction_operand_order():\n    result = rpn_eval([5.0, 1.0, '-'])\n    expected = 4.0\n    assert result == expected, f\"Expected 5 - 1 = {expected}, got {result} (operands swapped)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqmixu54g\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_subtraction_operand_order FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_subtraction_operand_order ________________________\n\n    def test_subtraction_operand_order():\n        result = rpn_eval([5.0, 1.0, '-'])\n        expected = 4.0\n>       assert result == expected, f\"Expected 5 - 1 = {expected}, got {result} (operands swapped)\"\nE       AssertionError: Expected 5 - 1 = 4.0, got -4.0 (operands swapped)\nE       assert -4.0 == 4.0\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_subtraction_operand_order - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0voc0sv0\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_subtraction_operand_order PASSED                 [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:20:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is in the operand order for non-commutative operations. When encountering an operator, the code pops 'a' then 'b' from the stack but calls 'op(token, a, b)' which applies the operator as 'a op b'. In RPN, operators should be applied as 'second popped op first popped' or 'b op a'.",
+    "bug_location": "rpn_eval function, line where 'op(token, a, b)' is called",
+    "trigger_condition": "Any RPN expression containing subtraction or division operators (e.g., ['5', '1', '-'] or ['6', '2', '/']) will trigger incorrect results due to swapped operands.",
+    "expected_vs_actual": "For input ['5', '1', '-'], expected: 4.0 (5 - 1). Actual: -4.0 (1 - 5). For input ['6', '2', '/'], expected: 3.0 (6 / 2). Actual: 0.333... (2 / 6).",
+    "suggested_test_strategy": "Test with non-commutative operations (subtraction, division) and verify the result matches the correct RPN evaluation. Specifically, test cases like: 1) ['5', '1', '-'] → 4.0, 2) ['6', '2', '/'] → 3.0, 3) ['10', '3', '-', '2', '/'] → 3.5 ((10-3)/2).",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2454,
+  "completion_tokens_total": 497,
+  "duration_seconds": 24.32,
+  "timestamp": "2026-06-01T08:20:01Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

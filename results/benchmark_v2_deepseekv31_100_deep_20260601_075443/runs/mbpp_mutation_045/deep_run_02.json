@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_snake_to_camel():\n    \"\"\"Test snake case to camel case conversion.\"\"\"\n    # Test a simple case where the bug should be revealed\n    result = source.snake_to_camel(\"hello_world\")\n    # With 'or' operator (fixed code): x.capitalize() or '_'\n    # For non-empty x, x.capitalize() is truthy, so returns x.capitalize()\n    # Result: \"Hello\" + \"World\" = \"HelloWorld\"\n    # With 'and' operator (buggy code): x.capitalize() and '_'\n    # For non-empty x, x.capitalize() is truthy, so returns '_'\n    # Result: \"__\"\n    assert result == \"HelloWorld\", f\"Expected 'HelloWorld', got {result}\"\ndef test_snake_to_camel_edge_cases():\n    \"\"\"Test edge cases for snake to camel conversion.\"\"\"\n    # Test with single word (no underscores)\n    result = source.snake_to_camel(\"hello\")\n    # With 'or': \"hello\".capitalize() = \"Hello\" (truthy) -> returns \"Hello\"\n    # With 'and': \"hello\".capitalize() = \"Hello\" (truthy) -> returns '_'\n    assert result == \"Hello\", f\"Expected 'Hello', got {result}\"\n    \n    # Test with empty string\n    result = source.snake_to_camel(\"\")\n    # split('_') on empty string gives ['']\n    # ''.capitalize() = '' (falsy)\n    # With 'or': '' or '_' -> '_'\n    # With 'and': '' and '_' -> ''\n    # Actually wait, for empty string:\n    # x = '' from split, x.capitalize() = '' (falsy)\n    # With 'or' (fixed): '' or '_' -> '_'\n    # With 'and' (buggy): '' and '_' -> ''\n    # So fixed returns '_', buggy returns ''\n    # But actually the function joins all results, so:\n    # Fixed: ''.join(['_']) = '_'\n    # Buggy: ''.join(['']) = ''\n    assert result == \"_\", f\"Expected '_', got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4yfconcl\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_snake_to_camel FAILED                            [ 66%]\n\n=================================== FAILURES ===================================\n_____________________________ test_snake_to_camel ______________________________\n\n    def test_snake_to_camel():\n        \"\"\"Test snake case to camel case conversion.\"\"\"\n        # Test a simple case where the bug should be revealed\n        result = source.snake_to_camel(\"hello_world\")\n        # With 'or' operator (fixed code): x.capitalize() or '_'\n        # For non-empty x, x.capitalize() is truthy, so returns x.capitalize()\n        # Result: \"Hello\" + \"World\" = \"HelloWorld\"\n        # With 'and' operator (buggy code): x.capitalize() and '_'\n        # For non-empty x, x.capitalize() is truthy, so returns '_'\n        # Result: \"__\"\n>       assert result == \"HelloWorld\", f\"Expected 'HelloWorld', got {result}\"\nE       AssertionError: Expected 'HelloWorld', got __\nE       assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:16: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel - AssertionError: Expected 'Hel...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpezsz7o4h\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_snake_to_camel PASSED                            [ 66%]\ntest_generated.py::test_snake_to_camel_edge_cases PASSED                 [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:42:56Z",
+      "tool_call_count": 8,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 30684,
+  "completion_tokens_total": 3496,
+  "duration_seconds": 158.78,
+  "timestamp": "2026-06-01T08:42:56Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

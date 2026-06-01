@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import min_k\n\ndef test_min_k_with_small_input_where_k_equals_one():\n    test_list = [(3, 'gfg'), (1, 'is'), (2, 'best')]\n    result = min_k(test_list, 1)\n    expected = [(1, 'is')]\n    assert result == expected, f\"Expected {expected} but got {result}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkzhfj7_s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_small_input_where_k_equals_one PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm9v4rxhy\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_with_small_input_where_k_equals_one FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_min_k_with_small_input_where_k_equals_one ________________\n\n    def test_min_k_with_small_input_where_k_equals_one():\n        test_list = [(3, 'gfg'), (1, 'is'), (2, 'best')]\n        result = min_k(test_list, 1)\n        expected = [(1, 'is')]\n>       assert result == expected, f\"Expected {expected} but got {result}\"\nE       AssertionError: Expected [(1, 'is')] but got [(2, 'best')]\nE       assert [(2, 'best')] == [(1, 'is')]\nE         \nE         At index 0 diff: (2, 'best') != (1, 'is')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         1,...\nE         \nE         ...Full output truncated (9 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_with_small_input_where_k_equals_one - As...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:12:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import min_k\n\ndef test_min_k_returns_first_k_minimum_records():\n    test_list = [(3, 4), (1, 2), (5, 6)]\n    K = 1\n    expected = [(1, 2)]\n    actual = min_k(test_list, K)\n    assert actual == expected, f\"Expected {expected} but got {actual}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2wpun0v7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_returns_first_k_minimum_records PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi_4vb2zf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_returns_first_k_minimum_records PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:12:46Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import min_k\n\ndef test_min_k_returns_non_empty_list_for_k_greater_than_zero():\n    test_list = [(3, 4), (1, 2)]\n    K = 1\n    result = min_k(test_list, K)\n    assert len(result) == K, f\"Expected {K} elements, got {len(result)}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkhrse00a\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_returns_non_empty_list_for_k_greater_than_zero PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0cioaymj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_returns_non_empty_list_for_k_greater_than_zero PASSED [100%]\n\n============================== 1 passed in 0.03s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:12:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The bug is in the slicing operation where '[:K]' should take the first K elements from the sorted list, but the mutation changed the constant 1 to 0, making it '[:0]' which returns an empty list instead of the first K elements",
+    "bug_location": "min_k function, line 2",
+    "trigger_condition": "Any input where K >= 1 (since slicing with [:0] always returns empty list regardless of K value)",
+    "expected_vs_actual": "Expected: Returns first K minimum records from the sorted tuple list. Actual: Always returns empty list [] for any K >= 1",
+    "suggested_test_strategy": "Test with a small input where K=1 and verify the function returns exactly one tuple instead of an empty list. For example: test_list = [(3, 4), (1, 2)], K = 1 should return [(1, 2)] but buggy code returns []",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 3329,
+  "completion_tokens_total": 483,
+  "duration_seconds": 28.57,
+  "timestamp": "2026-06-01T08:12:53Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

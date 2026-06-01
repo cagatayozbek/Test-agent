@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_013",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_volume_cone_reveals_bug():\n    \"\"\"Test that reveals the * -> // mutation bug in volume_cone function.\"\"\"\n    import math\n    \n    # Test with small integer inputs where floor division differs from multiplication\n    r = 1\n    h = 1\n    \n    # Correct calculation: volume = (1/3) * π * r² * h\n    expected_volume = (1.0/3) * math.pi * r * r * h\n    \n    # This should fail on buggy code (which uses // instead of *)\n    actual_volume = source.volume_cone(r, h)\n    \n    assert actual_volume == expected_volume, \\\n        f\"volume_cone({r}, {h}) = {actual_volume}, expected {expected_volume}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphovfupoh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_volume_cone_reveals_bug FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_volume_cone_reveals_bug _________________________\n\n    def test_volume_cone_reveals_bug():\n        \"\"\"Test that reveals the * -> // mutation bug in volume_cone function.\"\"\"\n        import math\n    \n        # Test with small integer inputs where floor division differs from multiplication\n        r = 1\n        h = 1\n    \n        # Correct calculation: volume = (1/3) * π * r² * h\n        expected_volume = (1.0/3) * math.pi * r * r * h\n    \n        # This should fail on buggy code (which uses // instead of *)\n        actual_volume = source.volume_cone(r, h)\n    \n>       assert actual_volume == expected_volume, \\\n            f\"volume_cone({r}, {h}) = {actual_volume}, expected {expected_volume}\"\nE       AssertionError: volume_cone(1, 1) = 1.0, expected 1.0471975511965976\nE       assert 1.0 == 1.0471975511965976\n\ntest_generated.py:20: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_volume_cone_reveals_bug - AssertionError: volu...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2ufbac16\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_volume_cone_reveals_bug PASSED                   [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:30:34Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 15519,
+  "completion_tokens_total": 2029,
+  "duration_seconds": 105.22,
+  "timestamp": "2026-06-01T08:30:34Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

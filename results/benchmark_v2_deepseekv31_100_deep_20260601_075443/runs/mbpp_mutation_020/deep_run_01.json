@@ -1,0 +1,47 @@
+{
+  "task_id": "mbpp_mutation_020",
+  "mode": "deep",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 2,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_newman_prime_values():\n    \"\"\"Test to understand the function's behavior.\"\"\"\n    # Test some values\n    assert source.newman_prime(0) == 1\n    assert source.newman_prime(1) == 1\n    # Let's see what n=2 gives\n    print(f\"newman_prime(2) = {source.newman_prime(2)}\")\n    print(f\"newman_prime(3) = {source.newman_prime(3)}\")\n    print(f\"newman_prime(4) = {source.newman_prime(4)}\")\ndef test_newman_prime_n3():\n    \"\"\"Test newman_prime(3) should return 7, but buggy code returns 9.\"\"\"\n    # Correct value for n=3 is 7\n    assert source.newman_prime(3) == 7",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr6qtzpy3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_newman_prime_values PASSED                       [ 66%]\ntest_generated.py::test_newman_prime_n3 FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_newman_prime_n3 _____________________________\n\n    def test_newman_prime_n3():\n        \"\"\"Test newman_prime(3) should return 7, but buggy code returns 9.\"\"\"\n        # Correct value for n=3 is 7\n>       assert source.newman_prime(3) == 7\nE       assert 9 == 7\nE        +  where 9 = <function newman_prime at 0x10a5663e0>(3)\nE        +    where <function newman_prime at 0x10a5663e0> = source.newman_prime\n\ntest_generated.py:18: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_newman_prime_n3 - assert 9 == 7\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 2 passed in 0.03s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_1i6hdfr\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 33%]\ntest_generated.py::test_newman_prime_values PASSED                       [ 66%]\ntest_generated.py::test_newman_prime_n3 PASSED                           [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T08:38:26Z",
+      "tool_call_count": 6,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 52033,
+  "completion_tokens_total": 7575,
+  "duration_seconds": 321.31,
+  "timestamp": "2026-06-01T08:38:26Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

@@ -1,0 +1,68 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import Tracer, detect_encoding\nimport os\nimport tempfile\n\n\ndef test_unicode_source_with_coding_header_roundtrip():\n    # Source bytes with UTF-8 coding header and non-ASCII content\n    source_lines = [\n        b'# -*- coding: utf-8 -*-\\n',\n        b'def foo():\\n',\n        b'    # Unicode comment: caf\\xc3\\xa9 \\xe2\\x98\\x83\\n',  # café ☃\n        b'    pass\\n'\n    ]\n    \n    # Expected decoded text (what fixed code should produce)\n    expected = (\n        '# -*- coding: utf-8 -*-\\n'\n        'def foo():\\n'\n        '    # Unicode comment: café ☃\\n'\n        '    pass\\n'\n    )\n    \n    with tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8') as tmp:\n        tmp_path = tmp.name\n    \n    try:\n        tracer = Tracer(tmp_path, overwrite=True)\n        rendered = tracer.dump_source(source_lines)\n        \n        # Check the returned rendered string\n        assert rendered == expected, f\"Rendered text mismatch. Got: {repr(rendered)}\"\n        \n        # Check the file content was written correctly\n        with open(tmp_path, 'r', encoding='utf-8') as f:\n            file_content = f.read()\n        assert file_content == expected, f\"File content mismatch. Got: {repr(file_content)}\"\n    finally:\n        os.unlink(tmp_path)\n\n\ndef test_detect_encoding_utf8_header():\n    source = [\n        b'# coding: utf-8\\n',\n        b'non-ascii: \\xc3\\xa9\\n'\n    ]\n    encoding = detect_encoding(source)\n    assert encoding == 'utf-8', f\"Expected 'utf-8', got {encoding}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvgdigafe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_unicode_source_with_coding_header_roundtrip PASSED [ 50%]\ntest_generated.py::test_detect_encoding_utf8_header PASSED               [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprbm4mxq7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_unicode_source_with_coding_header_roundtrip PASSED [ 50%]\ntest_generated.py::test_detect_encoding_utf8_header PASSED               [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T07:55:04Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import Tracer, detect_encoding\nimport tempfile\nimport os\n\n\ndef test_unicode_source_with_utf8_characters_roundtrip():\n    \"\"\"Test that UTF-8 characters are preserved through write/read cycle.\"\"\"\n    utf8_source = [\n        b'# -*- coding: utf-8 -*-\\n',\n        b'def hello():\\n',\n        b'    print(\"Hello \\xe4\\xb8\\x96\\xe7\\x95\\x8c\")  # \"Hello \\u4e16\\u754c\" in Chinese\\n'\n    ]\n    \n    with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.py') as f:\n        temp_path = f.name\n    \n    try:\n        tracer = Tracer(temp_path, overwrite=True)\n        rendered = tracer.dump_source(utf8_source)\n        \n        # Read back the file with explicit UTF-8 encoding\n        with open(temp_path, 'r', encoding='utf-8') as f:\n            written_content = f.read()\n        \n        # The bug: written content will have replacement characters due to ASCII encoding\n        # Fixed version should preserve the Chinese characters\n        expected_chinese = \"Hello 世界\"\n        assert expected_chinese in written_content, (\n            f\"UTF-8 characters corrupted in output. \"\n            f\"Expected '{expected_chinese}' in content, got: {written_content!r}\"\n        )\n        \n    finally:\n        if os.path.exists(temp_path):\n            os.unlink(temp_path)",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps1b94uhk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_source_with_utf8_characters_roundtrip PASSED [100%]\n\n=============================== warnings summary ===============================\ntest_generated.py:12\n  /private/tmp/claude-501/tmps1b94uhk/test_generated.py:12: SyntaxWarning: invalid escape sequence '\\u'\n    b'    print(\"Hello \\xe4\\xb8\\x96\\xe7\\x95\\x8c\")  # \"Hello \\u4e16\\u754c\" in Chinese\\n'\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n========================= 1 passed, 1 warning in 0.01s =========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdt6ose4f\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_source_with_utf8_characters_roundtrip PASSED [100%]\n\n=============================== warnings summary ===============================\ntest_generated.py:12\n  /private/tmp/claude-501/tmpdt6ose4f/test_generated.py:12: SyntaxWarning: invalid escape sequence '\\u'\n    b'    print(\"Hello \\xe4\\xb8\\x96\\xe7\\x95\\x8c\")  # \"Hello \\u4e16\\u754c\" in Chinese\\n'\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n========================= 1 passed, 1 warning in 0.01s =========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T07:55:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import tempfile\nimport os\nfrom source import Tracer\n\ndef test_unicode_source_with_utf8_characters_roundtrip():\n    # Source containing UTF-8 encoded Chinese characters\n    source_lines = [\n        b'# -*- coding: utf-8 -*-\\n',\n        b'def hello_world():\\n',\n        b'    print(\"Hello \\xe4\\xb8\\x96\\xe7\\x95\\x8c\")  # \"Hello \\u4e16\\u754c\" in Chinese\\n'\n    ]\n    \n    with tempfile.NamedTemporaryFile(mode='w', delete=False, encoding='utf-8') as f:\n        temp_path = f.name\n    \n    try:\n        tracer = Tracer(temp_path, overwrite=True)\n        rendered = tracer.dump_source(source_lines)\n        \n        # Read back the file content to verify UTF-8 round-trip\n        with open(temp_path, 'r', encoding='utf-8') as f:\n            written_content = f.read()\n        \n        # The bug causes replacement characters or corruption\n        # Fixed code should preserve the original UTF-8 characters\n        expected_chinese = \"Hello 世界\"\n        assert expected_chinese in written_content, f\"UTF-8 characters corrupted. Expected '{expected_chinese}' in output, got: {written_content}\"\n        assert expected_chinese in rendered, f\"UTF-8 characters corrupted in returned value. Expected '{expected_chinese}' in output, got: {rendered}\"\n    \n    finally:\n        if os.path.exists(temp_path):\n            os.unlink(temp_path)",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpifkpybl7\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_source_with_utf8_characters_roundtrip PASSED [100%]\n\n=============================== warnings summary ===============================\ntest_generated.py:10\n  /private/tmp/claude-501/tmpifkpybl7/test_generated.py:10: SyntaxWarning: invalid escape sequence '\\u'\n    b'    print(\"Hello \\xe4\\xb8\\x96\\xe7\\x95\\x8c\")  # \"Hello \\u4e16\\u754c\" in Chinese\\n'\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n========================= 1 passed, 1 warning in 0.01s =========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpf2gpi99m\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_unicode_source_with_utf8_characters_roundtrip PASSED [100%]\n\n=============================== warnings summary ===============================\ntest_generated.py:10\n  /private/tmp/claude-501/tmpf2gpi99m/test_generated.py:10: SyntaxWarning: invalid escape sequence '\\u'\n    b'    print(\"Hello \\xe4\\xb8\\x96\\xe7\\x95\\x8c\")  # \"Hello \\u4e16\\u754c\" in Chinese\\n'\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n========================= 1 passed, 1 warning in 0.01s =========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T07:55:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 3322,
+  "completion_tokens_total": 1063,
+  "duration_seconds": 59.09,
+  "timestamp": "2026-06-01T07:55:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

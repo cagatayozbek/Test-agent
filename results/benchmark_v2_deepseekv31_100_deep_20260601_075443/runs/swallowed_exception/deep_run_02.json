@@ -1,0 +1,47 @@
+{
+  "task_id": "swallowed_exception",
+  "mode": "deep",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_process_transaction_swallows_exception():\n    \"\"\"Test that process_transaction doesn't swallow NameError from missing calculate_tax function.\"\"\"\n    # With valid input format \"item_id:amount\", the function should either:\n    # 1. Work correctly if calculate_tax is defined, or\n    # 2. Raise NameError if calculate_tax is not defined\n    # But NOT return None silently\n    \n    # The buggy version returns None due to bare except: block\n    # The fixed version should raise NameError\n    transaction_str = \"item123:100\"\n    \n    # In the fixed version, this should raise NameError (or work if calculate_tax is defined)\n    # We'll test that it doesn't return None when there's a NameError\n    result = source.process_transaction(transaction_str)\n    \n    # The buggy version returns None, hiding the crash\n    # The fixed version would either raise NameError or return a proper value\n    # Since calculate_tax raises NameError in the source, the fixed behavior\n    # should not be to return None\n    assert result is not None, \"process_transaction should not return None when calculate_tax raises NameError\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpehlvz9je\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_process_transaction_swallows_exception FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_process_transaction_swallows_exception __________________\n\n    def test_process_transaction_swallows_exception():\n        \"\"\"Test that process_transaction doesn't swallow NameError from missing calculate_tax function.\"\"\"\n        # With valid input format \"item_id:amount\", the function should either:\n        # 1. Work correctly if calculate_tax is defined, or\n        # 2. Raise NameError if calculate_tax is not defined\n        # But NOT return None silently\n    \n        # The buggy version returns None due to bare except: block\n        # The fixed version should raise NameError\n        transaction_str = \"item123:100\"\n    \n        # In the fixed version, this should raise NameError (or work if calculate_tax is defined)\n        # We'll test that it doesn't return None when there's a NameError\n        result = source.process_transaction(transaction_str)\n    \n        # The buggy version returns None, hiding the crash\n        # The fixed version would either raise NameError or return a proper value\n        # Since calculate_tax raises NameError in the source, the fixed behavior\n        # should not be to return None\n>       assert result is not None, \"process_transaction should not return None when calculate_tax raises NameError\"\nE       AssertionError: process_transaction should not return None when calculate_tax raises NameError\nE       assert None is not None\n\ntest_generated.py:25: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_process_transaction_swallows_exception - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9ccije6z\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_process_transaction_swallows_exception PASSED    [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:24:26Z",
+      "tool_call_count": 3,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7949,
+  "completion_tokens_total": 936,
+  "duration_seconds": 45.3,
+  "timestamp": "2026-06-01T09:24:26Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}
