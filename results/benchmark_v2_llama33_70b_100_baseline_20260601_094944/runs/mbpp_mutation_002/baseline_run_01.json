@@ -1,0 +1,52 @@
+{
+  "task_id": "mbpp_mutation_002",
+  "mode": "baseline",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import square_Sum\n\ndef test_square_Sum_with_small_n():\n    n = 2\n    expected_result = 5  # 1^2 + 3^2 = 1 + 9 = 10, but for n=2 we only sum the first two odd numbers\n    assert square_Sum(n) == expected_result, f\"Expected square_Sum({n}) to return {expected_result}, but got {square_Sum(n)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz0j32f_8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_with_small_n FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_square_Sum_with_small_n _________________________\n\n    def test_square_Sum_with_small_n():\n        n = 2\n        expected_result = 5  # 1^2 + 3^2 = 1 + 9 = 10, but for n=2 we only sum the first two odd numbers\n>       assert square_Sum(n) == expected_result, f\"Expected square_Sum({n}) to return {expected_result}, but got {square_Sum(n)}\"\nE       AssertionError: Expected square_Sum(2) to return 5, but got 2\nE       assert 2 == 5\nE        +  where 2 = square_Sum(2)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_Sum_with_small_n - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps50azxp6\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_with_small_n FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_square_Sum_with_small_n _________________________\n\n    def test_square_Sum_with_small_n():\n        n = 2\n        expected_result = 5  # 1^2 + 3^2 = 1 + 9 = 10, but for n=2 we only sum the first two odd numbers\n>       assert square_Sum(n) == expected_result, f\"Expected square_Sum({n}) to return {expected_result}, but got {square_Sum(n)}\"\nE       AssertionError: Expected square_Sum(2) to return 5, but got 10\nE       assert 10 == 5\nE        +  where 10 = square_Sum(2)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_Sum_with_small_n - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:52:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import square_Sum\n\ndef test_square_Sum_with_small_n():\n    n = 2\n    expected_result = 5  # canonical solution: 1^2 + 3^2 = 1 + 9 = 10, but for n=2 it should be 1^2 + 3^2 = 10\n    assert square_Sum(n) == 10, f\"Expected square_Sum({n}) to return {10}, but got {square_Sum(n)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7exhbfei\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_with_small_n FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_square_Sum_with_small_n _________________________\n\n    def test_square_Sum_with_small_n():\n        n = 2\n        expected_result = 5  # canonical solution: 1^2 + 3^2 = 1 + 9 = 10, but for n=2 it should be 1^2 + 3^2 = 10\n>       assert square_Sum(n) == 10, f\"Expected square_Sum({n}) to return {10}, but got {square_Sum(n)}\"\nE       AssertionError: Expected square_Sum(2) to return 10, but got 2\nE       assert 2 == 10\nE        +  where 2 = square_Sum(2)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_Sum_with_small_n - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn990szxn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_with_small_n PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:52:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1214,
+  "completion_tokens_total": 210,
+  "duration_seconds": 6.92,
+  "timestamp": "2026-06-01T09:52:45Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

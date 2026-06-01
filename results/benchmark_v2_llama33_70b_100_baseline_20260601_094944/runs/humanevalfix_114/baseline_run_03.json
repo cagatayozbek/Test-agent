@@ -1,0 +1,68 @@
+{
+  "task_id": "humanevalfix_114",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import minSubArraySum\nimport pytest\n\ndef test_minSubArraySum_with_negative_numbers():\n    nums = [-1, -2, -3]\n    assert minSubArraySum(nums) == -1, \"Expected minSubArraySum to return the maximum of the array when all numbers are negative\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcgn1fozj\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_with_negative_numbers FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_minSubArraySum_with_negative_numbers ___________________\n\n    def test_minSubArraySum_with_negative_numbers():\n        nums = [-1, -2, -3]\n>       assert minSubArraySum(nums) == -1, \"Expected minSubArraySum to return the maximum of the array when all numbers are negative\"\nE       AssertionError: Expected minSubArraySum to return the maximum of the array when all numbers are negative\nE       assert 1 == -1\nE        +  where 1 = minSubArraySum([-1, -2, -3])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_with_negative_numbers - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkew1ey76\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_with_negative_numbers FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_minSubArraySum_with_negative_numbers ___________________\n\n    def test_minSubArraySum_with_negative_numbers():\n        nums = [-1, -2, -3]\n>       assert minSubArraySum(nums) == -1, \"Expected minSubArraySum to return the maximum of the array when all numbers are negative\"\nE       AssertionError: Expected minSubArraySum to return the maximum of the array when all numbers are negative\nE       assert -6 == -1\nE        +  where -6 = minSubArraySum([-1, -2, -3])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_with_negative_numbers - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:52:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import minSubArraySum\n\ndef test_minSubArraySum_with_negative_numbers():\n    # Arrange\n    nums = [-1, -2, -3]\n\n    # Act\n    result = minSubArraySum(nums)\n\n    # Assert\n    assert result == -1, \"Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got {}\".format(result)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr6ppr45r\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_with_negative_numbers FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_minSubArraySum_with_negative_numbers ___________________\n\n    def test_minSubArraySum_with_negative_numbers():\n        # Arrange\n        nums = [-1, -2, -3]\n    \n        # Act\n        result = minSubArraySum(nums)\n    \n        # Assert\n>       assert result == -1, \"Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got {}\".format(result)\nE       AssertionError: Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got 1\nE       assert 1 == -1\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_with_negative_numbers - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpb_2n_010\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_with_negative_numbers FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_minSubArraySum_with_negative_numbers ___________________\n\n    def test_minSubArraySum_with_negative_numbers():\n        # Arrange\n        nums = [-1, -2, -3]\n    \n        # Act\n        result = minSubArraySum(nums)\n    \n        # Assert\n>       assert result == -1, \"Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got {}\".format(result)\nE       AssertionError: Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got -6\nE       assert -6 == -1\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_with_negative_numbers - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:52:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import minSubArraySum\n\ndef test_minSubArraySum_with_negative_numbers():\n    nums = [-1, -2, -3]\n    expected_min_sum = -1  # Correct expected output for minSubArraySum\n    assert minSubArraySum(nums) == expected_min_sum, (\n        f\"Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got {minSubArraySum(nums)}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4r6kynbe\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_with_negative_numbers FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_minSubArraySum_with_negative_numbers ___________________\n\n    def test_minSubArraySum_with_negative_numbers():\n        nums = [-1, -2, -3]\n        expected_min_sum = -1  # Correct expected output for minSubArraySum\n>       assert minSubArraySum(nums) == expected_min_sum, (\n            f\"Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got {minSubArraySum(nums)}\"\n        )\nE       AssertionError: Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got 1\nE       assert 1 == -1\nE        +  where 1 = minSubArraySum([-1, -2, -3])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_with_negative_numbers - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpak4cttoc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_with_negative_numbers FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_minSubArraySum_with_negative_numbers ___________________\n\n    def test_minSubArraySum_with_negative_numbers():\n        nums = [-1, -2, -3]\n        expected_min_sum = -1  # Correct expected output for minSubArraySum\n>       assert minSubArraySum(nums) == expected_min_sum, (\n            f\"Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got {minSubArraySum(nums)}\"\n        )\nE       AssertionError: Expected minSubArraySum to return the minimum sum of any non-empty sub-array, but got -6\nE       assert -6 == -1\nE        +  where -6 = minSubArraySum([-1, -2, -3])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_with_negative_numbers - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:52:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2522,
+  "completion_tokens_total": 250,
+  "duration_seconds": 10.08,
+  "timestamp": "2026-06-01T09:52:15Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

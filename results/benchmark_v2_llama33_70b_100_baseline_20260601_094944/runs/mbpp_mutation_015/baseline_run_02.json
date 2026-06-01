@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_015",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float():\n    test_input = [[\"1\", \"2\"], [\"3\", \"4\"]]\n    expected_output = [(1.0, 1.0), (3.0, 3.0)]\n    assert list_to_float(test_input) == expected_output, \"list_to_float should convert all convertible elements to floats\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpozx7zf3x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_list_to_float ______________________________\n\n    def test_list_to_float():\n        test_input = [[\"1\", \"2\"], [\"3\", \"4\"]]\n        expected_output = [(1.0, 1.0), (3.0, 3.0)]\n>       assert list_to_float(test_input) == expected_output, \"list_to_float should convert all convertible elements to floats\"\nE       AssertionError: list_to_float should convert all convertible elements to floats\nE       assert [(2.0, 2.0), (4.0, 4.0)] == [(1.0, 1.0), (3.0, 3.0)]\nE         \nE         At index 0 diff: (2.0, 2.0) != (1.0, 1.0)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         1.0,...\nE         \nE         ...Full output truncated (19 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float - AssertionError: list_to_float ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp05xw1mov\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_list_to_float ______________________________\n\n    def test_list_to_float():\n        test_input = [[\"1\", \"2\"], [\"3\", \"4\"]]\n        expected_output = [(1.0, 1.0), (3.0, 3.0)]\n>       assert list_to_float(test_input) == expected_output, \"list_to_float should convert all convertible elements to floats\"\nE       AssertionError: list_to_float should convert all convertible elements to floats\nE       assert [(1.0, 2.0), (3.0, 4.0)] == [(1.0, 1.0), (3.0, 3.0)]\nE         \nE         At index 0 diff: (1.0, 2.0) != (1.0, 1.0)\nE         \nE         Full diff:\nE           [\nE               (\nE                   1.0,...\nE         \nE         ...Full output truncated (13 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float - AssertionError: list_to_float ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:53:09Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_mutation():\n    test_input = [[\"a\", \"1.0\"], [\"b\", \"2.0\"]]\n    expected_output = [(1.0, 1.0), (2.0, 2.0)]\n    assert list_to_float(test_input) == expected_output, \"list_to_float should convert all possible convertible elements to floats\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpai4wi70s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_mutation PASSED                    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjli1ktbp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_mutation FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_list_to_float_mutation __________________________\n\n    def test_list_to_float_mutation():\n        test_input = [[\"a\", \"1.0\"], [\"b\", \"2.0\"]]\n        expected_output = [(1.0, 1.0), (2.0, 2.0)]\n>       assert list_to_float(test_input) == expected_output, \"list_to_float should convert all possible convertible elements to floats\"\nE       AssertionError: list_to_float should convert all possible convertible elements to floats\nE       assert [('a', 1.0), ('b', 2.0)] == [(1.0, 1.0), (2.0, 2.0)]\nE         \nE         At index 0 diff: ('a', 1.0) != (1.0, 1.0)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         1.0,...\nE         \nE         ...Full output truncated (13 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_mutation - AssertionError: list_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:53:16Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_mutation():\n    test_input = [[1, 'a', 2], ['b', 'c', 3]]\n    expected_output = [(1.0, 1.0), (3.0, 3.0)]\n    assert list_to_float(test_input) == expected_output, \"list_to_float should convert elements to float and return a list of tuples with the first float value\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpv6o91ghd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_mutation FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_list_to_float_mutation __________________________\n\n    def test_list_to_float_mutation():\n        test_input = [[1, 'a', 2], ['b', 'c', 3]]\n        expected_output = [(1.0, 1.0), (3.0, 3.0)]\n>       assert list_to_float(test_input) == expected_output, \"list_to_float should convert elements to float and return a list of tuples with the first float value\"\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntest_list = [[1, 'a', 2], ['b', 'c', 3]]\n\n    def list_to_float(test_list):\n        res = []\n        for tup in test_list:\n            temp = []\n            for ele in tup:\n>               if ele.isalpha():\n                   ^^^^^^^^^^^\nE               AttributeError: 'int' object has no attribute 'isalpha'\n\nsource.py:6: AttributeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_mutation - AttributeError: 'int'...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpawodrz_1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_mutation FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_list_to_float_mutation __________________________\n\n    def test_list_to_float_mutation():\n        test_input = [[1, 'a', 2], ['b', 'c', 3]]\n        expected_output = [(1.0, 1.0), (3.0, 3.0)]\n>       assert list_to_float(test_input) == expected_output, \"list_to_float should convert elements to float and return a list of tuples with the first float value\"\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntest_list = [[1, 'a', 2], ['b', 'c', 3]]\n\n    def list_to_float(test_list):\n        res = []\n        for tup in test_list:\n            temp = []\n            for ele in tup:\n>               if ele.isalpha():\n                   ^^^^^^^^^^^\nE               AttributeError: 'int' object has no attribute 'isalpha'\n\nsource.py:6: AttributeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_mutation - AttributeError: 'int'...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:53:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 2241,
+  "completion_tokens_total": 270,
+  "duration_seconds": 15.99,
+  "timestamp": "2026-06-01T09:53:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

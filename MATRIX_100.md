@@ -1,4 +1,4 @@
-# 100-Task BRTR Matrix — baseline × adaptive × deep (8 models)
+# 100-Task BRTR Matrix — baseline × adaptive × deep (9 models)
 
 Özet matris. Tüm sayılar ilgili `results/benchmark_v2_*_100*/summary.json`
 dosyalarından okunmuştur. Detaylı analiz için bkz. `EXPERIMENT_REPORT.md`
@@ -21,6 +21,7 @@ fixed kodda PASS edecek. Birincil metrik. Her hücre = 100 task × 3 run =
 | **phi-4 (14B)** | **66.7%** (200/300) | **67.7%** (203/300) | N/A ‡ | — |
 | **llama-3.1-8b** | **64.3%** (193/300) | **68.7%** (206/300) | **17.3%** (52/300) | OpenRouter ◇ |
 | **DeepSeek-V3.1** | 85.3% (256/300) | 89.0% (267/300) | **95.0%** (285/300) | OpenRouter ◇ |
+| **llama-3.3-70b** | 79.3% (238/300) | 81.3% (244/300) | **34.0%** (102/300) | OpenRouter ◇ |
 
 **† Sonnet baseline/adaptive timeout-bozulmuş:** bu iki moddaki
 başarısızlıkların ~%80'i gerçek test FAIL'i değil, 120s `claude -p`
@@ -68,6 +69,7 @@ gerçek ölçümle** bağımsız doğrular.
 | phi-4 (14B) | [61.2, 71.8] | [62.2, 72.7] | N/A ‡ |
 | llama-3.1-8b | [58.8, 69.5] | [63.2, 73.7] | [13.5, 22.0] |
 | DeepSeek-V3.1 | [80.9, 88.9] | [85.0, 92.1] | [91.9, 97.0] |
+| llama-3.3-70b | [74.4, 83.5] | [76.5, 85.3] | [28.9, 39.5] |
 
 ## Okunuş — analizin değeri model gücüne göre dereceli
 
@@ -101,15 +103,27 @@ gerçek ölçümle** bağımsız doğrular.
   yetenekli bir modelde analiz açıkça yardım ediyor. (300/300, sıfır
   zero-token, hepsi tool çağırdı.)
 
+- **Güçlü ama tool-beceriksiz (llama-3.3-70b):** baseline 0.793 (8B
+  kardeşinin 0.643'ünden +15pp — aile içi ölçek etkisi net). adaptive +2pp
+  (nötr). **deep çöküyor (0.340)** — 70B bile, oynayacak yeri olmasına
+  rağmen (0.793) agentic protokolü beceremiyor. Llama ailesi deep'te
+  **bedenden bağımsız** çöküyor (8B −47pp, 70B −45pp). **Kritik kontrast:**
+  benzer baseline'lı DeepSeek-V3.1 (0.853) deep'te **0.950'ye çıkarken**,
+  llama-3.3-70b (0.793) deep'te **0.340'a düşüyor** → baseline kapasitesi
+  deep sonucunu öngörmüyor; belirleyici **tool-sürme/agentic beceri**.
+
 **Tek satır sonuç:** Analiz adımının işareti modele bağlıdır. İki uç:
 yetenekli-ama-doymamış modelde **monoton fayda** (DeepSeek-V3.1: deep 0.950
 > baseline 0.853, anlamlı; sonnet deep 1.000) ↔ zayıf modelde **deep
 felaket** (gpt-oss-20b 0.213, llama-3.1-8b 0.173). Arada tavan etkisi
 (haiku), hafif/monoton zarar (gpt-oss-120b, qwen). Model kapasitesi baskın
-değişkendir; ama "daha güçlü = daha çok fayda" basit değil: gpt-oss-120b
-(baseline 0.977) deep'te **zarar** görürken DeepSeek (baseline 0.853) deep'te
-**belirgin kazanır** — doygunluğa uzaklık + tool döngüsünü iyi sürebilme
-birlikte belirleyici.
+değişkendir; ama "daha güçlü = daha çok fayda" basit değil. Asıl belirleyici
+**agentic/tool-sürme becerisi**: benzer baseline'lı iki model deep'te taban
+tabana ayrışıyor (DeepSeek 0.853→0.950 kazanır ↔ llama-3.3-70b 0.793→0.340
+çöker). Llama ailesi (8B ve 70B) tool çağırıyor ama protokolü beceremiyor;
+DeepSeek ustaca sürüyor. Analiz, model hem doymamış hem de agentic loop'u
+becerikli sürebiliyorsa yardım eder; aksi halde (beceriksiz tool-sürme)
+büyük model bile çöker.
 
 ## Ham veri dizinleri
 
@@ -135,4 +149,7 @@ birlikte belirleyici.
 | DeepSeek-V3.1 baseline | `results/benchmark_v2_deepseekv31_100_baseline_*/` |
 | DeepSeek-V3.1 adaptive | `results/benchmark_v2_deepseekv31_100_adaptive_*/` |
 | DeepSeek-V3.1 deep | `results/benchmark_v2_deepseekv31_100_deep_20260601_075443/` (300 run, OpenRouter override; 300/300 tool çağırdı, sıfır zero-token) |
+| llama-3.3-70b baseline | `results/benchmark_v2_llama33_70b_100_baseline_*/` |
+| llama-3.3-70b adaptive | `results/benchmark_v2_llama33_70b_100_adaptive_*/` |
+| llama-3.3-70b deep | `results/benchmark_v2_llama33_70b_100_deep_20260601_094951/` (300 run, OpenRouter override; 300/300 tool çağırdı, sıfır zero-token) |
 | deep (sonnet/haiku/120b/qwen) | §11.1 deep-mode leaderboard run'ları |

@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_017",
+  "mode": "baseline",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import parse_music\nimport pytest\n\ndef test_parse_music_with_different_notes():\n    music_string = 'o o|.| o| o|.|.|.|.| o o'\n    expected_output = [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n    assert parse_music(music_string) == expected_output, \"Expected parse_music to return the correct list of note durations\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7hqyhn93\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_with_different_notes FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_parse_music_with_different_notes _____________________\n\n    def test_parse_music_with_different_notes():\n        music_string = 'o o|.| o| o|.|.|.|.| o o'\n        expected_output = [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n>       assert parse_music(music_string) == expected_output, \"Expected parse_music to return the correct list of note durations\"\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nmusic_string = 'o o|.| o| o|.|.|.|.| o o'\n\n    def parse_music(music_string: str) -> List[int]:\n        \"\"\" Input to this function is a string representing musical notes in a special ASCII format.\n        Your task is to parse this string and return list of integers corresponding to how many beats does each\n        not last.\n    \n        Here is a legend:\n        'o' - whole note, lasts four beats\n        'o|' - half note, lasts two beats\n        '.|' - quater note, lasts one beat\n    \n        >>> parse_music('o o| .| o| o| .| .| .| .| o o')\n        [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n        \"\"\"\n        note_map = {'o': 3, 'o|': 2, '.|': 1}\n>       return [note_map[x] for x in music_string.split(' ') if x]\n                ^^^^^^^^^^^\nE       KeyError: 'o|.|'\n\nsource.py:18: KeyError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_parse_music_with_different_notes - KeyError: '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6w6b2jdt\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_with_different_notes FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_parse_music_with_different_notes _____________________\n\n    def test_parse_music_with_different_notes():\n        music_string = 'o o|.| o| o|.|.|.|.| o o'\n        expected_output = [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n>       assert parse_music(music_string) == expected_output, \"Expected parse_music to return the correct list of note durations\"\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nmusic_string = 'o o|.| o| o|.|.|.|.| o o'\n\n    def parse_music(music_string: str) -> List[int]:\n        \"\"\" Input to this function is a string representing musical notes in a special ASCII format.\n        Your task is to parse this string and return list of integers corresponding to how many beats does each\n        not last.\n    \n        Here is a legend:\n        'o' - whole note, lasts four beats\n        'o|' - half note, lasts two beats\n        '.|' - quater note, lasts one beat\n    \n        >>> parse_music('o o| .| o| o| .| .| .| .| o o')\n        [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n        \"\"\"\n        note_map = {'o': 4, 'o|': 2, '.|': 1}\n>       return [note_map[x] for x in music_string.split(' ') if x]\n                ^^^^^^^^^^^\nE       KeyError: 'o|.|'\n\nsource.py:18: KeyError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_parse_music_with_different_notes - KeyError: '...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:50:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import parse_music\n\ndef test_parse_music_with_different_notes():\n    music_string = 'o o| .| o| o| .| .| .| .| o o'\n    expected_output = [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n    assert parse_music(music_string) == expected_output, (\n        f\"Expected parse_music('{music_string}') to return {expected_output}, \"\n        f\"but got {parse_music(music_string)}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp36d3yvyd\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_with_different_notes FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_parse_music_with_different_notes _____________________\n\n    def test_parse_music_with_different_notes():\n        music_string = 'o o| .| o| o| .| .| .| .| o o'\n        expected_output = [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4]\n>       assert parse_music(music_string) == expected_output, (\n            f\"Expected parse_music('{music_string}') to return {expected_output}, \"\n            f\"but got {parse_music(music_string)}\"\n        )\nE       AssertionError: Expected parse_music('o o| .| o| o| .| .| .| .| o o') to return [4, 2, 1, 2, 2, 1, 1, 1, 1, 4, 4], but got [3, 2, 1, 2, 2, 1, 1, 1, 1, 3, 3]\nE       assert [3, 2, 1, 2, 2, 1, ...] == [4, 2, 1, 2, 2, 1, ...]\nE         \nE         At index 0 diff: 3 != 4\nE         \nE         Full diff:\nE           [\nE         -     4,\nE         ?     ^...\nE         \nE         ...Full output truncated (19 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_parse_music_with_different_notes - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8zckp8ja\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_parse_music_with_different_notes PASSED          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:50:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1649,
+  "completion_tokens_total": 220,
+  "duration_seconds": 8.7,
+  "timestamp": "2026-06-01T09:50:34Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

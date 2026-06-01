@@ -1,0 +1,75 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import snake_to_camel\nimport pytest\n\ndef test_snake_to_camel():\n    assert snake_to_camel(\"hello_world\") == \"helloWorld\", \"Expected snake_to_camel('hello_world') to return 'helloWorld' but got something else\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1dzbzgw8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_snake_to_camel ______________________________\n\n    def test_snake_to_camel():\n>       assert snake_to_camel(\"hello_world\") == \"helloWorld\", \"Expected snake_to_camel('hello_world') to return 'helloWorld' but got something else\"\nE       AssertionError: Expected snake_to_camel('hello_world') to return 'helloWorld' but got something else\nE       assert '__' == 'helloWorld'\nE         \nE         - helloWorld\nE         + __\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel - AssertionError: Expected snak...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp59fs44h_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_snake_to_camel ______________________________\n\n    def test_snake_to_camel():\n>       assert snake_to_camel(\"hello_world\") == \"helloWorld\", \"Expected snake_to_camel('hello_world') to return 'helloWorld' but got something else\"\nE       AssertionError: Expected snake_to_camel('hello_world') to return 'helloWorld' but got something else\nE       assert 'HelloWorld' == 'helloWorld'\nE         \nE         - helloWorld\nE         ? ^\nE         + HelloWorld\nE         ? ^\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel - AssertionError: Expected snak...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:05:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel():\n    input_string = 'hello_world'\n    expected_output = 'helloWorld'\n    assert snake_to_camel(input_string) == expected_output, f\"Expected snake_to_camel('{input_string}') to return '{expected_output}' but got '{snake_to_camel(input_string)}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdi17nb3j\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_snake_to_camel ______________________________\n\n    def test_snake_to_camel():\n        input_string = 'hello_world'\n        expected_output = 'helloWorld'\n>       assert snake_to_camel(input_string) == expected_output, f\"Expected snake_to_camel('{input_string}') to return '{expected_output}' but got '{snake_to_camel(input_string)}'\"\nE       AssertionError: Expected snake_to_camel('hello_world') to return 'helloWorld' but got '__'\nE       assert '__' == 'helloWorld'\nE         \nE         - helloWorld\nE         + __\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel - AssertionError: Expected snak...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe5rou2m8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_snake_to_camel ______________________________\n\n    def test_snake_to_camel():\n        input_string = 'hello_world'\n        expected_output = 'helloWorld'\n>       assert snake_to_camel(input_string) == expected_output, f\"Expected snake_to_camel('{input_string}') to return '{expected_output}' but got '{snake_to_camel(input_string)}'\"\nE       AssertionError: Expected snake_to_camel('hello_world') to return 'helloWorld' but got 'HelloWorld'\nE       assert 'HelloWorld' == 'helloWorld'\nE         \nE         - helloWorld\nE         ? ^\nE         + HelloWorld\nE         ? ^\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel - AssertionError: Expected snak...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:05:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel():\n    input_string = 'hello_world'\n    expected_output = 'helloWorld'\n    assert snake_to_camel(input_string) == expected_output, f\"Expected snake_to_camel('{input_string}') to return '{expected_output}' but got '{snake_to_camel(input_string)}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzjl4_sy3\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_snake_to_camel ______________________________\n\n    def test_snake_to_camel():\n        input_string = 'hello_world'\n        expected_output = 'helloWorld'\n>       assert snake_to_camel(input_string) == expected_output, f\"Expected snake_to_camel('{input_string}') to return '{expected_output}' but got '{snake_to_camel(input_string)}'\"\nE       AssertionError: Expected snake_to_camel('hello_world') to return 'helloWorld' but got '__'\nE       assert '__' == 'helloWorld'\nE         \nE         - helloWorld\nE         + __\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel - AssertionError: Expected snak...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpk77c1ts9\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel FAILED                            [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_snake_to_camel ______________________________\n\n    def test_snake_to_camel():\n        input_string = 'hello_world'\n        expected_output = 'helloWorld'\n>       assert snake_to_camel(input_string) == expected_output, f\"Expected snake_to_camel('{input_string}') to return '{expected_output}' but got '{snake_to_camel(input_string)}'\"\nE       AssertionError: Expected snake_to_camel('hello_world') to return 'helloWorld' but got 'HelloWorld'\nE       assert 'HelloWorld' == 'helloWorld'\nE         \nE         - helloWorld\nE         ? ^\nE         + HelloWorld\nE         ? ^\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel - AssertionError: Expected snak...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:05:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": {
+    "bug_hypothesis": "The `and` operator is incorrectly used instead of `or` in the list comprehension, causing the camel case conversion to fail when the character is not an underscore.",
+    "bug_location": "snake_to_camel, line 5",
+    "trigger_condition": "Input string containing underscores and letters, such as 'hello_world'",
+    "expected_vs_actual": "Expected output 'helloWorld' but actual output is an empty string or incorrect camel case conversion",
+    "suggested_test_strategy": "Test the function with a snake case string, such as 'hello_world', and assert that the output is 'helloWorld'. Also, test with a string containing multiple underscores, such as 'hello_world_test', and assert that the output is 'helloWorldTest'.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2848,
+  "completion_tokens_total": 389,
+  "duration_seconds": 18.85,
+  "timestamp": "2026-06-01T10:05:17Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

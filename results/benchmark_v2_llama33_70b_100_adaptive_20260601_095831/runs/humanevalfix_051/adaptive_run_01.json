@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_051",
+  "mode": "adaptive",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import remove_vowels\n\ndef test_remove_vowels_with_y_and_w_as_vowels():\n    input_text = \"WyY\"\n    expected_output = \"Wy\"\n    assert remove_vowels(input_text) == expected_output, f\"Expected remove_vowels('{input_text}') to return '{expected_output}', but got '{remove_vowels(input_text)}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpfgot8ww8\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_with_y_and_w_as_vowels FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_remove_vowels_with_y_and_w_as_vowels ___________________\n\n    def test_remove_vowels_with_y_and_w_as_vowels():\n        input_text = \"WyY\"\n        expected_output = \"Wy\"\n>       assert remove_vowels(input_text) == expected_output, f\"Expected remove_vowels('{input_text}') to return '{expected_output}', but got '{remove_vowels(input_text)}'\"\nE       AssertionError: Expected remove_vowels('WyY') to return 'Wy', but got ''\nE       assert '' == 'Wy'\nE         \nE         - Wy\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_with_y_and_w_as_vowels - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpe6el5oul\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_with_y_and_w_as_vowels FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_remove_vowels_with_y_and_w_as_vowels ___________________\n\n    def test_remove_vowels_with_y_and_w_as_vowels():\n        input_text = \"WyY\"\n        expected_output = \"Wy\"\n>       assert remove_vowels(input_text) == expected_output, f\"Expected remove_vowels('{input_text}') to return '{expected_output}', but got '{remove_vowels(input_text)}'\"\nE       AssertionError: Expected remove_vowels('WyY') to return 'Wy', but got 'WyY'\nE       assert 'WyY' == 'Wy'\nE         \nE         - Wy\nE         + WyY\nE         ?   +\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_with_y_and_w_as_vowels - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:00:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import remove_vowels\n\ndef test_remove_vowels_with_y_and_w_as_vowels():\n    assert remove_vowels('WyY') == 'WyY', \"Expected remove_vowels to return 'WyY' but got '{}'\".format(remove_vowels('WyY'))\n    assert remove_vowels('zw') == 'zw', \"Expected remove_vowels to return 'zw' but got '{}'\".format(remove_vowels('zw'))",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp19ier0pk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_with_y_and_w_as_vowels FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_remove_vowels_with_y_and_w_as_vowels ___________________\n\n    def test_remove_vowels_with_y_and_w_as_vowels():\n>       assert remove_vowels('WyY') == 'WyY', \"Expected remove_vowels to return 'WyY' but got '{}'\".format(remove_vowels('WyY'))\nE       AssertionError: Expected remove_vowels to return 'WyY' but got ''\nE       assert '' == 'WyY'\nE         \nE         - WyY\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_remove_vowels_with_y_and_w_as_vowels - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpf4gfybx_\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_remove_vowels_with_y_and_w_as_vowels PASSED      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:00:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The function remove_vowels has an extraneous operation that incorrectly removes the characters 'w' and 'y' in addition to vowels.",
+    "bug_location": "remove_vowels function, line with the return statement",
+    "trigger_condition": "Input string containing 'w' or 'y'",
+    "expected_vs_actual": "Expected 'bcdfghjklm' but got 'bcdfghjklm' for most inputs, however for inputs like 'zw' or 'zy', expected 'zw' or 'zy' but got 'z'",
+    "suggested_test_strategy": "Test the function with strings containing 'w' and 'y' to see if they are incorrectly removed.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2272,
+  "completion_tokens_total": 355,
+  "duration_seconds": 17.24,
+  "timestamp": "2026-06-01T10:00:24Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

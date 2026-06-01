@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_020",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import find_closest_elements\nimport pytest\n\ndef test_find_closest_elements_with_buggy_code():\n    assert find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2]) == (2.0, 2.2), \"The function should return the closest pair of elements in order\"\n\ndef test_find_closest_elements_with_equal_elements():\n    assert find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.0]) == (2.0, 2.0), \"The function should return the closest pair of elements in order\"\n\ndef test_find_closest_elements_with_negative_numbers():\n    assert find_closest_elements([-1.0, 1.0, 2.0, 3.0, 4.0, 5.0]) == (-1.0, 1.0), \"The function should return the closest pair of elements in order\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_3gsk89c\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_find_closest_elements_with_buggy_code FAILED     [ 33%]\n\n=================================== FAILURES ===================================\n__________________ test_find_closest_elements_with_buggy_code __________________\n\n    def test_find_closest_elements_with_buggy_code():\n>       assert find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2]) == (2.0, 2.2), \"The function should return the closest pair of elements in order\"\nE       AssertionError: The function should return the closest pair of elements in order\nE       assert (1.0, 5.0) == (2.0, 2.2)\nE         \nE         At index 0 diff: 1.0 != 2.0\nE         \nE         Full diff:\nE           (\nE         -     2.0,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_closest_elements_with_buggy_code - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl0vrc0vh\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 3 items\n\ntest_generated.py::test_find_closest_elements_with_buggy_code PASSED     [ 33%]\ntest_generated.py::test_find_closest_elements_with_equal_elements PASSED [ 66%]\ntest_generated.py::test_find_closest_elements_with_negative_numbers FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_find_closest_elements_with_negative_numbers _______________\n\n    def test_find_closest_elements_with_negative_numbers():\n>       assert find_closest_elements([-1.0, 1.0, 2.0, 3.0, 4.0, 5.0]) == (-1.0, 1.0), \"The function should return the closest pair of elements in order\"\nE       AssertionError: The function should return the closest pair of elements in order\nE       assert (1.0, 2.0) == (-1.0, 1.0)\nE         \nE         At index 0 diff: 1.0 != -1.0\nE         \nE         Full diff:\nE           (\nE         -     -1.0,\nE               1.0,\nE         +     2.0,\nE           )\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_closest_elements_with_negative_numbers - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 2 passed in 0.02s ==========================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:59:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import find_closest_elements\nimport pytest\n\ndef test_find_closest_elements_with_buggy_code():\n    numbers = [1.0, 2.0, 3.0, 4.0, 5.0, 2.2]\n    expected_output = (2.0, 2.2)\n    assert find_closest_elements(numbers) == expected_output, f\"Expected find_closest_elements({numbers}) to return {expected_output}, but got {find_closest_elements(numbers)}\"\n\ndef test_find_closest_elements_with_duplicate_numbers():\n    numbers = [1.0, 2.0, 3.0, 4.0, 5.0, 2.0]\n    expected_output = (2.0, 2.0)\n    assert find_closest_elements(numbers) == expected_output, f\"Expected find_closest_elements({numbers}) to return {expected_output}, but got {find_closest_elements(numbers)}\"\n\ndef test_find_closest_elements_with_negative_numbers():\n    numbers = [-1.0, 1.0]\n    expected_output = (-1.0, 1.0)\n    assert find_closest_elements(numbers) == expected_output, f\"Expected find_closest_elements({numbers}) to return {expected_output}, but got {find_closest_elements(numbers)}\"\n\ndef test_find_closest_elements_with_large_numbers():\n    numbers = [1000.0, 1001.0, 1002.0]\n    expected_output = (1000.0, 1001.0)\n    assert find_closest_elements(numbers) == expected_output, f\"Expected find_closest_elements({numbers}) to return {expected_output}, but got {find_closest_elements(numbers)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpx651yyqm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_find_closest_elements_with_buggy_code FAILED     [ 25%]\n\n=================================== FAILURES ===================================\n__________________ test_find_closest_elements_with_buggy_code __________________\n\n    def test_find_closest_elements_with_buggy_code():\n        numbers = [1.0, 2.0, 3.0, 4.0, 5.0, 2.2]\n        expected_output = (2.0, 2.2)\n>       assert find_closest_elements(numbers) == expected_output, f\"Expected find_closest_elements({numbers}) to return {expected_output}, but got {find_closest_elements(numbers)}\"\nE       AssertionError: Expected find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2]) to return (2.0, 2.2), but got (1.0, 5.0)\nE       assert (1.0, 5.0) == (2.0, 2.2)\nE         \nE         At index 0 diff: 1.0 != 2.0\nE         \nE         Full diff:\nE           (\nE         -     2.0,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_closest_elements_with_buggy_code - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpt6tti9bi\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 4 items\n\ntest_generated.py::test_find_closest_elements_with_buggy_code PASSED     [ 25%]\ntest_generated.py::test_find_closest_elements_with_duplicate_numbers PASSED [ 50%]\ntest_generated.py::test_find_closest_elements_with_negative_numbers PASSED [ 75%]\ntest_generated.py::test_find_closest_elements_with_large_numbers PASSED  [100%]\n\n============================== 4 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:00:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The wrong operator is used in the conditional statement, causing the function to return the pair of numbers with the largest difference instead of the smallest.",
+    "bug_location": "find_closest_elements, line 20",
+    "trigger_condition": "Any input list with at least two elements, where the closest pair of numbers is not the pair with the largest difference.",
+    "expected_vs_actual": "The function should return the pair of numbers with the smallest difference, but instead it returns the pair with the largest difference.",
+    "suggested_test_strategy": "Test the function with multiple input lists, including edge cases such as lists with duplicate elements, lists with negative numbers, and lists with very large or very small numbers. Compare the output of the function with the expected output to identify any differences.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2608,
+  "completion_tokens_total": 775,
+  "duration_seconds": 23.67,
+  "timestamp": "2026-06-01T10:00:00Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

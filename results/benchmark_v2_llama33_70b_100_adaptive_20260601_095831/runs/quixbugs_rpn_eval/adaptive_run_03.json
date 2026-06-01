@@ -1,0 +1,68 @@
+{
+  "task_id": "quixbugs_rpn_eval",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import rpn_eval\n\ndef test_rpn_eval_subtraction():\n    tokens = ['5', '1', '-']\n    assert rpn_eval(tokens) == 4, f\"Expected rpn_eval(['5', '1', '-']) to return 4, but got {rpn_eval(tokens)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplgfdwcol\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_rpn_eval_subtraction FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_eval_subtraction ___________________________\n\n    def test_rpn_eval_subtraction():\n        tokens = ['5', '1', '-']\n>       assert rpn_eval(tokens) == 4, f\"Expected rpn_eval(['5', '1', '-']) to return 4, but got {rpn_eval(tokens)}\"\n               ^^^^^^^^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_eval_subtraction - IndexError: pop from em...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsmoodcsc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_rpn_eval_subtraction FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_eval_subtraction ___________________________\n\n    def test_rpn_eval_subtraction():\n        tokens = ['5', '1', '-']\n>       assert rpn_eval(tokens) == 4, f\"Expected rpn_eval(['5', '1', '-']) to return 4, but got {rpn_eval(tokens)}\"\n               ^^^^^^^^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_eval_subtraction - IndexError: pop from em...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:07:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import rpn_eval\n\ndef test_rpn_eval_subtraction():\n    tokens = ['5', '1', '-']\n    expected_result = 4\n    assert rpn_eval(tokens) == expected_result, f\"Expected rpn_eval({tokens}) to return {expected_result}, but got {rpn_eval(tokens)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpuv_c7bkn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_rpn_eval_subtraction FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_eval_subtraction ___________________________\n\n    def test_rpn_eval_subtraction():\n        tokens = ['5', '1', '-']\n        expected_result = 4\n>       assert rpn_eval(tokens) == expected_result, f\"Expected rpn_eval({tokens}) to return {expected_result}, but got {rpn_eval(tokens)}\"\n               ^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_eval_subtraction - IndexError: pop from em...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.03s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps9q1qeiq\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_rpn_eval_subtraction FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_eval_subtraction ___________________________\n\n    def test_rpn_eval_subtraction():\n        tokens = ['5', '1', '-']\n        expected_result = 4\n>       assert rpn_eval(tokens) == expected_result, f\"Expected rpn_eval({tokens}) to return {expected_result}, but got {rpn_eval(tokens)}\"\n               ^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntokens = ['5', '1', '-']\n\n    def rpn_eval(tokens):\n        def op(symbol, a, b):\n            return {\n                '+': lambda a, b: a + b,\n                '-': lambda a, b: a - b,\n                '*': lambda a, b: a * b,\n                '/': lambda a, b: a / b\n            }[symbol](a, b)\n    \n        stack = []\n    \n        for token in tokens:\n            if isinstance(token, float):\n                stack.append(token)\n            else:\n>               a = stack.pop()\n                    ^^^^^^^^^^^\nE               IndexError: pop from empty list\n\nsource.py:17: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_eval_subtraction - IndexError: pop from em...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:08:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import rpn_eval\n\ndef test_rpn_eval_subtraction():\n    # Test the subtraction operation with the operands in a specific order\n    tokens = [5.0, 1.0, '-']\n    # The correct result should be 4.0, but the buggy code will return -4.0\n    assert rpn_eval(tokens) == 4.0, \"Subtraction operation with swapped operands should return 4.0\"\n\ndef test_rpn_eval_division():\n    # Test the division operation with the operands in a specific order\n    tokens = [4.0, 2.0, '/']\n    # The correct result should be 2.0, but the buggy code will return 0.5\n    assert rpn_eval(tokens) == 2.0, \"Division operation with swapped operands should return 2.0\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxrmdjh7n\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_rpn_eval_subtraction FAILED                      [ 50%]\n\n=================================== FAILURES ===================================\n__________________________ test_rpn_eval_subtraction ___________________________\n\n    def test_rpn_eval_subtraction():\n        # Test the subtraction operation with the operands in a specific order\n        tokens = [5.0, 1.0, '-']\n        # The correct result should be 4.0, but the buggy code will return -4.0\n>       assert rpn_eval(tokens) == 4.0, \"Subtraction operation with swapped operands should return 4.0\"\nE       AssertionError: Subtraction operation with swapped operands should return 4.0\nE       assert -4.0 == 4.0\nE        +  where -4.0 = rpn_eval([5.0, 1.0, '-'])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_rpn_eval_subtraction - AssertionError: Subtrac...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8a6zs_jp\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_rpn_eval_subtraction PASSED                      [ 50%]\ntest_generated.py::test_rpn_eval_division PASSED                         [100%]\n\n============================== 2 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:08:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2653,
+  "completion_tokens_total": 323,
+  "duration_seconds": 20.84,
+  "timestamp": "2026-06-01T10:08:12Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

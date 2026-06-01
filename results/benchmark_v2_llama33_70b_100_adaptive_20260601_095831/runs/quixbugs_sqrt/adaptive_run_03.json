@@ -1,0 +1,59 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "adaptive",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import sqrt\nimport pytest\n\ndef test_sqrt_convergence():\n    assert pytest.approx(sqrt(2, 0.01), 1.41, abs=0.01), \"The sqrt function should return approximately 1.41 for input 2 and epsilon 0.01\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnp0iessc\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_convergence FAILED                          [100%]\n\n=================================== FAILURES ===================================\n____________________________ test_sqrt_convergence _____________________________\n\n    def test_sqrt_convergence():\n>       assert pytest.approx(sqrt(2, 0.01), 1.41, abs=0.01), \"The sqrt function should return approximately 1.41 for input 2 and epsilon 0.01\"\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError: approx() is not supported in a boolean context.\nE       Did you mean: `assert a == approx(b)`?\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sqrt_convergence - AssertionError: approx() is...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:08:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import sqrt\nimport math\n\ndef test_sqrt_convergence():\n    x = 2\n    epsilon = 0.01\n    expected_sqrt = math.sqrt(x)\n    actual_sqrt = sqrt(x, epsilon)\n    assert math.isclose(actual_sqrt, expected_sqrt, rel_tol=epsilon), f\"Expected sqrt({x}) to be approximately {expected_sqrt}, but got {actual_sqrt}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7awt74qa\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_convergence PASSED                          [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:09:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "Newton-Raphson method convergence check is incorrect",
+    "bug_location": "sqrt function, line 5",
+    "trigger_condition": "Any input where x is not a perfect square",
+    "expected_vs_actual": "Expected to converge to the actual square root, but actual behavior is to terminate without converging",
+    "suggested_test_strategy": "Test with inputs where the square root is known, such as sqrt(2, 0.01) and assert that the result is approximately 1.41 within epsilon",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 1831,
+  "completion_tokens_total": 278,
+  "duration_seconds": 69.72,
+  "timestamp": "2026-06-01T10:09:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

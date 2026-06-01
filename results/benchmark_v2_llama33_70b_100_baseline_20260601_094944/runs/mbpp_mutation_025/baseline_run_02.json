@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_025",
+  "mode": "baseline",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_nums_reveals_bug():\n    assert digit_distance_nums(1, 9) == 1, \"Expected digit_distance_nums(1, 9) to return 1 (canonical value), but got something else\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz1mb5zvo\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_reveals_bug PASSED           [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpffli8o71\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_reveals_bug FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_digit_distance_nums_reveals_bug _____________________\n\n    def test_digit_distance_nums_reveals_bug():\n>       assert digit_distance_nums(1, 9) == 1, \"Expected digit_distance_nums(1, 9) to return 1 (canonical value), but got something else\"\nE       AssertionError: Expected digit_distance_nums(1, 9) to return 1 (canonical value), but got something else\nE       assert 8 == 1\nE        +  where 8 = digit_distance_nums(1, 9)\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_reveals_bug - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:53:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_nums_reveals_bug():\n    assert digit_distance_nums(1, 9) == 1, (\n        f\"Expected digit_distance_nums(1, 9) to return 1 (canonical value), \"\n        f\"but got {digit_distance_nums(1, 9)}\"\n    )",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvr1h0zbb\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_reveals_bug PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpukhnla4s\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_reveals_bug FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_digit_distance_nums_reveals_bug _____________________\n\n    def test_digit_distance_nums_reveals_bug():\n>       assert digit_distance_nums(1, 9) == 1, (\n            f\"Expected digit_distance_nums(1, 9) to return 1 (canonical value), \"\n            f\"but got {digit_distance_nums(1, 9)}\"\n        )\nE       AssertionError: Expected digit_distance_nums(1, 9) to return 1 (canonical value), but got 8\nE       assert 8 == 1\nE        +  where 8 = digit_distance_nums(1, 9)\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_reveals_bug - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:53:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import digit_distance_nums\n\ndef test_digit_distance_nums_reveals_bug():\n    assert digit_distance_nums(5, 5) == 0, f\"Expected digit_distance_nums(5, 5) to return 0 (canonical value), but got {digit_distance_nums(5, 5)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7fyiaarn\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_reveals_bug FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_digit_distance_nums_reveals_bug _____________________\n\n    def test_digit_distance_nums_reveals_bug():\n>       assert digit_distance_nums(5, 5) == 0, f\"Expected digit_distance_nums(5, 5) to return 0 (canonical value), but got {digit_distance_nums(5, 5)}\"\nE       AssertionError: Expected digit_distance_nums(5, 5) to return 0 (canonical value), but got 1\nE       assert 1 == 0\nE        +  where 1 = digit_distance_nums(5, 5)\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_digit_distance_nums_reveals_bug - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7we9nbag\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_digit_distance_nums_reveals_bug PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:53:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": 3,
+  "analysis": null,
+  "prompt_tokens_total": 2275,
+  "completion_tokens_total": 203,
+  "duration_seconds": 10.15,
+  "timestamp": "2026-06-01T09:53:42Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

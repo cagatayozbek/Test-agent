@@ -1607,3 +1607,81 @@ spans the full range from +9.7 pp to −72.7 pp depending on the model.
 - `results/benchmark_v2_deepseekv31_100_deep_20260601_075443/` (300 runs,
   OpenRouter via the §15.3 routing override; 300/300 made tool calls)
 - Configs: `benchmark_v2_deepseekv31_100_{baseline,adaptive,deep}.yaml`.
+
+
+## 18. Same family, two sizes — llama-3.3-70b shows agentic skill, not capability, drives deep (2026-06-01)
+
+§16 measured llama-3.1-8b (weak, deep collapse) and §17 measured DeepSeek-V3.1
+(strong, deep benefit). This section adds **meta-llama/llama-3.3-70b-instruct**
+— the 70B sibling of the §16 8B model — for two controlled contrasts: (a) a
+within-family capacity sweep (8B → 70B) and (b) a head-to-head against
+DeepSeek-V3.1 at comparable baseline BRTR.
+
+> The `:free` OpenRouter variant is unusable (routes to a single Venice
+> endpoint that returns HTTP 429 rate-limited, same failure mode as
+> `qwen3-coder:free` in §14.1). We used the paid endpoint
+> (`meta-llama/llama-3.3-70b-instruct`, ~$0.10/Mtok-in, tools via
+> AkashML/DeepInfra/Nebius). deep used the §15.3 routing override.
+
+### 18.1 Results — deep collapses even at 70B
+
+| Mode | BRTR | 95% CI | Successful | Avg dur | Avg c-tok |
+|---|---:|---|---:|---:|---:|
+| baseline | 79.3% | [74.4, 83.5] | 238/300 | 6.5s | 128 |
+| adaptive | 81.3% | [76.5, 85.3] | 244/300 | 8.8s | 165 |
+| **deep** | **34.0%** | [28.9, 39.5] | 102/300 | 24.3s | 543 |
+
+Clean run (deep: 300/300, zero zero-token, all 300 made tool calls).
+adaptive is neutral (+2 pp, overlapping CIs). **deep collapses to 0.340**
+(−45.3 pp vs baseline).
+
+### 18.2 Within-family capacity sweep — bigger helps baseline, not deep
+
+| | baseline | deep | Δ (deep−base) |
+|---|---:|---:|---:|
+| llama-3.1-8b | 0.643 | 0.173 | −47.0 pp |
+| llama-3.3-70b | 0.793 | 0.340 | −45.3 pp |
+
+Scaling 8B → 70B lifts **baseline** by +15 pp (0.643 → 0.793) and **deep** by
++16.7 pp (0.173 → 0.340) — but deep stays catastrophic at both sizes. The
+llama family **cannot drive the agentic loop regardless of size**: both call
+tools on (nearly) every run yet fumble the workspace/edit/re-test protocol.
+More parameters buy general competence (baseline) but not agentic-loop skill.
+
+### 18.3 Headline — baseline capability does NOT predict the deep outcome
+
+The decisive comparison is llama-3.3-70b vs DeepSeek-V3.1, which have **similar
+baseline BRTR** but **opposite deep behaviour**:
+
+| Model | baseline | deep | Δ |
+|---|---:|---:|---:|
+| DeepSeek-V3.1 | 0.853 | **0.950** | **+9.7 pp** |
+| llama-3.3-70b | 0.793 | **0.340** | **−45.3 pp** |
+
+Two models only 6 pp apart on baseline diverge by ~55 pp on deep. So baseline
+capability (or model size) is **not** the variable that predicts whether the
+analysis step helps. The discriminator is the model's **agentic / tool-driving
+skill** — its ability to read source, edit a test file, run it, read the
+result, and iterate. DeepSeek does this fluently; the llama family calls the
+same tools but cannot convert the loop into bug-revealing tests.
+
+This refines the §17 thesis: deep mode helps only a model that is (a) below the
+BRTR ceiling **and** (b) genuinely competent at the agentic protocol. Condition
+(b) is independent of general capability — a strong 70B can fail it. For
+weak-or-agentically-unskilled models, forced analysis (deep) is actively
+harmful; the safe default there is baseline or adaptive.
+
+### 18.4 Updated deep-mode effect (Δ = deep − baseline)
+
+sonnet +0/ceiling (1.000) · **DeepSeek-V3.1 +9.7 pp** · haiku ≈0 (ceiling) ·
+gpt-oss-120b −8 pp · qwen −6.7 pp · **llama-3.3-70b −45.3 pp** ·
+llama-3.1-8b −47.0 pp · gpt-oss-20b −72.7 pp. Range of the analysis step:
+**+9.7 pp to −72.7 pp**, set by agentic skill far more than by baseline BRTR.
+
+### 18.5 Raw data
+
+- `results/benchmark_v2_llama33_70b_100_baseline_20260601_094944/`
+- `results/benchmark_v2_llama33_70b_100_adaptive_20260601_095831/`
+- `results/benchmark_v2_llama33_70b_100_deep_20260601_094951/` (300 runs,
+  OpenRouter via the §15.3 routing override; 300/300 made tool calls)
+- Configs: `benchmark_v2_llama33_70b_100_{baseline,adaptive,deep}.yaml`.

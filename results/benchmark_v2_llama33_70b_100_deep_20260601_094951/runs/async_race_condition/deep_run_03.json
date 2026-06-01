@@ -1,0 +1,49 @@
+{
+  "task_id": "async_race_condition",
+  "mode": "deep",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 3,
+      "test_code": "import source\n\n\ndef test_source_module_imports():\n    assert source is not None\ndef test_async_race_condition():\n    import asyncio\n    async def increment_counter(counter):\n        counter[0] += 1\n    counter = [0]\n    tasks = [increment_counter(counter) for _ in range(100)]\n    asyncio.run(asyncio.gather(*tasks))\n    assert counter[0] == 100",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpperawakm\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_async_race_condition FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_async_race_condition ___________________________\n\n    def test_async_race_condition():\n        import asyncio\n        async def increment_counter(counter):\n            counter[0] += 1\n        counter = [0]\n        tasks = [increment_counter(counter) for _ in range(100)]\n>       asyncio.run(asyncio.gather(*tasks))\n\ntest_generated.py:12: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:194: in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <asyncio.runners.Runner object at 0x108bbe660>\ncoro = <_GatheringFuture pending>\n\n    def run(self, coro, *, context=None):\n        \"\"\"Run a coroutine inside the embedded event loop.\"\"\"\n        if not coroutines.iscoroutine(coro):\n>           raise ValueError(\"a coroutine was expected, got {!r}\".format(coro))\nE           ValueError: a coroutine was expected, got <_GatheringFuture pending>\n\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:89: ValueError\n=============================== warnings summary ===============================\ntest_generated.py::test_async_race_condition\n  /private/tmp/claude-501/tmpperawakm/test_generated.py:12: DeprecationWarning: There is no current event loop\n    asyncio.run(asyncio.gather(*tasks))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_race_condition - ValueError: a coroutine...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n==================== 1 failed, 1 passed, 1 warning in 0.02s ====================\n\n<sys>:0: RuntimeWarning: coroutine 'test_async_race_condition.<locals>.increment_counter' was never awaited",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpggj4m113\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 2 items\n\ntest_generated.py::test_source_module_imports PASSED                     [ 50%]\ntest_generated.py::test_async_race_condition FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_async_race_condition ___________________________\n\n    def test_async_race_condition():\n        import asyncio\n        async def increment_counter(counter):\n            counter[0] += 1\n        counter = [0]\n        tasks = [increment_counter(counter) for _ in range(100)]\n>       asyncio.run(asyncio.gather(*tasks))\n\ntest_generated.py:12: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:194: in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <asyncio.runners.Runner object at 0x1089ce660>\ncoro = <_GatheringFuture pending>\n\n    def run(self, coro, *, context=None):\n        \"\"\"Run a coroutine inside the embedded event loop.\"\"\"\n        if not coroutines.iscoroutine(coro):\n>           raise ValueError(\"a coroutine was expected, got {!r}\".format(coro))\nE           ValueError: a coroutine was expected, got <_GatheringFuture pending>\n\n/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py:89: ValueError\n=============================== warnings summary ===============================\ntest_generated.py::test_async_race_condition\n  /private/tmp/claude-501/tmpggj4m113/test_generated.py:12: DeprecationWarning: There is no current event loop\n    asyncio.run(asyncio.gather(*tasks))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_race_condition - ValueError: a coroutine...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n==================== 1 failed, 1 passed, 1 warning in 0.02s ====================\n\n<sys>:0: RuntimeWarning: coroutine 'test_async_race_condition.<locals>.increment_counter' was never awaited",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T09:50:28Z",
+      "tool_call_count": 2,
+      "tool_failure_mode_count": {
+        "revert_syntax": 1
+      },
+      "reasoning_filled": true
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 11610,
+  "completion_tokens_total": 1037,
+  "duration_seconds": 36.95,
+  "timestamp": "2026-06-01T09:50:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "5f563ed95cb8",
+  "capabilities_used": {
+    "provider": "openai",
+    "supports_parallel_tools": false,
+    "supports_tool_choice_auto": true,
+    "supports_structured_tools": true,
+    "supports_system_role": true,
+    "tool_names": {
+      "read": "read_file",
+      "edit": "safe_edit_file",
+      "run": "run_tests"
+    }
+  },
+  "tool_choice_mode": "auto"
+}

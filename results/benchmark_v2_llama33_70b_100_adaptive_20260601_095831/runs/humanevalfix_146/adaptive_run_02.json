@@ -1,0 +1,59 @@
+{
+  "task_id": "humanevalfix_146",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import specialFilter\n\ndef test_specialFilter_edge_case():\n    input_list = [15, 27, 12, 25, 72]\n    expected_output = 3\n    assert specialFilter(input_list) == expected_output, \"Expected specialFilter to count numbers with odd first and last digits correctly\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpayaufa8d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_specialFilter_edge_case FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_specialFilter_edge_case _________________________\n\n    def test_specialFilter_edge_case():\n        input_list = [15, 27, 12, 25, 72]\n        expected_output = 3\n>       assert specialFilter(input_list) == expected_output, \"Expected specialFilter to count numbers with odd first and last digits correctly\"\nE       AssertionError: Expected specialFilter to count numbers with odd first and last digits correctly\nE       assert 5 == 3\nE        +  where 5 = specialFilter([15, 27, 12, 25, 72])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_specialFilter_edge_case - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7zkacd5x\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_specialFilter_edge_case FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_specialFilter_edge_case _________________________\n\n    def test_specialFilter_edge_case():\n        input_list = [15, 27, 12, 25, 72]\n        expected_output = 3\n>       assert specialFilter(input_list) == expected_output, \"Expected specialFilter to count numbers with odd first and last digits correctly\"\nE       AssertionError: Expected specialFilter to count numbers with odd first and last digits correctly\nE       assert 1 == 3\nE        +  where 1 = specialFilter([15, 27, 12, 25, 72])\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_specialFilter_edge_case - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:02:00Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import specialFilter\n\ndef test_specialFilter_odd_digits_bug():\n    nums = [12, 32, 15]\n    assert specialFilter(nums) == 1, \"Expected specialFilter to return 1, but got {}\".format(specialFilter(nums))",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpraalowq1\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_specialFilter_odd_digits_bug FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_specialFilter_odd_digits_bug _______________________\n\n    def test_specialFilter_odd_digits_bug():\n        nums = [12, 32, 15]\n>       assert specialFilter(nums) == 1, \"Expected specialFilter to return 1, but got {}\".format(specialFilter(nums))\nE       AssertionError: Expected specialFilter to return 1, but got 3\nE       assert 3 == 1\nE        +  where 3 = specialFilter([12, 32, 15])\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_specialFilter_odd_digits_bug - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7c8sanbf\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_specialFilter_odd_digits_bug PASSED              [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:02:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": {
+    "bug_hypothesis": "The bug is an incorrect set of odd digits that includes the even digit 2.",
+    "bug_location": "specialFilter function, line with odd_digits assignment",
+    "trigger_condition": "Any input number greater than 10 that ends with 2 and starts with an odd digit.",
+    "expected_vs_actual": "Expected: The function should only count numbers where both the first and last digits are odd (1, 3, 5, 7, 9). Actual: The function counts numbers where the first digit is odd and the last digit is 2, in addition to the correct cases.",
+    "suggested_test_strategy": "Test the function with a list containing a number that starts with an odd digit and ends with 2, such as [12] or [32], and verify that the function does not count this number.",
+    "confidence": "high"
+  },
+  "prompt_tokens_total": 2250,
+  "completion_tokens_total": 320,
+  "duration_seconds": 12.41,
+  "timestamp": "2026-06-01T10:02:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

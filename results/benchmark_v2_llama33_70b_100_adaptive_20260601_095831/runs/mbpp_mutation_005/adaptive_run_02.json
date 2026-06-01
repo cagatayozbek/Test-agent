@@ -1,0 +1,52 @@
+{
+  "task_id": "mbpp_mutation_005",
+  "mode": "adaptive",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import average_tuple\nimport pytest\n\ndef test_average_tuple_with_small_input():\n    nums = ((1, 2, 3), (4, 5, 6))\n    expected_result = [5.0, 7.0, 9.0]\n    assert average_tuple(nums) == expected_result, \"Average tuple calculation is incorrect\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyhc1hy4d\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_with_small_input FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_average_tuple_with_small_input ______________________\n\n    def test_average_tuple_with_small_input():\n        nums = ((1, 2, 3), (4, 5, 6))\n        expected_result = [5.0, 7.0, 9.0]\n>       assert average_tuple(nums) == expected_result, \"Average tuple calculation is incorrect\"\nE       AssertionError: Average tuple calculation is incorrect\nE       assert [10, 14, 18] == [5.0, 7.0, 9.0]\nE         \nE         At index 0 diff: 10 != 5.0\nE         \nE         Full diff:\nE           [\nE         -     5.0,\nE         ?     ^^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_with_small_input - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphz0yfukk\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_with_small_input FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_average_tuple_with_small_input ______________________\n\n    def test_average_tuple_with_small_input():\n        nums = ((1, 2, 3), (4, 5, 6))\n        expected_result = [5.0, 7.0, 9.0]\n>       assert average_tuple(nums) == expected_result, \"Average tuple calculation is incorrect\"\nE       AssertionError: Average tuple calculation is incorrect\nE       assert [2.5, 3.5, 4.5] == [5.0, 7.0, 9.0]\nE         \nE         At index 0 diff: 2.5 != 5.0\nE         \nE         Full diff:\nE           [\nE         -     5.0,\nE         ?      --...\nE         \nE         ...Full output truncated (11 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_with_small_input - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:02:38Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import average_tuple\n\ndef test_average_tuple_with_small_input():\n    nums = ((1, 2, 3), (4, 5, 6))\n    expected_result = [2.5, 3.5, 4.5]\n    assert average_tuple(nums) == expected_result, f\"Expected average_tuple({nums}) to return {expected_result}, but got {average_tuple(nums)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpul1wqgix\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_with_small_input FAILED            [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_average_tuple_with_small_input ______________________\n\n    def test_average_tuple_with_small_input():\n        nums = ((1, 2, 3), (4, 5, 6))\n        expected_result = [2.5, 3.5, 4.5]\n>       assert average_tuple(nums) == expected_result, f\"Expected average_tuple({nums}) to return {expected_result}, but got {average_tuple(nums)}\"\nE       AssertionError: Expected average_tuple(((1, 2, 3), (4, 5, 6))) to return [2.5, 3.5, 4.5], but got [10, 14, 18]\nE       assert [10, 14, 18] == [2.5, 3.5, 4.5]\nE         \nE         At index 0 diff: 10 != 2.5\nE         \nE         Full diff:\nE           [\nE         +     10,\nE         -     2.5,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_with_small_input - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.13.0, pytest-9.0.2, pluggy-1.6.0 -- /Library/Frameworks/Python.framework/Versions/3.13/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprgr4ubut\nplugins: langsmith-0.8.0, anyio-4.11.0, timeout-2.4.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_with_small_input PASSED            [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-01T10:02:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 1180,
+  "completion_tokens_total": 165,
+  "duration_seconds": 13.64,
+  "timestamp": "2026-06-01T10:02:48Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
