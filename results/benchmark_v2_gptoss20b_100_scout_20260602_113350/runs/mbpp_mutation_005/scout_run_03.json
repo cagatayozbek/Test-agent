@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_005",
+  "mode": "scout",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import average_tuple\n\ndef test_average_tuple_correctness():\n    \"\"\"Average calculation should use division, not multiplication, and should not transpose the tuples.\"\"\"\n    input_tuples = ((1, 2), (3, 4))\n    expected = [1.5, 3.5]\n    result = average_tuple(input_tuples)\n    assert result == expected, f\"Expected {expected} but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbmn6dqn4\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_correctness FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_average_tuple_correctness ________________________\n\n    def test_average_tuple_correctness():\n        \"\"\"Average calculation should use division, not multiplication, and should not transpose the tuples.\"\"\"\n        input_tuples = ((1, 2), (3, 4))\n        expected = [1.5, 3.5]\n        result = average_tuple(input_tuples)\n>       assert result == expected, f\"Expected {expected} but got {result}\"\nE       AssertionError: Expected [1.5, 3.5] but got [8, 12]\nE       assert [8, 12] == [1.5, 3.5]\nE         \nE         At index 0 diff: 8 != 1.5\nE         \nE         Full diff:\nE           [\nE         +     8,\nE         -     1.5,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_correctness - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpt03x6o9d\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_correctness FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_average_tuple_correctness ________________________\n\n    def test_average_tuple_correctness():\n        \"\"\"Average calculation should use division, not multiplication, and should not transpose the tuples.\"\"\"\n        input_tuples = ((1, 2), (3, 4))\n        expected = [1.5, 3.5]\n        result = average_tuple(input_tuples)\n>       assert result == expected, f\"Expected {expected} but got {result}\"\nE       AssertionError: Expected [1.5, 3.5] but got [2.0, 3.0]\nE       assert [2.0, 3.0] == [1.5, 3.5]\nE         \nE         At index 0 diff: 2.0 != 1.5\nE         \nE         Full diff:\nE           [\nE         -     1.5,\nE         ?     ^ ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_correctness - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:56:50Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import average_tuple\n\ndef test_average_tuple_correctness():\n    \"\"\"Verify that average_tuple correctly computes the arithmetic mean of each input tuple.\"\"\"\n    data = ((1, 2), (3, 4, 5))\n    expected = [1.5, 4.0]\n    result = average_tuple(data)\n    assert result == expected, f\"Expected averages {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpz835ved1\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_correctness FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_average_tuple_correctness ________________________\n\n    def test_average_tuple_correctness():\n        \"\"\"Verify that average_tuple correctly computes the arithmetic mean of each input tuple.\"\"\"\n        data = ((1, 2), (3, 4, 5))\n        expected = [1.5, 4.0]\n        result = average_tuple(data)\n>       assert result == expected, f\"Expected averages {expected}, but got {result}\"\nE       AssertionError: Expected averages [1.5, 4.0], but got [8, 12]\nE       assert [8, 12] == [1.5, 4.0]\nE         \nE         At index 0 diff: 8 != 1.5\nE         \nE         Full diff:\nE           [\nE         +     8,\nE         -     1.5,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_correctness - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2tv63w25\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_correctness FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_average_tuple_correctness ________________________\n\n    def test_average_tuple_correctness():\n        \"\"\"Verify that average_tuple correctly computes the arithmetic mean of each input tuple.\"\"\"\n        data = ((1, 2), (3, 4, 5))\n        expected = [1.5, 4.0]\n        result = average_tuple(data)\n>       assert result == expected, f\"Expected averages {expected}, but got {result}\"\nE       AssertionError: Expected averages [1.5, 4.0], but got [2.0, 3.0]\nE       assert [2.0, 3.0] == [1.5, 4.0]\nE         \nE         At index 0 diff: 2.0 != 1.5\nE         \nE         Full diff:\nE           [\nE         -     1.5,\nE         -     4.0,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_correctness - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:57:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import average_tuple\n\ndef test_average_tuple_correctness():\n    \"\"\"Check that average_tuple returns the true arithmetic mean for each inner tuple.\"\"\"\n    input_tuples = ((1, 2), (3, 4))\n    expected = [1.5, 3.5]\n    result = average_tuple(input_tuples)\n    assert result == expected, f\"Expected {expected} but got {result} for input {input_tuples}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpekxy_m0o\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_correctness FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_average_tuple_correctness ________________________\n\n    def test_average_tuple_correctness():\n        \"\"\"Check that average_tuple returns the true arithmetic mean for each inner tuple.\"\"\"\n        input_tuples = ((1, 2), (3, 4))\n        expected = [1.5, 3.5]\n        result = average_tuple(input_tuples)\n>       assert result == expected, f\"Expected {expected} but got {result} for input {input_tuples}\"\nE       AssertionError: Expected [1.5, 3.5] but got [8, 12] for input ((1, 2), (3, 4))\nE       assert [8, 12] == [1.5, 3.5]\nE         \nE         At index 0 diff: 8 != 1.5\nE         \nE         Full diff:\nE           [\nE         +     8,\nE         -     1.5,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_correctness - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpzvk21xyi\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_correctness FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_average_tuple_correctness ________________________\n\n    def test_average_tuple_correctness():\n        \"\"\"Check that average_tuple returns the true arithmetic mean for each inner tuple.\"\"\"\n        input_tuples = ((1, 2), (3, 4))\n        expected = [1.5, 3.5]\n        result = average_tuple(input_tuples)\n>       assert result == expected, f\"Expected {expected} but got {result} for input {input_tuples}\"\nE       AssertionError: Expected [1.5, 3.5] but got [2.0, 3.0] for input ((1, 2), (3, 4))\nE       assert [2.0, 3.0] == [1.5, 3.5]\nE         \nE         At index 0 diff: 2.0 != 1.5\nE         \nE         Full diff:\nE           [\nE         -     1.5,\nE         ?     ^ ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_correctness - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:57:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 8627,
+  "completion_tokens_total": 5177,
+  "duration_seconds": 68.91,
+  "timestamp": "2026-06-02T11:57:13Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

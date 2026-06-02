@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_rpn_eval",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import rpn_eval\n\ndef test_subtraction_and_division_use_correct_operand_order():\n    \"\"\"RPN evaluator must apply operators in the order b op a, not a op b.\"\"\"\n    # Subtraction: 5 - 1 should equal 4\n    assert rpn_eval([5.0, 1.0, '-']) == 4.0, \"Subtraction operands were reversed\"\n\n    # Division: 8 / 2 should equal 4\n    assert rpn_eval([8.0, 2.0, '/']) == 4.0, \"Division operands were reversed\"\n\nif __name__ == \"__main__\":\n    pytest.main([__file__])",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcw1x1vqh\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_subtraction_and_division_use_correct_operand_order FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_subtraction_and_division_use_correct_operand_order ____________\n\n    def test_subtraction_and_division_use_correct_operand_order():\n        \"\"\"RPN evaluator must apply operators in the order b op a, not a op b.\"\"\"\n        # Subtraction: 5 - 1 should equal 4\n>       assert rpn_eval([5.0, 1.0, '-']) == 4.0, \"Subtraction operands were reversed\"\nE       AssertionError: Subtraction operands were reversed\nE       assert -4.0 == 4.0\nE        +  where -4.0 = rpn_eval([5.0, 1.0, '-'])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_subtraction_and_division_use_correct_operand_order\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8z1wt1_r\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_subtraction_and_division_use_correct_operand_order PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:19:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3691,
+  "completion_tokens_total": 3062,
+  "duration_seconds": 19.4,
+  "timestamp": "2026-06-02T12:19:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_bucketsort",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import bucketsort\n\ndef test_bucketsort_with_repeated_values():\n    \"\"\"Bucket sort should correctly handle repeated values and produce a sorted list.\"\"\"\n    input_list = [3, 1, 2, 1]\n    k = 4\n    expected = [1, 1, 2, 3]\n    result = bucketsort(input_list, k)\n    assert result == expected, f\"Expected {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4pe0jv_9\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_bucketsort_with_repeated_values FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_bucketsort_with_repeated_values _____________________\n\n    def test_bucketsort_with_repeated_values():\n        \"\"\"Bucket sort should correctly handle repeated values and produce a sorted list.\"\"\"\n        input_list = [3, 1, 2, 1]\n        k = 4\n        expected = [1, 1, 2, 3]\n        result = bucketsort(input_list, k)\n>       assert result == expected, f\"Expected {expected}, but got {result}\"\nE       AssertionError: Expected [1, 1, 2, 3], but got [0, 0, 0, 1, 2, 2, 3]\nE       assert [0, 0, 0, 1, 2, 2, ...] == [1, 1, 2, 3]\nE         \nE         At index 0 diff: 0 != 1\nE         Left contains 3 more items, first extra item: 2\nE         \nE         Full diff:\nE           [\nE         +     0,...\nE         \nE         ...Full output truncated (10 lines hidden), use '-vv' to show\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_bucketsort_with_repeated_values - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_h09mfg8\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_bucketsort_with_repeated_values PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:09:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3527,
+  "completion_tokens_total": 2787,
+  "duration_seconds": 18.45,
+  "timestamp": "2026-06-02T12:09:07Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

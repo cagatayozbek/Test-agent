@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_knapsack",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import knapsack\n\ndef test_knapsack_exact_capacity():\n    \"\"\"Items that exactly fill the remaining capacity must be considered.\"\"\"\n    capacity = 3\n    items = [(3, 10), (1, 5)]  # optimal solution uses the item weighing 3\n    result = knapsack(capacity, items)\n    assert result == 10, (\n        f\"Expected optimal value 10 when capacity={capacity} and items={items}, \"\n        f\"but got {result} (buggy code likely skips items with weight == remaining capacity).\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpawp_49r9\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_knapsack_exact_capacity _________________________\n\n    def test_knapsack_exact_capacity():\n        \"\"\"Items that exactly fill the remaining capacity must be considered.\"\"\"\n        capacity = 3\n        items = [(3, 10), (1, 5)]  # optimal solution uses the item weighing 3\n        result = knapsack(capacity, items)\n>       assert result == 10, (\n            f\"Expected optimal value 10 when capacity={capacity} and items={items}, \"\n            f\"but got {result} (buggy code likely skips items with weight == remaining capacity).\"\n        )\nE       AssertionError: Expected optimal value 10 when capacity=3 and items=[(3, 10), (1, 5)], but got 5 (buggy code likely skips items with weight == remaining capacity).\nE       assert 5 == 10\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_knapsack_exact_capacity - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0il_55kk\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_knapsack_exact_capacity PASSED                   [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:12:57Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7270,
+  "completion_tokens_total": 4370,
+  "duration_seconds": 34.15,
+  "timestamp": "2026-06-02T12:12:57Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

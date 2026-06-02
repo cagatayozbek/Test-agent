@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "scout",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_basic_conversion():\n    \"\"\"\n    The buggy implementation incorrectly returns underscores instead of\n    performing camel case conversion.  For the input 'hello_world' the\n    expected output is 'helloWorld', but the current code returns '__'.\n    \"\"\"\n    result = snake_to_camel('hello_world')\n    assert result == 'helloWorld', (\n        f\"Expected 'helloWorld' for input 'hello_world', but got '{result}'. \"\n        \"The implementation seems to return underscores instead of \"\n        \"capitalizing the second word.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9soq3bcj\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_snake_to_camel_basic_conversion _____________________\n\n    def test_snake_to_camel_basic_conversion():\n        \"\"\"\n        The buggy implementation incorrectly returns underscores instead of\n        performing camel case conversion.  For the input 'hello_world' the\n        expected output is 'helloWorld', but the current code returns '__'.\n        \"\"\"\n        result = snake_to_camel('hello_world')\n>       assert result == 'helloWorld', (\n            f\"Expected 'helloWorld' for input 'hello_world', but got '{result}'. \"\n            \"The implementation seems to return underscores instead of \"\n            \"capitalizing the second word.\"\n        )\nE       AssertionError: Expected 'helloWorld' for input 'hello_world', but got '__'. The implementation seems to return underscores instead of capitalizing the second word.\nE       assert '__' == 'helloWorld'\nE         \nE         - helloWorld\nE         + __\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic_conversion - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5hdb67p7\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_snake_to_camel_basic_conversion _____________________\n\n    def test_snake_to_camel_basic_conversion():\n        \"\"\"\n        The buggy implementation incorrectly returns underscores instead of\n        performing camel case conversion.  For the input 'hello_world' the\n        expected output is 'helloWorld', but the current code returns '__'.\n        \"\"\"\n        result = snake_to_camel('hello_world')\n>       assert result == 'helloWorld', (\n            f\"Expected 'helloWorld' for input 'hello_world', but got '{result}'. \"\n            \"The implementation seems to return underscores instead of \"\n            \"capitalizing the second word.\"\n        )\nE       AssertionError: Expected 'helloWorld' for input 'hello_world', but got 'HelloWorld'. The implementation seems to return underscores instead of capitalizing the second word.\nE       assert 'HelloWorld' == 'helloWorld'\nE         \nE         - helloWorld\nE         ? ^\nE         + HelloWorld\nE         ? ^\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic_conversion - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:08:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_basic_conversion():\n    \"\"\"\n    The function should convert a snake_case string to camelCase.\n    For the input 'hello_world' the expected output is 'helloWorld'.\n    \"\"\"\n    result = snake_to_camel(\"hello_world\")\n    assert result == \"helloWorld\", f\"Expected 'helloWorld', but got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpymgp1d22\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_snake_to_camel_basic_conversion _____________________\n\n    def test_snake_to_camel_basic_conversion():\n        \"\"\"\n        The function should convert a snake_case string to camelCase.\n        For the input 'hello_world' the expected output is 'helloWorld'.\n        \"\"\"\n        result = snake_to_camel(\"hello_world\")\n>       assert result == \"helloWorld\", f\"Expected 'helloWorld', but got '{result}'\"\nE       AssertionError: Expected 'helloWorld', but got '__'\nE       assert '__' == 'helloWorld'\nE         \nE         - helloWorld\nE         + __\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic_conversion - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyven7uqd\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_snake_to_camel_basic_conversion _____________________\n\n    def test_snake_to_camel_basic_conversion():\n        \"\"\"\n        The function should convert a snake_case string to camelCase.\n        For the input 'hello_world' the expected output is 'helloWorld'.\n        \"\"\"\n        result = snake_to_camel(\"hello_world\")\n>       assert result == \"helloWorld\", f\"Expected 'helloWorld', but got '{result}'\"\nE       AssertionError: Expected 'helloWorld', but got 'HelloWorld'\nE       assert 'HelloWorld' == 'helloWorld'\nE         \nE         - helloWorld\nE         ? ^\nE         + HelloWorld\nE         ? ^\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic_conversion - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:08:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_basic_conversion():\n    \"\"\"Conversion of a simple snake_case string should yield camelCase.\"\"\"\n    input_value = \"hello_world\"\n    expected_output = \"helloWorld\"\n    assert snake_to_camel(input_value) == expected_output, (\n        f\"Expected '{expected_output}' for input '{input_value}', \"\n        f\"but got '{snake_to_camel(input_value)}'\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwx_xfi7n\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_snake_to_camel_basic_conversion _____________________\n\n    def test_snake_to_camel_basic_conversion():\n        \"\"\"Conversion of a simple snake_case string should yield camelCase.\"\"\"\n        input_value = \"hello_world\"\n        expected_output = \"helloWorld\"\n>       assert snake_to_camel(input_value) == expected_output, (\n            f\"Expected '{expected_output}' for input '{input_value}', \"\n            f\"but got '{snake_to_camel(input_value)}'\"\n        )\nE       AssertionError: Expected 'helloWorld' for input 'hello_world', but got '__'\nE       assert '__' == 'helloWorld'\nE         \nE         - helloWorld\nE         + __\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic_conversion - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwb19ocgq\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic_conversion FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_snake_to_camel_basic_conversion _____________________\n\n    def test_snake_to_camel_basic_conversion():\n        \"\"\"Conversion of a simple snake_case string should yield camelCase.\"\"\"\n        input_value = \"hello_world\"\n        expected_output = \"helloWorld\"\n>       assert snake_to_camel(input_value) == expected_output, (\n            f\"Expected '{expected_output}' for input '{input_value}', \"\n            f\"but got '{snake_to_camel(input_value)}'\"\n        )\nE       AssertionError: Expected 'helloWorld' for input 'hello_world', but got 'HelloWorld'\nE       assert 'HelloWorld' == 'helloWorld'\nE         \nE         - helloWorld\nE         ? ^\nE         + HelloWorld\nE         ? ^\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic_conversion - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:08:40Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 13554,
+  "completion_tokens_total": 9674,
+  "duration_seconds": 79.3,
+  "timestamp": "2026-06-02T12:08:40Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

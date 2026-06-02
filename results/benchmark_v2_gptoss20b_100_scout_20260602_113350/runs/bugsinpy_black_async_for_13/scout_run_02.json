@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_black_async_for_13",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import tokenize_async\n\ndef test_async_for_and_async_def_tokenization():\n    # Token stream for an async for construct\n    async_for_tokens = [\"async\", \"for\", \"x\"]\n    async_def_tokens = [\"async\", \"def\", \"foo\"]\n\n    # Run both token streams through the tokenizer\n    async_def_flag_for, tokens_for = tokenize_async(async_for_tokens)\n    async_def_flag_def, tokens_def = tokenize_async(async_def_tokens)\n\n    # 1. The async keyword should be emitted as an ASYNC token in the async for case.\n    #    The buggy implementation emits it as a NAME token, so this assertion will\n    #    fail on the buggy code and pass once the bug is fixed.\n    assert any(tok == (\"ASYNC\", \"async\") for tok in tokens_for), (\n        \"Expected an ASYNC token for 'async for', but it was not found.\"\n    )\n\n    # 2. The async keyword should still be emitted as an ASYNC token in the async def case.\n    assert any(tok == (\"ASYNC\", \"async\") for tok in tokens_def), (\n        \"Expected an ASYNC token for 'async def', but it was not found.\"\n    )\n\n    # 3. The async_def flag should be True for async def and False for async for.\n    assert async_def_flag_for is False, (\n        \"async_def flag should be False for 'async for', but it was True.\"\n    )\n    assert async_def_flag_def is True, (\n        \"async_def flag should be True for 'async def', but it was False.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2vq87mqx\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_and_async_def_tokenization FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_async_for_and_async_def_tokenization ___________________\n\n    def test_async_for_and_async_def_tokenization():\n        # Token stream for an async for construct\n        async_for_tokens = [\"async\", \"for\", \"x\"]\n        async_def_tokens = [\"async\", \"def\", \"foo\"]\n    \n        # Run both token streams through the tokenizer\n        async_def_flag_for, tokens_for = tokenize_async(async_for_tokens)\n        async_def_flag_def, tokens_def = tokenize_async(async_def_tokens)\n    \n        # 1. The async keyword should be emitted as an ASYNC token in the async for case.\n        #    The buggy implementation emits it as a NAME token, so this assertion will\n        #    fail on the buggy code and pass once the bug is fixed.\n>       assert any(tok == (\"ASYNC\", \"async\") for tok in tokens_for), (\n            \"Expected an ASYNC token for 'async for', but it was not found.\"\n        )\nE       AssertionError: Expected an ASYNC token for 'async for', but it was not found.\nE       assert False\nE        +  where False = any(<generator object test_async_for_and_async_def_tokenization.<locals>.<genexpr> at 0x1064c3e00>)\n\ntest_generated.py:16: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_for_and_async_def_tokenization - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp42yz81ei\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_and_async_def_tokenization PASSED      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:34:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 4230,
+  "completion_tokens_total": 3606,
+  "duration_seconds": 21.35,
+  "timestamp": "2026-06-02T11:34:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

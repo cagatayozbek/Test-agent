@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_pascal",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import pascal\n\ndef test_pascal_row_lengths_and_trailing_ones():\n    rows = pascal(3)\n    # Each row should have exactly r+1 elements (1, 2, 3)\n    expected_lengths = [1, 2, 3]\n    actual_lengths = [len(row) for row in rows]\n    assert actual_lengths == expected_lengths, (\n        f\"Expected row lengths {expected_lengths}, got {actual_lengths}\"\n    )\n    # Each row should end with a 1\n    for idx, row in enumerate(rows):\n        assert row[-1] == 1, (\n            f\"Row {idx} does not end with 1: got {row}\"\n        )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph4tr57d1\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths_and_trailing_ones FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_pascal_row_lengths_and_trailing_ones ___________________\n\n    def test_pascal_row_lengths_and_trailing_ones():\n>       rows = pascal(3)\n               ^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 3\n\n    def pascal(n):\n        rows = [[1]]\n        for r in range(1, n):\n            row = []\n            for c in range(0, r):\n                upleft = rows[r - 1][c - 1] if c > 0 else 0\n>               upright = rows[r - 1][c] if c < r else 0\n                          ^^^^^^^^^^^^^^\nE               IndexError: list index out of range\n\nsource.py:8: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_pascal_row_lengths_and_trailing_ones - IndexEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppub382pb\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths_and_trailing_ones PASSED      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:18:04Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 4414,
+  "completion_tokens_total": 4501,
+  "duration_seconds": 36.48,
+  "timestamp": "2026-06-02T12:18:04Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

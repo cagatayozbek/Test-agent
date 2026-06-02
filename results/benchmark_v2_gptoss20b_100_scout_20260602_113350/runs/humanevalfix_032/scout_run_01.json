@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_032",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_zero\n\ndef test_find_zero_bisection_bug():\n    \"\"\"The buggy loop condition `while begin - end > 1e-10` causes the algorithm to exit immediately,\n    returning the initial bound instead of the true root. This test confirms that the function\n    correctly finds the root of a simple linear polynomial.\"\"\"\n    result = round(find_zero([1, 2]), 2)\n    assert result == -0.5, f\"Expected root -0.5, got {result} (buggy code returns the initial bound)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp7ff72o1q\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bisection_bug FAILED                   [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_find_zero_bisection_bug _________________________\n\n    def test_find_zero_bisection_bug():\n        \"\"\"The buggy loop condition `while begin - end > 1e-10` causes the algorithm to exit immediately,\n        returning the initial bound instead of the true root. This test confirms that the function\n        correctly finds the root of a simple linear polynomial.\"\"\"\n        result = round(find_zero([1, 2]), 2)\n>       assert result == -0.5, f\"Expected root -0.5, got {result} (buggy code returns the initial bound)\"\nE       AssertionError: Expected root -0.5, got -1.0 (buggy code returns the initial bound)\nE       assert -1.0 == -0.5\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_zero_bisection_bug - AssertionError: Expe...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbc3z9k6g\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_zero_bisection_bug PASSED                   [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:42:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7920,
+  "completion_tokens_total": 8052,
+  "duration_seconds": 56.49,
+  "timestamp": "2026-06-02T11:42:17Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

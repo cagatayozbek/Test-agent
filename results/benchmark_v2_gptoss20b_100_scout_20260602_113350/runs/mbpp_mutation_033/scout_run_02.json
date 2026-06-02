@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_033",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import shell_sort\n\ndef test_shell_sort_correctly_shifts_when_j_equals_gap():\n    # Input where the first gap step requires shifting an element at index `gap`\n    arr = [3, 2, 1]\n    sorted_arr = shell_sort(arr.copy())\n    assert sorted_arr == [1, 2, 3], (\n        \"shell_sort should correctly shift elements when j == gap, \"\n        \"but returned {} instead of [1, 2, 3]\".format(sorted_arr)\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpulbilbw2\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_correctly_shifts_when_j_equals_gap FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_shell_sort_correctly_shifts_when_j_equals_gap ______________\n\n    def test_shell_sort_correctly_shifts_when_j_equals_gap():\n        # Input where the first gap step requires shifting an element at index `gap`\n        arr = [3, 2, 1]\n        sorted_arr = shell_sort(arr.copy())\n>       assert sorted_arr == [1, 2, 3], (\n            \"shell_sort should correctly shift elements when j == gap, \"\n            \"but returned {} instead of [1, 2, 3]\".format(sorted_arr)\n        )\nE       AssertionError: shell_sort should correctly shift elements when j == gap, but returned [3, 1, 2] instead of [1, 2, 3]\nE       assert [3, 1, 2] == [1, 2, 3]\nE         \nE         At index 0 diff: 3 != 1\nE         \nE         Full diff:\nE           [\nE         +     3,\nE               1,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_shell_sort_correctly_shifts_when_j_equals_gap\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphcyjfi8l\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_correctly_shifts_when_j_equals_gap PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:04:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7109,
+  "completion_tokens_total": 14711,
+  "duration_seconds": 71.81,
+  "timestamp": "2026-06-02T12:04:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "scout",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "def snake_to_camel(word):\n    return ''.join((x.capitalize() and '_' for x in word.split('_')))",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp80lfb4a0\nplugins: anyio-4.13.0\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpeq8p9142\nplugins: anyio-4.13.0\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:07:46Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_basic():\n    \"\"\"\n    The buggy implementation mistakenly returns underscores for every\n    component of the snake_case string due to the misuse of the `and`\n    operator.  For a simple two‑word input, the correct camelCase\n    conversion should be 'fooBar'.  This assertion will fail on the\n    buggy code and pass once the `and` is replaced with the proper\n    logic that capitalizes subsequent words.\n    \"\"\"\n    assert snake_to_camel(\"foo_bar\") == \"fooBar\", (\n        \"Expected 'fooBar' for input 'foo_bar', but got an incorrect result.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6bvt_8mv\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_basic ___________________________\n\n    def test_snake_to_camel_basic():\n        \"\"\"\n        The buggy implementation mistakenly returns underscores for every\n        component of the snake_case string due to the misuse of the `and`\n        operator.  For a simple two‑word input, the correct camelCase\n        conversion should be 'fooBar'.  This assertion will fail on the\n        buggy code and pass once the `and` is replaced with the proper\n        logic that capitalizes subsequent words.\n        \"\"\"\n>       assert snake_to_camel(\"foo_bar\") == \"fooBar\", (\n            \"Expected 'fooBar' for input 'foo_bar', but got an incorrect result.\"\n        )\nE       AssertionError: Expected 'fooBar' for input 'foo_bar', but got an incorrect result.\nE       assert '__' == 'fooBar'\nE         \nE         - fooBar\nE         + __\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic - AssertionError: Expecte...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphi4wmk84\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_basic ___________________________\n\n    def test_snake_to_camel_basic():\n        \"\"\"\n        The buggy implementation mistakenly returns underscores for every\n        component of the snake_case string due to the misuse of the `and`\n        operator.  For a simple two‑word input, the correct camelCase\n        conversion should be 'fooBar'.  This assertion will fail on the\n        buggy code and pass once the `and` is replaced with the proper\n        logic that capitalizes subsequent words.\n        \"\"\"\n>       assert snake_to_camel(\"foo_bar\") == \"fooBar\", (\n            \"Expected 'fooBar' for input 'foo_bar', but got an incorrect result.\"\n        )\nE       AssertionError: Expected 'fooBar' for input 'foo_bar', but got an incorrect result.\nE       assert 'FooBar' == 'fooBar'\nE         \nE         - fooBar\nE         ? ^\nE         + FooBar\nE         ? ^\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic - AssertionError: Expecte...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:07:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_basic():\n    \"\"\"\n    Verify that the snake_to_camel function correctly converts a simple\n    snake_case string to camelCase. The buggy implementation returns a\n    string of underscores for any non‑empty input, so this test should\n    fail on the buggy code but pass once the boolean operator bug is\n    fixed.\n    \"\"\"\n    input_str = \"foo_bar\"\n    expected = \"fooBar\"\n    result = snake_to_camel(input_str)\n    assert result == expected, (\n        f\"Expected camelCase conversion of '{input_str}' to be '{expected}', \"\n        f\"but got '{result}'.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp88z8hgz6\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_basic ___________________________\n\n    def test_snake_to_camel_basic():\n        \"\"\"\n        Verify that the snake_to_camel function correctly converts a simple\n        snake_case string to camelCase. The buggy implementation returns a\n        string of underscores for any non‑empty input, so this test should\n        fail on the buggy code but pass once the boolean operator bug is\n        fixed.\n        \"\"\"\n        input_str = \"foo_bar\"\n        expected = \"fooBar\"\n        result = snake_to_camel(input_str)\n>       assert result == expected, (\n            f\"Expected camelCase conversion of '{input_str}' to be '{expected}', \"\n            f\"but got '{result}'.\"\n        )\nE       AssertionError: Expected camelCase conversion of 'foo_bar' to be 'fooBar', but got '__'.\nE       assert '__' == 'fooBar'\nE         \nE         - fooBar\nE         + __\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic - AssertionError: Expecte...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpu7t2qjex\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_basic FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_snake_to_camel_basic ___________________________\n\n    def test_snake_to_camel_basic():\n        \"\"\"\n        Verify that the snake_to_camel function correctly converts a simple\n        snake_case string to camelCase. The buggy implementation returns a\n        string of underscores for any non‑empty input, so this test should\n        fail on the buggy code but pass once the boolean operator bug is\n        fixed.\n        \"\"\"\n        input_str = \"foo_bar\"\n        expected = \"fooBar\"\n        result = snake_to_camel(input_str)\n>       assert result == expected, (\n            f\"Expected camelCase conversion of '{input_str}' to be '{expected}', \"\n            f\"but got '{result}'.\"\n        )\nE       AssertionError: Expected camelCase conversion of 'foo_bar' to be 'fooBar', but got 'FooBar'.\nE       assert 'FooBar' == 'fooBar'\nE         \nE         - fooBar\nE         ? ^\nE         + FooBar\nE         ? ^\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_basic - AssertionError: Expecte...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:07:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 9965,
+  "completion_tokens_total": 4956,
+  "duration_seconds": 36.28,
+  "timestamp": "2026-06-02T12:07:58Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

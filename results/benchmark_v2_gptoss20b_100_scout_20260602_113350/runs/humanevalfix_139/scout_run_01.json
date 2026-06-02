@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_139",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import special_factorial\n\ndef test_special_factorial_correctness():\n    \"\"\"special_factorial should return the product of all factorials up to n.\"\"\"\n    assert special_factorial(0) == 1, \"special_factorial(0) should be 1\"\n    assert special_factorial(1) == 1, \"special_factorial(1) should be 1\"\n    assert special_factorial(2) == 2, \"special_factorial(2) should be 2\"\n    assert special_factorial(3) == 12, \"special_factorial(3) should be 12\"\n    assert special_factorial(4) == 288, \"special_factorial(4) should be 288\"\n    assert special_factorial(5) == 34560, \"special_factorial(5) should be 34560\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwc9xo_jp\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_special_factorial_correctness FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_special_factorial_correctness ______________________\n\n    def test_special_factorial_correctness():\n        \"\"\"special_factorial should return the product of all factorials up to n.\"\"\"\n        assert special_factorial(0) == 1, \"special_factorial(0) should be 1\"\n        assert special_factorial(1) == 1, \"special_factorial(1) should be 1\"\n>       assert special_factorial(2) == 2, \"special_factorial(2) should be 2\"\nE       AssertionError: special_factorial(2) should be 2\nE       assert 16 == 2\nE        +  where 16 = special_factorial(2)\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_special_factorial_correctness - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxdbehsw_\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_special_factorial_correctness PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:52:42Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 4048,
+  "completion_tokens_total": 3456,
+  "duration_seconds": 23.07,
+  "timestamp": "2026-06-02T11:52:42Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

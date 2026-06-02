@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_095",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import check_dict_case\n\ndef test_check_dict_case_mixed_keys():\n    \"\"\"check_dict_case should return False when dictionary keys are not all the same case.\"\"\"\n    mixed_dict = {\"a\": 1, \"B\": 2}\n    assert not check_dict_case(mixed_dict), (\n        \"Expected False because keys are mixed case, \"\n        \"but check_dict_case returned True on the buggy implementation.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl98qg0ed\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_mixed_keys FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_check_dict_case_mixed_keys ________________________\n\n    def test_check_dict_case_mixed_keys():\n        \"\"\"check_dict_case should return False when dictionary keys are not all the same case.\"\"\"\n        mixed_dict = {\"a\": 1, \"B\": 2}\n>       assert not check_dict_case(mixed_dict), (\n            \"Expected False because keys are mixed case, \"\n            \"but check_dict_case returned True on the buggy implementation.\"\n        )\nE       AssertionError: Expected False because keys are mixed case, but check_dict_case returned True on the buggy implementation.\nE       assert not True\nE        +  where True = check_dict_case({'B': 2, 'a': 1})\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_check_dict_case_mixed_keys - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm496aksv\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_mixed_keys PASSED                [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:50:15Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 5792,
+  "completion_tokens_total": 3658,
+  "duration_seconds": 26.73,
+  "timestamp": "2026-06-02T11:50:15Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

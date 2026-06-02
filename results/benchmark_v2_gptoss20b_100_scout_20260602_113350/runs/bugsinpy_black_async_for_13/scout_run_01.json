@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_black_async_for_13",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import tokenize_async\n\ndef test_tokenize_async_for_and_def():\n    # Tokens for an async function definition\n    tokens_def = [\"async\", \"def\", \"foo\", \"(\", \")\", \":\"]\n    async_def_flag_def, tokens_list_def = tokenize_async(tokens_def)\n\n    # async def should set the async_def flag and emit an ASYNC token\n    assert async_def_flag_def is True, (\n        \"Expected async_def flag to be True for 'async def', but got \"\n        f\"{async_def_flag_def}\"\n    )\n    assert (\"ASYNC\", \"async\") in tokens_list_def, (\n        \"Expected ASYNC token for 'async def', but it was missing in \"\n        f\"{tokens_list_def}\"\n    )\n\n    # Tokens for an async for loop\n    tokens_for = [\"async\", \"for\", \"x\", \"in\", \"iterable\", \":\"]\n    async_def_flag_for, tokens_list_for = tokenize_async(tokens_for)\n\n    # async for should NOT set the async_def flag but still emit an ASYNC token\n    assert async_def_flag_for is False, (\n        \"Expected async_def flag to be False for 'async for', but got \"\n        f\"{async_def_flag_for}\"\n    )\n    assert (\"ASYNC\", \"async\") in tokens_list_for, (\n        \"Expected ASYNC token for 'async for', but it was missing in \"\n        f\"{tokens_list_for}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpg2wp5z8d\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tokenize_async_for_and_def FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_tokenize_async_for_and_def ________________________\n\n    def test_tokenize_async_for_and_def():\n        # Tokens for an async function definition\n        tokens_def = [\"async\", \"def\", \"foo\", \"(\", \")\", \":\"]\n        async_def_flag_def, tokens_list_def = tokenize_async(tokens_def)\n    \n        # async def should set the async_def flag and emit an ASYNC token\n        assert async_def_flag_def is True, (\n            \"Expected async_def flag to be True for 'async def', but got \"\n            f\"{async_def_flag_def}\"\n        )\n        assert (\"ASYNC\", \"async\") in tokens_list_def, (\n            \"Expected ASYNC token for 'async def', but it was missing in \"\n            f\"{tokens_list_def}\"\n        )\n    \n        # Tokens for an async for loop\n        tokens_for = [\"async\", \"for\", \"x\", \"in\", \"iterable\", \":\"]\n        async_def_flag_for, tokens_list_for = tokenize_async(tokens_for)\n    \n        # async for should NOT set the async_def flag but still emit an ASYNC token\n        assert async_def_flag_for is False, (\n            \"Expected async_def flag to be False for 'async for', but got \"\n            f\"{async_def_flag_for}\"\n        )\n>       assert (\"ASYNC\", \"async\") in tokens_list_for, (\n            \"Expected ASYNC token for 'async for', but it was missing in \"\n            f\"{tokens_list_for}\"\n        )\nE       AssertionError: Expected ASYNC token for 'async for', but it was missing in [('NAME', 'async'), ('NAME', 'for'), ('NAME', 'x'), ('NAME', 'in'), ('NAME', 'iterable'), ('NAME', ':')]\nE       assert ('ASYNC', 'async') in [('NAME', 'async'), ('NAME', 'for'), ('NAME', 'x'), ('NAME', 'in'), ('NAME', 'iterable'), ('NAME', ':')]\n\ntest_generated.py:28: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tokenize_async_for_and_def - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjqss5the\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tokenize_async_for_and_def PASSED                [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:34:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3551,
+  "completion_tokens_total": 3228,
+  "duration_seconds": 20.47,
+  "timestamp": "2026-06-02T11:34:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_015",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import list_to_float\n\ndef test_list_to_float_correct_conversion():\n    # The function should convert all numeric strings to floats and return a tuple of\n    # (first_float, second_float) for each sub‑list.\n    input_data = [[\"1\", \"2\"], [\"3\", \"4\"]]\n    expected_output = [(1.0, 2.0), (3.0, 4.0)]\n    assert list_to_float(input_data) == expected_output, (\n        f\"Expected {expected_output} but got {list_to_float(input_data)}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpto4yhb9s\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_correct_conversion FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_list_to_float_correct_conversion _____________________\n\n    def test_list_to_float_correct_conversion():\n        # The function should convert all numeric strings to floats and return a tuple of\n        # (first_float, second_float) for each sub‑list.\n        input_data = [[\"1\", \"2\"], [\"3\", \"4\"]]\n        expected_output = [(1.0, 2.0), (3.0, 4.0)]\n>       assert list_to_float(input_data) == expected_output, (\n            f\"Expected {expected_output} but got {list_to_float(input_data)}\"\n        )\nE       AssertionError: Expected [(1.0, 2.0), (3.0, 4.0)] but got [(2.0, 2.0), (4.0, 4.0)]\nE       assert [(2.0, 2.0), (4.0, 4.0)] == [(1.0, 2.0), (3.0, 4.0)]\nE         \nE         At index 0 diff: (2.0, 2.0) != (1.0, 2.0)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         1.0,...\nE         \nE         ...Full output truncated (13 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_correct_conversion - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpay0jz8vv\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_correct_conversion PASSED          [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:59:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 4635,
+  "completion_tokens_total": 4426,
+  "duration_seconds": 47.08,
+  "timestamp": "2026-06-02T11:59:39Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

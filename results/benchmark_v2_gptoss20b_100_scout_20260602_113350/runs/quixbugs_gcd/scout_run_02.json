@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_gcd",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import gcd\n\ndef test_gcd_returns_correct_value_for_pair_with_nonzero_remainder():\n    \"\"\"\n    The Euclidean algorithm should return the correct GCD for a pair\n    where the first remainder is less than the second.\n    \"\"\"\n    result = gcd(35, 21)\n    assert result == 7, f\"Expected gcd(35, 21) to be 7, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp042hgaob\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_returns_correct_value_for_pair_with_nonzero_remainder FAILED [100%]\n\n=================================== FAILURES ===================================\n________ test_gcd_returns_correct_value_for_pair_with_nonzero_remainder ________\n\n    def test_gcd_returns_correct_value_for_pair_with_nonzero_remainder():\n        \"\"\"\n        The Euclidean algorithm should return the correct GCD for a pair\n        where the first remainder is less than the second.\n        \"\"\"\n>       result = gcd(35, 21)\n                 ^^^^^^^^^^^\n\ntest_generated.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nsource.py:5: in gcd\n    return gcd(a % b, b)\n           ^^^^^^^^^^^^^\nE   RecursionError: maximum recursion depth exceeded\n!!! Recursion detected (same locals & position)\n=========================== short test summary info ============================\nFAILED test_generated.py::test_gcd_returns_correct_value_for_pair_with_nonzero_remainder\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2fs5fpog\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_gcd_returns_correct_value_for_pair_with_nonzero_remainder PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:11:13Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3245,
+  "completion_tokens_total": 2432,
+  "duration_seconds": 18.93,
+  "timestamp": "2026-06-02T12:11:13Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

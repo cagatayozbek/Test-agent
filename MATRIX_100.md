@@ -17,7 +17,7 @@ fixed kodda PASS edecek. Birincil metrik. Her hücre = 100 task × 3 run =
 | **haiku** | 98.0% (294/300) | 99.0% (297/300) | 99.0% (297/300) | §11.1 |
 | **gpt-oss-120b** | 97.7% (293/300) | 98.0% (294/300) | 89.7% (269/300) | §11.1 |
 | **qwen3-coder-next** | 89.0% (267/300) | 87.0% (261/300) | 82.3% (247/300) | §11.1 |
-| **gpt-oss-20b** | 94.0% (282/300) | 95.0% (285/300) | **21.3%** (64/300) | merged |
+| **gpt-oss-20b** | 94.0% (282/300) | 95.0% (285/300) | **21.3%** (64/300) | merged ¶ |
 | **phi-4 (14B)** | **66.7%** (200/300) | **67.7%** (203/300) | N/A ‡ | — |
 | **llama-3.1-8b** | **64.3%** (193/300) | **68.7%** (206/300) | **17.3%** (52/300) | OpenRouter ◇ |
 | **DeepSeek-V3.1** | 85.3% (256/300) | 89.0% (267/300) | **95.0%** (285/300) | OpenRouter ◇ |
@@ -150,6 +150,34 @@ DeepSeek ustaca sürüyor. Analiz, model hem doymamış hem de agentic loop'u
 becerikli sürebiliyorsa yardım eder; aksi halde (beceriksiz tool-sürme)
 büyük model bile çöker.
 
+## ¶ 4. mimari — Scout-Writer (pilot, gpt-oss-20b) — bkz. EXPERIMENT_REPORT §20
+
+Mevcut üç modun yanına eklenen dördüncü mimari. **Tek değişkeni izole eder:**
+tool-sürmeyi test yazımından **ayırır** (decoupling). Aynı model iki ayrı fazda
+çalışır — (1) *scout*: deep tool döngüsünü sürüp yalnızca yapısal analiz üretir
+(test üretmez); (2) *writer*: temiz, tool'suz context'te sadece o analizden testi
+yazar (+ aynı retry). Güçlü bir öğretmen modeli katılmaz, yani **tek-model**
+ölçümü kalır. Şimdilik yalnızca gpt-oss-20b'de ölçüldü.
+
+| Mod | BRTR | Wilson %95 CI | tok (p/c) | süre |
+|---|---|---|---|---|
+| adaptive | 0.950 (285/300) | [0.919, 0.970] | 841 / 1111 | 9.2s |
+| baseline | 0.940 (282/300) | [0.907, 0.962] | 835 / 1083 | 8.1s |
+| **scout** | **0.897 (269/300)** | **[0.857, 0.926]** | 6443 / 5391 | 40.3s |
+| deep | 0.213 (64/300) | [0.171, 0.263] | 11663 / 13693 | 148.3s |
+
+**İki bulgu:** (1) Decoupling, 20b'nin deep çöküşünü **onarıyor**: 0.213 → 0.897
+(**+68.4pp**, CI'lar ayrık) → çöküş *kapasiteden değil çift yükten*'di. (2) Ama
+baseline'ı **geçmiyor** — 4.3pp altında, matematiksel tavanı bile (0.927)
+baseline'ın altında, üstelik ~8× token / ~5× süre. Gerçek ölçüm (0 zero-token,
+çeşitli test kodu). Hatalar çoğunlukla overfit (31'in 27'si); kaynak kırılımı:
+humanevalfix **100%**, quixbugs 92%, mbpp_mutation 83%, ama bugsinpy/legacy
+(gerçek-dünya) **53%** — writer messy task'larda fazla özelleşiyor. **Okunuş:**
+"headroom" tezini doğruluyor — baseline'ı zaten yüksek (headroom ~6pp) modelde
+hiçbir mimari kazanç sökemez; scout sadece deep'in açtığı çukuru dolduruyor.
+Asıl parlayacağı profil: düşük-baseline + tool-beceriksiz (örn. llama-3.3-70b
+0.793 → deep 0.340) — sıradaki deney.
+
 ## Ham veri dizinleri
 
 | Hücre | Dizin |
@@ -163,6 +191,7 @@ büyük model bile çöker.
 | gpt-oss-20b baseline | `results/benchmark_v2_gptoss20b_100_baseline_20260525_205021/` |
 | gpt-oss-20b adaptive | `results/benchmark_v2_gptoss20b_100_adaptive_20260525_210036/` |
 | gpt-oss-20b deep | `results/benchmark_v2_gptoss20b_100_deep_merged/` (via `scripts/merge_gptoss20b_deep_100.py`) |
+| gpt-oss-20b scout (4. mod) | `results/benchmark_v2_gptoss20b_100_scout_20260602_113350/` (300 run, gerçek; 0 zero-token, 269 başarı) |
 | qwen3-coder baseline | `results/benchmark_v2_qwen3coder_100_baseline_20260529_085248/` |
 | qwen3-coder adaptive | `results/benchmark_v2_qwen3coder_100_adaptive_20260529_090259/` |
 | phi-4 baseline | `results/benchmark_v2_phi4_100_baseline_20260531_132254/` |

@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from bugtest.agents.analyzer import Analyzer
-from bugtest.agents.deep_agent import run_deep_agent
+from bugtest.agents.deep_agent import run_deep_agent, run_scout_analysis
 from bugtest.agents.test_writer import TestWriter
 from bugtest.deep.prompts import PROMPT_VERSION
 from bugtest.llm import GeminiClient
@@ -69,6 +69,20 @@ def _prepend_analysis(user_message: str, analysis: CodeAnalysis) -> str:
     return block + user_message
 
 
+def _prepend_scout_analysis(user_message: str, scout_text: str) -> str:
+    """Prepend the scout's tool-augmented analysis for Scout-Writer mode.
+
+    The scout drove the deep tool loop to investigate the code; the writer
+    sees only this distilled analysis (no tools, fresh context).
+    """
+    block = (
+        "=== SCOUT ANALYSIS (tool-augmented investigation of source.py) ===\n"
+        f"{scout_text.strip()}\n"
+        "=== END SCOUT ANALYSIS ===\n\n"
+    )
+    return block + user_message
+
+
 def _build_retry_context(attempts: list[AttemptRecord]) -> str:
     """Build retry feedback from previous attempts."""
     parts = []
@@ -109,6 +123,10 @@ def run_pipeline(
         deep:      Tool-augmented ReAct agent in a sandbox workspace.
                    On failure, a critic subagent's feedback feeds the next
                    outer iteration. Uses the deep/ orchestrator port.
+        scout:     Scout-Writer. A scout drives the deep tool loop to produce
+                   a structured analysis (no test), then a tool-free writer
+                   authors the test from that analysis with the same retry
+                   budget. Decouples tool-driving from test generation.
     """
     start_time = time.perf_counter()
     prompt_tokens = 0
@@ -172,6 +190,18 @@ def run_pipeline(
         prompt_tokens += resp.prompt_tokens
         completion_tokens += resp.completion_tokens
         user_message = _prepend_analysis(user_message, analysis)
+
+    # --- SCOUT: tool-augmented analysis upfront, then tool-free writer ---
+    # Decouples exploration from generation: the scout drives the deep tool
+    # loop to investigate the code; the writer below sees only the distilled
+    # analysis and writes the test in a fresh, tool-free context.
+    if mode == "scout":
+        if model_id is None:
+            raise ValueError("scout mode requires model_id")
+        scout = run_scout_analysis(task=task, model_id=model_id)
+        prompt_tokens += scout.prompt_tokens
+        completion_tokens += scout.completion_tokens
+        user_message = _prepend_scout_analysis(base_user_message, scout.analysis_text)
 
     # --- Both modes: TestWriter with retry loop ---
     writer = TestWriter(llm)

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_075",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import is_multiply_prime\n\ndef test_is_multiply_prime_with_30():\n    \"\"\"`is_multiply_prime` should return True for 30 (2 * 3 * 5).\"\"\"\n    assert is_multiply_prime(30) is True, \"30 should be the product of three primes\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr7f1ouss\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_with_30 FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_multiply_prime_with_30 ________________________\n\n    def test_is_multiply_prime_with_30():\n        \"\"\"`is_multiply_prime` should return True for 30 (2 * 3 * 5).\"\"\"\n>       assert is_multiply_prime(30) is True, \"30 should be the product of three primes\"\n               ^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsource.py:17: in is_multiply_prime\n    if not is_prime(i): continue\n           ^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 2\n\n    def is_prime(n):\n        for j in range(0,n):\n>           if n%j == 0:\n               ^^^\nE           ZeroDivisionError: integer modulo by zero\n\nsource.py:12: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_multiply_prime_with_30 - ZeroDivisionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp79lpkmo1\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_multiply_prime_with_30 PASSED                 [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:47:47Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 6933,
+  "completion_tokens_total": 5236,
+  "duration_seconds": 36.59,
+  "timestamp": "2026-06-02T11:47:47Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

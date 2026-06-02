@@ -1,0 +1,52 @@
+{
+  "task_id": "humanevalfix_095",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import check_dict_case\n\ndef test_check_dict_case_detects_mixed_case_bug():\n    # A dictionary with one key in upper case and one in lower case\n    mixed_dict = {\"Name\": \"John\", \"age\": 30}\n    # The buggy implementation incorrectly uses `and` instead of `or`,\n    # causing it to return True. The correct behavior is to return False.\n    assert not check_dict_case(mixed_dict), (\n        \"check_dict_case should return False for dictionaries containing both \"\n        \"upper- and lower-case keys, but it returned True due to the logical \"\n        \"operator bug.\"\n    )\n    # Additionally, confirm that a correctly cased dictionary still passes.\n    assert check_dict_case({\"FIRST\": \"John\", \"LAST\": \"Doe\"}), (\n        \"check_dict_case should return True for all upper-case keys.\"\n    )\n    assert check_dict_case({\"first\": \"John\", \"last\": \"Doe\"}), (\n        \"check_dict_case should return True for all lower-case keys.\"\n    )",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl31ounbm\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_detects_mixed_case_bug PASSED    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpd7daeh26\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_detects_mixed_case_bug PASSED    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:50:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import check_dict_case\n\ndef test_check_dict_case_detects_mixed_case_bug():\n    \"\"\"\n    A dictionary containing both lowercase and uppercase keys should be\n    considered mixed-case and therefore return False.\n    \"\"\"\n    mixed_dict = {\"a\": 1, \"B\": 2}\n    assert not check_dict_case(mixed_dict), (\n        \"check_dict_case should return False for a dictionary that mixes \"\n        \"lowercase and uppercase keys, but it returned True.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0ibfi5ds\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_detects_mixed_case_bug FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_check_dict_case_detects_mixed_case_bug __________________\n\n    def test_check_dict_case_detects_mixed_case_bug():\n        \"\"\"\n        A dictionary containing both lowercase and uppercase keys should be\n        considered mixed-case and therefore return False.\n        \"\"\"\n        mixed_dict = {\"a\": 1, \"B\": 2}\n>       assert not check_dict_case(mixed_dict), (\n            \"check_dict_case should return False for a dictionary that mixes \"\n            \"lowercase and uppercase keys, but it returned True.\"\n        )\nE       AssertionError: check_dict_case should return False for a dictionary that mixes lowercase and uppercase keys, but it returned True.\nE       assert not True\nE        +  where True = check_dict_case({'B': 2, 'a': 1})\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_check_dict_case_detects_mixed_case_bug - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptgo_04q4\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_detects_mixed_case_bug PASSED    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:50:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 2,
+  "attempts_to_success": 2,
+  "analysis": null,
+  "prompt_tokens_total": 6501,
+  "completion_tokens_total": 4393,
+  "duration_seconds": 30.46,
+  "timestamp": "2026-06-02T11:50:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

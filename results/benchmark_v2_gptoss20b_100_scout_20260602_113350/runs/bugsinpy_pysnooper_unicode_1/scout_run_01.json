@@ -1,0 +1,68 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "scout",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import Tracer\n\ndef test_tracer_write_non_ascii_content(tmp_path):\n    \"\"\"Tracer.write should preserve non‑ASCII characters.\"\"\"\n    file_path = tmp_path / \"output.txt\"\n    tracer = Tracer(str(file_path))\n    text = \"Café\"\n    tracer.write(text)\n    with open(file_path, \"rb\") as f:\n        data = f.read()\n    assert data == text.encode(\"utf-8\"), (\n        \"Tracer.write did not preserve non‑ASCII characters; \"\n        \"output corrupted or was written with the wrong encoding.\"\n    )",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbzzrx6pg\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_write_non_ascii_content PASSED            [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmph5n_2w8u\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_write_non_ascii_content PASSED            [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:35:40Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import os\nfrom source import Tracer\n\ndef test_tracer_write_non_ascii_with_ascii_env(tmp_path, monkeypatch):\n    # Force Python to use ASCII as the default encoding\n    monkeypatch.setenv(\"LANG\", \"C\")\n    tracer_path = tmp_path / \"output.txt\"\n\n    tracer = Tracer(str(tracer_path))\n    text = \"Café 🌟\"\n\n    # The buggy implementation will raise a UnicodeEncodeError or write corrupted data\n    tracer.write(text)\n\n    content_bytes = tracer_path.read_bytes()\n    expected_bytes = text.encode(\"utf-8\")\n\n    assert (\n        content_bytes == expected_bytes\n    ), f\"File content {content_bytes!r} does not match expected UTF-8 {expected_bytes!r}\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpk0lt0v2d\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_write_non_ascii_with_ascii_env PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkyp8jviz\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tracer_write_non_ascii_with_ascii_env PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:35:50Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import os\nimport tempfile\n\nimport pytest\n\nfrom source import Tracer\n\n\ndef test_tracer_dump_source_preserves_non_ascii_when_coding_header_present() -> None:\n    \"\"\"\n    Tracer.dump_source should correctly interpret a UTF‑8 coding header and preserve\n    non‑ASCII characters.  If the buggy implementation defaults to ASCII, the\n    output file will contain replacement characters (�) instead of the original\n    UTF‑8 bytes.\n    \"\"\"\n    # Create a temporary file for the tracer to write to.\n    tmp_file = tempfile.NamedTemporaryFile(delete=False)\n    tmp_file_path = tmp_file.name\n    tmp_file.close()\n\n    try:\n        tracer = Tracer(tmp_file_path, overwrite=True)\n\n        # Source bytes with a UTF‑8 coding header followed by a line containing a\n        # non‑ASCII character (the letter 'é').\n        source_bytes = [b\"# coding: utf-8\\n\", b\"Café\\n\"]\n\n        tracer.dump_source(source_bytes)\n\n        # Read back the written file as raw bytes.\n        with open(tmp_file_path, \"rb\") as fh:\n            written_bytes = fh.read()\n\n        expected_bytes = b\"Café\\n\"\n\n        assert written_bytes == expected_bytes, (\n            f\"Tracer.dump_source produced {written_bytes!r} but expected {expected_bytes!r}. \"\n            \"This indicates that the implementation is not respecting the coding header \"\n            \"and is incorrectly decoding the source as ASCII.\"\n        )\n    finally:\n        # Clean up the temporary file.\n        os.unlink(tmp_file_path)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp50wzioj0\nplugins: anyio-4.13.0\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/python.py:507: in importtestmodule\n    mod = import_path(\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1204: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1176: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:690: in _load_unlocked\n    ???\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n    source_stat, co = _rewrite_test(fn, self.config)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:357: in _rewrite_test\n    tree = ast.parse(source, filename=strfn)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py:50: in parse\n    return compile(source, filename, mode, flags,\nE     File \"/private/tmp/claude-501/tmp50wzioj0/test_generated.py\", line 26\nE       source_bytes = [b\"# coding: utf-8\\n\", b\"Café\\n\"]\nE                                             ^^^^^^^^^\nE   SyntaxError: bytes can only contain ASCII literal characters\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.14s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpijp4dlb9\nplugins: anyio-4.13.0\ncollecting ... collected 0 items / 1 error\n\n==================================== ERRORS ====================================\n______________________ ERROR collecting test_generated.py ______________________\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/python.py:507: in importtestmodule\n    mod = import_path(\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1204: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1176: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:690: in _load_unlocked\n    ???\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n    source_stat, co = _rewrite_test(fn, self.config)\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:357: in _rewrite_test\n    tree = ast.parse(source, filename=strfn)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n/opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ast.py:50: in parse\n    return compile(source, filename, mode, flags,\nE     File \"/private/tmp/claude-501/tmpijp4dlb9/test_generated.py\", line 26\nE       source_bytes = [b\"# coding: utf-8\\n\", b\"Café\\n\"]\nE                                             ^^^^^^^^^\nE   SyntaxError: bytes can only contain ASCII literal characters\n=========================== short test summary info ============================\nERROR test_generated.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.15s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:35:59Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 18911,
+  "completion_tokens_total": 15974,
+  "duration_seconds": 107.92,
+  "timestamp": "2026-06-02T11:35:59Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

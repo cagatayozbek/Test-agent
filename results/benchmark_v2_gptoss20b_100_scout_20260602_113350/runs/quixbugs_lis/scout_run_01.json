@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_lis",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import lis\n\ndef test_lis_bug_fixed():\n    \"\"\"\n    The buggy implementation incorrectly reduces the longest length\n    when a new element is smaller than an existing subsequence end\n    but would not extend the longest chain.  The correct LIS\n    length for [1, 2, 3, 4, 5, 0] is 5, but the buggy code returns 1.\n    \"\"\"\n    seq = [1, 2, 3, 4, 5, 0]\n    expected = 5\n    result = lis(seq)\n    assert result == expected, (\n        f\"Expected LIS length {expected} for sequence {seq}, \"\n        f\"but got {result}.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp450x__rj\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_bug_fixed FAILED                             [100%]\n\n=================================== FAILURES ===================================\n______________________________ test_lis_bug_fixed ______________________________\n\n    def test_lis_bug_fixed():\n        \"\"\"\n        The buggy implementation incorrectly reduces the longest length\n        when a new element is smaller than an existing subsequence end\n        but would not extend the longest chain.  The correct LIS\n        length for [1, 2, 3, 4, 5, 0] is 5, but the buggy code returns 1.\n        \"\"\"\n        seq = [1, 2, 3, 4, 5, 0]\n        expected = 5\n        result = lis(seq)\n>       assert result == expected, (\n            f\"Expected LIS length {expected} for sequence {seq}, \"\n            f\"but got {result}.\"\n        )\nE       AssertionError: Expected LIS length 5 for sequence [1, 2, 3, 4, 5, 0], but got 1.\nE       assert 1 == 5\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lis_bug_fixed - AssertionError: Expected LIS l...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_jkb9qhw\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_bug_fixed PASSED                             [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:15:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3871,
+  "completion_tokens_total": 5489,
+  "duration_seconds": 66.32,
+  "timestamp": "2026-06-02T12:15:25Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

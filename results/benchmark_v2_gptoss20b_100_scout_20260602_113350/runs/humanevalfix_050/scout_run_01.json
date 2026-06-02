@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_050",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import decode_shift\n\n\ndef test_decode_shift_reverses_encode_shift():\n    \"\"\"\n    The decode_shift function should correctly reverse the encode_shift mapping.\n    For a single character, the encoded 'f' must decode back to 'a'.\n    Likewise, the encoded 'a' (which comes from original 'v') must decode back to 'v'.\n    This test will fail on the buggy implementation that incorrectly uses ord(ch)\n    instead of ord('a') when recomputing the shifted character.\n    \"\"\"\n    # Test the forward shift of 'a' (encoded to 'f')\n    assert decode_shift(\"f\") == \"a\", \"decode_shift('f') should return 'a'\"\n\n    # Test the wrap‑around shift of 'v' (encoded to 'a')\n    assert decode_shift(\"a\") == \"v\", \"decode_shift('a') should return 'v'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy1iti_0a\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_reverses_encode_shift FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_decode_shift_reverses_encode_shift ____________________\n\n    def test_decode_shift_reverses_encode_shift():\n        \"\"\"\n        The decode_shift function should correctly reverse the encode_shift mapping.\n        For a single character, the encoded 'f' must decode back to 'a'.\n        Likewise, the encoded 'a' (which comes from original 'v') must decode back to 'v'.\n        This test will fail on the buggy implementation that incorrectly uses ord(ch)\n        instead of ord('a') when recomputing the shifted character.\n        \"\"\"\n        # Test the forward shift of 'a' (encoded to 'f')\n>       assert decode_shift(\"f\") == \"a\", \"decode_shift('f') should return 'a'\"\nE       AssertionError: decode_shift('f') should return 'a'\nE       assert 'f' == 'a'\nE         \nE         - a\nE         + f\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_reverses_encode_shift - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp24nymjn2\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_reverses_encode_shift PASSED        [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:43:25Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 2981,
+  "completion_tokens_total": 3071,
+  "duration_seconds": 23.85,
+  "timestamp": "2026-06-02T11:43:25Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

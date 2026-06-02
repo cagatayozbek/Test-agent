@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_049",
+  "mode": "scout",
+  "run_number": 1,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_conversion():\n    \"\"\"\n    The function should convert a snake_case string to camelCase.\n    The buggy implementation incorrectly returns a string of underscores.\n    \"\"\"\n    input_str = \"snake_case\"\n    expected = \"snakeCase\"\n    result = snake_to_camel(input_str)\n    assert result == expected, (\n        f\"Expected '{expected}' for input '{input_str}', but got '{result}'. \"\n        \"This indicates the underscore handling logic is broken.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5eqyg_gp\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n        \"\"\"\n        The function should convert a snake_case string to camelCase.\n        The buggy implementation incorrectly returns a string of underscores.\n        \"\"\"\n        input_str = \"snake_case\"\n        expected = \"snakeCase\"\n        result = snake_to_camel(input_str)\n>       assert result == expected, (\n            f\"Expected '{expected}' for input '{input_str}', but got '{result}'. \"\n            \"This indicates the underscore handling logic is broken.\"\n        )\nE       AssertionError: Expected 'snakeCase' for input 'snake_case', but got '__'. This indicates the underscore handling logic is broken.\nE       assert '__' == 'snakeCase'\nE         \nE         - snakeCase\nE         + __\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpn8lt0j10\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_conversion FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_snake_to_camel_conversion ________________________\n\n    def test_snake_to_camel_conversion():\n        \"\"\"\n        The function should convert a snake_case string to camelCase.\n        The buggy implementation incorrectly returns a string of underscores.\n        \"\"\"\n        input_str = \"snake_case\"\n        expected = \"snakeCase\"\n        result = snake_to_camel(input_str)\n>       assert result == expected, (\n            f\"Expected '{expected}' for input '{input_str}', but got '{result}'. \"\n            \"This indicates the underscore handling logic is broken.\"\n        )\nE       AssertionError: Expected 'snakeCase' for input 'snake_case', but got 'SnakeCase'. This indicates the underscore handling logic is broken.\nE       assert 'SnakeCase' == 'snakeCase'\nE         \nE         - snakeCase\nE         ? ^\nE         + SnakeCase\nE         ? ^\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_conversion - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:07:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_converts_snake_case_to_camel_case():\n    \"\"\"The function should convert a snake_case string to camelCase.\"\"\"\n    result = snake_to_camel(\"snake_case\")\n    assert result == \"snakeCase\", (\n        f\"Expected 'snakeCase' for input 'snake_case', but got '{result}'.\"\n    )\n\n    # Additional edge case with multiple underscores\n    result_multi = snake_to_camel(\"this_is_a_test\")\n    assert result_multi == \"thisIsATest\", (\n        f\"Expected 'thisIsATest' for input 'this_is_a_test', but got '{result_multi}'.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwdb56ghe\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_converts_snake_case_to_camel_case FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_snake_to_camel_converts_snake_case_to_camel_case _____________\n\n    def test_snake_to_camel_converts_snake_case_to_camel_case():\n        \"\"\"The function should convert a snake_case string to camelCase.\"\"\"\n        result = snake_to_camel(\"snake_case\")\n>       assert result == \"snakeCase\", (\n            f\"Expected 'snakeCase' for input 'snake_case', but got '{result}'.\"\n        )\nE       AssertionError: Expected 'snakeCase' for input 'snake_case', but got '__'.\nE       assert '__' == 'snakeCase'\nE         \nE         - snakeCase\nE         + __\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_converts_snake_case_to_camel_case\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpa4cpot7u\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_converts_snake_case_to_camel_case FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_snake_to_camel_converts_snake_case_to_camel_case _____________\n\n    def test_snake_to_camel_converts_snake_case_to_camel_case():\n        \"\"\"The function should convert a snake_case string to camelCase.\"\"\"\n        result = snake_to_camel(\"snake_case\")\n>       assert result == \"snakeCase\", (\n            f\"Expected 'snakeCase' for input 'snake_case', but got '{result}'.\"\n        )\nE       AssertionError: Expected 'snakeCase' for input 'snake_case', but got 'SnakeCase'.\nE       assert 'SnakeCase' == 'snakeCase'\nE         \nE         - snakeCase\nE         ? ^\nE         + SnakeCase\nE         ? ^\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_converts_snake_case_to_camel_case\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:07:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "import pytest\nfrom source import snake_to_camel\n\ndef test_snake_to_camel_converts_snake_case():\n    \"\"\"Converts a simple snake_case string to camelCase correctly.\"\"\"\n    input_word = \"snake_case\"\n    expected = \"snakeCase\"\n    result = snake_to_camel(input_word)\n    assert result == expected, f\"Expected '{expected}' but got '{result}' for input '{input_word}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2aaohbjf\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_converts_snake_case FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_snake_to_camel_converts_snake_case ____________________\n\n    def test_snake_to_camel_converts_snake_case():\n        \"\"\"Converts a simple snake_case string to camelCase correctly.\"\"\"\n        input_word = \"snake_case\"\n        expected = \"snakeCase\"\n        result = snake_to_camel(input_word)\n>       assert result == expected, f\"Expected '{expected}' but got '{result}' for input '{input_word}'\"\nE       AssertionError: Expected 'snakeCase' but got '__' for input 'snake_case'\nE       assert '__' == 'snakeCase'\nE         \nE         - snakeCase\nE         + __\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_converts_snake_case - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpab0gw7re\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_converts_snake_case FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_snake_to_camel_converts_snake_case ____________________\n\n    def test_snake_to_camel_converts_snake_case():\n        \"\"\"Converts a simple snake_case string to camelCase correctly.\"\"\"\n        input_word = \"snake_case\"\n        expected = \"snakeCase\"\n        result = snake_to_camel(input_word)\n>       assert result == expected, f\"Expected '{expected}' but got '{result}' for input '{input_word}'\"\nE       AssertionError: Expected 'snakeCase' but got 'SnakeCase' for input 'snake_case'\nE       assert 'SnakeCase' == 'snakeCase'\nE         \nE         - snakeCase\nE         ? ^\nE         + SnakeCase\nE         ? ^\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_converts_snake_case - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:07:36Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 6691,
+  "completion_tokens_total": 4068,
+  "duration_seconds": 26.23,
+  "timestamp": "2026-06-02T12:07:36Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

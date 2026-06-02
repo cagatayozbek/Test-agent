@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_tqdm_enumerate_start_1",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import tenumerate\n\ndef test_tenumerate_start_respected():\n    data = [10, 20, 30]\n    result = list(tenumerate(data, start=5))\n    expected = [(5, 10), (6, 20), (7, 30)]\n    assert result == expected, (\n        f\"Expected indices to start at 5 but got {result}. \"\n        \"This indicates the 'start' argument was not forwarded to enumerate.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpp0vyhv45\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_respected FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_tenumerate_start_respected ________________________\n\n    def test_tenumerate_start_respected():\n        data = [10, 20, 30]\n        result = list(tenumerate(data, start=5))\n        expected = [(5, 10), (6, 20), (7, 30)]\n>       assert result == expected, (\n            f\"Expected indices to start at 5 but got {result}. \"\n            \"This indicates the 'start' argument was not forwarded to enumerate.\"\n        )\nE       AssertionError: Expected indices to start at 5 but got [(0, 10), (1, 20), (2, 30)]. This indicates the 'start' argument was not forwarded to enumerate.\nE       assert [(0, 10), (1, 20), (2, 30)] == [(5, 10), (6, 20), (7, 30)]\nE         \nE         At index 0 diff: (0, 10) != (5, 10)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         5,...\nE         \nE         ...Full output truncated (20 lines hidden), use '-vv' to show\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_start_respected - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpf4r7hd9r\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_respected PASSED                [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:37:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3702,
+  "completion_tokens_total": 3190,
+  "duration_seconds": 21.82,
+  "timestamp": "2026-06-02T11:37:39Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

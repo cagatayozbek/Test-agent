@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_101",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import words_string\n\ndef test_words_string_commas_replaced():\n    \"\"\"\n    The buggy implementation keeps comma characters in the output,\n    causing words to be returned with trailing commas.\n    This test checks that commas are correctly replaced by spaces,\n    producing a list of clean words.\n    \"\"\"\n    input_str = \"Hi, my name is John\"\n    expected = [\"Hi\", \"my\", \"name\", \"is\", \"John\"]\n    result = words_string(input_str)\n    assert result == expected, (\n        f\"Expected {expected} but got {result}. \"\n        \"Commas should be replaced by spaces.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxg_23ygt\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_commas_replaced FAILED              [100%]\n\n=================================== FAILURES ===================================\n______________________ test_words_string_commas_replaced _______________________\n\n    def test_words_string_commas_replaced():\n        \"\"\"\n        The buggy implementation keeps comma characters in the output,\n        causing words to be returned with trailing commas.\n        This test checks that commas are correctly replaced by spaces,\n        producing a list of clean words.\n        \"\"\"\n        input_str = \"Hi, my name is John\"\n        expected = [\"Hi\", \"my\", \"name\", \"is\", \"John\"]\n        result = words_string(input_str)\n>       assert result == expected, (\n            f\"Expected {expected} but got {result}. \"\n            \"Commas should be replaced by spaces.\"\n        )\nE       AssertionError: Expected ['Hi', 'my', 'name', 'is', 'John'] but got ['Hi,', 'my', 'name', 'is', 'John']. Commas should be replaced by spaces.\nE       assert ['Hi,', 'my',... 'is', 'John'] == ['Hi', 'my', ... 'is', 'John']\nE         \nE         At index 0 diff: 'Hi,' != 'Hi'\nE         \nE         Full diff:\nE           [\nE         -     'Hi',\nE         +     'Hi,',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_words_string_commas_replaced - AssertionError:...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpv99ba8wp\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_words_string_commas_replaced PASSED              [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:51:07Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3168,
+  "completion_tokens_total": 2387,
+  "duration_seconds": 16.97,
+  "timestamp": "2026-06-02T11:51:07Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_027",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import all_unique\n\ndef test_all_unique_unique_list():\n    \"\"\"The function should return True for a list with all unique elements.\"\"\"\n    unique_list = [1, 2, 3]\n    assert all_unique(unique_list) is True, f\"Expected True for unique list {unique_list}, got {all_unique(unique_list)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdtowjdsz\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_unique_list FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_all_unique_unique_list __________________________\n\n    def test_all_unique_unique_list():\n        \"\"\"The function should return True for a list with all unique elements.\"\"\"\n        unique_list = [1, 2, 3]\n>       assert all_unique(unique_list) is True, f\"Expected True for unique list {unique_list}, got {all_unique(unique_list)}\"\nE       AssertionError: Expected True for unique list [1, 2, 3], got False\nE       assert False is True\nE        +  where False = all_unique([1, 2, 3])\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_unique_list - AssertionError: Expec...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0bm_iqgo\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_unique_list PASSED                    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:03:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3485,
+  "completion_tokens_total": 4405,
+  "duration_seconds": 25.75,
+  "timestamp": "2026-06-02T12:03:30Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

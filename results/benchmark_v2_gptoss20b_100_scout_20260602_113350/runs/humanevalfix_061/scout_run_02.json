@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_061",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import correct_bracketing\n\ndef test_correct_bracketing_unbalanced():\n    \"\"\"Unbalanced strings should return False.\"\"\"\n    assert not correct_bracketing(\")(()\"), \"Unbalanced input ')(()' should return False\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl9g91tuk\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unbalanced FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_correct_bracketing_unbalanced ______________________\n\n    def test_correct_bracketing_unbalanced():\n        \"\"\"Unbalanced strings should return False.\"\"\"\n>       assert not correct_bracketing(\")(()\"), \"Unbalanced input ')(()' should return False\"\nE       AssertionError: Unbalanced input ')(()' should return False\nE       assert not True\nE        +  where True = correct_bracketing(')(()')\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_correct_bracketing_unbalanced - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.05s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1yxnirzu\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unbalanced PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:46:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 5730,
+  "completion_tokens_total": 4890,
+  "duration_seconds": 36.14,
+  "timestamp": "2026-06-02T11:46:12Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

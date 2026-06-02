@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_002",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import square_Sum\n\ndef test_square_Sum_first_two_odds():\n    \"\"\"square_Sum(2) should equal 10 (1² + 3²).  \n    The buggy implementation returns 2 due to incorrect integer division.\"\"\"\n    result = square_Sum(2)\n    assert result == 10, f\"Expected 10, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpcttb654n\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_first_two_odds FAILED                 [100%]\n\n=================================== FAILURES ===================================\n________________________ test_square_Sum_first_two_odds ________________________\n\n    def test_square_Sum_first_two_odds():\n        \"\"\"square_Sum(2) should equal 10 (1² + 3²).\n        The buggy implementation returns 2 due to incorrect integer division.\"\"\"\n        result = square_Sum(2)\n>       assert result == 10, f\"Expected 10, got {result}\"\nE       AssertionError: Expected 10, got 2\nE       assert 2 == 10\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_square_Sum_first_two_odds - AssertionError: Ex...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpesqh0bq1\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_square_Sum_first_two_odds PASSED                 [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:56:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7310,
+  "completion_tokens_total": 13042,
+  "duration_seconds": 128.36,
+  "timestamp": "2026-06-02T11:56:39Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_027",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import flip_case\n\ndef test_flip_case_swaps_casing():\n    \"\"\"\n    The buggy implementation lowercases the entire string.\n    A proper flip should swap each character's case.\n    \"\"\"\n    # Mixed‑case input that must be flipped\n    input_str = \"Hello\"\n    expected_output = \"hELLO\"\n    actual_output = flip_case(input_str)\n    assert actual_output == expected_output, (\n        f\"flip_case('{input_str}') returned '{actual_output}' \"\n        f\"but expected '{expected_output}'. The function should swap case, \"\n        \"not convert all letters to lowercase.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwi9gxsct\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_flip_case_swaps_casing FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_flip_case_swaps_casing __________________________\n\n    def test_flip_case_swaps_casing():\n        \"\"\"\n        The buggy implementation lowercases the entire string.\n        A proper flip should swap each character's case.\n        \"\"\"\n        # Mixed‑case input that must be flipped\n        input_str = \"Hello\"\n        expected_output = \"hELLO\"\n        actual_output = flip_case(input_str)\n>       assert actual_output == expected_output, (\n            f\"flip_case('{input_str}') returned '{actual_output}' \"\n            f\"but expected '{expected_output}'. The function should swap case, \"\n            \"not convert all letters to lowercase.\"\n        )\nE       AssertionError: flip_case('Hello') returned 'hello' but expected 'hELLO'. The function should swap case, not convert all letters to lowercase.\nE       assert 'hello' == 'hELLO'\nE         \nE         - hELLO\nE         + hello\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flip_case_swaps_casing - AssertionError: flip_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpaz6rxm7d\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_flip_case_swaps_casing PASSED                    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:41:27Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 4917,
+  "completion_tokens_total": 3596,
+  "duration_seconds": 24.9,
+  "timestamp": "2026-06-02T11:41:27Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

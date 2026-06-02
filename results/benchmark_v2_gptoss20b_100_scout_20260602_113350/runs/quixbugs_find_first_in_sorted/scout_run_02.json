@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_find_first_in_sorted",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_first_in_sorted\n\ndef test_find_first_in_sorted_not_found_boundary():\n    \"\"\"The function should return -1 when the target is greater than all elements.\n    The buggy implementation incorrectly accesses arr[len(arr)] and raises IndexError.\"\"\"\n    arr = [1, 2, 3]\n    target = 4\n    result = find_first_in_sorted(arr, target)\n    assert result == -1, f\"Expected -1 for target {target} not in array, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyggwc258\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_not_found_boundary FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_find_first_in_sorted_not_found_boundary _________________\n\n    def test_find_first_in_sorted_not_found_boundary():\n        \"\"\"The function should return -1 when the target is greater than all elements.\n        The buggy implementation incorrectly accesses arr[len(arr)] and raises IndexError.\"\"\"\n        arr = [1, 2, 3]\n        target = 4\n>       result = find_first_in_sorted(arr, target)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\narr = [1, 2, 3], x = 4\n\n    def find_first_in_sorted(arr, x):\n        lo = 0\n        hi = len(arr)\n    \n        while lo <= hi:\n            mid = (lo + hi) // 2\n    \n>           if x == arr[mid] and (mid == 0 or x != arr[mid - 1]):\n                    ^^^^^^^^\nE           IndexError: list index out of range\n\nsource.py:8: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_first_in_sorted_not_found_boundary - Inde...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptax_tv_o\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_not_found_boundary PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:10:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3974,
+  "completion_tokens_total": 4132,
+  "duration_seconds": 28.03,
+  "timestamp": "2026-06-02T12:10:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

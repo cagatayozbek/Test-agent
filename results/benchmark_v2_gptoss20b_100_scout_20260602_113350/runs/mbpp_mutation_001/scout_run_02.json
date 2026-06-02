@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_001",
+  "mode": "scout",
+  "run_number": 2,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import is_samepatterns\n\ndef test_is_samepatterns_distinct_counts():\n    # colors and patterns have same length, but the number of distinct\n    # colors (3) differs from the number of distinct patterns (2).\n    # A correct implementation should still return True because\n    # there are no consecutive colors for the same pattern.\n    colors = [1, 2, 3]\n    patterns = [1, 1, 2]\n    assert is_samepatterns(colors, patterns) is True, (\n        \"Expected True when distinct color count differs from distinct pattern count \"\n        \"but no adjacent colors for the same pattern. The buggy implementation \"\n        \"incorrectly rejects such cases.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8t1px4gf\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_samepatterns_distinct_counts FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_is_samepatterns_distinct_counts _____________________\n\n    def test_is_samepatterns_distinct_counts():\n        # colors and patterns have same length, but the number of distinct\n        # colors (3) differs from the number of distinct patterns (2).\n        # A correct implementation should still return True because\n        # there are no consecutive colors for the same pattern.\n        colors = [1, 2, 3]\n        patterns = [1, 1, 2]\n>       assert is_samepatterns(colors, patterns) is True, (\n            \"Expected True when distinct color count differs from distinct pattern count \"\n            \"but no adjacent colors for the same pattern. The buggy implementation \"\n            \"incorrectly rejects such cases.\"\n        )\nE       AssertionError: Expected True when distinct color count differs from distinct pattern count but no adjacent colors for the same pattern. The buggy implementation incorrectly rejects such cases.\nE       assert False is True\nE        +  where False = is_samepatterns([1, 2, 3], [1, 1, 2])\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_samepatterns_distinct_counts - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprtjkiqkr\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_samepatterns_distinct_counts FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_is_samepatterns_distinct_counts _____________________\n\n    def test_is_samepatterns_distinct_counts():\n        # colors and patterns have same length, but the number of distinct\n        # colors (3) differs from the number of distinct patterns (2).\n        # A correct implementation should still return True because\n        # there are no consecutive colors for the same pattern.\n        colors = [1, 2, 3]\n        patterns = [1, 1, 2]\n>       assert is_samepatterns(colors, patterns) is True, (\n            \"Expected True when distinct color count differs from distinct pattern count \"\n            \"but no adjacent colors for the same pattern. The buggy implementation \"\n            \"incorrectly rejects such cases.\"\n        )\nE       AssertionError: Expected True when distinct color count differs from distinct pattern count but no adjacent colors for the same pattern. The buggy implementation incorrectly rejects such cases.\nE       assert False is True\nE        +  where False = is_samepatterns([1, 2, 3], [1, 1, 2])\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_samepatterns_distinct_counts - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:57:11Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import is_samepatterns\n\ndef test_is_samepatterns_unique_sets_equal():\n    \"\"\"When the unique colors match the unique patterns,\n    the function should return True. \n    The buggy implementation incorrectly rejects this case.\"\"\"\n    assert is_samepatterns([1, 2], [1, 2]) is True, \"Expected True for equal unique sets\"",
+      "validation": {
+        "buggy_passed": true,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptq8gws3z\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_samepatterns_unique_sets_equal PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpoi6i809o\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_samepatterns_unique_sets_equal PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:57:49Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpud3j_521\nplugins: anyio-4.13.0\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_0bfrti0\nplugins: anyio-4.13.0\ncollecting ... collected 0 items\n\n============================ no tests ran in 0.00s =============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:58:22Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 11631,
+  "completion_tokens_total": 24412,
+  "duration_seconds": 236.66,
+  "timestamp": "2026-06-02T11:58:22Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

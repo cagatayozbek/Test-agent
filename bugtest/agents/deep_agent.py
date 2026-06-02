@@ -45,6 +45,27 @@ _BASELINE_TEST = (
 
 
 @dataclass
+class ScoutResult:
+    """Output of the scout phase: a tool-augmented analysis, no test produced.
+
+    The scout drives the deep tool loop (read_file/ls/analyze_project) to
+    investigate the buggy module and emit a structured bug analysis. The
+    point of Scout-Writer is to DECOUPLE this tool-driven exploration from
+    test generation: the writer then writes the test in a fresh, tool-free
+    context using only this analysis. This isolates whether a model's deep
+    collapse comes from the dual burden (drive tools AND author the test in
+    one loop) rather than from analysis quality.
+    """
+
+    analysis_text: str
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    tool_call_count: int = 0
+    reasoning_filled: bool = False
+    status: str = ""
+
+
+@dataclass
 class DeepRunResult:
     final_test_code: str
     prompt_tokens: int = 0
@@ -161,6 +182,72 @@ def _validation_summary(validation, test_code: str) -> str:
         f"--- fixed pytest output (last 800 chars) ---\n"
         f"{validation.fixed_output[-800:]}"
     )
+
+
+_SCOUT_PROBLEM_TEMPLATE = (
+    "Investigate the buggy module `source.py` in this workspace using your "
+    "tools (read it, list files, search). Identify the single bug that the "
+    "description below refers to. Do NOT write any test — your only output is "
+    "a structured analysis a separate test-writer will consume.\n\n"
+    "Known bug description: {bug_desc}\n"
+    "Hint: {hint}\n"
+)
+
+
+def run_scout_analysis(task: Task, model_id: str,
+                       max_steps: int = 6,
+                       timeout_seconds: int = 180) -> ScoutResult:
+    """Scout phase of Scout-Writer: tool-augmented analysis, no test.
+
+    Reuses the deep orchestrator's LLM + tool stack but runs the analyzer
+    subagent role (read_file/ls/analyze_project/search_workspace) so the
+    model explores the code freely. Token + tool counts are captured off the
+    inner AgentResult (run_subagent drops them, so we build the Agent here).
+    """
+    from bugtest.deep.agent import Agent
+    from bugtest.deep.orchestrator import DeepTestOrchestrator
+    from bugtest.deep.prompts import ANALYZER_PROMPT
+
+    model_name = _resolve_deep_model_name(model_id)
+    if model_name.startswith("openai:") and not os.environ.get("OPENAI_API_KEY"):
+        raise EnvironmentError(
+            "Set TOGETHER_API_KEY (or OPENAI_API_KEY) for Together-routed scout."
+        )
+
+    workspace = _build_workspace(task)
+    try:
+        orch = DeepTestOrchestrator(
+            workspace=str(workspace),
+            model_name=model_name,
+            max_steps=max_steps,
+            timeout_seconds=timeout_seconds,
+        )
+        problem = _SCOUT_PROBLEM_TEMPLATE.format(
+            bug_desc=task.metadata.bug_description or "(no description)",
+            hint=task.metadata.test_hint or "",
+        )
+        agent = Agent(
+            llm=orch.llm,
+            system_prompt=ANALYZER_PROMPT,
+            tools=["read_file", "ls", "analyze_project", "search_workspace"],
+            workspace=str(workspace),
+            max_steps=max_steps,
+            timeout_seconds=timeout_seconds,
+        )
+        result = agent.run(problem)
+        analysis_text = (
+            result.final_response or result.error or "(scout produced no analysis)"
+        )
+        return ScoutResult(
+            analysis_text=analysis_text,
+            prompt_tokens=getattr(result, "total_prompt_tokens", 0),
+            completion_tokens=getattr(result, "total_completion_tokens", 0),
+            tool_call_count=getattr(result, "tool_call_count", 0),
+            reasoning_filled=bool(getattr(result, "reasoning_filled", False)),
+            status=getattr(result, "status", ""),
+        )
+    finally:
+        shutil.rmtree(workspace, ignore_errors=True)
 
 
 def run_deep_agent(task: Task, model_id: str, validator: Validator,

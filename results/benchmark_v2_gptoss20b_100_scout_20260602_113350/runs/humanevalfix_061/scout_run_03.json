@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_061",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import correct_bracketing\n\ndef test_correct_bracketing_unbalanced_returns_false():\n    \"\"\"Unbalanced bracket strings must return False.\"\"\"\n    # The input starts with a closing bracket, which should trigger the\n    # negative depth condition and correctly report an invalid sequence.\n    assert correct_bracketing(\")(()\") is False, (\n        \"Expected False for unbalanced brackets, \"\n        \"but the buggy implementation returned True.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9gw6_oh4\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unbalanced_returns_false FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_correct_bracketing_unbalanced_returns_false _______________\n\n    def test_correct_bracketing_unbalanced_returns_false():\n        \"\"\"Unbalanced bracket strings must return False.\"\"\"\n        # The input starts with a closing bracket, which should trigger the\n        # negative depth condition and correctly report an invalid sequence.\n>       assert correct_bracketing(\")(()\") is False, (\n            \"Expected False for unbalanced brackets, \"\n            \"but the buggy implementation returned True.\"\n        )\nE       AssertionError: Expected False for unbalanced brackets, but the buggy implementation returned True.\nE       assert True is False\nE        +  where True = correct_bracketing(')(()')\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_correct_bracketing_unbalanced_returns_false - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp556uh76n\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_correct_bracketing_unbalanced_returns_false PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:46:12Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3483,
+  "completion_tokens_total": 2558,
+  "duration_seconds": 29.67,
+  "timestamp": "2026-06-02T11:46:12Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

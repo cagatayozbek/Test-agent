@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import math\nfrom source import sqrt\n\ndef test_sqrt_residual_convergence():\n    \"\"\"A small epsilon should force the algorithm to converge to the true square root.\n    The buggy implementation stops when successive approximations differ by epsilon,\n    which only guarantees an error on the order of sqrt(epsilon).  For epsilon=1e-10\n    the result is therefore far from the true root, causing this assertion to fail.\n    The fixed code uses the residual |x - approx| ≤ epsilon, so the assertion passes.\"\"\"\n    result = sqrt(2, 1e-10)\n    assert abs(result - math.sqrt(2)) <= 1e-10, (\n        f\"Result {result} is not within 1e-10 of the true sqrt(2) {math.sqrt(2)}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmphd4gyse_\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_residual_convergence PASSED                 [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:21:35Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 4724,
+  "completion_tokens_total": 5377,
+  "duration_seconds": 75.26,
+  "timestamp": "2026-06-02T12:21:35Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

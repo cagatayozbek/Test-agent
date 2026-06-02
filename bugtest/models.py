@@ -88,7 +88,7 @@ class RunRecord(BaseModel):
     """Complete record of one pipeline run (all retries for one task+mode)."""
 
     task_id: str
-    mode: Literal["baseline", "agentic", "adaptive", "deep"]
+    mode: Literal["baseline", "agentic", "adaptive", "deep", "scout"]
     run_number: int
     success: bool
     attempts: list[AttemptRecord]
@@ -115,7 +115,7 @@ class RunRecord(BaseModel):
 class ModeStats(BaseModel):
     """Aggregated statistics for one mode across all tasks."""
 
-    mode: Literal["baseline", "agentic", "adaptive", "deep"]
+    mode: Literal["baseline", "agentic", "adaptive", "deep", "scout"]
     total_runs: int
     successful_runs: int
     brtr: float

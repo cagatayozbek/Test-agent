@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_small_limit():\n    \"\"\"\n    Verify that amicable_numbers_sum correctly sums amicable numbers up to a small limit.\n    This test should fail on the buggy implementation (where the comparison operator is incorrect)\n    and pass once the bug is fixed.\n    \"\"\"\n    limit = 500\n    expected_sum = 504  # 220 + 284 are the only amicable numbers <= 500\n    result = amicable_numbers_sum(limit)\n    assert result == expected_sum, f\"Expected sum {expected_sum} for limit {limit}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpf7jvuesf\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_small_limit FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_amicable_numbers_sum_small_limit _____________________\n\n    def test_amicable_numbers_sum_small_limit():\n        \"\"\"\n        Verify that amicable_numbers_sum correctly sums amicable numbers up to a small limit.\n        This test should fail on the buggy implementation (where the comparison operator is incorrect)\n        and pass once the bug is fixed.\n        \"\"\"\n        limit = 500\n        expected_sum = 504  # 220 + 284 are the only amicable numbers <= 500\n        result = amicable_numbers_sum(limit)\n>       assert result == expected_sum, f\"Expected sum {expected_sum} for limit {limit}, got {result}\"\nE       AssertionError: Expected sum 504 for limit 500, got 530\nE       assert 530 == 504\n\ntest_generated.py:12: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_small_limit - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.03s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbwq57lpw\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_small_limit PASSED          [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:07:48Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7092,
+  "completion_tokens_total": 10935,
+  "duration_seconds": 79.44,
+  "timestamp": "2026-06-02T12:07:48Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

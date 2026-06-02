@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_041",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import car_race_collision\n\n@pytest.mark.parametrize(\n    \"n,expected\",\n    [\n        (1, 1),\n        (2, 4),\n        (3, 9),\n    ],\n)\ndef test_car_race_collision_counts(n, expected):\n    \"\"\"Each left‑to‑right car collides with each right‑to‑left car, so the count should be n^2.\"\"\"\n    assert car_race_collision(n) == expected, f\"Expected {expected} collisions for n={n}, got {car_race_collision(n)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvo3ot3j1\nplugins: anyio-4.13.0\ncollecting ... collected 3 items\n\ntest_generated.py::test_car_race_collision_counts[1-1] PASSED            [ 33%]\ntest_generated.py::test_car_race_collision_counts[2-4] FAILED            [ 66%]\n\n=================================== FAILURES ===================================\n_____________________ test_car_race_collision_counts[2-4] ______________________\n\nn = 2, expected = 4\n\n    @pytest.mark.parametrize(\n        \"n,expected\",\n        [\n            (1, 1),\n            (2, 4),\n            (3, 9),\n        ],\n    )\n    def test_car_race_collision_counts(n, expected):\n        \"\"\"Each left‑to‑right car collides with each right‑to‑left car, so the count should be n^2.\"\"\"\n>       assert car_race_collision(n) == expected, f\"Expected {expected} collisions for n={n}, got {car_race_collision(n)}\"\nE       AssertionError: Expected 4 collisions for n=2, got 8\nE       assert 8 == 4\nE        +  where 8 = car_race_collision(2)\n\ntest_generated.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_car_race_collision_counts[2-4] - AssertionErro...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n========================= 1 failed, 1 passed in 0.02s ==========================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprlb56z8_\nplugins: anyio-4.13.0\ncollecting ... collected 3 items\n\ntest_generated.py::test_car_race_collision_counts[1-1] PASSED            [ 33%]\ntest_generated.py::test_car_race_collision_counts[2-4] PASSED            [ 66%]\ntest_generated.py::test_car_race_collision_counts[3-9] PASSED            [100%]\n\n============================== 3 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:42:46Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 5154,
+  "completion_tokens_total": 3848,
+  "duration_seconds": 28.84,
+  "timestamp": "2026-06-02T11:42:46Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

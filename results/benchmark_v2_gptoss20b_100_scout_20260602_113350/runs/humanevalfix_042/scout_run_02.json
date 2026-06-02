@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_042",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import incr_list\n\ndef test_incr_list_adds_one_not_two():\n    \"\"\"\n    The function is documented to increment each element by 1.\n    The buggy implementation adds 2, so the result should differ.\n    \"\"\"\n    input_list = [1, 2, 3]\n    expected_output = [2, 3, 4]  # correct increment by 1\n    assert incr_list(input_list) == expected_output, (\n        f\"incr_list({input_list}) should return {expected_output} but returned {incr_list(input_list)}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4d5na0k3\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_adds_one_not_two FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_incr_list_adds_one_not_two ________________________\n\n    def test_incr_list_adds_one_not_two():\n        \"\"\"\n        The function is documented to increment each element by 1.\n        The buggy implementation adds 2, so the result should differ.\n        \"\"\"\n        input_list = [1, 2, 3]\n        expected_output = [2, 3, 4]  # correct increment by 1\n>       assert incr_list(input_list) == expected_output, (\n            f\"incr_list({input_list}) should return {expected_output} but returned {incr_list(input_list)}\"\n        )\nE       AssertionError: incr_list([1, 2, 3]) should return [2, 3, 4] but returned [3, 4, 5]\nE       assert [3, 4, 5] == [2, 3, 4]\nE         \nE         At index 0 diff: 3 != 2\nE         \nE         Full diff:\nE           [\nE         -     2,\nE               3,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_incr_list_adds_one_not_two - AssertionError: i...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqvgwtjm5\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_adds_one_not_two PASSED                [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:43:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 2602,
+  "completion_tokens_total": 1773,
+  "duration_seconds": 15.26,
+  "timestamp": "2026-06-02T11:43:01Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

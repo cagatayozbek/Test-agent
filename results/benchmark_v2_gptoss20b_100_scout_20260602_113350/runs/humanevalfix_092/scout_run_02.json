@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_092",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import any_int\n\ndef test_any_int_missing_sum_clause():\n    # x+z==y holds: 2 + 3 == 5, but buggy code only checks x+y==z or y+z==x\n    assert any_int(2, 5, 3) is True, (\n        \"Expected True when x+z equals y, but got False due to missing clause in any_int\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2bhvil0s\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_missing_sum_clause FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_any_int_missing_sum_clause ________________________\n\n    def test_any_int_missing_sum_clause():\n        # x+z==y holds: 2 + 3 == 5, but buggy code only checks x+y==z or y+z==x\n>       assert any_int(2, 5, 3) is True, (\n            \"Expected True when x+z equals y, but got False due to missing clause in any_int\"\n        )\nE       AssertionError: Expected True when x+z equals y, but got False due to missing clause in any_int\nE       assert False is True\nE        +  where False = any_int(2, 5, 3)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_any_int_missing_sum_clause - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvwnu4zo3\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_any_int_missing_sum_clause PASSED                [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:50:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 6714,
+  "completion_tokens_total": 4731,
+  "duration_seconds": 32.33,
+  "timestamp": "2026-06-02T11:50:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

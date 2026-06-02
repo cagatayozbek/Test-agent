@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_020",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import newman_prime\n\ndef test_newman_prime_n3():\n    # The 3rd Newman–Shanks–Williams number (0-indexed) should be 7.\n    # The buggy implementation computes 3 * newman_prime(2) = 9.\n    assert newman_prime(3) == 7, \"Expected the 3rd NSW number to be 7, but got a different value\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1z26b082\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_n3 FAILED                           [100%]\n\n=================================== FAILURES ===================================\n_____________________________ test_newman_prime_n3 _____________________________\n\n    def test_newman_prime_n3():\n        # The 3rd Newman–Shanks–Williams number (0-indexed) should be 7.\n        # The buggy implementation computes 3 * newman_prime(2) = 9.\n>       assert newman_prime(3) == 7, \"Expected the 3rd NSW number to be 7, but got a different value\"\nE       AssertionError: Expected the 3rd NSW number to be 7, but got a different value\nE       assert 9 == 7\nE        +  where 9 = newman_prime(3)\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_newman_prime_n3 - AssertionError: Expected the...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_rfv7ftb\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_n3 PASSED                           [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:01:35Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3036,
+  "completion_tokens_total": 5419,
+  "duration_seconds": 31.57,
+  "timestamp": "2026-06-02T12:01:35Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

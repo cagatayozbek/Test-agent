@@ -1779,3 +1779,119 @@ signature.
 - `..._deep_20260601_102647_ARTIFACT/` (pre-patch, 300 stub; kept as evidence)
 - Patch: `bugtest/deep/{llm.py,agent.py,capabilities.py}`.
 - Configs: `benchmark_v2_deepseekv4flash_100_{baseline,adaptive,deep}.yaml`.
+
+## 20. A fourth architecture — Scout-Writer decouples tool-driving from test generation (gpt-oss-20b, 2026-06-02)
+
+Every prior mode mixed two jobs in one model context. `deep` is the extreme
+case: the same ReAct loop must *drive the tools* (read_file / run_tests) **and**
+*author a good test* in the same turns. The cross-model matrix (§14, MATRIX_100)
+showed that this dual burden is exactly where small / tool-clumsy models collapse
+— gpt-oss-20b's deep BRTR cratered to **0.213** while its baseline was **0.940**,
+and all 236 failures were genuine (not a harness artefact). The open question:
+**is the collapse a capability ceiling, or just the cost of carrying both jobs at
+once?**
+
+Scout-Writer is the controlled test. It splits the deep pipeline into two
+physically separate phases, **using the same model for both** (no stronger
+teacher is introduced, so this stays a single-model measurement):
+
+1. **Scout phase** — the model drives the deep tool loop (read_file / ls /
+   analyze_project / search_workspace) to investigate `source.py`, but its **only
+   output is a structured analysis** (bug hypothesis, location, trigger, test
+   strategy). It is explicitly told *not* to write a test.
+2. **Writer phase** — a **fresh, tool-free** context: a plain TestWriter receives
+   only that analysis plus the buggy code and authors the test, with the same
+   3-attempt retry budget as baseline.
+
+If decoupling rescues 20b from its deep collapse, the collapse was the dual
+burden, not the model.
+
+### 20.1 Results — gpt-oss-20b, all four modes (100 tasks × 3 runs = 300)
+
+| Mode | BRTR | 95% CI | Successful | Avg p-tok | Avg c-tok | Avg dur |
+|---|---:|---|---:|---:|---:|---:|
+| adaptive | **0.950** | [0.919, 0.970] | 285/300 | 841 | 1111 | 9.2s |
+| baseline | **0.940** | [0.907, 0.962] | 282/300 | 835 | 1083 | 8.1s |
+| **scout** | **0.897** | [0.857, 0.926] | 269/300 | 6443 | 5391 | 40.3s |
+| deep | **0.213** | [0.171, 0.263] | 64/300 | 11663 | 13693 | 148.3s |
+
+The scout run is a **genuine measurement**: 0/300 zero-token runs, every run
+drove tools and produced diverse test code (none of the uniform seed-stub
+signature that flagged the §15/§19 deep artefacts).
+
+### 20.2 Finding 1 — decoupling repairs the deep collapse (+68.4 pp)
+
+Scout lifts 20b from **0.213 → 0.897**, a **+68.4 pp** swing, with the two CIs
+fully disjoint ([85.7, 92.6] vs [17.1, 26.3]). Holding the model fixed and only
+*separating exploration from generation* recovers almost the entire gap. This is
+direct evidence that **20b's deep collapse was the dual burden, not a capability
+ceiling** — the small model can explore-with-tools *and* it can write a test; it
+just cannot reliably do both inside one loop.
+
+### 20.3 Finding 2 — but it does not beat baseline, and is mathematically capped below it
+
+Scout (0.897) lands **4.3 pp below baseline** (0.940) and 5.3 pp below adaptive.
+The CIs overlap slightly, so this is "at best a tie," but the point estimate is
+clearly behind — and **it cannot catch up**: with 31 failures already booked, the
+ceiling even if every remaining run had passed was 0.927, still under baseline.
+It is also **~8× the prompt tokens** (6443 vs 835) and **~5× the wall-clock**
+(40s vs 8s). For a model whose baseline is already high, Scout-Writer buys a much
+more expensive path to a *slightly worse* number.
+
+### 20.4 Where the 31 failures come from
+
+| Failure mode | Count |
+|---|---:|
+| OVERFIT_TO_BUG (fails on fixed code too) | 27 |
+| TEST_PASSES_ON_BUG (doesn't fail on buggy) | 4 |
+
+Per-source BRTR exposes the drag clearly:
+
+| Source | scout BRTR |
+|---|---:|
+| humanevalfix | 120/120 = **100.0%** |
+| quixbugs | 83/90 = 92.2% |
+| mbpp_mutation | 50/60 = 83.3% |
+| bugsinpy (real-world) | 8/15 = **53.3%** |
+| legacy | 8/15 = **53.3%** |
+
+Scout is **perfect on the synthetic/algorithmic tasks** but the writer
+over-specifies on the messy **real-world (bugsinpy) and legacy** tasks — 27 of
+31 failures are overfit tests that also fail on the fixed code. The scout's
+analysis is good enough to point at the bug; the tool-free writer then writes a
+test too tightly coupled to incidental buggy-output details.
+
+### 20.5 Interpretation — consistent with the headroom thesis
+
+Scout-Writer confirms the report's central pattern from a new angle. The value of
+any analysis/tool scaffolding is bounded by the **headroom** the model leaves on
+the table at baseline. gpt-oss-20b's baseline headroom is only ~6 pp, so no
+architecture — adaptive, deep, or scout — can extract a meaningful gain from it;
+scout merely fills the hole *deep* dug rather than climbing above baseline. The
+architecture should therefore pay off on a **different model profile**:
+low-baseline **and** tool-clumsy (e.g. llama-3.3-70b, baseline 0.793 →
+deep-collapse 0.340), where decoupling could convert the wasted deep budget into
+a real gain instead of a recovery. That is the natural next experiment.
+
+Net: Scout-Writer is a **validated diagnostic** (it proves the deep collapse is
+the dual burden) but **not a win for 20b** (baseline already dominates, cheaper).
+
+### 20.6 Implementation
+
+- `bugtest/agents/deep_agent.py::run_scout_analysis` — scout phase; reuses the
+  deep orchestrator's LLM + tool stack in the analyzer-subagent role, captures
+  token / tool-call counts off the inner `AgentResult`.
+- `bugtest/pipeline.py` — `mode == "scout"`: run the scout, prepend its analysis
+  via `_prepend_scout_analysis`, then the standard tool-free writer retry loop.
+- `bugtest/models.py` — `"scout"` added to the `RunRecord` / `ModeStats` mode
+  literal.
+
+### 20.7 Raw data
+
+- `results/benchmark_v2_gptoss20b_100_scout_20260602_113350/` (300 runs, genuine;
+  0 zero-token, 269 success).
+- Config: `benchmark_v2_gptoss20b_100_scout.yaml`.
+- Baseline / adaptive / deep cells reused from §14 / MATRIX_100.
+- Note: `pytest` must be installed in the validator venv; an empty venv silently
+  fails every run at validation (`No module named pytest`) and reads as BRTR 0 —
+  caught and fixed during the smoke run.

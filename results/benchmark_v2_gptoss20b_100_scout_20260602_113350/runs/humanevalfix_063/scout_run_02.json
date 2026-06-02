@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_063",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import fibfib\n\ndef test_fibfib_sequence_values():\n    \"\"\"The fibfib sequence should satisfy the documented base cases and recurrence.\"\"\"\n    assert fibfib(0) == 0, \"fibfib(0) should be 0\"\n    assert fibfib(1) == 0, \"fibfib(1) should be 0\"\n    assert fibfib(2) == 1, \"fibfib(2) should be 1\"\n    assert fibfib(3) == 1, \"fibfib(3) should be 1\"\n    assert fibfib(5) == 4, \"fibfib(5) should be 4\"\n    assert fibfib(8) == 24, \"fibfib(8) should be 24\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmprvm8l9y8\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_fibfib_sequence_values FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_fibfib_sequence_values __________________________\n\n    def test_fibfib_sequence_values():\n        \"\"\"The fibfib sequence should satisfy the documented base cases and recurrence.\"\"\"\n        assert fibfib(0) == 0, \"fibfib(0) should be 0\"\n>       assert fibfib(1) == 0, \"fibfib(1) should be 0\"\nE       AssertionError: fibfib(1) should be 0\nE       assert 1 == 0\nE        +  where 1 = fibfib(1)\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fibfib_sequence_values - AssertionError: fibfi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpiov9f58f\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_fibfib_sequence_values PASSED                    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:46:58Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 6519,
+  "completion_tokens_total": 6649,
+  "duration_seconds": 46.05,
+  "timestamp": "2026-06-02T11:46:58Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

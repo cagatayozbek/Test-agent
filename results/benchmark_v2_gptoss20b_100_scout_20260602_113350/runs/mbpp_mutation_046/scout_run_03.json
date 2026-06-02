@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_046",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import is_nonagonal\n\ndef test_is_nonagonal_correctness():\n    \"\"\"Ensure the nth nonagonal number is computed correctly for n=1.\"\"\"\n    expected = 1  # (7*1*1 - 5*1) // 2\n    actual = is_nonagonal(1)\n    assert actual == expected, f\"is_nonagonal(1) returned {actual}, expected {expected}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp35vvwj4w\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_correctness FAILED                  [100%]\n\n=================================== FAILURES ===================================\n________________________ test_is_nonagonal_correctness _________________________\n\n    def test_is_nonagonal_correctness():\n        \"\"\"Ensure the nth nonagonal number is computed correctly for n=1.\"\"\"\n        expected = 1  # (7*1*1 - 5*1) // 2\n        actual = is_nonagonal(1)\n>       assert actual == expected, f\"is_nonagonal(1) returned {actual}, expected {expected}\"\nE       AssertionError: is_nonagonal(1) returned 0, expected 1\nE       assert 0 == 1\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_nonagonal_correctness - AssertionError: is_...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp63tqesx6\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_nonagonal_correctness PASSED                  [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:06:16Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 4047,
+  "completion_tokens_total": 3228,
+  "duration_seconds": 21.51,
+  "timestamp": "2026-06-02T12:06:16Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

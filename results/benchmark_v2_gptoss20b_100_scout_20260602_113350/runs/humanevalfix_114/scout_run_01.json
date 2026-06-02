@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_114",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import minSubArraySum\n\ndef test_minSubArraySum_example():\n    \"\"\"\n    The buggy implementation incorrectly returns the negative of the maximum element.\n    For the input [2, 3, 4, 1, 2, 4] the true minimum subarray sum is 1,\n    but the buggy code would return -4. This test will therefore fail on\n    the buggy code and pass on the corrected implementation.\n    \"\"\"\n    result = minSubArraySum([2, 3, 4, 1, 2, 4])\n    assert result == 1, f\"Expected minimum subarray sum 1, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1qriper5\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_example FAILED                    [100%]\n\n=================================== FAILURES ===================================\n_________________________ test_minSubArraySum_example __________________________\n\n    def test_minSubArraySum_example():\n        \"\"\"\n        The buggy implementation incorrectly returns the negative of the maximum element.\n        For the input [2, 3, 4, 1, 2, 4] the true minimum subarray sum is 1,\n        but the buggy code would return -4. This test will therefore fail on\n        the buggy code and pass on the corrected implementation.\n        \"\"\"\n        result = minSubArraySum([2, 3, 4, 1, 2, 4])\n>       assert result == 1, f\"Expected minimum subarray sum 1, but got {result}\"\nE       AssertionError: Expected minimum subarray sum 1, but got -4\nE       assert -4 == 1\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_minSubArraySum_example - AssertionError: Expec...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpubygif_y\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_minSubArraySum_example PASSED                    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:52:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 2868,
+  "completion_tokens_total": 4579,
+  "duration_seconds": 27.05,
+  "timestamp": "2026-06-02T11:52:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

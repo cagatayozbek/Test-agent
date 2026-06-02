@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_kheapsort",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import kheapsort\n\ndef test_kheapsort_returns_properly_sorted_list():\n    \"\"\"kheapsort should produce a fully sorted list without duplicate or missing elements.\"\"\"\n    input_list = [3, 2, 1, 5, 4]\n    k = 2\n    result = list(kheapsort(input_list, k))\n    expected = sorted(input_list)\n    assert result == expected, (\n        f\"kheapsort produced {result!r} for input {input_list!r} with k={k}, \"\n        f\"expected {expected!r}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjr7wqs__\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_kheapsort_returns_properly_sorted_list FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_kheapsort_returns_properly_sorted_list __________________\n\n    def test_kheapsort_returns_properly_sorted_list():\n        \"\"\"kheapsort should produce a fully sorted list without duplicate or missing elements.\"\"\"\n        input_list = [3, 2, 1, 5, 4]\n        k = 2\n        result = list(kheapsort(input_list, k))\n        expected = sorted(input_list)\n>       assert result == expected, (\n            f\"kheapsort produced {result!r} for input {input_list!r} with k={k}, \"\n            f\"expected {expected!r}\"\n        )\nE       AssertionError: kheapsort produced [2, 2, 1, 3, 3, 4, 5] for input [3, 2, 1, 5, 4] with k=2, expected [1, 2, 3, 4, 5]\nE       assert [2, 2, 1, 3, 3, 4, ...] == [1, 2, 3, 4, 5]\nE         \nE         At index 0 diff: 2 != 1\nE         Left contains 2 more items, first extra item: 4\nE         \nE         Full diff:\nE           [\nE         +     2,...\nE         \nE         ...Full output truncated (10 lines hidden), use '-vv' to show\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_kheapsort_returns_properly_sorted_list - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnopoz924\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_kheapsort_returns_properly_sorted_list PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T12:12:39Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3260,
+  "completion_tokens_total": 2293,
+  "duration_seconds": 18.06,
+  "timestamp": "2026-06-02T12:12:39Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

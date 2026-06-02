@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_091",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import is_bored\n\ndef test_is_bored_counts_boredoms_correctly():\n    assert is_bored(\"Hello world\") == 0, \"Expected 0 boredom for a sentence without an 'I' start\"\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, (\n        \"Expected 1 boredom for a sentence that starts with 'I ' after splitting\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1r15c7zh\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_counts_boredoms_correctly FAILED        [100%]\n\n=================================== FAILURES ===================================\n___________________ test_is_bored_counts_boredoms_correctly ____________________\n\n    def test_is_bored_counts_boredoms_correctly():\n        assert is_bored(\"Hello world\") == 0, \"Expected 0 boredom for a sentence without an 'I' start\"\n>       assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, (\n            \"Expected 1 boredom for a sentence that starts with 'I ' after splitting\"\n        )\nE       AssertionError: Expected 1 boredom for a sentence that starts with 'I ' after splitting\nE       assert 0 == 1\nE        +  where 0 = is_bored('The sky is blue. The sun is shining. I love this weather')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_counts_boredoms_correctly - Assertion...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpm4gbbmru\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_counts_boredoms_correctly PASSED        [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:49:31Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 7386,
+  "completion_tokens_total": 4717,
+  "duration_seconds": 29.36,
+  "timestamp": "2026-06-02T11:49:31Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

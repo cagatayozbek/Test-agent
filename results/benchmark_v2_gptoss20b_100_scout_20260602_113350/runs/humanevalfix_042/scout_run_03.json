@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_042",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import incr_list\n\ndef test_incr_list_increments_each_element_by_one():\n    \"\"\"`incr_list` should add 1 to every element.  \n    The buggy implementation adds 2, so this test will fail until the off‑by‑one bug is fixed.\"\"\"\n    input_values = [0, -1, 5, 10]\n    expected = [x + 1 for x in input_values]\n    result = incr_list(input_values)\n    assert result == expected, (\n        f\"Expected {expected} but got {result}. \"\n        \"The function is likely adding the wrong constant.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpnof4rz_c\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_increments_each_element_by_one FAILED  [100%]\n\n=================================== FAILURES ===================================\n________________ test_incr_list_increments_each_element_by_one _________________\n\n    def test_incr_list_increments_each_element_by_one():\n        \"\"\"`incr_list` should add 1 to every element.\n        The buggy implementation adds 2, so this test will fail until the off‑by‑one bug is fixed.\"\"\"\n        input_values = [0, -1, 5, 10]\n        expected = [x + 1 for x in input_values]\n        result = incr_list(input_values)\n>       assert result == expected, (\n            f\"Expected {expected} but got {result}. \"\n            \"The function is likely adding the wrong constant.\"\n        )\nE       AssertionError: Expected [1, 0, 6, 11] but got [2, 1, 7, 12]. The function is likely adding the wrong constant.\nE       assert [2, 1, 7, 12] == [1, 0, 6, 11]\nE         \nE         At index 0 diff: 2 != 1\nE         \nE         Full diff:\nE           [\nE         +     2,\nE               1,...\nE         \nE         ...Full output truncated (10 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_incr_list_increments_each_element_by_one - Ass...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbwzi53db\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_increments_each_element_by_one PASSED  [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T11:43:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 3260,
+  "completion_tokens_total": 2426,
+  "duration_seconds": 19.09,
+  "timestamp": "2026-06-02T11:43:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
