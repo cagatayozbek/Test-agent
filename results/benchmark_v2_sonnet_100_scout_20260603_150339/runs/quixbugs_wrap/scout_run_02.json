@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_wrap",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import wrap\n\ndef test_wrap_last_segment_not_discarded():\n    result = wrap('aaa bbb ccc', 4)\n    assert result == ['aaa', ' bbb', ' ccc'], (\n        f\"Expected ['aaa', ' bbb', ' ccc'] but got {result!r}; \"\n        \"trailing segment 'ccc' is silently lost when len(text) <= cols\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvfc58xyk\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_last_segment_not_discarded FAILED           [100%]\n\n=================================== FAILURES ===================================\n_____________________ test_wrap_last_segment_not_discarded _____________________\n\n    def test_wrap_last_segment_not_discarded():\n        result = wrap('aaa bbb ccc', 4)\n>       assert result == ['aaa', ' bbb', ' ccc'], (\n            f\"Expected ['aaa', ' bbb', ' ccc'] but got {result!r}; \"\n            \"trailing segment 'ccc' is silently lost when len(text) <= cols\"\n        )\nE       AssertionError: Expected ['aaa', ' bbb', ' ccc'] but got ['aaa', ' bbb']; trailing segment 'ccc' is silently lost when len(text) <= cols\nE       assert ['aaa', ' bbb'] == ['aaa', ' bbb', ' ccc']\nE         \nE         Right contains one more item: ' ccc'\nE         \nE         Full diff:\nE           [\nE               'aaa',\nE               ' bbb',\nE         -     ' ccc',\nE           ]\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_wrap_last_segment_not_discarded - AssertionErr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmmv5bz0j\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_wrap_last_segment_not_discarded PASSED           [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T16:23:06Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56783,
+  "completion_tokens_total": 593,
+  "duration_seconds": 21.19,
+  "timestamp": "2026-06-03T16:23:06Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

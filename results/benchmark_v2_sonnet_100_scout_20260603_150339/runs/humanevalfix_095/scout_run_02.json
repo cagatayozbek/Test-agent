@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_095",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import check_dict_case\n\n\ndef test_mixed_case_keys_detected_as_false():\n    result = check_dict_case({\"A\": \"apple\", \"b\": \"banana\"})\n    assert result == False, (\n        \"check_dict_case({'A': 'apple', 'b': 'banana'}) should return False \"\n        \"because keys are mixed case, but returned True due to broken 'and' \"\n        \"operator that never triggers the 'mixed' state\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpb7qakglb\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_mixed_case_keys_detected_as_false FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_mixed_case_keys_detected_as_false ____________________\n\n    def test_mixed_case_keys_detected_as_false():\n        result = check_dict_case({\"A\": \"apple\", \"b\": \"banana\"})\n>       assert result == False, (\n            \"check_dict_case({'A': 'apple', 'b': 'banana'}) should return False \"\n            \"because keys are mixed case, but returned True due to broken 'and' \"\n            \"operator that never triggers the 'mixed' state\"\n        )\nE       AssertionError: check_dict_case({'A': 'apple', 'b': 'banana'}) should return False because keys are mixed case, but returned True due to broken 'and' operator that never triggers the 'mixed' state\nE       assert True == False\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_mixed_case_keys_detected_as_false - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6k9vc0ku\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_mixed_case_keys_detected_as_false PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:26:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 57311,
+  "completion_tokens_total": 721,
+  "duration_seconds": 27.84,
+  "timestamp": "2026-06-03T15:26:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

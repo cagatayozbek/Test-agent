@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\ndef test_amicable_numbers_sum_includes_first_amicable_pair():\n    # (220, 284) is the smallest amicable pair: divisor_sum(220)=284, divisor_sum(284)=220\n    # The bug uses `num == sum_fact` instead of `num != sum_fact`, so the guard\n    # requires num to equal its own divisor sum (perfect number), which amicable\n    # pairs never satisfy — causing the pair to be excluded entirely.\n    result = amicable_numbers_sum(300)\n    assert result == 504, (\n        f\"Expected 504 (220 + 284, the first amicable pair), got {result}. \"\n        \"Likely caused by `num == sum_fact` excluding all true amicable pairs.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw8q_0mu1\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_first_amicable_pair FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_amicable_numbers_sum_includes_first_amicable_pair ____________\n\n    def test_amicable_numbers_sum_includes_first_amicable_pair():\n        # (220, 284) is the smallest amicable pair: divisor_sum(220)=284, divisor_sum(284)=220\n        # The bug uses `num == sum_fact` instead of `num != sum_fact`, so the guard\n        # requires num to equal its own divisor sum (perfect number), which amicable\n        # pairs never satisfy — causing the pair to be excluded entirely.\n        result = amicable_numbers_sum(300)\n>       assert result == 504, (\n            f\"Expected 504 (220 + 284, the first amicable pair), got {result}. \"\n            \"Likely caused by `num == sum_fact` excluding all true amicable pairs.\"\n        )\nE       AssertionError: Expected 504 (220 + 284, the first amicable pair), got 34. Likely caused by `num == sum_fact` excluding all true amicable pairs.\nE       assert 34 == 504\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_includes_first_amicable_pair\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqn9m4563\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_first_amicable_pair PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:45:02Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56805,
+  "completion_tokens_total": 1008,
+  "duration_seconds": 27.17,
+  "timestamp": "2026-06-03T15:45:02Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

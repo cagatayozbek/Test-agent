@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_pascal",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import pascal\n\n\ndef test_pascal_row_lengths_include_trailing_one():\n    result = pascal(3)\n    assert [len(row) for row in result] == [1, 2, 3], (\n        f\"Expected row lengths [1, 2, 3] but got {[len(row) for row in result]}; \"\n        \"inner loop range(0, r) drops the trailing 1 from each row\"\n    )\n    assert result == [[1], [1, 1], [1, 2, 1]], (\n        f\"Expected [[1], [1, 1], [1, 2, 1]] but got {result}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpgu3tuo43\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths_include_trailing_one FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_pascal_row_lengths_include_trailing_one _________________\n\n    def test_pascal_row_lengths_include_trailing_one():\n>       result = pascal(3)\n                 ^^^^^^^^^\n\ntest_generated.py:6: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nn = 3\n\n    def pascal(n):\n        rows = [[1]]\n        for r in range(1, n):\n            row = []\n            for c in range(0, r):\n                upleft = rows[r - 1][c - 1] if c > 0 else 0\n>               upright = rows[r - 1][c] if c < r else 0\n                          ^^^^^^^^^^^^^^\nE               IndexError: list index out of range\n\nsource.py:8: IndexError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_pascal_row_lengths_include_trailing_one - Inde...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxjpmral5\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_pascal_row_lengths_include_trailing_one PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T16:14:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56838,
+  "completion_tokens_total": 752,
+  "duration_seconds": 25.32,
+  "timestamp": "2026-06-03T16:14:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

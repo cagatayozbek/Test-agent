@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_047",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import amicable_numbers_sum\n\n\ndef test_amicable_numbers_sum_includes_first_amicable_pair():\n    # 220 and 284 are the first amicable pair: sum_divisors(220)=284, sum_divisors(284)=220\n    # The buggy condition `num == sum_fact` is never true for amicable pairs (by definition num != sum_fact),\n    # so the buggy code returns 0 instead of 504.\n    result = amicable_numbers_sum(999)\n    assert result == 504, (\n        f\"Expected 504 (220+284, the only amicable pair below 1000), got {result}. \"\n        \"Likely cause: comparison operator `==` should be `!=` when checking num vs sum_fact.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy9xbx456\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_first_amicable_pair FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_amicable_numbers_sum_includes_first_amicable_pair ____________\n\n    def test_amicable_numbers_sum_includes_first_amicable_pair():\n        # 220 and 284 are the first amicable pair: sum_divisors(220)=284, sum_divisors(284)=220\n        # The buggy condition `num == sum_fact` is never true for amicable pairs (by definition num != sum_fact),\n        # so the buggy code returns 0 instead of 504.\n        result = amicable_numbers_sum(999)\n>       assert result == 504, (\n            f\"Expected 504 (220+284, the only amicable pair below 1000), got {result}. \"\n            \"Likely cause: comparison operator `==` should be `!=` when checking num vs sum_fact.\"\n        )\nE       AssertionError: Expected 504 (220+284, the only amicable pair below 1000), got 530. Likely cause: comparison operator `==` should be `!=` when checking num vs sum_fact.\nE       assert 530 == 504\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_amicable_numbers_sum_includes_first_amicable_pair\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.04s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5fw9okq9\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_amicable_numbers_sum_includes_first_amicable_pair PASSED [100%]\n\n============================== 1 passed in 0.03s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:45:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56882,
+  "completion_tokens_total": 1150,
+  "duration_seconds": 33.06,
+  "timestamp": "2026-06-03T15:45:29Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

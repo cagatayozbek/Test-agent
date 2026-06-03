@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import os\nimport tempfile\nfrom source import Tracer\n\n\ndef test_dump_source_preserves_utf8_without_coding_header():\n    # 'café\\n' encoded as UTF-8 — \\xc3\\xa9 are the two bytes for é\n    utf8_line = 'café\\n'.encode('utf-8')  # b'caf\\xc3\\xa9\\n'\n\n    fd, tmp_path = tempfile.mkstemp(suffix='.txt')\n    os.close(fd)\n\n    try:\n        tracer = Tracer(path=tmp_path, overwrite=True)\n        rendered = tracer.dump_source([utf8_line])\n\n        assert rendered == 'café\\n', (\n            f\"Expected 'café\\\\n' but got {rendered!r}; \"\n            f\"detect_encoding defaulted to 'ascii' instead of 'utf-8', \"\n            f\"so non-ASCII bytes \\\\xc3\\\\xa9 were replaced with Unicode \"\n            f\"replacement characters (\\\\ufffd) instead of being decoded correctly\"\n        )\n    finally:\n        os.unlink(tmp_path)",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8b2h4ufd\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_coding_header FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_dump_source_preserves_utf8_without_coding_header _____________\n\n    def test_dump_source_preserves_utf8_without_coding_header():\n        # 'café\\n' encoded as UTF-8 — \\xc3\\xa9 are the two bytes for é\n        utf8_line = 'café\\n'.encode('utf-8')  # b'caf\\xc3\\xa9\\n'\n    \n        fd, tmp_path = tempfile.mkstemp(suffix='.txt')\n        os.close(fd)\n    \n        try:\n            tracer = Tracer(path=tmp_path, overwrite=True)\n            rendered = tracer.dump_source([utf8_line])\n    \n>           assert rendered == 'café\\n', (\n                f\"Expected 'café\\\\n' but got {rendered!r}; \"\n                f\"detect_encoding defaulted to 'ascii' instead of 'utf-8', \"\n                f\"so non-ASCII bytes \\\\xc3\\\\xa9 were replaced with Unicode \"\n                f\"replacement characters (\\\\ufffd) instead of being decoded correctly\"\n            )\nE           AssertionError: Expected 'café\\n' but got 'caf��\\n'; detect_encoding defaulted to 'ascii' instead of 'utf-8', so non-ASCII bytes \\xc3\\xa9 were replaced with Unicode replacement characters (\\ufffd) instead of being decoded correctly\nE           assert 'caf��\\n' == 'café\\n'\nE             \nE             - café\nE             + caf��\n\ntest_generated.py:17: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_dump_source_preserves_utf8_without_coding_header\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw4hbh6vr\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_coding_header PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:06:55Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 76686,
+  "completion_tokens_total": 3296,
+  "duration_seconds": 63.74,
+  "timestamp": "2026-06-03T15:06:55Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

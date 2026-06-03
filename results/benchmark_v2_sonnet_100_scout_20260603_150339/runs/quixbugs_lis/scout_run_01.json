@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_lis",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import lis\n\n\ndef test_lis_not_overwritten_by_later_shorter_chain():\n    # LIS is [2,4,5] or [3,4,5] (length 3), found before the trailing 1.\n    # Bug: the final element (1) triggers a chain-end update with length+1==1,\n    # unconditionally overwriting longest=3 → returns 1 instead of 3.\n    result = lis([3, 2, 6, 4, 5, 1])\n    assert result == 3, (\n        f\"Expected LIS length 3 ([2,4,5]), got {result}. \"\n        \"Bug: 'longest = length + 1' overwrites the global max with a later, \"\n        \"shorter chain update; fix requires 'longest = max(longest, length + 1)'.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1kyghwxv\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_not_overwritten_by_later_shorter_chain FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_lis_not_overwritten_by_later_shorter_chain ________________\n\n    def test_lis_not_overwritten_by_later_shorter_chain():\n        # LIS is [2,4,5] or [3,4,5] (length 3), found before the trailing 1.\n        # Bug: the final element (1) triggers a chain-end update with length+1==1,\n        # unconditionally overwriting longest=3 → returns 1 instead of 3.\n        result = lis([3, 2, 6, 4, 5, 1])\n>       assert result == 3, (\n            f\"Expected LIS length 3 ([2,4,5]), got {result}. \"\n            \"Bug: 'longest = length + 1' overwrites the global max with a later, \"\n            \"shorter chain update; fix requires 'longest = max(longest, length + 1)'.\"\n        )\nE       AssertionError: Expected LIS length 3 ([2,4,5]), got 1. Bug: 'longest = length + 1' overwrites the global max with a later, shorter chain update; fix requires 'longest = max(longest, length + 1)'.\nE       assert 1 == 3\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_lis_not_overwritten_by_later_shorter_chain - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_csmwk0b\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_lis_not_overwritten_by_later_shorter_chain PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T16:05:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 102620,
+  "completion_tokens_total": 4167,
+  "duration_seconds": 83.31,
+  "timestamp": "2026-06-03T16:05:17Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

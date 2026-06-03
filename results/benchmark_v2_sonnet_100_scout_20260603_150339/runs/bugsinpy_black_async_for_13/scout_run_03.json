@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_black_async_for_13",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import tokenize_async\n\n\ndef test_async_for_emits_async_token_not_name():\n    # 'async for' should emit ASYNC, 'async def' should emit ASYNC and set async_def\n    async_def, tokens = tokenize_async([\"async\", \"def\", \"f\", \"async\", \"for\", \"x\", \"in\", \"xs\"])\n\n    async_tokens = [t for t in tokens if t[1] == \"async\"]\n    name_async_tokens = [t for t in tokens if t == (\"NAME\", \"async\")]\n\n    assert async_def is True, \"async_def should be True when 'async def' is present\"\n\n    assert name_async_tokens == [], (\n        f\"'async' was misclassified as NAME token(s): {name_async_tokens}; \"\n        f\"full token stream: {tokens}\"\n    )\n\n    assert len(async_tokens) == 2, (\n        f\"Expected 2 ASYNC tokens (one for 'async def', one for 'async for'), \"\n        f\"but got {async_tokens}; full token stream: {tokens}\"\n    )\n\n    assert all(t[0] == \"ASYNC\" for t in async_tokens), (\n        f\"All 'async' tokens must have type ASYNC, got: {async_tokens}\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpfpx9re0j\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_emits_async_token_not_name FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_async_for_emits_async_token_not_name ___________________\n\n    def test_async_for_emits_async_token_not_name():\n        # 'async for' should emit ASYNC, 'async def' should emit ASYNC and set async_def\n        async_def, tokens = tokenize_async([\"async\", \"def\", \"f\", \"async\", \"for\", \"x\", \"in\", \"xs\"])\n    \n        async_tokens = [t for t in tokens if t[1] == \"async\"]\n        name_async_tokens = [t for t in tokens if t == (\"NAME\", \"async\")]\n    \n        assert async_def is True, \"async_def should be True when 'async def' is present\"\n    \n>       assert name_async_tokens == [], (\n            f\"'async' was misclassified as NAME token(s): {name_async_tokens}; \"\n            f\"full token stream: {tokens}\"\n        )\nE       AssertionError: 'async' was misclassified as NAME token(s): [('NAME', 'async')]; full token stream: [('ASYNC', 'async'), ('NAME', 'def'), ('NAME', 'f'), ('NAME', 'async'), ('NAME', 'for'), ('NAME', 'x'), ('NAME', 'in'), ('NAME', 'xs')]\nE       assert [('NAME', 'async')] == []\nE         \nE         Left contains one more item: ('NAME', 'async')\nE         \nE         Full diff:\nE         - []\nE         + [\nE         +     (...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntest_generated.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_async_for_emits_async_token_not_name - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.03s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr580e766\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_async_for_emits_async_token_not_name PASSED      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:05:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 57013,
+  "completion_tokens_total": 1257,
+  "duration_seconds": 32.17,
+  "timestamp": "2026-06-03T15:05:23Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

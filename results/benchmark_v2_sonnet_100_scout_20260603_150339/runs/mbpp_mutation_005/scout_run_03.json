@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_005",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import average_tuple\n\ndef test_average_tuple_divides_not_multiplies():\n    result = average_tuple(((1, 2, 3), (4, 5, 6)))\n    assert result == [2.5, 3.5, 4.5], (\n        f\"Expected [2.5, 3.5, 4.5] but got {result}; \"\n        \"average_tuple should divide sum by count, not multiply\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpmkhm41oh\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_divides_not_multiplies FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_average_tuple_divides_not_multiplies ___________________\n\n    def test_average_tuple_divides_not_multiplies():\n        result = average_tuple(((1, 2, 3), (4, 5, 6)))\n>       assert result == [2.5, 3.5, 4.5], (\n            f\"Expected [2.5, 3.5, 4.5] but got {result}; \"\n            \"average_tuple should divide sum by count, not multiply\"\n        )\nE       AssertionError: Expected [2.5, 3.5, 4.5] but got [10, 14, 18]; average_tuple should divide sum by count, not multiply\nE       assert [10, 14, 18] == [2.5, 3.5, 4.5]\nE         \nE         At index 0 diff: 10 != 2.5\nE         \nE         Full diff:\nE           [\nE         +     10,\nE         -     2.5,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_average_tuple_divides_not_multiplies - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4_3nwrg2\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_average_tuple_divides_not_multiplies PASSED      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:35:45Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56413,
+  "completion_tokens_total": 604,
+  "duration_seconds": 23.07,
+  "timestamp": "2026-06-03T15:35:45Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

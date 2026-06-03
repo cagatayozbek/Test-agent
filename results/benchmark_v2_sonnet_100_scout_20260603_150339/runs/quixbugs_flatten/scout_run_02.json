@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_flatten",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import flatten\n\ndef test_flatten_yields_scalars_not_generators():\n    result = list(flatten([1, [2, 3], [[4]]]))\n    assert result == [1, 2, 3, 4], (\n        f\"Expected [1, 2, 3, 4] but got {result}. \"\n        \"Likely cause: non-list elements are wrapped in generator objects instead of yielded directly.\"\n    )\n    assert all(not hasattr(e, '__next__') for e in result), (\n        \"Result contains generator objects instead of scalar values — 'yield flatten(x)' should be 'yield x'.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4i8y7qlz\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_flatten_yields_scalars_not_generators FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_flatten_yields_scalars_not_generators __________________\n\n    def test_flatten_yields_scalars_not_generators():\n        result = list(flatten([1, [2, 3], [[4]]]))\n>       assert result == [1, 2, 3, 4], (\n            f\"Expected [1, 2, 3, 4] but got {result}. \"\n            \"Likely cause: non-list elements are wrapped in generator objects instead of yielded directly.\"\n        )\nE       AssertionError: Expected [1, 2, 3, 4] but got [<generator object flatten at 0x1070b3790>, <generator object flatten at 0x1070b3970>, <generator object flatten at 0x1070b3a60>, <generator object flatten at 0x1070b3c40>]. Likely cause: non-list elements are wrapped in generator objects instead of yielded directly.\nE       assert [<generator o... 0x1070b3c40>] == [1, 2, 3, 4]\nE         \nE         At index 0 diff: <generator object flatten at 0x1070b3790> != 1\nE         \nE         Full diff:\nE           [\nE         -     1,\nE         -     2,...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_flatten_yields_scalars_not_generators - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpv01q7ac9\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_flatten_yields_scalars_not_generators PASSED     [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:55:40Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56625,
+  "completion_tokens_total": 614,
+  "duration_seconds": 20.7,
+  "timestamp": "2026-06-03T15:55:40Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_020",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import newman_prime\n\ndef test_newman_prime_recurrence_uses_n_minus_2():\n    assert newman_prime(3) == 7, \"newman_prime(3) should be 7 (2*S(2)+S(1)=2*3+1=7); bug returns 9 by using S(n-1) twice\"\n    assert newman_prime(4) == 17, \"newman_prime(4) should be 17; bug compounds the wrong recurrence\"\n    assert newman_prime(5) == 41, \"newman_prime(5) should be 41; bug compounds the wrong recurrence\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdn22_szf\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_recurrence_uses_n_minus_2 FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_newman_prime_recurrence_uses_n_minus_2 __________________\n\n    def test_newman_prime_recurrence_uses_n_minus_2():\n>       assert newman_prime(3) == 7, \"newman_prime(3) should be 7 (2*S(2)+S(1)=2*3+1=7); bug returns 9 by using S(n-1) twice\"\nE       AssertionError: newman_prime(3) should be 7 (2*S(2)+S(1)=2*3+1=7); bug returns 9 by using S(n-1) twice\nE       assert 9 == 7\nE        +  where 9 = newman_prime(3)\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_newman_prime_recurrence_uses_n_minus_2 - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr708qat5\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_newman_prime_recurrence_uses_n_minus_2 PASSED    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:40:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56452,
+  "completion_tokens_total": 1380,
+  "duration_seconds": 29.79,
+  "timestamp": "2026-06-03T15:40:01Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

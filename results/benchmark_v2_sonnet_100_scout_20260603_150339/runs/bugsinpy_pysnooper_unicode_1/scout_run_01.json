@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import detect_encoding\n\n\ndef test_detect_encoding_defaults_to_utf8_when_no_coding_header():\n    # Lines contain valid UTF-8 bytes but no '# coding:' declaration.\n    # The fixed code must default to 'utf-8' so that downstream\n    # decode(encoding, 'replace') round-trips non-ASCII bytes correctly\n    # instead of replacing 0xC3 0xA9 with U+FFFD U+FFFD.\n    utf8_source = [b\"x = 1\\n\", b\"caf\\xc3\\xa9\\n\"]  # second line encodes 'café'\n    result = detect_encoding(utf8_source)\n    assert result == \"utf-8\", (\n        f\"detect_encoding should default to 'utf-8' when no coding header is present, \"\n        f\"but returned {result!r}; the 'ascii' default causes decode('ascii', 'replace') \"\n        \"to corrupt every non-ASCII byte into U+FFFD\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp9bk5rku8\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_detect_encoding_defaults_to_utf8_when_no_coding_header FAILED [100%]\n\n=================================== FAILURES ===================================\n_________ test_detect_encoding_defaults_to_utf8_when_no_coding_header __________\n\n    def test_detect_encoding_defaults_to_utf8_when_no_coding_header():\n        # Lines contain valid UTF-8 bytes but no '# coding:' declaration.\n        # The fixed code must default to 'utf-8' so that downstream\n        # decode(encoding, 'replace') round-trips non-ASCII bytes correctly\n        # instead of replacing 0xC3 0xA9 with U+FFFD U+FFFD.\n        utf8_source = [b\"x = 1\\n\", b\"caf\\xc3\\xa9\\n\"]  # second line encodes 'café'\n        result = detect_encoding(utf8_source)\n>       assert result == \"utf-8\", (\n            f\"detect_encoding should default to 'utf-8' when no coding header is present, \"\n            f\"but returned {result!r}; the 'ascii' default causes decode('ascii', 'replace') \"\n            \"to corrupt every non-ASCII byte into U+FFFD\"\n        )\nE       AssertionError: detect_encoding should default to 'utf-8' when no coding header is present, but returned 'ascii'; the 'ascii' default causes decode('ascii', 'replace') to corrupt every non-ASCII byte into U+FFFD\nE       assert 'ascii' == 'utf-8'\nE         \nE         - utf-8\nE         + ascii\n\ntest_generated.py:11: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_detect_encoding_defaults_to_utf8_when_no_coding_header\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsukv6vd8\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_detect_encoding_defaults_to_utf8_when_no_coding_header PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:05:52Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56953,
+  "completion_tokens_total": 2239,
+  "duration_seconds": 45.74,
+  "timestamp": "2026-06-03T15:05:52Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

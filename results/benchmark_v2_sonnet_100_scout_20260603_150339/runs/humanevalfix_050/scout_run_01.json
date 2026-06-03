@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_050",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import decode_shift\n\n\ndef test_decode_shift_inverts_encode():\n    # encode_shift('a') == 'f'; decode_shift must recover 'a'\n    # Buggy code: chr(((ord('f')-5-ord('a'))%26) + ord('f')) = chr(0+102) = 'f'  (wrong)\n    # Fixed code: chr(((ord('f')-5-ord('a'))%26) + ord('a')) = chr(0+97)  = 'a'  (correct)\n    result = decode_shift(\"f\")\n    assert result == \"a\", (\n        f\"decode_shift('f') returned {result!r}, expected 'a'. \"\n        \"The bug uses ord(ch) as the base offset instead of ord('a').\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps5k_nqwe\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_inverts_encode FAILED               [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_decode_shift_inverts_encode _______________________\n\n    def test_decode_shift_inverts_encode():\n        # encode_shift('a') == 'f'; decode_shift must recover 'a'\n        # Buggy code: chr(((ord('f')-5-ord('a'))%26) + ord('f')) = chr(0+102) = 'f'  (wrong)\n        # Fixed code: chr(((ord('f')-5-ord('a'))%26) + ord('a')) = chr(0+97)  = 'a'  (correct)\n        result = decode_shift(\"f\")\n>       assert result == \"a\", (\n            f\"decode_shift('f') returned {result!r}, expected 'a'. \"\n            \"The bug uses ord(ch) as the base offset instead of ord('a').\"\n        )\nE       AssertionError: decode_shift('f') returned 'f', expected 'a'. The bug uses ord(ch) as the base offset instead of ord('a').\nE       assert 'f' == 'a'\nE         \nE         - a\nE         + f\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_decode_shift_inverts_encode - AssertionError: ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkbse0rob\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_decode_shift_inverts_encode PASSED               [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:18:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56680,
+  "completion_tokens_total": 922,
+  "duration_seconds": 29.2,
+  "timestamp": "2026-06-03T15:18:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_042",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import incr_list\n\ndef test_incr_list_increments_by_one_not_two():\n    assert incr_list([1, 2, 3]) == [2, 3, 4], \"incr_list([1, 2, 3]) should return [2, 3, 4], got off-by-one results\"\n    assert incr_list([5, 3, 5, 2, 3, 3, 9, 0, 123]) == [6, 4, 6, 3, 4, 4, 10, 1, 124], \"incr_list docstring example failed\"\n    assert incr_list([0]) == [1], \"incr_list([0]) should return [1]\"\n    assert incr_list([-1]) == [0], \"incr_list([-1]) should return [0]\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpilmg1o6t\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_increments_by_one_not_two FAILED       [100%]\n\n=================================== FAILURES ===================================\n___________________ test_incr_list_increments_by_one_not_two ___________________\n\n    def test_incr_list_increments_by_one_not_two():\n>       assert incr_list([1, 2, 3]) == [2, 3, 4], \"incr_list([1, 2, 3]) should return [2, 3, 4], got off-by-one results\"\nE       AssertionError: incr_list([1, 2, 3]) should return [2, 3, 4], got off-by-one results\nE       assert [3, 4, 5] == [2, 3, 4]\nE         \nE         At index 0 diff: 3 != 2\nE         \nE         Full diff:\nE           [\nE         -     2,\nE               3,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_incr_list_increments_by_one_not_two - Assertio...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpxajspoh1\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_incr_list_increments_by_one_not_two PASSED       [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:17:41Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56518,
+  "completion_tokens_total": 645,
+  "duration_seconds": 19.81,
+  "timestamp": "2026-06-03T15:17:41Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

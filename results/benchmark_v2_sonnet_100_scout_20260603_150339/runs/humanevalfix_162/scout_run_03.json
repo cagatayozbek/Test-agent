@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_162",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import string_to_md5\n\ndef test_string_to_md5_uses_input_variable_not_literal():\n    result = string_to_md5('Hello world')\n    assert result == '3e25960a79dbc69b674cd4ec67a72c62', (\n        f\"Expected MD5 of 'Hello world' to be '3e25960a79dbc69b674cd4ec67a72c62', got {result!r}. \"\n        \"Bug: hashlib.md5('text') uses the string literal 'text' instead of the variable text.encode('ascii').\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptvy9z7h9\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_string_to_md5_uses_input_variable_not_literal FAILED [100%]\n\n=================================== FAILURES ===================================\n______________ test_string_to_md5_uses_input_variable_not_literal ______________\n\n    def test_string_to_md5_uses_input_variable_not_literal():\n>       result = string_to_md5('Hello world')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:5: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntext = 'Hello world'\n\n    def string_to_md5(text):\n        \"\"\"\n        Given a string 'text', return its md5 hash equivalent string.\n        If 'text' is an empty string, return None.\n    \n        >>> string_to_md5('Hello world') == '3e25960a79dbc69b674cd4ec67a72c62'\n        \"\"\"\n        import hashlib\n>       return hashlib.md5('text').hexdigest() if text else None\n               ^^^^^^^^^^^^^^^^^^^\nE       TypeError: Strings must be encoded before hashing\n\nsource.py:10: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_string_to_md5_uses_input_variable_not_literal\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.03s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp23gxdb4j\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_string_to_md5_uses_input_variable_not_literal PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:33:51Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56650,
+  "completion_tokens_total": 665,
+  "duration_seconds": 22.13,
+  "timestamp": "2026-06-03T15:33:51Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

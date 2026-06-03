@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_091",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import is_bored\n\ndef test_is_bored_sentence_starting_with_I():\n    assert is_bored(\"I love this weather\") == 1, \"Single sentence starting with 'I' should count as 1 boredom\"\n    assert is_bored(\"The sky is blue. The sun is shining. I love this weather\") == 1, \"One sentence starting with 'I' among others should return 1\"\n    assert is_bored(\"Hello world\") == 0, \"No sentence starting with 'I' should return 0\"\n    assert is_bored(\"I think. I know. I agree\") == 3, \"Three sentences each starting with 'I' should return 3\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpr1gujm3q\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_sentence_starting_with_I FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_is_bored_sentence_starting_with_I ____________________\n\n    def test_is_bored_sentence_starting_with_I():\n>       assert is_bored(\"I love this weather\") == 1, \"Single sentence starting with 'I' should count as 1 boredom\"\nE       AssertionError: Single sentence starting with 'I' should count as 1 boredom\nE       assert 0 == 1\nE        +  where 0 = is_bored('I love this weather')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_is_bored_sentence_starting_with_I - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8amd0ca0\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_is_bored_sentence_starting_with_I PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:25:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56737,
+  "completion_tokens_total": 643,
+  "duration_seconds": 25.45,
+  "timestamp": "2026-06-03T15:25:43Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

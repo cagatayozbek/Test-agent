@@ -1,0 +1,36 @@
+{
+  "task_id": "async_race_condition",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import asyncio\nfrom source import run_race\n\ndef test_concurrent_increments_are_atomic():\n    result = asyncio.run(run_race())\n    assert result == 50, (\n        f\"Expected counter to be 50 after 50 concurrent increments, \"\n        f\"got {result} — race condition: tasks read stale count before any write completes\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpemn22gz7\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_concurrent_increments_are_atomic FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_concurrent_increments_are_atomic _____________________\n\n    def test_concurrent_increments_are_atomic():\n        result = asyncio.run(run_race())\n>       assert result == 50, (\n            f\"Expected counter to be 50 after 50 concurrent increments, \"\n            f\"got {result} — race condition: tasks read stale count before any write completes\"\n        )\nE       AssertionError: Expected counter to be 50 after 50 concurrent increments, got 1 — race condition: tasks read stale count before any write completes\nE       assert 1 == 50\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_concurrent_increments_are_atomic - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.04s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpiudvxmi8\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_concurrent_increments_are_atomic PASSED          [100%]\n\n============================== 1 passed in 0.56s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:04:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56496,
+  "completion_tokens_total": 587,
+  "duration_seconds": 22.65,
+  "timestamp": "2026-06-03T15:04:01Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

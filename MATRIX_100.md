@@ -159,24 +159,36 @@ tool-sürmeyi test yazımından **ayırır** (decoupling). Aynı model iki ayrı
 yazar (+ aynı retry). Güçlü bir öğretmen modeli katılmaz, yani **tek-model**
 ölçümü kalır. Şimdilik yalnızca gpt-oss-20b'de ölçüldü.
 
-| Mod | BRTR | Wilson %95 CI | tok (p/c) | süre |
-|---|---|---|---|---|
-| adaptive | 0.950 (285/300) | [0.919, 0.970] | 841 / 1111 | 9.2s |
-| baseline | 0.940 (282/300) | [0.907, 0.962] | 835 / 1083 | 8.1s |
-| **scout** | **0.897 (269/300)** | **[0.857, 0.926]** | 6443 / 5391 | 40.3s |
-| deep | 0.213 (64/300) | [0.171, 0.263] | 11663 / 13693 | 148.3s |
+### scout × 3 model
 
-**İki bulgu:** (1) Decoupling, 20b'nin deep çöküşünü **onarıyor**: 0.213 → 0.897
-(**+68.4pp**, CI'lar ayrık) → çöküş *kapasiteden değil çift yükten*'di. (2) Ama
-baseline'ı **geçmiyor** — 4.3pp altında, matematiksel tavanı bile (0.927)
-baseline'ın altında, üstelik ~8× token / ~5× süre. Gerçek ölçüm (0 zero-token,
-çeşitli test kodu). Hatalar çoğunlukla overfit (31'in 27'si); kaynak kırılımı:
-humanevalfix **100%**, quixbugs 92%, mbpp_mutation 83%, ama bugsinpy/legacy
-(gerçek-dünya) **53%** — writer messy task'larda fazla özelleşiyor. **Okunuş:**
-"headroom" tezini doğruluyor — baseline'ı zaten yüksek (headroom ~6pp) modelde
-hiçbir mimari kazanç sökemez; scout sadece deep'in açtığı çukuru dolduruyor.
-Asıl parlayacağı profil: düşük-baseline + tool-beceriksiz (örn. llama-3.3-70b
-0.793 → deep 0.340) — sıradaki deney.
+| Model | scout BRTR | Wilson %95 CI | tok (p/c) | süre | baseline | deep |
+|---|---|---|---|---|---|---|
+| **gpt-oss-20b** | **0.897** (269/300) | [0.857, 0.926] | 6443 / 5391 | 40.3s | 0.940 | 0.213 |
+| **haiku** | **0.987** (296/300) | [0.966, 0.995] | 132712 / 5108 ◇ | 70.5s | 0.980 | 0.990 |
+| **sonnet** | **0.990** (297/300) | [0.971, 0.997] | 61537 / 1294 ◇ | 34.1s | 0.943 † | 1.000 |
+
+◇ Claude tier'ları `claude -p` CLI üzerinden; "prompt tokens" cache-read'leri
+de topluyor (Together modelleriyle birebir kıyaslanamaz). † sonnet baseline §12
+timeout-bozuk; gerçeği ≈0.99 (deep 1.000 ve bu scout 0.990 bunu doğruluyor).
+
+**Bulgular:**
+- **gpt-oss-20b (headroom'lu, çöküşten gelen):** Decoupling deep çöküşünü
+  **onarıyor** 0.213 → 0.897 (**+68.4pp**, CI'lar ayrık) → çöküş *kapasiteden
+  değil çift yükten*'di. Ama baseline'ı **geçmiyor** (4.3pp altı, matematiksel
+  tavan 0.927, ~8× token). Hatalar çoğu overfit; kaynak kırılımı humanevalfix
+  100% / quixbugs 92% / bugsinpy-legacy 53%.
+- **haiku + sonnet (tavan-bant):** scout **nötr** — haiku 0.987 ≈ deep 0.990,
+  sonnet 0.990 ≈ deep 1.000. Headroom olmayınca decoupling hiçbir şey
+  değiştirmiyor (gpt-oss-120b / V4-flash tavan etkisiyle aynı).
+- **Çapraz-model zayıf nokta:** `quixbugs_next_palindrome` her iki Claude
+  modelinde de sistematik FAIL (haiku 3/3, sonnet 2/3, hep TEST_PASSES_ON_BUG)
+  — scout-writer'ın bu task'ta bug'ı tetikleyen girdi kuramaması; mimariye özgü,
+  modelden bağımsız bir kör nokta.
+
+**Okunuş:** "headroom" tezi üç modelde de tutuyor. Decoupling, model **doymamış
+ve tool-sürmede çift-yük altında çöküyorsa** kurtarır (20b); **tavandaysa**
+nötr (haiku/sonnet). Asıl kazanç beklenen profil hâlâ düşük-baseline +
+tool-beceriksiz (örn. llama-3.3-70b 0.793 → deep 0.340) — sıradaki deney.
 
 ## Ham veri dizinleri
 
@@ -192,6 +204,8 @@ Asıl parlayacağı profil: düşük-baseline + tool-beceriksiz (örn. llama-3.3
 | gpt-oss-20b adaptive | `results/benchmark_v2_gptoss20b_100_adaptive_20260525_210036/` |
 | gpt-oss-20b deep | `results/benchmark_v2_gptoss20b_100_deep_merged/` (via `scripts/merge_gptoss20b_deep_100.py`) |
 | gpt-oss-20b scout (4. mod) | `results/benchmark_v2_gptoss20b_100_scout_20260602_113350/` (300 run, gerçek; 0 zero-token, 269 başarı) |
+| haiku scout (4. mod) | `results/benchmark_v2_haiku_100_scout_20260602_203050/` (300 run, claude -p; CLI timeout'lar 300s ile tekrar koşuldu) |
+| sonnet scout (4. mod) | `results/benchmark_v2_sonnet_100_scout_20260603_150339/` (300 run, claude -p; 7 CLI timeout 300s ile tekrar, 5 kurtuldu) |
 | qwen3-coder baseline | `results/benchmark_v2_qwen3coder_100_baseline_20260529_085248/` |
 | qwen3-coder adaptive | `results/benchmark_v2_qwen3coder_100_adaptive_20260529_090259/` |
 | phi-4 baseline | `results/benchmark_v2_phi4_100_baseline_20260531_132254/` |

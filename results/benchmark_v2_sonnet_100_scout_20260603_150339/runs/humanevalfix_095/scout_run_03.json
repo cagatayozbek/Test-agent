@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_095",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import check_dict_case\n\ndef test_check_dict_case_mixed_upper_and_lower_keys_returns_false():\n    result = check_dict_case({'A': 'apple', 'b': 'banana'})\n    assert result is False, (\n        f\"Expected False for mixed-case keys {{'A': 'apple', 'b': 'banana'}}, got {result}. \"\n        \"The elif condition uses 'and' instead of 'or', making it always False, \"\n        \"so the loop breaks early and incorrectly returns True.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4s8avjxy\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_mixed_upper_and_lower_keys_returns_false FAILED [100%]\n\n=================================== FAILURES ===================================\n________ test_check_dict_case_mixed_upper_and_lower_keys_returns_false _________\n\n    def test_check_dict_case_mixed_upper_and_lower_keys_returns_false():\n        result = check_dict_case({'A': 'apple', 'b': 'banana'})\n>       assert result is False, (\n            f\"Expected False for mixed-case keys {{'A': 'apple', 'b': 'banana'}}, got {result}. \"\n            \"The elif condition uses 'and' instead of 'or', making it always False, \"\n            \"so the loop breaks early and incorrectly returns True.\"\n        )\nE       AssertionError: Expected False for mixed-case keys {'A': 'apple', 'b': 'banana'}, got True. The elif condition uses 'and' instead of 'or', making it always False, so the loop breaks early and incorrectly returns True.\nE       assert True is False\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_check_dict_case_mixed_upper_and_lower_keys_returns_false\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3zm8yydt\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_check_dict_case_mixed_upper_and_lower_keys_returns_false PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:27:03Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 57358,
+  "completion_tokens_total": 789,
+  "duration_seconds": 25.92,
+  "timestamp": "2026-06-03T15:27:03Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

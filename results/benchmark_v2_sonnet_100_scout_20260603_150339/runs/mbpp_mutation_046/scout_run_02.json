@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_046",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import is_nonagonal\n\ndef test_nonagonal_uses_multiplication_not_integer_division():\n    assert is_nonagonal(1) == 1, \"is_nonagonal(1) should return 1 (first nonagonal number: 1*(7*1-5)/2=1)\"\n    assert is_nonagonal(2) == 9, \"is_nonagonal(2) should return 9 (second nonagonal number: 2*(7*2-5)/2=9)\"\n    assert is_nonagonal(3) == 24, \"is_nonagonal(3) should return 24 (third nonagonal number: 3*(7*3-5)/2=24)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpb_2zursr\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_nonagonal_uses_multiplication_not_integer_division FAILED [100%]\n\n=================================== FAILURES ===================================\n___________ test_nonagonal_uses_multiplication_not_integer_division ____________\n\n    def test_nonagonal_uses_multiplication_not_integer_division():\n>       assert is_nonagonal(1) == 1, \"is_nonagonal(1) should return 1 (first nonagonal number: 1*(7*1-5)/2=1)\"\nE       AssertionError: is_nonagonal(1) should return 1 (first nonagonal number: 1*(7*1-5)/2=1)\nE       assert 0 == 1\nE        +  where 0 = is_nonagonal(1)\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_nonagonal_uses_multiplication_not_integer_division\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp2545bhte\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_nonagonal_uses_multiplication_not_integer_division PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:44:35Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56409,
+  "completion_tokens_total": 751,
+  "duration_seconds": 24.15,
+  "timestamp": "2026-06-03T15:44:35Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

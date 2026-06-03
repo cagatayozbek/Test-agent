@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_020",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_closest_elements\n\n\ndef test_returns_closest_not_farthest_pair():\n    result = find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2])\n    assert result == (2.0, 2.2), (\n        f\"Expected closest pair (2.0, 2.2) but got {result}; \"\n        \"buggy code returns farthest pair (1.0, 5.0) due to inverted comparison operator\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmps4kgqbq_\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_returns_closest_not_farthest_pair FAILED         [100%]\n\n=================================== FAILURES ===================================\n____________________ test_returns_closest_not_farthest_pair ____________________\n\n    def test_returns_closest_not_farthest_pair():\n        result = find_closest_elements([1.0, 2.0, 3.0, 4.0, 5.0, 2.2])\n>       assert result == (2.0, 2.2), (\n            f\"Expected closest pair (2.0, 2.2) but got {result}; \"\n            \"buggy code returns farthest pair (1.0, 5.0) due to inverted comparison operator\"\n        )\nE       AssertionError: Expected closest pair (2.0, 2.2) but got (1.0, 5.0); buggy code returns farthest pair (1.0, 5.0) due to inverted comparison operator\nE       assert (1.0, 5.0) == (2.0, 2.2)\nE         \nE         At index 0 diff: 1.0 != 2.0\nE         \nE         Full diff:\nE           (\nE         -     2.0,\nE         ?     ^...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_returns_closest_not_farthest_pair - AssertionE...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkul17zm2\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_returns_closest_not_farthest_pair PASSED         [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:13:14Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 57301,
+  "completion_tokens_total": 784,
+  "duration_seconds": 27.42,
+  "timestamp": "2026-06-03T15:13:14Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

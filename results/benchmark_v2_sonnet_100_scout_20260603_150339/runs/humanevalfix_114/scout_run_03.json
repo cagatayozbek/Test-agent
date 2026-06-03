@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_114",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import minSubArraySum\n\n\ndef test_min_subarray_sum_multi_element_negative():\n    # The buggy code computes min(-i for i in nums) = -max(nums) = -(3) = 1,\n    # ignoring contiguous subarray sums entirely.\n    # The fix uses -max_sum from Kadane's algorithm on negated values,\n    # which correctly finds the sum of the entire array: -6.\n    result = minSubArraySum([-1, -2, -3])\n    assert result == -6, (\n        f\"Expected -6 (sum of entire array [-1,-2,-3]), got {result}. \"\n        \"Buggy code returns min(-i for i in nums) = 1 instead of -max_sum = -6.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpqftzg6o8\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_subarray_sum_multi_element_negative FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_min_subarray_sum_multi_element_negative _________________\n\n    def test_min_subarray_sum_multi_element_negative():\n        # The buggy code computes min(-i for i in nums) = -max(nums) = -(3) = 1,\n        # ignoring contiguous subarray sums entirely.\n        # The fix uses -max_sum from Kadane's algorithm on negated values,\n        # which correctly finds the sum of the entire array: -6.\n        result = minSubArraySum([-1, -2, -3])\n>       assert result == -6, (\n            f\"Expected -6 (sum of entire array [-1,-2,-3]), got {result}. \"\n            \"Buggy code returns min(-i for i in nums) = 1 instead of -max_sum = -6.\"\n        )\nE       AssertionError: Expected -6 (sum of entire array [-1,-2,-3]), got 1. Buggy code returns min(-i for i in nums) = 1 instead of -max_sum = -6.\nE       assert 1 == -6\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_subarray_sum_multi_element_negative - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwot0zi_i\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_subarray_sum_multi_element_negative PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:29:54Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 57024,
+  "completion_tokens_total": 1173,
+  "duration_seconds": 31.6,
+  "timestamp": "2026-06-03T15:29:54Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

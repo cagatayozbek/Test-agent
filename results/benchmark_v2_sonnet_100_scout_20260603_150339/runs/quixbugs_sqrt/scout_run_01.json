@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom concurrent.futures import ProcessPoolExecutor, TimeoutError as FuturesTimeoutError\nfrom source import sqrt\n\n\ndef test_sqrt_converges_to_correct_value():\n    \"\"\"sqrt(2, 0.01) must terminate and return a value within 0.01 of the true sqrt(2).\n\n    Buggy code: while abs(x - approx) > epsilon  — for x=2, abs(2 - 1.4142) ≈ 0.586,\n    which never drops below 0.01, so the loop runs forever.\n\n    Fixed code: while abs(x - approx**2) > epsilon  — residual converges to 0,\n    loop terminates, and the result is within epsilon of sqrt(2) ≈ 1.41421356.\n    \"\"\"\n    with ProcessPoolExecutor(max_workers=1) as executor:\n        future = executor.submit(sqrt, 2, 0.01)\n        try:\n            result = future.result(timeout=3)\n        except FuturesTimeoutError:\n            pytest.fail(\n                \"sqrt(2, 0.01) did not terminate within 3 seconds — \"\n                \"infinite loop caused by wrong convergence check abs(x - approx) \"\n                \"instead of abs(x - approx**2)\"\n            )\n\n    assert abs(result - 1.41421356) < 0.01, (\n        f\"sqrt(2, 0.01) returned {result!r}, expected a value within 0.01 of 1.41421356\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpav3g72a3\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_converges_to_correct_value PASSED           [100%]\n\n============================== 1 passed in 0.07s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T16:28:34Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56337,
+  "completion_tokens_total": 1669,
+  "duration_seconds": 66.57,
+  "timestamp": "2026-06-03T16:28:34Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

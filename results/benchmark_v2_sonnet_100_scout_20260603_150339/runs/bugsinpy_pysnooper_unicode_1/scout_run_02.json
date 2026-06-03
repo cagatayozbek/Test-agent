@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import detect_encoding\n\n\ndef test_detect_encoding_defaults_to_utf8_not_ascii():\n    # PEP 3120: when no explicit coding declaration is present, the default must be UTF-8.\n    # The bug encodes this default as 'ascii', so b'\\xc3\\xa9' (UTF-8 for é) gets decoded\n    # with replace-mode and becomes '\\ufffd\\ufffd' instead of 'é'.\n    source = iter([b\"x = 1\\n\"])\n    encoding = detect_encoding(source)\n    assert encoding == \"utf-8\", (\n        f\"detect_encoding returned {encoding!r}; expected 'utf-8' per PEP 3120 — \"\n        \"ASCII default causes valid UTF-8 bytes like b'\\\\xc3\\\\xa9' to be decoded \"\n        \"as replacement characters (\\\\ufffd) instead of the correct codepoint 'é'\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5rbwuetc\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_detect_encoding_defaults_to_utf8_not_ascii FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_detect_encoding_defaults_to_utf8_not_ascii ________________\n\n    def test_detect_encoding_defaults_to_utf8_not_ascii():\n        # PEP 3120: when no explicit coding declaration is present, the default must be UTF-8.\n        # The bug encodes this default as 'ascii', so b'\\xc3\\xa9' (UTF-8 for é) gets decoded\n        # with replace-mode and becomes '\\ufffd\\ufffd' instead of 'é'.\n        source = iter([b\"x = 1\\n\"])\n        encoding = detect_encoding(source)\n>       assert encoding == \"utf-8\", (\n            f\"detect_encoding returned {encoding!r}; expected 'utf-8' per PEP 3120 — \"\n            \"ASCII default causes valid UTF-8 bytes like b'\\\\xc3\\\\xa9' to be decoded \"\n            \"as replacement characters (\\\\ufffd) instead of the correct codepoint 'é'\"\n        )\nE       AssertionError: detect_encoding returned 'ascii'; expected 'utf-8' per PEP 3120 — ASCII default causes valid UTF-8 bytes like b'\\xc3\\xa9' to be decoded as replacement characters (\\ufffd) instead of the correct codepoint 'é'\nE       assert 'ascii' == 'utf-8'\nE         \nE         - utf-8\nE         + ascii\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_detect_encoding_defaults_to_utf8_not_ascii - A...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplg_niio2\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_detect_encoding_defaults_to_utf8_not_ascii PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:06:21Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 78898,
+  "completion_tokens_total": 2905,
+  "duration_seconds": 58.37,
+  "timestamp": "2026-06-03T15:06:21Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

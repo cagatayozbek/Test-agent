@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_033",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import shell_sort\n\n\ndef test_shell_sort_smallest_element_reaches_index_zero():\n    # The bug: `j > gap` instead of `j >= gap` causes the inner while loop\n    # to exit when j == gap, skipping the comparison with my_list[0].\n    # This means elements that should shift all the way to index 0 never do.\n    result = shell_sort([3, 2, 1])\n    assert result == [1, 2, 3], (\n        f\"shell_sort([3, 2, 1]) returned {result!r}; \"\n        \"expected [1, 2, 3]. The off-by-one in `j > gap` prevents \"\n        \"the smallest element from reaching index 0.\"\n    )",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpjqdi5ky6\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_smallest_element_reaches_index_zero FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_shell_sort_smallest_element_reaches_index_zero ______________\n\n    def test_shell_sort_smallest_element_reaches_index_zero():\n        # The bug: `j > gap` instead of `j >= gap` causes the inner while loop\n        # to exit when j == gap, skipping the comparison with my_list[0].\n        # This means elements that should shift all the way to index 0 never do.\n        result = shell_sort([3, 2, 1])\n>       assert result == [1, 2, 3], (\n            f\"shell_sort([3, 2, 1]) returned {result!r}; \"\n            \"expected [1, 2, 3]. The off-by-one in `j > gap` prevents \"\n            \"the smallest element from reaching index 0.\"\n        )\nE       AssertionError: shell_sort([3, 2, 1]) returned [3, 1, 2]; expected [1, 2, 3]. The off-by-one in `j > gap` prevents the smallest element from reaching index 0.\nE       assert [3, 1, 2] == [1, 2, 3]\nE         \nE         At index 0 diff: 3 != 1\nE         \nE         Full diff:\nE           [\nE         +     3,\nE               1,...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_shell_sort_smallest_element_reaches_index_zero\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpaax9iyh8\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_shell_sort_smallest_element_reaches_index_zero PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:42:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 56653,
+  "completion_tokens_total": 1767,
+  "duration_seconds": 34.92,
+  "timestamp": "2026-06-03T15:42:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
