@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_062",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import derivative\n\ndef test_derivative_excludes_first_coefficient():\n    result = derivative([3, 1, 2, 4, 5])\n    expected = [1, 4, 12, 20]\n    assert result == expected, f\"Expected {expected}, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpdmhzbf7k\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative_excludes_first_coefficient FAILED     [100%]\n\n=================================== FAILURES ===================================\n__________________ test_derivative_excludes_first_coefficient __________________\n\n    def test_derivative_excludes_first_coefficient():\n        result = derivative([3, 1, 2, 4, 5])\n        expected = [1, 4, 12, 20]\n>       assert result == expected, f\"Expected {expected}, got {result}\"\nE       AssertionError: Expected [1, 4, 12, 20], got [0, 1, 4, 12, 20]\nE       assert [0, 1, 4, 12, 20] == [1, 4, 12, 20]\nE         \nE         At index 0 diff: 0 != 1\nE         Left contains one more item: 20\nE         \nE         Full diff:\nE           [\nE         +     0,...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_derivative_excludes_first_coefficient - Assert...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp4kp9kmwd\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_derivative_excludes_first_coefficient PASSED     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T22:22:43Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 166582,
+  "completion_tokens_total": 3084,
+  "duration_seconds": 35.12,
+  "timestamp": "2026-06-02T22:22:43Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_026",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import sequence\n\ndef test_sequence_n2_equals_1():\n    \"\"\"Newman-Conway sequence base case: sequence(2) must equal 1.\"\"\"\n    assert sequence(2) == 1, \"sequence(2) should equal 1, not 2\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl5kbld3f\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_n2_equals_1 FAILED                      [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_sequence_n2_equals_1 ___________________________\n\n    def test_sequence_n2_equals_1():\n        \"\"\"Newman-Conway sequence base case: sequence(2) must equal 1.\"\"\"\n>       assert sequence(2) == 1, \"sequence(2) should equal 1, not 2\"\nE       AssertionError: sequence(2) should equal 1, not 2\nE       assert 2 == 1\nE        +  where 2 = sequence(2)\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_sequence_n2_equals_1 - AssertionError: sequenc...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpvrkh61px\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_sequence_n2_equals_1 PASSED                      [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T13:57:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 99376,
+  "completion_tokens_total": 2707,
+  "duration_seconds": 30.55,
+  "timestamp": "2026-06-03T13:57:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

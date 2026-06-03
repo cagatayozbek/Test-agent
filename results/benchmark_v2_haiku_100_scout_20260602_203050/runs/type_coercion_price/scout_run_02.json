@@ -1,0 +1,36 @@
+{
+  "task_id": "type_coercion_price",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import filter_expensive_items\n\ndef test_filter_expensive_items_with_string_prices():\n    \"\"\"Test that filter_expensive_items correctly handles string prices.\"\"\"\n    items = [\n        {'name': 'item_a', 'price': 100},\n        {'name': 'item_b', 'price': '200'},\n        {'name': 'item_c', 'price': 50}\n    ]\n    \n    result = filter_expensive_items(items, 150)\n    \n    assert result == [{'name': 'item_b', 'price': '200'}], \"Should filter items with price > threshold, handling string prices\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp6xrjrsen\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_prices FAILED [100%]\n\n=================================== FAILURES ===================================\n________________ test_filter_expensive_items_with_string_prices ________________\n\n    def test_filter_expensive_items_with_string_prices():\n        \"\"\"Test that filter_expensive_items correctly handles string prices.\"\"\"\n        items = [\n            {'name': 'item_a', 'price': 100},\n            {'name': 'item_b', 'price': '200'},\n            {'name': 'item_c', 'price': 50}\n        ]\n    \n>       result = filter_expensive_items(items, 150)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntest_generated.py:12: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nitems = [{'name': 'item_a', 'price': 100}, {'name': 'item_b', 'price': '200'}, {'name': 'item_c', 'price': 50}]\nthreshold = 150\n\n    def filter_expensive_items(items, threshold):\n        \"\"\"\n        Filters items above a certain price.\n        items: [{'name': 'A', 'price': 100}, {'name': 'B', 'price': '200'}]\n        \"\"\"\n        result = []\n        for item in items:\n            # BUG: If item['price'] is a string (\"200\"),\n            # \"200\" > 150 raises TypeError in Python 3.\n>           if item['price'] > threshold:\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nE           TypeError: '>' not supported between instances of 'str' and 'int'\n\nsource.py:10: TypeError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_filter_expensive_items_with_string_prices - Ty...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpsgrmep98\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_filter_expensive_items_with_string_prices PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T15:03:04Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 96779,
+  "completion_tokens_total": 3127,
+  "duration_seconds": 30.52,
+  "timestamp": "2026-06-03T15:03:04Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

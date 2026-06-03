@@ -1895,3 +1895,60 @@ the dual burden) but **not a win for 20b** (baseline already dominates, cheaper)
 - Note: `pytest` must be installed in the validator venv; an empty venv silently
   fails every run at validation (`No module named pytest`) and reads as BRTR 0 —
   caught and fixed during the smoke run.
+
+### 20.8 Ceiling-band replication on Claude models — haiku (sonnet in progress)
+
+To check that Scout-Writer behaves on near-ceiling models the way the headroom
+thesis predicts (neutral — no room to gain), we ran it on the two Claude tiers
+via the Claude Code CLI provider (`claude -p`), same 100 tasks × 3 runs.
+
+**haiku scout: 0.987 (296/300), CI [0.966, 0.995].** This sits squarely in
+haiku's ceiling band alongside baseline 0.980, adaptive 0.990, and deep 0.990 —
+i.e. **decoupling is neutral at the ceiling**, exactly as for the gpt-oss-120b /
+haiku / V4-flash ceiling pattern. The cost is steep and not comparable to the
+Together models' token counts: ~70 s/run and ~132 k avg "prompt tokens" (the
+ClaudeCodeClient sums cache-read tokens, so this number reflects CLI cache reuse,
+not fresh context).
+
+**Two CLI-timeout artefacts, re-run (not counted as failures).** Two runs hit
+the 120 s `claude -p` subprocess timeout and were recorded as `total_attempts=0`,
+`duration=0.0`, `error=TimeoutExpired` — the model never produced output. These
+are *infrastructure* failures, not model failures, so each was re-run once and
+the genuine result substituted (the same treatment the §12 timeout note flags
+for sonnet baseline/adaptive). The summary.json on disk was written before the
+first re-run and reads 295/300; the file-level truth after the timeout fix is
+**296/300** and is regenerated at final consolidation.
+
+**The 4 genuine failures — a localization-vs-construction distinction.** After
+the timeout fixes, haiku has exactly 4 real failures (all retry-exhausted,
+`attempts=3`):
+
+| Task | Runs | Failure mode |
+|---|---|---|
+| quixbugs_next_palindrome | 1, 2, 3 (all) | TEST_PASSES_ON_BUG |
+| mbpp_mutation_015 | 3 | OVERFIT_TO_BUG |
+
+Three of the four are the *same* task (next_palindrome, 3/3) — a systematic
+edge-case the haiku scout-writer cannot trip, not noise. The single
+mbpp_mutation_015 failure is worth a methodological note because it is **not a
+bug-localization error**: the mutation is `temp[0] -> temp[1]` at the first tuple
+slot (buggy `(temp[1], temp[1])` vs fixed `(temp[0], temp[1])`). Haiku located
+the bug correctly ("first element should use temp[0]") and wrote
+`assert list_to_float([['1.5','2.5']]) == [(1.5, 1.5)]` — but the correct fixed
+output is `(1.5, 2.5)`, not `(1.5, 1.5)`: it fixed the first element in its head
+but wrongly collapsed the second one too. The test therefore fails on *both*
+buggy (2.5, 2.5) and fixed (1.5, 2.5), so it is not bug-revealing.
+
+This is a genuine model failure and stays counted as one. BRTR scores
+**test construction**, not localization — a deliberately deterministic standard
+(no LLM-as-judge, §7). Excusing a "close" expected-value slip would (a) require
+the same leniency for every other model's overfits (e.g. gpt-oss-20b's 27),
+collapsing the matrix's comparability, and (b) reintroduce human judgment into a
+pass/fail oracle that is the methodology's foundation. The qualitative point —
+*haiku's only construction failure is an expected-value slip, not a localization
+miss* — is recorded here; the number stays 0.987. It changes nothing: 0.987 ≈
+0.990 (deep) ≈ 0.990 (adaptive) ≈ 0.980 (baseline), all one ceiling band.
+
+Raw data: `results/benchmark_v2_haiku_100_scout_20260602_203050/` (300 runs;
+2 CLI-timeout artefacts re-run). Config: `benchmark_v2_haiku_100_scout.yaml`.
+Sonnet scout is still running; its cell will be folded in here on completion.

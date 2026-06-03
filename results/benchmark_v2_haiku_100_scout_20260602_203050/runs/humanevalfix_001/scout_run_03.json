@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_001",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import separate_paren_groups\n\n\ndef test_separate_paren_groups_multiple_balanced_groups():\n    result = separate_paren_groups('( ) (( )) (( )( ))')\n    expected = ['()', '(())', '(()())']\n    assert result == expected, f\"Expected {expected}, but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp1qmbk07m\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_separate_paren_groups_multiple_balanced_groups FAILED [100%]\n\n=================================== FAILURES ===================================\n_____________ test_separate_paren_groups_multiple_balanced_groups ______________\n\n    def test_separate_paren_groups_multiple_balanced_groups():\n        result = separate_paren_groups('( ) (( )) (( )( ))')\n        expected = ['()', '(())', '(()())']\n>       assert result == expected, f\"Expected {expected}, but got {result}\"\nE       AssertionError: Expected ['()', '(())', '(()())'], but got []\nE       assert [] == ['()', '(())', '(()())']\nE         \nE         Right contains 3 more items, first extra item: '()'\nE         \nE         Full diff:\nE         + []\nE         - [\nE         -     '()',...\nE         \nE         ...Full output truncated (3 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_separate_paren_groups_multiple_balanced_groups\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw8p09f1u\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_separate_paren_groups_multiple_balanced_groups PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T20:39:23Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 99688,
+  "completion_tokens_total": 3655,
+  "duration_seconds": 33.61,
+  "timestamp": "2026-06-02T20:39:23Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

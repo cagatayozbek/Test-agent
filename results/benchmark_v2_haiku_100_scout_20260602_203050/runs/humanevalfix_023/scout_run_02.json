@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_023",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import strlen\n\ndef test_strlen_off_by_one_bug():\n    \"\"\"Verify strlen returns correct length, not length minus 1.\"\"\"\n    assert strlen('') == 0, \"strlen('') should return 0, not -1\"\n    assert strlen('abc') == 3, \"strlen('abc') should return 3, not 2\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_w7dd2m9\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_strlen_off_by_one_bug FAILED                     [100%]\n\n=================================== FAILURES ===================================\n__________________________ test_strlen_off_by_one_bug __________________________\n\n    def test_strlen_off_by_one_bug():\n        \"\"\"Verify strlen returns correct length, not length minus 1.\"\"\"\n>       assert strlen('') == 0, \"strlen('') should return 0, not -1\"\nE       AssertionError: strlen('') should return 0, not -1\nE       assert -1 == 0\nE        +  where -1 = strlen('')\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_strlen_off_by_one_bug - AssertionError: strlen...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpibk8e3yr\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_strlen_off_by_one_bug PASSED                     [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T20:43:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 99044,
+  "completion_tokens_total": 1454,
+  "duration_seconds": 20.78,
+  "timestamp": "2026-06-02T20:43:28Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

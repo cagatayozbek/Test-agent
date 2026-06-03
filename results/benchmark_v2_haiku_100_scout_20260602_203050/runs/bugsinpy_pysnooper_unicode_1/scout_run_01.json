@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nimport tempfile\nimport os\nfrom source import Tracer\n\n\ndef test_dump_source_preserves_utf8_emoji_without_coding_declaration():\n    \"\"\"\n    UTF-8 emoji in source should be preserved, not replaced with U+FFFD.\n    Buggy code defaults to ASCII encoding, corrupting non-ASCII characters.\n    \"\"\"\n    source_bytes = [\n        b\"# No coding declaration\\n\",\n        \"text = 'hello 😊 world'\\n\".encode('utf-8'),\n    ]\n    \n    with tempfile.TemporaryDirectory() as tmpdir:\n        output_path = os.path.join(tmpdir, \"output.txt\")\n        tracer = Tracer(output_path, overwrite=True)\n        result = tracer.dump_source(source_bytes)\n        \n        with open(output_path, 'r', encoding='utf-8') as f:\n            file_content = f.read()\n        \n        # The emoji must be preserved in both result and file\n        assert \"😊\" in result\n        assert \"😊\" in file_content",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppgdr770c\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_emoji_without_coding_declaration FAILED [100%]\n\n=================================== FAILURES ===================================\n_______ test_dump_source_preserves_utf8_emoji_without_coding_declaration _______\n\n    def test_dump_source_preserves_utf8_emoji_without_coding_declaration():\n        \"\"\"\n        UTF-8 emoji in source should be preserved, not replaced with U+FFFD.\n        Buggy code defaults to ASCII encoding, corrupting non-ASCII characters.\n        \"\"\"\n        source_bytes = [\n            b\"# No coding declaration\\n\",\n            \"text = 'hello 😊 world'\\n\".encode('utf-8'),\n        ]\n    \n        with tempfile.TemporaryDirectory() as tmpdir:\n            output_path = os.path.join(tmpdir, \"output.txt\")\n            tracer = Tracer(output_path, overwrite=True)\n            result = tracer.dump_source(source_bytes)\n    \n            with open(output_path, 'r', encoding='utf-8') as f:\n                file_content = f.read()\n    \n            # The emoji must be preserved in both result and file\n>           assert \"😊\" in result\nE           assert '😊' in \"# No coding declaration\\ntext = 'hello ���� world'\\n\"\n\ntest_generated.py:26: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_dump_source_preserves_utf8_emoji_without_coding_declaration\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_scko3ar\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_emoji_without_coding_declaration PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T20:33:41Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 168255,
+  "completion_tokens_total": 6051,
+  "duration_seconds": 54.13,
+  "timestamp": "2026-06-02T20:33:41Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

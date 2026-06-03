@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_007",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import min_k\n\ndef test_min_k_sorts_by_second_element():\n    test_list = [(2, 1), (1, 2), (3, 0)]\n    result = min_k(test_list, 1)\n    assert result == [(3, 0)], f\"Expected [(3, 0)] (minimum second element), but got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp0dermm3n\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_second_element FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_min_k_sorts_by_second_element ______________________\n\n    def test_min_k_sorts_by_second_element():\n        test_list = [(2, 1), (1, 2), (3, 0)]\n        result = min_k(test_list, 1)\n>       assert result == [(3, 0)], f\"Expected [(3, 0)] (minimum second element), but got {result}\"\nE       AssertionError: Expected [(3, 0)] (minimum second element), but got [(1, 2)]\nE       assert [(1, 2)] == [(3, 0)]\nE         \nE         At index 0 diff: (1, 2) != (3, 0)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         3,...\nE         \nE         ...Full output truncated (9 lines hidden), use '-vv' to show\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_min_k_sorts_by_second_element - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp28lnycgx\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_min_k_sorts_by_second_element PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T10:28:24Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 135934,
+  "completion_tokens_total": 3009,
+  "duration_seconds": 180.35,
+  "timestamp": "2026-06-03T10:28:24Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

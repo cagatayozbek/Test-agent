@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_tqdm_enumerate_start_1",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import tenumerate\n\n\ndef test_tenumerate_start_parameter_respected():\n    \"\"\"Test that tenumerate respects the start parameter.\"\"\"\n    result = list(tenumerate(['x', 'y', 'z'], start=5))\n    indices = [idx for idx, _ in result]\n    \n    assert indices == [5, 6, 7], f\"Expected indices [5, 6, 7], got {indices}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpylijq4xd\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_parameter_respected FAILED      [100%]\n\n=================================== FAILURES ===================================\n__________________ test_tenumerate_start_parameter_respected ___________________\n\n    def test_tenumerate_start_parameter_respected():\n        \"\"\"Test that tenumerate respects the start parameter.\"\"\"\n        result = list(tenumerate(['x', 'y', 'z'], start=5))\n        indices = [idx for idx, _ in result]\n    \n>       assert indices == [5, 6, 7], f\"Expected indices [5, 6, 7], got {indices}\"\nE       AssertionError: Expected indices [5, 6, 7], got [0, 1, 2]\nE       assert [0, 1, 2] == [5, 6, 7]\nE         \nE         At index 0 diff: 0 != 5\nE         \nE         Full diff:\nE           [\nE         -     5,\nE         ?     ^...\nE         \nE         ...Full output truncated (11 lines hidden), use '-vv' to show\n\ntest_generated.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_tenumerate_start_parameter_respected - Asserti...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwfb5al6d\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_tenumerate_start_parameter_respected PASSED      [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T20:37:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 96919,
+  "completion_tokens_total": 2737,
+  "duration_seconds": 27.89,
+  "timestamp": "2026-06-02T20:37:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

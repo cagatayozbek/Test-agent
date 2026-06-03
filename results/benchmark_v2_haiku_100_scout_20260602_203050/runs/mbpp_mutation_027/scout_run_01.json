@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_027",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import all_unique\n\ndef test_all_unique_returns_true_for_unique_elements():\n    assert all_unique([1, 2, 3]) is True, \"all_unique should return True when all elements are unique\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpw4yvtdt2\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_returns_true_for_unique_elements FAILED [100%]\n\n=================================== FAILURES ===================================\n_______________ test_all_unique_returns_true_for_unique_elements _______________\n\n    def test_all_unique_returns_true_for_unique_elements():\n>       assert all_unique([1, 2, 3]) is True, \"all_unique should return True when all elements are unique\"\nE       AssertionError: all_unique should return True when all elements are unique\nE       assert False is True\nE        +  where False = all_unique([1, 2, 3])\n\ntest_generated.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_all_unique_returns_true_for_unique_elements - ...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpewl1vurr\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_all_unique_returns_true_for_unique_elements PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T13:58:33Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 234462,
+  "completion_tokens_total": 3654,
+  "duration_seconds": 41.22,
+  "timestamp": "2026-06-03T13:58:33Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

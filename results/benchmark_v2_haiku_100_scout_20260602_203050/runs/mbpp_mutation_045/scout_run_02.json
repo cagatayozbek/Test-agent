@@ -1,0 +1,36 @@
+{
+  "task_id": "mbpp_mutation_045",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import snake_to_camel\n\ndef test_snake_to_camel_hello_world():\n    result = snake_to_camel('hello_world')\n    assert result == 'HelloWorld', f\"Expected 'HelloWorld', got '{result}'\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp8fsf5aoa\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_hello_world FAILED                [100%]\n\n=================================== FAILURES ===================================\n_______________________ test_snake_to_camel_hello_world ________________________\n\n    def test_snake_to_camel_hello_world():\n        result = snake_to_camel('hello_world')\n>       assert result == 'HelloWorld', f\"Expected 'HelloWorld', got '{result}'\"\nE       AssertionError: Expected 'HelloWorld', got '__'\nE       assert '__' == 'HelloWorld'\nE         \nE         - HelloWorld\nE         + __\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_snake_to_camel_hello_world - AssertionError: E...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp93tg03mq\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_snake_to_camel_hello_world PASSED                [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T14:03:53Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 239271,
+  "completion_tokens_total": 7656,
+  "duration_seconds": 78.68,
+  "timestamp": "2026-06-03T14:03:53Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

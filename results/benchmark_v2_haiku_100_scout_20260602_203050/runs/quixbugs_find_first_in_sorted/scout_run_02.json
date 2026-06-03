@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_find_first_in_sorted",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import threading\nfrom source import find_first_in_sorted\n\ndef test_find_first_in_sorted_terminates_when_target_not_found():\n    \"\"\"Detects infinite loop bug: hi = mid instead of hi = mid - 1 prevents search space from shrinking.\"\"\"\n    result = []\n    \n    def search():\n        result.append(find_first_in_sorted([3, 4, 5, 5, 5, 6], 2))\n    \n    thread = threading.Thread(target=search, daemon=True)\n    thread.start()\n    thread.join(timeout=1)\n    \n    assert not thread.is_alive(), \"Function entered infinite loop (did not complete within 1 second)\"\n    assert result[0] == -1, f\"Expected -1 when target not in array, got {result[0]}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpl5qcp4fx\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_terminates_when_target_not_found FAILED [100%]\n\n=================================== FAILURES ===================================\n__________ test_find_first_in_sorted_terminates_when_target_not_found __________\n\n    def test_find_first_in_sorted_terminates_when_target_not_found():\n        \"\"\"Detects infinite loop bug: hi = mid instead of hi = mid - 1 prevents search space from shrinking.\"\"\"\n        result = []\n    \n        def search():\n            result.append(find_first_in_sorted([3, 4, 5, 5, 5, 6], 2))\n    \n        thread = threading.Thread(target=search, daemon=True)\n        thread.start()\n        thread.join(timeout=1)\n    \n>       assert not thread.is_alive(), \"Function entered infinite loop (did not complete within 1 second)\"\nE       AssertionError: Function entered infinite loop (did not complete within 1 second)\nE       assert not True\nE        +  where True = is_alive()\nE        +    where is_alive = <Thread(Thread-1 (search), started daemon 6111703040)>.is_alive\n\ntest_generated.py:15: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_find_first_in_sorted_terminates_when_target_not_found\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 13.59s ==============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_vhypnda\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_terminates_when_target_not_found PASSED [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T14:15:37Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 173694,
+  "completion_tokens_total": 14432,
+  "duration_seconds": 119.98,
+  "timestamp": "2026-06-03T14:15:37Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_powerset",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import powerset\n\ndef test_powerset_includes_subsets_without_first():\n    result = powerset([1, 2])\n    assert len(result) == 4, \"powerset([1, 2]) should have 4 subsets (2^2=4)\"\n    assert [] in result, \"empty set must be in powerset\"\n    assert [2] in result, \"subsets without first element must be included\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpwocy6244\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_powerset_includes_subsets_without_first FAILED   [100%]\n\n=================================== FAILURES ===================================\n_________________ test_powerset_includes_subsets_without_first _________________\n\n    def test_powerset_includes_subsets_without_first():\n        result = powerset([1, 2])\n>       assert len(result) == 4, \"powerset([1, 2]) should have 4 subsets (2^2=4)\"\nE       AssertionError: powerset([1, 2]) should have 4 subsets (2^2=4)\nE       assert 1 == 4\nE        +  where 1 = len([[1, 2]])\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_powerset_includes_subsets_without_first - Asse...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5e9gif0t\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_powerset_includes_subsets_without_first PASSED   [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T14:48:11Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 99651,
+  "completion_tokens_total": 6107,
+  "duration_seconds": 47.51,
+  "timestamp": "2026-06-03T14:48:11Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

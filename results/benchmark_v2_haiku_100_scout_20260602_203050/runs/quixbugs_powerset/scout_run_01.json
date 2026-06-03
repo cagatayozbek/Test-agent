@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_powerset",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import powerset\n\ndef test_powerset_includes_all_subsets():\n    \"\"\"Test that powerset returns all 2^n subsets, not just those containing first element.\"\"\"\n    result = powerset([1, 2])\n    \n    # Should have 4 subsets for input of length 2\n    assert len(result) == 4, f\"powerset([1, 2]) should have 4 subsets, got {len(result)}: {result}\"\n    \n    # Must include empty set (which is missing in buggy version)\n    assert [] in result, \"Empty set must be in powerset\"\n    \n    # Must include subsets without the first element (missing in buggy version)\n    assert [2] in result, \"Subset [2] (without first element) must be in powerset\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppghmoc53\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_powerset_includes_all_subsets FAILED             [100%]\n\n=================================== FAILURES ===================================\n______________________ test_powerset_includes_all_subsets ______________________\n\n    def test_powerset_includes_all_subsets():\n        \"\"\"Test that powerset returns all 2^n subsets, not just those containing first element.\"\"\"\n        result = powerset([1, 2])\n    \n        # Should have 4 subsets for input of length 2\n>       assert len(result) == 4, f\"powerset([1, 2]) should have 4 subsets, got {len(result)}: {result}\"\nE       AssertionError: powerset([1, 2]) should have 4 subsets, got 1: [[1, 2]]\nE       assert 1 == 4\nE        +  where 1 = len([[1, 2]])\n\ntest_generated.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_powerset_includes_all_subsets - AssertionError...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpkmvhx1ob\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_powerset_includes_all_subsets PASSED             [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T14:47:30Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 97110,
+  "completion_tokens_total": 4296,
+  "duration_seconds": 37.61,
+  "timestamp": "2026-06-03T14:47:30Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

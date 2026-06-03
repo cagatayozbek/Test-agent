@@ -1,0 +1,36 @@
+{
+  "task_id": "bugsinpy_pysnooper_unicode_1",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import tempfile\nimport os\nfrom source import Tracer\n\n\ndef test_dump_source_preserves_utf8_without_coding_header():\n    \"\"\"UTF-8 characters must round-trip without explicit coding header.\"\"\"\n    source_bytes = [\n        b\"# No coding header\\n\",\n        b\"print('Hello \\xf0\\x9f\\x98\\x8a')\\n\",  # emoji 😊 in UTF-8\n    ]\n    \n    with tempfile.TemporaryDirectory() as tmpdir:\n        output_path = os.path.join(tmpdir, \"output.py\")\n        tracer = Tracer(output_path, overwrite=True)\n        tracer.dump_source(source_bytes)\n        \n        with open(output_path, 'r', encoding='utf-8') as f:\n            written = f.read()\n        \n        assert \"😊\" in written, f\"UTF-8 emoji should be preserved, got: {repr(written)}\"\n        assert \"\\ufffd\" not in written, f\"Should not contain replacement character, got: {repr(written)}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpbuogylpf\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_coding_header FAILED [100%]\n\n=================================== FAILURES ===================================\n____________ test_dump_source_preserves_utf8_without_coding_header _____________\n\n    def test_dump_source_preserves_utf8_without_coding_header():\n        \"\"\"UTF-8 characters must round-trip without explicit coding header.\"\"\"\n        source_bytes = [\n            b\"# No coding header\\n\",\n            b\"print('Hello \\xf0\\x9f\\x98\\x8a')\\n\",  # emoji 😊 in UTF-8\n        ]\n    \n        with tempfile.TemporaryDirectory() as tmpdir:\n            output_path = os.path.join(tmpdir, \"output.py\")\n            tracer = Tracer(output_path, overwrite=True)\n            tracer.dump_source(source_bytes)\n    \n            with open(output_path, 'r', encoding='utf-8') as f:\n                written = f.read()\n    \n>           assert \"😊\" in written, f\"UTF-8 emoji should be preserved, got: {repr(written)}\"\nE           AssertionError: UTF-8 emoji should be preserved, got: \"# No coding header\\nprint('Hello ����')\\n\"\nE           assert '😊' in \"# No coding header\\nprint('Hello ����')\\n\"\n\ntest_generated.py:21: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_dump_source_preserves_utf8_without_coding_header\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmppjsho4jn\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_dump_source_preserves_utf8_without_coding_header PASSED [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T20:34:08Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 203219,
+  "completion_tokens_total": 6917,
+  "duration_seconds": 63.55,
+  "timestamp": "2026-06-02T20:34:08Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_063",
+  "mode": "scout",
+  "run_number": 3,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import fibfib\n\n\ndef test_fibfib_correct_base_cases():\n    \"\"\"Test base cases n=1 and n=2 return correct values.\n    \n    Buggy code returns fibfib(1)=1 and fibfib(2)=2.\n    Correct code returns fibfib(1)=0 and fibfib(2)=1.\n    \"\"\"\n    assert fibfib(1) == 0, \"fibfib(1) should be 0, not 1\"\n    assert fibfib(2) == 1, \"fibfib(2) should be 1, not 2\"\n\n\ndef test_fibfib_docstring_examples():\n    \"\"\"Test docstring examples to verify base cases propagate correctly.\"\"\"\n    assert fibfib(5) == 4, \"fibfib(5) should be 4\"\n    assert fibfib(8) == 24, \"fibfib(8) should be 24\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmptxfsl839\nplugins: anyio-4.13.0\ncollecting ... collected 2 items\n\ntest_generated.py::test_fibfib_correct_base_cases FAILED                 [ 50%]\n\n=================================== FAILURES ===================================\n________________________ test_fibfib_correct_base_cases ________________________\n\n    def test_fibfib_correct_base_cases():\n        \"\"\"Test base cases n=1 and n=2 return correct values.\n    \n        Buggy code returns fibfib(1)=1 and fibfib(2)=2.\n        Correct code returns fibfib(1)=0 and fibfib(2)=1.\n        \"\"\"\n>       assert fibfib(1) == 0, \"fibfib(1) should be 0, not 1\"\nE       AssertionError: fibfib(1) should be 0, not 1\nE       assert 1 == 0\nE        +  where 1 = fibfib(1)\n\ntest_generated.py:10: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_fibfib_correct_base_cases - AssertionError: fi...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5qgh8ke6\nplugins: anyio-4.13.0\ncollecting ... collected 2 items\n\ntest_generated.py::test_fibfib_correct_base_cases PASSED                 [ 50%]\ntest_generated.py::test_fibfib_docstring_examples PASSED                 [100%]\n\n============================== 2 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T23:35:10Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 99734,
+  "completion_tokens_total": 5946,
+  "duration_seconds": 45.96,
+  "timestamp": "2026-06-02T23:35:10Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

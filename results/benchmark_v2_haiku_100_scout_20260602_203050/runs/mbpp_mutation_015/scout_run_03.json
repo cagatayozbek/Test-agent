@@ -1,0 +1,68 @@
+{
+  "task_id": "mbpp_mutation_015",
+  "mode": "scout",
+  "run_number": 3,
+  "success": false,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_uses_first_element():\n    result = list_to_float([['abc', '3.14']])\n    assert result == [('abc', 'abc')], \"Should use first element (index 0) of temp, not second element (index 1)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp3qf7j1mi\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_uses_first_element FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_list_to_float_uses_first_element _____________________\n\n    def test_list_to_float_uses_first_element():\n        result = list_to_float([['abc', '3.14']])\n>       assert result == [('abc', 'abc')], \"Should use first element (index 0) of temp, not second element (index 1)\"\nE       AssertionError: Should use first element (index 0) of temp, not second element (index 1)\nE       assert [(3.14, 3.14)] == [('abc', 'abc')]\nE         \nE         At index 0 diff: (3.14, 3.14) != ('abc', 'abc')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'abc',...\nE         \nE         ...Full output truncated (5 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_uses_first_element - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_fhpzdid\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_uses_first_element FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_list_to_float_uses_first_element _____________________\n\n    def test_list_to_float_uses_first_element():\n        result = list_to_float([['abc', '3.14']])\n>       assert result == [('abc', 'abc')], \"Should use first element (index 0) of temp, not second element (index 1)\"\nE       AssertionError: Should use first element (index 0) of temp, not second element (index 1)\nE       assert [('abc', 3.14)] == [('abc', 'abc')]\nE         \nE         At index 0 diff: ('abc', 3.14) != ('abc', 'abc')\nE         \nE         Full diff:\nE           [\nE               (\nE                   'abc',...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_uses_first_element - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-03T10:34:28Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 2,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_uses_first_element():\n    result = list_to_float([['abc', 'def']])\n    assert result == [('abc', 'abc')], f\"Expected tuple with first element repeated, got {result}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpyku5w5n2\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_uses_first_element FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_list_to_float_uses_first_element _____________________\n\n    def test_list_to_float_uses_first_element():\n        result = list_to_float([['abc', 'def']])\n>       assert result == [('abc', 'abc')], f\"Expected tuple with first element repeated, got {result}\"\nE       AssertionError: Expected tuple with first element repeated, got [('def', 'def')]\nE       assert [('def', 'def')] == [('abc', 'abc')]\nE         \nE         At index 0 diff: ('def', 'def') != ('abc', 'abc')\nE         \nE         Full diff:\nE           [\nE               (\nE         -         'abc',...\nE         \nE         ...Full output truncated (9 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_uses_first_element - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpb6xs8afh\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_uses_first_element FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_list_to_float_uses_first_element _____________________\n\n    def test_list_to_float_uses_first_element():\n        result = list_to_float([['abc', 'def']])\n>       assert result == [('abc', 'abc')], f\"Expected tuple with first element repeated, got {result}\"\nE       AssertionError: Expected tuple with first element repeated, got [('abc', 'def')]\nE       assert [('abc', 'def')] == [('abc', 'abc')]\nE         \nE         At index 0 diff: ('abc', 'def') != ('abc', 'abc')\nE         \nE         Full diff:\nE           [\nE               (\nE                   'abc',...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_uses_first_element - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-03T10:34:59Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    },
+    {
+      "attempt_number": 3,
+      "test_code": "from source import list_to_float\n\ndef test_list_to_float_uses_first_element():\n    result = list_to_float([['1.5', '2.5']])\n    assert result == [(1.5, 1.5)], \"Should use first element of converted list\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpy_u4euwq\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_uses_first_element FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_list_to_float_uses_first_element _____________________\n\n    def test_list_to_float_uses_first_element():\n        result = list_to_float([['1.5', '2.5']])\n>       assert result == [(1.5, 1.5)], \"Should use first element of converted list\"\nE       AssertionError: Should use first element of converted list\nE       assert [(2.5, 2.5)] == [(1.5, 1.5)]\nE         \nE         At index 0 diff: (2.5, 2.5) != (1.5, 1.5)\nE         \nE         Full diff:\nE           [\nE               (\nE         -         1.5,...\nE         \nE         ...Full output truncated (9 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_uses_first_element - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "fixed_passed": false,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp_75jvtpl\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_list_to_float_uses_first_element FAILED          [100%]\n\n=================================== FAILURES ===================================\n____________________ test_list_to_float_uses_first_element _____________________\n\n    def test_list_to_float_uses_first_element():\n        result = list_to_float([['1.5', '2.5']])\n>       assert result == [(1.5, 1.5)], \"Should use first element of converted list\"\nE       AssertionError: Should use first element of converted list\nE       assert [(1.5, 2.5)] == [(1.5, 1.5)]\nE         \nE         At index 0 diff: (1.5, 2.5) != (1.5, 1.5)\nE         \nE         Full diff:\nE           [\nE               (\nE                   1.5,...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntest_generated.py:5: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_list_to_float_uses_first_element - AssertionEr...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.02s ===============================",
+        "is_bug_revealing": false,
+        "error": null
+      },
+      "timestamp": "2026-06-03T10:35:29Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 3,
+  "attempts_to_success": null,
+  "analysis": null,
+  "prompt_tokens_total": 302979,
+  "completion_tokens_total": 14487,
+  "duration_seconds": 126.3,
+  "timestamp": "2026-06-03T10:35:29Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

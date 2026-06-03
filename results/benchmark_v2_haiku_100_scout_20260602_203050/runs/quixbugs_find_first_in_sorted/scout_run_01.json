@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_find_first_in_sorted",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import pytest\nfrom source import find_first_in_sorted\n\n@pytest.mark.timeout(1)\ndef test_find_first_in_sorted_target_less_than_all_elements():\n    result = find_first_in_sorted([5, 5], 4)\n    assert result == -1, \"Should return -1 when target is smaller than all elements\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp5oyxps5e\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_find_first_in_sorted_target_less_than_all_elements PASSED [100%]\n\n=============================== warnings summary ===============================\ntest_generated.py:4\n  /private/tmp/claude-501/tmp5oyxps5e/test_generated.py:4: PytestUnknownMarkWarning: Unknown pytest.mark.timeout - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.timeout(1)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n========================= 1 passed, 1 warning in 0.01s =========================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T14:16:05Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 178456,
+  "completion_tokens_total": 17725,
+  "duration_seconds": 154.25,
+  "timestamp": "2026-06-03T14:16:05Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

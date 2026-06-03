@@ -1,0 +1,36 @@
+{
+  "task_id": "humanevalfix_041",
+  "mode": "scout",
+  "run_number": 2,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "from source import car_race_collision\n\ndef test_car_race_collision_quadratic_not_cubic():\n    \"\"\"Test that collisions follows n^2 formula, not n^3.\"\"\"\n    # n cars left-to-right collide with n cars right-to-left: n*n = n^2 collisions\n    # For n=2: expected 4 (2^2), buggy code returns 8 (2^3)\n    assert car_race_collision(2) == 4, \"Expected 4 collisions (n^2), not 8 (n^3)\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmp21l5wkmx\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision_quadratic_not_cubic FAILED    [100%]\n\n=================================== FAILURES ===================================\n_________________ test_car_race_collision_quadratic_not_cubic __________________\n\n    def test_car_race_collision_quadratic_not_cubic():\n        \"\"\"Test that collisions follows n^2 formula, not n^3.\"\"\"\n        # n cars left-to-right collide with n cars right-to-left: n*n = n^2 collisions\n        # For n=2: expected 4 (2^2), buggy code returns 8 (2^3)\n>       assert car_race_collision(2) == 4, \"Expected 4 collisions (n^2), not 8 (n^3)\"\nE       AssertionError: Expected 4 collisions (n^2), not 8 (n^3)\nE       assert 8 == 4\nE        +  where 8 = car_race_collision(2)\n\ntest_generated.py:7: AssertionError\n=========================== short test summary info ============================\nFAILED test_generated.py::test_car_race_collision_quadratic_not_cubic - Asser...\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.01s ===============================",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmplkfi9xo4\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_car_race_collision_quadratic_not_cubic PASSED    [100%]\n\n============================== 1 passed in 0.00s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-02T21:05:17Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 99449,
+  "completion_tokens_total": 2043,
+  "duration_seconds": 26.91,
+  "timestamp": "2026-06-02T21:05:17Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}

@@ -226,6 +226,19 @@ class ClaudeCodeClient:
     OpenAI-compatible clients report their input token totals).
     """
 
+    # The `claude -p` subprocess timeout. Default 120s is tight for the larger
+    # tiers on heavy tasks (see EXPERIMENT_REPORT §12 — the documented timeout
+    # corruption of sonnet baseline/adaptive). Override via DEEPTEST_CLAUDE_TIMEOUT
+    # (seconds) to recover genuinely slow-but-valid runs; default stays 120 for
+    # backward-compatible numbers.
+    @staticmethod
+    def _cli_timeout() -> int:
+        import os
+        try:
+            return int(os.environ.get("DEEPTEST_CLAUDE_TIMEOUT", "120"))
+        except ValueError:
+            return 120
+
     def __init__(self, model_id: str = "sonnet", **kwargs):
         self._model = model_id  # sonnet, opus, haiku
 
@@ -260,7 +273,7 @@ class ClaudeCodeClient:
             input=prompt,
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=self._cli_timeout(),
         )
         text, p_tok, c_tok = self._parse_response(result.stdout.strip())
         return LLMResponse(
@@ -279,7 +292,7 @@ class ClaudeCodeClient:
             input=prompt,
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=self._cli_timeout(),
         )
         text, p_tok, c_tok = self._parse_response(result.stdout.strip())
         return LLMResponse(

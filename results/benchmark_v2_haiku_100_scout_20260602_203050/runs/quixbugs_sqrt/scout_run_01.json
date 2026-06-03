@@ -1,0 +1,36 @@
+{
+  "task_id": "quixbugs_sqrt",
+  "mode": "scout",
+  "run_number": 1,
+  "success": true,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "test_code": "import math\nfrom source import sqrt\n\ndef test_sqrt_convergence_uses_squared_residual():\n    \"\"\"\n    The convergence check must verify |approx^2 - x| < epsilon, not |x - approx| < epsilon.\n    For sqrt(2, 0.01), the buggy criterion |x - approx| > epsilon never terminates because\n    |2 - sqrt(2)| ≈ 0.586, which is always > 0.01. The fixed code converges correctly.\n    \"\"\"\n    result = sqrt(2, 0.01)\n    expected = math.sqrt(2)\n    \n    # Result must be within epsilon of the true square root (postcondition)\n    assert abs(result - expected) < 0.01, \\\n        f\"sqrt(2, 0.01) returned {result:.8f}, expected within 0.01 of {expected:.8f}\"",
+      "validation": {
+        "buggy_passed": false,
+        "buggy_output": "TIMEOUT after 30s",
+        "fixed_passed": true,
+        "fixed_output": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- /Users/ozdemir/Desktop/TestAgents/Test-agent/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /private/tmp/claude-501/tmpi2yxh9i3\nplugins: anyio-4.13.0\ncollecting ... collected 1 item\n\ntest_generated.py::test_sqrt_convergence_uses_squared_residual PASSED    [100%]\n\n============================== 1 passed in 0.01s ===============================",
+        "is_bug_revealing": true,
+        "error": null
+      },
+      "timestamp": "2026-06-03T14:55:01Z",
+      "tool_call_count": 0,
+      "tool_failure_mode_count": {},
+      "reasoning_filled": false
+    }
+  ],
+  "total_attempts": 1,
+  "attempts_to_success": 1,
+  "analysis": null,
+  "prompt_tokens_total": 132864,
+  "completion_tokens_total": 16493,
+  "duration_seconds": 149.02,
+  "timestamp": "2026-06-03T14:55:01Z",
+  "error": null,
+  "prompt_version": "v2.0",
+  "prompt_template_hash": "",
+  "capabilities_used": {},
+  "tool_choice_mode": ""
+}
