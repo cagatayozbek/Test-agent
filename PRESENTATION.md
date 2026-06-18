@@ -162,36 +162,40 @@ PASSES on the fixed (correct) code   AND   FAILS on the buggy code
 
 | Dataset | Models (full 3-mode trio) | Metrics |
 |---|---|---|
-| 100 tasks (adversarial + BugsInPy / QuixBugs / HumanEvalFix) | **6 models, weak → strong** | **BRTR** (primary) |
-| 100 × 3 runs = **300 runs / cell** | DeepSeek-V3.1 · V4-flash · gpt-oss-20b · llama-3.3-70b · llama-3.1-8b · phi-4 | Wilson 95% CI |
+| 100 tasks (adversarial + BugsInPy / QuixBugs / HumanEvalFix) | **10 models, weak → strong** | **BRTR** (primary) |
+| 100 × 3 runs = **300 runs / cell** | Claude **sonnet / haiku** · gpt-oss 120b/20b · qwen3-coder · DeepSeek **V3.1 / V4-flash** · llama 3.3-70b / 3.1-8b · phi-4 | Wilson 95% CI |
 | Per-task isolated workspaces | each run in **all three** modes | Token cost |
 
-> **Total: 5,400 controlled test runs** (6 models × 3 modes × 300).
+> **Total: ≈ 9,000 controlled test runs** (10 models × 3 modes × 300).
 
-<small>Models with a complete baseline + agentic + deep trio only — the rigorous comparison set.</small>
+<small>Every model run through the complete baseline + agentic + deep trio — the rigorous comparison set.</small>
 
 ---
 
-## 5. Results — The Headline Table
+## 5. Results — The Headline Table (10 models, sorted by baseline)
 
 | Model | Baseline | Agentic | **Deep** | Δ (deep−base) |
 |---|---|---|---|---|
-| **DeepSeek-V3.1** | 0.853 | 0.890 | <span class="win">0.950</span> | **+9.7 pp** ✅ |
+| haiku | 0.980 | 0.990 | <span class="flat">0.990</span> | ≈ 0 (ceiling) |
+| gpt-oss-120b | 0.977 | 0.980 | <span class="lose">0.897</span> | −8.0 pp |
 | DeepSeek-V4-flash | 0.947 | 0.970 | <span class="flat">0.857*</span> | ≈ 0 (ceiling) |
+| sonnet † | 0.943 | 0.940 | <span class="win">1.000</span> | perfect |
 | gpt-oss-20b | 0.940 | 0.950 | <span class="lose">0.213</span> | **−72.7 pp** 💥 |
+| qwen3-coder | 0.890 | 0.870 | <span class="lose">0.823</span> | −6.7 pp |
+| **DeepSeek-V3.1** | 0.853 | 0.890 | <span class="win">0.950</span> | **+9.7 pp** ✅ |
 | llama-3.3-70b | 0.793 | 0.813 | <span class="lose">0.340</span> | **−45.3 pp** 💥 |
-| llama-3.1-8b | 0.643 | 0.687 | <span class="lose">0.173</span> | **−47.0 pp** 💥 |
 | phi-4 (14B) | 0.667 | 0.677 | N/A** | — |
+| llama-3.1-8b | 0.643 | 0.687 | <span class="lose">0.173</span> | **−47.0 pp** 💥 |
 
-<small>*V4-flash deep ≈0.973 once residual reasoning-harness stubs are excluded — neutral, not a collapse. **phi-4 deep unmeasurable: its provider endpoints offer no tool-calling (a provider limit, not a reasoning collapse).</small>
+<small>† sonnet base/agentic timeout-deflated (true ≈0.99). *V4-flash ≈0.973 net. **phi-4 deep N/A (no tool-calling).</small>
 
 ---
 
 ## 5. Results — One Picture
 
-![w:960](assets/brtr_by_model.png)
+![w:1080](assets/brtr_by_model.png)
 
-<small>Agentic ≈ baseline everywhere. **Deep** is the swing factor — it lifts V3.1, leaves V4-flash flat, *collapses* the weak / tool-clumsy models.</small>
+<small>Sorted by baseline — yet **Deep ignores baseline rank**: gpt-oss-20b (0.94) crashes to 0.21 while DeepSeek-V3.1 (0.85) rises to 0.95.</small>
 
 ---
 
@@ -199,16 +203,17 @@ PASSES on the fixed (correct) code   AND   FAILS on the buggy code
 
 The analysis step is **not** uniformly good. It has three outcomes:
 
-- 🟢 **Monotone benefit** — capable *and* not yet saturated:
-  **DeepSeek-V3.1** 0.853 → 0.890 → **0.950**. Deep's CI [91.9, 97.0] sits
-  **entirely above** baseline [80.9, 88.9] → *statistically significant*.
+- 🟢 **Benefit** — capable *and* not yet saturated:
+  **DeepSeek-V3.1** 0.853 → **0.950** (CI [91.9, 97.0] entirely above baseline
+  [80.9, 88.9] → *significant*); **sonnet** deep → **1.000** (perfect).
 
 - 🟡 **Ceiling / neutral** — already near the top:
-  **DeepSeek-V4-flash** (baseline 0.947) → deep ≈ baseline. No room to gain.
+  **haiku** (≈0.99 in all three), **DeepSeek-V4-flash** (0.947 → ≈ baseline).
+  ~5× the tokens, no BRTR gain.
 
-- 🔴 **Catastrophic collapse** — weak *or* tool-clumsy:
-  **gpt-oss-20b** (0.213), **llama-3.1-8b** (0.173), **llama-3.3-70b** (0.340).
-  The forced tool loop sabotages them; every failure is a *real* test failure.
+- 🔴 **Collapse / harm** — weak or tool-clumsy:
+  **gpt-oss-20b** (0.213), **llama-3.1-8b** (0.173), **llama-3.3-70b** (0.340);
+  milder harm for **gpt-oss-120b** (0.98→0.90) and **qwen** (0.89→0.82).
 
 ---
 
@@ -266,7 +271,7 @@ loop), **separating** them should rescue the model:
 ## 7. Conclusion
 
 **Achievements**
-- A controlled, 5,400-run, multi-model measurement of *when* analysis helps.
+- A controlled, ≈9,000-run, 10-model measurement of *when* analysis helps.
 - **Positive result:** for a capable-but-unsaturated model (DeepSeek-V3.1),
   deep gives a **statistically significant** +9.7 pp.
 - **Novel finding:** the deep outcome is predicted by **agentic skill, not raw
